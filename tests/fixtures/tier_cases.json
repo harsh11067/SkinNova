@@ -1,0 +1,216 @@
+[
+ {
+  "id": "llm_cannot_lower",
+  "llm": "LOW",
+  "rule": "HIGH",
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "timeline": null,
+  "expected": "HIGH"
+ },
+ {
+  "id": "llm_can_raise",
+  "llm": "URGENT",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "timeline": null,
+  "expected": "URGENT"
+ },
+ {
+  "id": "floor_scabies",
+  "llm": "LOW",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "scabies",
+    "p": 0.4
+   },
+   {
+    "key": "eczema_atopic",
+    "p": 0.4
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   }
+  ],
+  "timeline": null,
+  "expected": "MODERATE"
+ },
+ {
+  "id": "floor_scabies_p014",
+  "llm": "LOW",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "acne",
+    "p": 0.26
+   },
+   {
+    "key": "scabies",
+    "p": 0.14
+   }
+  ],
+  "timeline": null,
+  "expected": "LOW"
+ },
+ {
+  "id": "floor_suspicious",
+  "llm": "LOW",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.2
+   },
+   {
+    "key": "acne",
+    "p": 0.1
+   }
+  ],
+  "timeline": null,
+  "expected": "HIGH"
+ },
+ {
+  "id": "floor_other",
+  "llm": null,
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "other",
+    "p": 0.5
+   },
+   {
+    "key": "acne",
+    "p": 0.3
+   },
+   {
+    "key": "tinea",
+    "p": 0.2
+   }
+  ],
+  "timeline": null,
+  "expected": "MODERATE"
+ },
+ {
+  "id": "floor_rank4_ignored",
+  "llm": "LOW",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "acne",
+    "p": 0.3
+   },
+   {
+    "key": "tinea",
+    "p": 0.25
+   },
+   {
+    "key": "eczema_atopic",
+    "p": 0.24
+   },
+   {
+    "key": "psoriasis",
+    "p": 0.21
+   }
+  ],
+  "timeline": null,
+  "expected": "LOW"
+ },
+ {
+  "id": "timeline_raises",
+  "llm": "LOW",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "timeline": "HIGH",
+  "expected": "HIGH"
+ },
+ {
+  "id": "llm_missing_basic_mode",
+  "llm": null,
+  "rule": "MODERATE",
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "timeline": null,
+  "expected": "MODERATE"
+ },
+ {
+  "id": "llm_garbage_ignored",
+  "llm": "SEVERE",
+  "rule": "LOW",
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "timeline": null,
+  "expected": "LOW"
+ }
+]

@@ -1,0 +1,2658 @@
+[
+ {
+  "id": "baseline_low",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_fever_pain2",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 2,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "URGENT",
+   "fired": [
+    "R1"
+   ],
+   "messages": [
+    "rf_r1"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_fever_pain3",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 3,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "URGENT",
+   "fired": [
+    "R1"
+   ],
+   "messages": [
+    "rf_r1"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_fever_spreading",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "spreading",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "URGENT",
+   "fired": [
+    "R1"
+   ],
+   "messages": [
+    "rf_r1"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_boundary_fever_pain1",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 1,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_boundary_nofever_pain3",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 3,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_boundary_nofever_spreading",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "spreading",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r1_fever_growing_no_lesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "growing",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_growing_lesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "growing",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R2"
+   ],
+   "messages": [
+    "rf_r2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_color_lesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "changing_color",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R2"
+   ],
+   "messages": [
+    "rf_r2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_shape_lesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "changing_shape",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R2"
+   ],
+   "messages": [
+    "rf_r2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_growing_nonlesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "growing",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_spreading_lesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "spreading",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_unsure_lesion",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "unsure",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_lesion_rank3",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "growing",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "acne",
+    "p": 0.5
+   },
+   {
+    "key": "eczema_atopic",
+    "p": 0.3
+   },
+   {
+    "key": "benign_lesion",
+    "p": 0.05
+   },
+   {
+    "key": "tinea",
+    "p": 0.04
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R2"
+   ],
+   "messages": [
+    "rf_r2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r2_lesion_rank4",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "growing",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "acne",
+    "p": 0.5
+   },
+   {
+    "key": "eczema_atopic",
+    "p": 0.3
+   },
+   {
+    "key": "tinea",
+    "p": 0.1
+   },
+   {
+    "key": "benign_lesion",
+    "p": 0.05
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r3_bleed_1_4w",
+  "answers": {
+   "body_site": "arm",
+   "duration": "1_4w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": true,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R3"
+   ],
+   "messages": [
+    "rf_r3"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r3_bleed_1_6m",
+  "answers": {
+   "body_site": "arm",
+   "duration": "1_6m",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": true,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R3"
+   ],
+   "messages": [
+    "rf_r3"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r3_bleed_gt_6m",
+  "answers": {
+   "body_site": "arm",
+   "duration": "gt_6m",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": true,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R3"
+   ],
+   "messages": [
+    "rf_r3"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r3_boundary_bleed_lt_1w",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": true,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r3_boundary_nobleed_long",
+  "answers": {
+   "body_site": "arm",
+   "duration": "gt_6m",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r4_sus_015",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.75
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.15
+   },
+   {
+    "key": "acne",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R4"
+   ],
+   "messages": [
+    "rf_r4"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r4_sus_050",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.4
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.5
+   },
+   {
+    "key": "acne",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R4"
+   ],
+   "messages": [
+    "rf_r4"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r4_boundary_sus_0149",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.751
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.149
+   },
+   {
+    "key": "acne",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r4_sus_low_rank_but_high_p",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "acne",
+    "p": 0.3
+   },
+   {
+    "key": "tinea",
+    "p": 0.29
+   },
+   {
+    "key": "eczema_atopic",
+    "p": 0.24
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.17
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R4"
+   ],
+   "messages": [
+    "rf_r4"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r5_child",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "lt_12",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R5"
+   ],
+   "messages": [
+    "rf_r5"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r5_boundary_teen",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "12_17",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r5_boundary_elderly",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "60_plus",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r6_face_pain2",
+  "answers": {
+   "body_site": "face",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 2,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R6"
+   ],
+   "messages": [
+    "rf_r6"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r6_groin_pain3",
+  "answers": {
+   "body_site": "groin",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 3,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R6"
+   ],
+   "messages": [
+    "rf_r6"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r6_boundary_face_pain1",
+  "answers": {
+   "body_site": "face",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 1,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r6_boundary_neck_pain3",
+  "answers": {
+   "body_site": "neck",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 3,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r7_household_itch2",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 2,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": true,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R7"
+   ],
+   "messages": [
+    "rf_r7"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r7_household_itch3",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 3,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": true,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R7"
+   ],
+   "messages": [
+    "rf_r7"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r7_boundary_household_itch1",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 1,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": true,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r7_boundary_alone_itch3",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 3,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "r8_forced",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": true,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [
+    "R8"
+   ],
+   "messages": [
+    "rf_r8"
+   ],
+   "force_uncertainty_high": true
+  }
+ },
+ {
+  "id": "r8_not_forced",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "combo_r1_r5",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 2,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "lt_12",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "URGENT",
+   "fired": [
+    "R1",
+    "R5"
+   ],
+   "messages": [
+    "rf_r1",
+    "rf_r5"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "combo_r2_r3_r4",
+  "answers": {
+   "body_site": "arm",
+   "duration": "1_6m",
+   "itch": 0,
+   "pain": 0,
+   "changing": "growing",
+   "bleeding_or_crusting": true,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.6
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.3
+   },
+   {
+    "key": "acne",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "messages": [
+    "rf_r2",
+    "rf_r3",
+    "rf_r4"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "combo_r6_r7",
+  "answers": {
+   "body_site": "groin",
+   "duration": "lt_1w",
+   "itch": 3,
+   "pain": 2,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": true,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R6",
+    "R7"
+   ],
+   "messages": [
+    "rf_r6",
+    "rf_r7"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "combo_r5_r8",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "lt_12",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": true,
+  "timeline": null,
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "R5",
+    "R8"
+   ],
+   "messages": [
+    "rf_r5",
+    "rf_r8"
+   ],
+   "force_uncertainty_high": true
+  }
+ },
+ {
+  "id": "combo_all_but_timeline",
+  "answers": {
+   "body_site": "face",
+   "duration": "gt_6m",
+   "itch": 3,
+   "pain": 3,
+   "changing": "growing",
+   "bleeding_or_crusting": true,
+   "fever_or_unwell": true,
+   "others_affected": true,
+   "new_product_or_exposure": false,
+   "age_band": "lt_12",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.5
+   },
+   {
+    "key": "suspicious_lesion",
+    "p": 0.4
+   },
+   {
+    "key": "acne",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": true,
+  "timeline": null,
+  "expected": {
+   "tier": "URGENT",
+   "fired": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8"
+   ],
+   "messages": [
+    "rf_r1",
+    "rf_r2",
+    "rf_r3",
+    "rf_r4",
+    "rf_r5",
+    "rf_r6",
+    "rf_r7",
+    "rf_r8"
+   ],
+   "force_uncertainty_high": true
+  }
+ },
+ {
+  "id": "t1_area_125_coin",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "coin_in_both": true,
+   "area_ratio": 1.25,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "T1"
+   ],
+   "messages": [
+    "rf_t1"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t1_boundary_124",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "coin_in_both": true,
+   "area_ratio": 1.24,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t1_no_coin",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "coin_in_both": false,
+   "area_ratio": 1.4,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t1_low_conf_disabled",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "coin_in_both": true,
+   "area_ratio": 1.6,
+   "confidence": "low",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t1_align_fail",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": false,
+   "coin_in_both": true,
+   "area_ratio": 1.6,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t2_contrast_5",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "contrast_delta": 5.0,
+   "noise_contrast": 1.0,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "T2"
+   ],
+   "messages": [
+    "rf_t2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t2_boundary_49",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "contrast_delta": 4.9,
+   "noise_contrast": 1.0,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t2_noise_dominates",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "contrast_delta": 6.0,
+   "noise_contrast": 3.5,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t2_noise_dominates_pass",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "contrast_delta": 7.0,
+   "noise_contrast": 3.5,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "T2"
+   ],
+   "messages": [
+    "rf_t2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t2_low_conf_disabled",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "contrast_delta": 9.0,
+   "confidence": "low",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t2_nonlesion_ignored",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "contrast_delta": 9.0,
+   "confidence": "ok",
+   "lesion_type": false
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t3_spreading_15",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "area_ratio": 1.5,
+   "confidence": "low",
+   "lesion_type": false
+  },
+  "expected": {
+   "tier": "MODERATE",
+   "fired": [
+    "T3"
+   ],
+   "messages": [
+    "rf_t3"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t3_boundary_149",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "area_ratio": 1.49,
+   "confidence": "low",
+   "lesion_type": false
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t3_lesion_not_t3",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "area_ratio": 1.6,
+   "confidence": "low",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t3_align_fail",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": false,
+   "area_ratio": 2.0,
+   "confidence": "low",
+   "lesion_type": false
+  },
+  "expected": {
+   "tier": "LOW",
+   "fired": [],
+   "messages": [],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t1_t2_both",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 0,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": false,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "benign_lesion",
+    "p": 0.7
+   },
+   {
+    "key": "acne",
+    "p": 0.2
+   },
+   {
+    "key": "other",
+    "p": 0.1
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "coin_in_both": true,
+   "area_ratio": 1.3,
+   "contrast_delta": 6.0,
+   "confidence": "ok",
+   "lesion_type": true
+  },
+  "expected": {
+   "tier": "HIGH",
+   "fired": [
+    "T1",
+    "T2"
+   ],
+   "messages": [
+    "rf_t1",
+    "rf_t2"
+   ],
+   "force_uncertainty_high": false
+  }
+ },
+ {
+  "id": "t_plus_r1",
+  "answers": {
+   "body_site": "arm",
+   "duration": "lt_1w",
+   "itch": 0,
+   "pain": 2,
+   "changing": "no",
+   "bleeding_or_crusting": false,
+   "fever_or_unwell": true,
+   "others_affected": false,
+   "new_product_or_exposure": false,
+   "age_band": "18_39",
+   "skin_tone": "unknown",
+   "free_text": "",
+   "source": "tap"
+  },
+  "cv": [
+   {
+    "key": "eczema_atopic",
+    "p": 0.6
+   },
+   {
+    "key": "contact_dermatitis",
+    "p": 0.25
+   },
+   {
+    "key": "tinea",
+    "p": 0.15
+   }
+  ],
+  "quality_forced": false,
+  "timeline": {
+   "align_ok": true,
+   "area_ratio": 1.7,
+   "confidence": "low",
+   "lesion_type": false
+  },
+  "expected": {
+   "tier": "URGENT",
+   "fired": [
+    "R1",
+    "T3"
+   ],
+   "messages": [
+    "rf_r1",
+    "rf_t3"
+   ],
+   "force_uncertainty_high": false
+  }
+ }
+]

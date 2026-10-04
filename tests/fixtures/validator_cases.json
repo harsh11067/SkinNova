@@ -1,0 +1,185 @@
+[
+ {
+  "id": "plain_valid",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.8,
+  "expect_uncertainty": "low",
+  "expect_tier": "LOW"
+ },
+ {
+  "id": "fenced",
+  "text": "```json\n{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}\n```",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.8
+ },
+ {
+  "id": "leading_trailing_text",
+  "text": "Sure! Here it is:\n{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}\nHope this helps.",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.8
+ },
+ {
+  "id": "no_json",
+  "text": "I think it is eczema.",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "no_json_object"
+  ]
+ },
+ {
+  "id": "truncated",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "no_json_object"
+  ]
+ },
+ {
+  "id": "unknown_key",
+  "text": "{\"possible_categories\":[{\"key\":\"ringworm\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "unknown_key"
+  ]
+ },
+ {
+  "id": "duplicate_key",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "duplicate_key"
+  ]
+ },
+ {
+  "id": "bad_likelihood",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"certain\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "bad_likelihood"
+  ]
+ },
+ {
+  "id": "bad_tier",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"SEVERE\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "bad_triage"
+  ]
+ },
+ {
+  "id": "bad_uncertainty",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"none\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "bad_uncertainty"
+  ]
+ },
+ {
+  "id": "dose_percent",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Apply 1% cream twice daily.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "dose_pattern"
+  ]
+ },
+ {
+  "id": "dose_mg",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Take 250 mg daily.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "dose_pattern"
+  ]
+ },
+ {
+  "id": "rx_term",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Ask for terbinafine.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "rx_term"
+  ]
+ },
+ {
+  "id": "diagnosis_phrase",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. You have ringworm. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "diagnosis_phrasing"
+  ]
+ },
+ {
+  "id": "definitely",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. This is definitely tinea.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "diagnosis_phrasing"
+  ]
+ },
+ {
+  "id": "too_many_categories",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"x\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"y\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "categories_count"
+  ]
+ },
+ {
+  "id": "zero_categories",
+  "text": "{\"possible_categories\":[],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "categories_count"
+  ]
+ },
+ {
+  "id": "why_too_long",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "why_too_long"
+  ]
+ },
+ {
+  "id": "explanation_7_sentences",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. A. B. C. D. E.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": false,
+  "expect_error_prefixes": [
+   "explanation_sentences"
+  ]
+ },
+ {
+  "id": "low_unc_upgraded_by_cv",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.4,
+  "expect_uncertainty": "moderate"
+ },
+ {
+  "id": "low_unc_upgraded_by_disagree",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":true}",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.9,
+  "expect_uncertainty": "moderate"
+ },
+ {
+  "id": "tier_raised_to_rule",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Keep the area clean and dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.9,
+  "rule_tier": "HIGH",
+  "expect_tier": "HIGH"
+ },
+ {
+  "id": "percent_word_not_dose",
+  "text": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Ring edge and itching for 3 weeks.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Itching fits, but the edge is sharp.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it itches and has spread over three weeks. A ring with a scaly edge often fits a fungal infection. Eczema can look similar.\",\"what_would_help\":[\"A clearer photo in daylight\"],\"self_care_info\":[\"Most people improve within two weeks.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it; see a doctor if it spreads.\"},\"disagreement_with_image_model\":false}",
+  "expect_ok": true,
+  "expect_error_prefixes": [],
+  "cv_top1_p": 0.9
+ }
+]

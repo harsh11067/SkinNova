@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:'IBM Plex Mono',monospace;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}button,textarea{font-family:inherit}a{color:#eab88c}a:hover{color:#f4dcc2}@keyframes snSpin{to{transform:rotate(360deg)}}@keyframes snPulse{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.03)}}@keyframes snTwinkle{0%,100%{opacity:.3}50%{opacity:1}}div::-webkit-scrollbar{display:none}</style>
+</helmet>
+<div style="{{ vars }};min-height:100vh;background:var(--pg,#03050b);display:flex;align-items:center;justify-content:center;padding:32px 16px;transition:background .5s">
+<div style="width:372px;height:800px;border-radius:46px;padding:6px;background:#0d0c16;box-shadow:0 0 0 1.5px #2b2846,0 30px 80px rgba(0,0,0,.45);flex:none">
+<div style="position:relative;width:360px;height:788px;border-radius:40px;overflow:hidden;background:var(--bg,#070b18);color:var(--ink,#efe9f3);transition:background .5s,color .5s">
+
+  <!-- ===== 00 LOADING ===== -->
+  <div data-screen-label="00 Loading" style="position:absolute;inset:0;z-index:{{ sv.loading.z }};opacity:{{ sv.loading.o }};transform:{{ sv.loading.t }};pointer-events:{{ sv.loading.pe }};transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1);background:#060a17;color:#efe9f3">
+    <canvas ref="{{ cvLoading }}" width="360" height="788" style="position:absolute;inset:0;width:360px;height:788px;image-rendering:pixelated"></canvas>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:260px;background:linear-gradient(180deg,rgba(6,10,23,0) 0%,rgba(6,10,23,.7) 45%,rgba(6,10,23,.96) 100%)"></div>
+    <div style="position:absolute;left:30px;top:206px;font-size:12px;line-height:19px;color:#d8d2ea;white-space:nowrap">AI-powered skin analysis<br>that lives on your device.</div>
+    <div style="position:absolute;left:30px;top:180px;font-size:14px;color:#f3ece4;text-shadow:0 1px 3px #000">Offline. Private. Yours.</div>
+    <div style="position:absolute;left:28px;bottom:150px;display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ load.words }}" as="w" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:2.4px;color:{{ w.color }};transition:color .4s"><span style="width:6px;height:6px;border-radius:2px;background:{{ w.dot }};transition:background .4s"></span>{{ w.w }}</div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:28px;right:28px;bottom:58px;opacity:{{ load.barO }};transform:{{ load.barT }};transition:opacity .45s ease,transform .5s cubic-bezier(.2,.7,.2,1);pointer-events:none">
+      <div style="display:flex;justify-content:space-between;font-size:10.5px;color:#d8d2ea;margin-bottom:10px"><span>{{ load.msg }}</span><span style="color:#f2c9a1">{{ load.pct }}%</span></div>
+      <div style="display:grid;grid-template-columns:repeat(24,1fr);gap:3px;padding:5px;border:1px solid #57539a;border-radius:10px;background:rgba(6,10,23,.6)">
+        <sc-for list="{{ load.segs }}" as="g" hint-placeholder-count="24"><span style="height:8px;border-radius:2px;background:{{ g.bg }};box-shadow:{{ g.sh }};transition:background .2s"></span></sc-for>
+      </div>
+      <div style="margin-top:12px;font-size:9.5px;letter-spacing:1.6px;color:#a9a5c6;text-align:center">GEMMA 4 E2B · LITERT-LM · NO INTERNET NEEDED</div>
+    </div>
+    <button onClick="{{ load.start }}" aria-label="Get Started" style="position:absolute;left:28px;right:28px;bottom:62px;height:54px;border-radius:18px;border:1.5px solid #eab88c;background:rgba(10,13,27,.82);color:#f4dcc2;font-family:'Pixelify Sans',monospace;font-size:17px;letter-spacing:.6px;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;box-shadow:inset 0 0 0 3px rgba(10,13,27,.82),inset 0 0 0 4px rgba(234,184,140,.35),0 0 22px rgba(234,184,140,.3);opacity:{{ load.btnO }};transform:{{ load.btnT }};pointer-events:{{ load.btnPe }};transition:opacity .5s ease .15s,transform .6s cubic-bezier(.2,.8,.2,1) .15s" style-active="transform:scale(.97)">Get Started <span style="color:#f2c9a1;font-size:19px">→</span></button>
+  </div>
+
+  <!-- ===== 02 HOME ===== -->
+  <div data-screen-label="02 Home" style="position:absolute;inset:0;z-index:{{ sv.home.z }};opacity:{{ sv.home.o }};transform:{{ sv.home.t }};pointer-events:{{ sv.home.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);overflow-y:auto;scrollbar-width:none;padding:86px 18px 104px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-size:20px;line-height:26px">Hello,<br>You’re in control.</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--mut)">Scan. Learn. Take care.</div>
+      </div>
+      <button onClick="{{ toggleTheme }}" aria-label="Toggle light mode" style="width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:var(--surf);color:var(--accT);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2);transition:transform .25s" style-active="transform:rotate(30deg) scale(.94)">
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"></path></svg></sc-if>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg></sc-if>
+      </button>
+    </div>
+    <div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:14px;border:1px solid var(--line2);background:var(--surf);font-size:10.5px;color:var(--mut);white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#6fd39a;box-shadow:0 0 8px #6fd39a"></span>Offline · Model ready</div>
+    <button onClick="{{ goScan }}" style="margin-top:16px;width:100%;display:flex;align-items:center;gap:16px;padding:16px;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2),var(--sh);transition:transform .2s" style-active="transform:scale(.98)">
+      <div style="position:relative;width:76px;height:76px;flex:none;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;color:var(--accT)">
+        <span style="position:absolute;inset:8px;border-radius:14px;border:1px dashed var(--line)"></span>
+        <svg width="26" height="22" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M2 6.5Q2 5 3.5 5H7l2-2.5h6L17 5h3.5Q22 5 22 6.5v10Q22 18 20.5 18h-17Q2 18 2 16.5z"></path><circle cx="12" cy="11.5" r="3.6"></circle></svg>
+      </div>
+      <div style="flex:1"><div style="font-size:15px">Scan Your Skin</div><div style="margin-top:6px;font-size:11px;line-height:16px;color:var(--mut)">Take a photo or pick from gallery.</div></div>
+      <span style="font-size:18px;color:var(--mut)">›</span>
+    </button>
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <button onClick="{{ goHistory }}" style="padding:16px;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2),var(--sh)" style-active="transform:scale(.97)">
+        <svg width="18" height="20" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="14" height="16" rx="3"></rect><path d="M4.5 6h7M4.5 9h7M4.5 12h4" stroke-linecap="round"></path></svg>
+        <div style="margin-top:14px;font-size:13px">My Reports</div><div style="margin-top:5px;font-size:10.5px;line-height:15px;color:var(--mut)">{{ home.reportsSub }}</div>
+      </button>
+      <button onClick="{{ goLibrary }}" style="padding:16px;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2),var(--sh)" style-active="transform:scale(.97)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3c3 0 5 2 5 4 2 0 4 2 4 4.5S19 16 17 16c0 2.5-2.2 5-5 5s-5-2.5-5-5c-2 0-4-2-4-4.5S5 7 7 7c0-2 2-4 5-4z"></path></svg>
+        <div style="margin-top:14px;font-size:13px">Skin Library</div><div style="margin-top:5px;font-size:10.5px;line-height:15px;color:var(--mut)">Common conditions</div>
+      </button>
+    </div>
+    <button onClick="{{ home.nextTip }}" style="margin-top:12px;width:100%;display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2),var(--sh)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accT)" stroke-width="1.5" style="flex:none"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="5"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>
+      <div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px;white-space:nowrap"><span>Quick Tip</span><span style="font-size:10px;color:var(--mut);flex:none">{{ home.tipCount }} · tap</span></div><div style="margin-top:6px;font-size:11px;line-height:16px;color:var(--mut);text-wrap:pretty">{{ home.tip }}</div></div>
+    </button>
+    <sc-if value="{{ home.hasRecent }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:22px 4px 10px;font-size:11px;letter-spacing:1.6px;color:var(--mut)">RECENT ANALYSIS</div>
+      <button onClick="{{ home.openRecent }}" style="width:100%;display:flex;align-items:center;gap:14px;padding:12px;border-radius:20px;border:1px solid var(--line2);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:14px;background:url({{ home.recent.img }}) center/cover;flex:none"></div>
+        <div style="flex:1;font-size:10.5px;line-height:16px;color:var(--mut)"><div style="font-size:13px;color:var(--ink)">{{ home.recent.cond }}</div>{{ home.recent.when }} · Confidence: {{ home.recent.conf }}</div>
+        <span style="font-size:18px;color:var(--mut)">›</span>
+      </button>
+    </sc-if>
+  </div>
+
+  <!-- ===== 03 SCAN ===== -->
+  <div data-screen-label="03 Scan" style="position:absolute;inset:0;z-index:{{ sv.scan.z }};opacity:{{ sv.scan.o }};transform:{{ sv.scan.t }};pointer-events:{{ sv.scan.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);padding:40px 18px 24px;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onClick="{{ goHome }}" style="width:44px;height:44px;border-radius:16px;border:0;background:transparent;color:var(--ink);font-size:20px;cursor:pointer">←</button>
+      <div style="flex:1;text-align:center;font-size:17px;margin-right:52px">Scan Your Skin</div>
+    </div>
+    <div style="text-align:center;font-size:11.5px;line-height:17px;color:var(--mut);margin-top:2px">{{ scan.sub }}</div>
+    <sc-if value="{{ scan.isPhoto }}" hint-placeholder-val="{{ true }}">
+      <div style="position:relative;margin-top:16px;height:330px;border-radius:26px;border:1.5px solid var(--acc);padding:5px;box-shadow:0 0 22px var(--glow)">
+        <img src="assets/px-scan.png" alt="" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:21px;image-rendering:pixelated">
+        <span style="position:absolute;left:18px;top:18px;width:18px;height:18px;border-left:2px solid rgba(255,240,225,.85);border-top:2px solid rgba(255,240,225,.85);border-radius:6px 0 0 0"></span><span style="position:absolute;left:18px;bottom:52px;width:18px;height:18px;border-left:2px solid rgba(255,240,225,.85);border-bottom:2px solid rgba(255,240,225,.85);border-radius:0 0 0 6px"></span><span style="position:absolute;right:18px;bottom:52px;width:18px;height:18px;border-right:2px solid rgba(255,240,225,.85);border-bottom:2px solid rgba(255,240,225,.85);border-radius:0 0 6px 0"></span>
+        <span style="position:absolute;right:16px;top:16px;width:36px;height:36px;border-radius:14px;background:rgba(6,10,23,.6);color:#f3ece4;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"></path></svg></span>
+        <div style="position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:1.5px dashed rgba(255,240,225,.75);animation:snPulse 2.4s ease-in-out infinite"></div>
+        <div style="position:absolute;left:18px;bottom:18px;height:28px;padding:0 12px;border-radius:14px;background:rgba(6,10,23,.65);color:#f3ece4;font-size:10px;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#6fd39a"></span>Good light · In focus</div>
+        <div style="position:absolute;inset:5px;border-radius:21px;background:#fff;opacity:{{ scan.flashOp }};transition:opacity .3s;pointer-events:none"></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ scan.isGallery }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:16px;height:330px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px">
+        <sc-for list="{{ scan.gallery }}" as="g" hint-placeholder-count="4">
+          <button onClick="{{ g.onClick }}" style="position:relative;padding:0;border-radius:22px;overflow:hidden;cursor:pointer;border:{{ g.border }};box-shadow:{{ g.glow }};background:var(--surf);transition:box-shadow .25s">
+            <div style="width:100%;height:100%;background:url({{ g.img }}) center/cover no-repeat"></div>
+            <span style="position:absolute;right:10px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--acc);color:var(--onAcc);font-size:12px;display:flex;align-items:center;justify-content:center;opacity:{{ g.check }};transition:opacity .2s">✓</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+    <div style="margin:18px auto 0;width:180px;height:40px;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:20px;border:1px solid var(--line2);background:var(--surf)">
+      <sc-for list="{{ scan.modes }}" as="m" hint-placeholder-count="2">
+        <button onClick="{{ m.onClick }}" style="border-radius:16px;border:1px solid {{ m.border }};background:{{ m.bg }};color:var(--ink);font-size:12px;cursor:pointer;transition:background .25s,border-color .25s">{{ m.label }}</button>
+      </sc-for>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 18px">
+      <button onClick="{{ scan.toGallery }}" style="width:50px;height:50px;border-radius:18px;border:1px solid var(--line);background:var(--surf);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="16" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="1" width="18" height="16" rx="3"></rect><path d="m3 14 5-5 4 4 2-2 4 4"></path><circle cx="14" cy="5.5" r="1.5"></circle></svg></button>
+      <button onClick="{{ scan.shoot }}" aria-label="{{ scan.shootLabel }}" style="position:relative;width:88px;height:88px;border-radius:50%;border:0;background:transparent;cursor:pointer;padding:0">
+        <span style="position:absolute;inset:0;border-radius:50%;border:2px dotted var(--acc);animation:snSpin 14s linear infinite"></span>
+        <span style="position:absolute;inset:9px;border-radius:50%;border:1.5px solid var(--acc);box-shadow:0 0 18px var(--glow)"></span>
+        <span style="position:absolute;inset:15px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fdf0e0,#efc9a0);display:flex;align-items:center;justify-content:center;color:#5a3a22;font-size:18px;transition:transform .15s" style-active="transform:scale(.9)">{{ scan.shootGlyph }}</span>
+      </button>
+      <button style="width:50px;height:50px;border-radius:18px;border:1px solid var(--line);background:var(--surf);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="13" height="18" viewBox="0 0 12 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M7 1 1 10h4l-1 7 7-10H7z"></path></svg></button>
+    </div>
+    <div style="text-align:center;font-size:10.5px;color:var(--mut)">{{ scan.tip }}</div>
+  </div>
+
+  <!-- ===== 04 QUESTIONS ===== -->
+  <div data-screen-label="04 Symptom Questions" style="position:absolute;inset:0;z-index:{{ sv.questions.z }};opacity:{{ sv.questions.o }};transform:{{ sv.questions.t }};pointer-events:{{ sv.questions.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);padding:40px 18px 26px;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onClick="{{ q.back }}" style="width:44px;height:44px;border-radius:16px;border:0;background:transparent;color:var(--ink);font-size:20px;cursor:pointer">←</button>
+      <div style="flex:1;font-size:12px;color:var(--mut)">{{ q.stepLabel }}</div>
+      <div style="width:40px;height:40px;border-radius:13px;border:1.5px solid var(--acc);background:url({{ scanImg }}) center/cover no-repeat"></div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:6px">
+      <sc-for list="{{ q.progress }}" as="p" hint-placeholder-count="6"><span style="flex:1;height:6px;border-radius:3px;background:{{ p.bg }};transition:background .35s"></span></sc-for>
+    </div>
+    <div style="margin-top:26px;font-size:21px;line-height:28px;text-wrap:pretty">{{ q.title }}</div>
+    <div style="margin-top:8px;font-size:11.5px;line-height:17px;color:var(--mut)">{{ q.sub }}</div>
+    <div style="flex:1;margin-top:20px;overflow-y:auto;scrollbar-width:none">
+      <sc-if value="{{ q.isChoice }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="6">
+            <button onClick="{{ o.onClick }}" style="height:46px;padding:0 18px;border-radius:23px;border:{{ o.border }};background:{{ o.bg }};color:{{ o.color }};font-size:12.5px;cursor:pointer;box-shadow:{{ o.glow }};transition:all .25s cubic-bezier(.2,.7,.2,1)" style-active="transform:scale(.95)">{{ o.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ q.isScale }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="4">
+            <button onClick="{{ o.onClick }}" style="height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-radius:20px;border:{{ o.border }};background:{{ o.bg }};color:{{ o.color }};font-size:13px;cursor:pointer;box-shadow:{{ o.glow }};transition:all .25s cubic-bezier(.2,.7,.2,1)" style-active="transform:scale(.98)">
+              <span style="display:flex;flex-direction:column;align-items:flex-start;gap:3px">{{ o.label }}<span style="font-size:10px;color:var(--mut)">{{ o.hint }}</span></span>
+              <span style="display:flex;gap:4px"><sc-for list="{{ o.blocks }}" as="b" hint-placeholder-count="3"><span style="width:12px;height:12px;border-radius:3px;background:{{ b.bg }}"></span></sc-for></span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ q.isText }}" hint-placeholder-val="{{ false }}">
+        <textarea value="{{ q.notes }}" onChange="{{ q.onNotes }}" placeholder="e.g. Started after using a new soap. Worse at night." style="width:100%;height:150px;resize:none;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font-size:12.5px;line-height:19px;padding:16px;outline:none"></textarea>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;padding:14px 16px;border-radius:20px;background:var(--surf2);font-size:10.5px;line-height:16px;color:var(--mut)"><span style="font-size:16px;color:var(--accT)">⌂</span>Your photo and answers are processed on this phone and never uploaded.</div>
+      </sc-if>
+    </div>
+    <button onClick="{{ q.next }}" style="margin-top:14px;height:54px;border-radius:20px;border:0;background:{{ q.nextBg }};color:{{ q.nextColor }};font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:{{ q.nextGlow }};transition:all .3s" style-active="transform:scale(.98)">{{ q.nextLabel }} <span>→</span></button>
+  </div>
+
+  <!-- ===== 05 ANALYZING ===== -->
+  <div data-screen-label="05 Analyzing" style="position:absolute;inset:0;z-index:{{ sv.analyzing.z }};opacity:{{ sv.analyzing.o }};transform:{{ sv.analyzing.t }};pointer-events:{{ sv.analyzing.pe }};transition:opacity .45s ease,transform .55s cubic-bezier(.2,.7,.2,1);background:var(--bgG);padding:70px 26px 30px;display:flex;flex-direction:column;align-items:center">
+    <div style="position:relative;width:220px;height:220px">
+      <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--line);animation:snSpin 18s linear infinite"></div>
+      <div style="position:absolute;inset:18px;border-radius:50%;border:1px dotted var(--acc);animation:snSpin 9s linear infinite reverse"></div>
+      <canvas ref="{{ cvAnalyzing }}" width="144" height="144" style="position:absolute;left:38px;top:38px;width:144px;height:144px;border-radius:50%;image-rendering:pixelated;box-shadow:0 0 30px var(--glow)"></canvas>
+    </div>
+    <div style="margin-top:30px;font-size:19px">Analyzing on-device</div>
+    <div style="margin-top:8px;font-size:11px;color:var(--mut)">No internet. Nothing leaves your phone.</div>
+    <div style="margin-top:28px;width:100%;display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:24px;border:1px solid var(--line2);background:var(--surf)">
+      <sc-for list="{{ an.steps }}" as="st" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:{{ st.color }};transition:color .3s">
+          <span style="width:22px;height:22px;border-radius:8px;border:1px solid {{ st.ring }};background:{{ st.bg }};color:var(--onAcc);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s">{{ st.icon }}</span>{{ st.label }}
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ===== 06 RESULT ===== -->
+  <div data-screen-label="06 Analysis Result" style="position:absolute;inset:0;z-index:{{ sv.result.z }};opacity:{{ sv.result.o }};transform:{{ sv.result.t }};pointer-events:{{ sv.result.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);overflow-y:auto;scrollbar-width:none;padding:40px 18px 32px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onClick="{{ goHome }}" style="width:44px;height:44px;border-radius:16px;border:0;background:transparent;color:var(--ink);font-size:20px;cursor:pointer">←</button>
+      <div style="font-size:17px">Analysis Result</div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:14px;align-items:center">
+      <div style="width:128px;height:128px;flex:none;border-radius:26px;border:1.5px solid var(--acc);padding:4px;box-shadow:0 0 18px var(--glow)"><div style="width:100%;height:100%;border-radius:21px;background:url({{ scanImg }}) center/cover no-repeat"></div></div>
+      <div style="flex:1;display:flex;flex-wrap:wrap;gap:6px">
+        <div style="width:100%;font-size:10px;letter-spacing:1.4px;color:var(--mut);margin-bottom:2px">YOUR ANSWERS</div>
+        <sc-for list="{{ res.chips }}" as="c" hint-placeholder-count="4"><span style="height:26px;padding:0 11px;border-radius:13px;background:var(--surf2);font-size:10px;color:var(--ink);display:flex;align-items:center;white-space:nowrap">{{ c }}</span></sc-for>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:18px;border-radius:24px;border:1px solid var(--line);background:var(--surf);box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2),var(--sh)">
+      <div style="font-size:14px">Possible Conditions</div>
+      <div style="margin-top:4px;font-size:10.5px;color:var(--mut)">Based on image + your answers</div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px">
+        <sc-for list="{{ res.conds }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.onClick }}" style="display:grid;grid-template-columns:24px 1fr auto 12px;column-gap:10px;row-gap:7px;align-items:center;padding:10px 6px;border-radius:14px;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer" style-hover="background:var(--surf2)">
+            <span style="width:22px;height:22px;border-radius:50%;border:1px solid var(--line);font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--mut)">{{ c.n }}</span>
+            <span style="font-size:12px">{{ c.name }}</span><span style="font-size:12px;color:var(--mut)">{{ c.pct }}%</span><span style="color:var(--mut)">›</span>
+            <span></span><span style="grid-column:2 / 4;height:6px;border-radius:3px;background:var(--track);overflow:hidden"><span style="display:block;height:100%;width:{{ c.w }};border-radius:3px;background:var(--pur);transition:width .8s cubic-bezier(.2,.7,.2,1)"></span></span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:18px;border-radius:24px;border:1px solid var(--line2);background:var(--surf)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px">Confidence</span><span style="font-size:13px;color:var(--accT)">{{ res.conf }}</span></div>
+      <div style="margin-top:10px;height:6px;border-radius:3px;background:var(--track);overflow:hidden"><div style="height:100%;width:{{ res.confW }};border-radius:3px;background:var(--pur);transition:width .8s"></div></div>
+      <div style="margin-top:12px;font-size:11px;line-height:17px;color:var(--mut);text-wrap:pretty">{{ res.uncertainty }}</div>
+    </div>
+    <div style="margin-top:12px;padding:18px;border-radius:24px;border:{{ res.seeBorder }};background:var(--surf)">
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px"><svg width="20" height="18" viewBox="0 0 24 22" fill="none" stroke="var(--accT)" stroke-width="1.7" stroke-linejoin="round"><path d="M12 2.5 22.5 20.5h-21z"></path><path d="M12 9v5M12 17v.5" stroke-linecap="round"></path></svg>{{ res.seeTitle }}</div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ res.seeList }}" as="i" hint-placeholder-count="3"><div style="display:flex;gap:10px;font-size:11px;line-height:16px;color:var(--mut)"><span style="color:var(--accT)">•</span>{{ i }}</div></sc-for>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:14px 16px;border-radius:20px;background:var(--surf2);font-size:10.5px;line-height:16px;color:var(--mut)">This is not a diagnosis. SkinNova gives preliminary, educational information. For an accurate diagnosis, consult a dermatologist.</div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button onClick="{{ res.learn }}" style="height:52px;border-radius:18px;border:1.5px solid var(--acc);background:var(--btn);color:var(--accT);font-size:12.5px;cursor:pointer;box-shadow:inset 0 0 0 3px var(--btn),inset 0 0 0 4px var(--accSoft)">Learn more</button>
+      <button onClick="{{ res.save }}" style="height:52px;border-radius:18px;border:0;background:{{ res.saveBg }};color:{{ res.saveColor }};font-size:12.5px;font-weight:500;cursor:pointer;transition:all .3s">{{ res.saveLabel }}</button>
+    </div>
+  </div>
+
+  <!-- ===== 07 INSIGHTS ===== -->
+  <div data-screen-label="07 Detailed Insights" style="position:absolute;inset:0;z-index:{{ sv.insights.z }};opacity:{{ sv.insights.o }};transform:{{ sv.insights.t }};pointer-events:{{ sv.insights.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);overflow-y:auto;scrollbar-width:none;padding:40px 18px 32px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onClick="{{ ins.back }}" style="width:44px;height:44px;border-radius:16px;border:0;background:transparent;color:var(--ink);font-size:20px;cursor:pointer">←</button>
+      <div style="font-size:17px">Detailed Insights</div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px;padding:4px;border-radius:20px;border:1px solid var(--line2);background:var(--surf)">
+      <sc-for list="{{ ins.tabs }}" as="t" hint-placeholder-count="3">
+        <button onClick="{{ t.onClick }}" style="flex:1;height:40px;border-radius:16px;border:{{ t.border }};background:{{ t.bg }};color:{{ t.color }};font-size:11px;cursor:pointer;white-space:nowrap;transition:all .25s">{{ t.label }}</button>
+      </sc-for>
+    </div>
+        <div style="margin-top:14px;padding:18px;border-radius:24px;border:1px solid var(--line);background:var(--surf);box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2),var(--sh)">
+      <div style="display:flex;align-items:center;gap:14px"><div style="width:64px;height:64px;border-radius:18px;flex:none;border:1.5px solid var(--acc);background:url({{ ins.img }}) center/cover no-repeat"></div><div style="font-size:15px;line-height:21px">{{ ins.title }}</div></div>
+      <div style="margin-top:10px;font-size:11.5px;line-height:18px;color:var(--mut);text-wrap:pretty">{{ ins.desc }}</div>
+    </div>
+    <div style="margin-top:12px;padding:18px;border-radius:24px;border:1px solid var(--line2);background:var(--surf)">
+      <div style="font-size:14px">{{ ins.listTitle }}</div>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ ins.list }}" as="i" hint-placeholder-count="4">
+          <div style="display:flex;gap:12px;align-items:center;font-size:11.5px;line-height:16px;color:var(--ink)"><span style="width:24px;height:24px;flex:none;border-radius:9px;border:1px solid var(--line);color:var(--accT);display:flex;align-items:center;justify-content:center;font-size:10px">{{ ins.icon }}</span>{{ i }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="margin-top:14px;height:96px;border-radius:24px;overflow:hidden"><canvas ref="{{ cvInsights }}" width="324" height="96" style="width:324px;height:96px;display:block;image-rendering:pixelated"></canvas></div>
+  </div>
+
+  <!-- ===== 08 LIBRARY ===== -->
+  <div data-screen-label="08 Skin Library" style="position:absolute;inset:0;z-index:{{ sv.library.z }};opacity:{{ sv.library.o }};transform:{{ sv.library.t }};pointer-events:{{ sv.library.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);overflow-y:auto;scrollbar-width:none;padding:88px 18px 104px">
+    <div style="font-size:20px">Skin Library</div>
+    <div style="margin-top:6px;font-size:11.5px;color:var(--mut)">Learn the basics. Available offline.</div>
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <sc-for list="{{ lib.chips }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.onClick }}" style="height:38px;padding:0 16px;border-radius:19px;border:{{ c.border }};background:{{ c.bg }};color:{{ c.color }};font-size:11.5px;cursor:pointer;box-shadow:{{ c.glow }};transition:all .25s">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ lib.items }}" as="l" hint-placeholder-count="4">
+        <button onClick="{{ l.onClick }}" style="display:flex;align-items:center;gap:14px;padding:12px;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2);transition:transform .2s" style-active="transform:scale(.98)">
+          <div style="width:58px;height:58px;border-radius:16px;flex:none;background:url({{ l.img }}) center/cover no-repeat"></div>
+          <div style="flex:1"><div style="font-size:13px">{{ l.name }}</div><div style="margin-top:4px;font-size:10.5px;line-height:15px;color:var(--mut)">{{ l.desc }}</div></div>
+          <span style="font-size:18px;color:var(--mut)">›</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="position:relative;margin-top:16px;height:110px;border-radius:24px;overflow:hidden">
+      <canvas ref="{{ cvLibrary }}" width="324" height="110" style="width:324px;height:110px;display:block;image-rendering:pixelated"></canvas>
+      <div style="position:absolute;left:66px;top:22px;font-size:11px;line-height:16px;color:#ece4f2;text-shadow:0 1px 3px #000">Knowledge is a<br>form of care.</div>
+    </div>
+  </div>
+
+  <!-- ===== 09 JOURNEY ===== -->
+  <div data-screen-label="09 Your Journey" style="position:absolute;inset:0;z-index:{{ sv.history.z }};opacity:{{ sv.history.o }};transform:{{ sv.history.t }};pointer-events:{{ sv.history.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);overflow-y:auto;scrollbar-width:none;padding:88px 18px 104px">
+    <div style="font-size:20px">Your Journey</div>
+    <div style="margin-top:6px;font-size:11.5px;color:var(--mut)">Track your progress over time.</div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:7px">
+      <sc-for list="{{ hist.days }}" as="d" hint-placeholder-count="5">
+        <button onClick="{{ d.onClick }}" style="position:relative;height:62px;border-radius:18px;border:{{ d.border }};background:{{ d.bg }};color:var(--ink);font-size:10.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:{{ d.glow }};transition:all .25s">
+          <span style="color:var(--mut)">{{ d.d }}</span><span style="font-size:14px">{{ d.n }}</span>
+          <span style="position:absolute;bottom:7px;width:5px;height:5px;border-radius:50%;background:var(--accT);opacity:{{ d.dot }}"></span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ hist.items }}" as="a" hint-placeholder-count="2">
+        <button onClick="{{ a.onClick }}" style="display:flex;align-items:center;gap:14px;padding:12px;border-radius:22px;border:1px solid var(--line);background:var(--surf);color:var(--ink);text-align:left;cursor:pointer;box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2)" style-active="transform:scale(.98)">
+          <div style="width:56px;height:56px;border-radius:16px;flex:none;background:url({{ a.img }}) center/cover no-repeat"></div>
+          <div style="flex:1;font-size:10.5px;line-height:16px;color:var(--mut)"><div style="font-size:13px;color:var(--ink)">{{ a.title }}</div>Possible: {{ a.cond }}<br>Confidence: {{ a.conf }}</div>
+          <span style="font-size:18px;color:var(--mut)">›</span>
+        </button>
+      </sc-for>
+      <sc-if value="{{ hist.empty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:26px 18px;border-radius:22px;border:1px dashed var(--line);text-align:center;font-size:11.5px;color:var(--mut)">No scans on this day.</div>
+      </sc-if>
+    </div>
+    <button onClick="{{ goScan }}" style="margin-top:14px;width:100%;height:54px;border-radius:20px;border:1.5px solid var(--acc);background:var(--btn);color:var(--ink);font-size:13px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;box-shadow:inset 0 0 0 3px var(--btn),inset 0 0 0 4px var(--accSoft),0 0 18px var(--glow)" style-active="transform:scale(.98)"><span style="font-size:17px;color:var(--accT)">+</span> Add New Analysis</button>
+    <div style="position:relative;margin-top:16px;height:140px;border-radius:24px;overflow:hidden">
+      <canvas ref="{{ cvJourney }}" width="324" height="140" style="width:324px;height:140px;display:block;image-rendering:pixelated"></canvas>
+      <div style="position:absolute;left:0;right:0;top:56px;text-align:center;font-size:11px;line-height:16px;color:#ece4f2;text-shadow:0 1px 3px #000">“Small steps today.<br>Healthier skin tomorrow.”</div>
+    </div>
+  </div>
+
+  <!-- ===== 10 PROFILE ===== -->
+  <div data-screen-label="10 Profile" style="position:absolute;inset:0;z-index:{{ sv.profile.z }};opacity:{{ sv.profile.o }};transform:{{ sv.profile.t }};pointer-events:{{ sv.profile.pe }};transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1);background:var(--bgG);overflow-y:auto;scrollbar-width:none;padding:88px 18px 104px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:60px;height:60px;border-radius:22px;border:1.5px solid var(--acc);background:var(--surf2);display:flex;align-items:center;justify-content:center;font-family:'Pixelify Sans',monospace;font-size:26px;color:var(--accT);box-shadow:0 0 16px var(--glow)">G</div>
+      <div><div style="font-size:18px">Guest</div><div style="margin-top:4px;font-size:11px;color:var(--mut)">{{ prof.summary }}</div></div>
+    </div>
+    <div style="margin:24px 4px 10px;font-size:11px;letter-spacing:1.6px;color:var(--mut)">APPEARANCE</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:20px;border:1px solid var(--line2);background:var(--surf)">
+      <sc-for list="{{ prof.themes }}" as="t" hint-placeholder-count="2">
+        <button onClick="{{ t.onClick }}" style="height:44px;border-radius:16px;border:{{ t.border }};background:{{ t.bg }};color:var(--ink);font-size:12px;cursor:pointer;transition:all .25s">{{ t.label }}</button>
+      </sc-for>
+    </div>
+    <div style="margin:24px 4px 10px;font-size:11px;letter-spacing:1.6px;color:var(--mut)">ON-DEVICE MODEL</div>
+    <div style="padding:18px;border-radius:24px;border:1px solid var(--line);background:var(--surf);box-shadow:inset 0 0 0 3px var(--surf),inset 0 0 0 4px var(--line2)">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px">Gemma 4 E2B</span><span style="height:24px;padding:0 10px;border-radius:12px;background:var(--surf2);font-size:10px;color:var(--accT);display:flex;align-items:center">LoRA · Derm</span></div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:8px;font-size:11px;color:var(--mut)">
+        <span>Runtime</span><span style="color:var(--ink);text-align:right">LiteRT-LM</span>
+        <span>Vision</span><span style="color:var(--ink);text-align:right">SkinNova CV v0.3</span>
+        <span>Network</span><span style="color:var(--ink);text-align:right">Not required</span>
+      </div>
+    </div>
+    <div style="margin:24px 4px 10px;font-size:11px;letter-spacing:1.6px;color:var(--mut)">PRIVACY &amp; DATA</div>
+    <div style="border-radius:24px;border:1px solid var(--line2);background:var(--surf);overflow:hidden">
+      <sc-for list="{{ prof.toggles }}" as="t" hint-placeholder-count="2">
+        <button onClick="{{ t.onClick }}" style="width:100%;min-height:62px;display:flex;align-items:center;gap:12px;padding:12px 18px;border:0;border-bottom:1px solid var(--line2);background:transparent;color:var(--ink);text-align:left;cursor:pointer">
+          <div style="flex:1"><div style="font-size:12.5px">{{ t.label }}</div><div style="margin-top:3px;font-size:10px;color:var(--mut)">{{ t.sub }}</div></div>
+          <span style="position:relative;width:46px;height:28px;border-radius:14px;background:{{ t.track }};transition:background .3s;flex:none"><span style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:{{ t.knob }};transform:{{ t.tx }};transition:transform .3s cubic-bezier(.2,.7,.2,1);box-shadow:0 2px 6px rgba(0,0,0,.25)"></span></span>
+        </button>
+      </sc-for>
+      <button onClick="{{ prof.replay }}" style="width:100%;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border:0;border-bottom:1px solid var(--line2);background:transparent;color:var(--ink);font-size:12.5px;cursor:pointer">Replay intro <span style="color:var(--mut)">›</span></button>
+      <button onClick="{{ prof.clear }}" style="width:100%;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border:0;background:transparent;color:#e0787a;font-size:12.5px;cursor:pointer">Delete all scans <span style="font-size:10.5px;color:var(--mut)">{{ prof.count }}</span></button>
+    </div>
+    <div style="margin-top:16px;padding:14px 16px;border-radius:20px;background:var(--surf2);font-size:10.5px;line-height:16px;color:var(--mut)">SkinNova is for preliminary information and education. It does not replace a professional medical diagnosis.</div>
+  </div>
+
+  <!-- SHARED LOGO -->
+  <div ref="{{ logoEl }}" onClick="{{ logo.onClick }}" style="position:absolute;left:0;top:0;z-index:45;display:flex;align-items:center;gap:10px;transform-origin:0 0;transform:{{ logo.t }};opacity:{{ logo.o }};pointer-events:{{ logo.pe }};cursor:pointer;color:{{ logo.color }};transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .5s ease,color .5s">
+    <canvas ref="{{ logoRef }}" width="48" height="48" style="width:48px;height:48px;flex:none;image-rendering:pixelated;opacity:{{ logo.co }};transition:opacity .5s"></canvas>
+    <img src="assets/landing-title.png" alt="SkinNova" style="width:231px;height:47px;flex:none;display:block;max-width:none;filter:{{ logo.f }};transition:filter .5s">
+  </div>
+  <!-- NAV -->
+  <div style="position:absolute;left:12px;right:12px;bottom:20px;z-index:40;height:66px;border-radius:24px;border:1px solid var(--line);background:var(--nav);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;grid-template-columns:repeat(4,1fr);opacity:{{ navShow.o }};transform:{{ navShow.t }};pointer-events:{{ navShow.pe }};transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1);box-shadow:var(--sh)">
+    <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4">
+      <button onClick="{{ n.onClick }}" style="position:relative;background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:{{ n.color }};font-size:10px;transition:color .25s">
+        <sc-if value="{{ n.isHome }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ n.fill }}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 11 12 3.5l9 7.5v9.5Q21 21 20.5 21H15v-6H9v6H3.5Q3 21 3 20.5z"></path></svg></sc-if>
+        <sc-if value="{{ n.isHistory }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ n.fill }}" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="3.5"></rect><path d="M8 10h8M8 14h5" stroke="{{ n.inner }}" stroke-linecap="round"></path></svg></sc-if>
+        <sc-if value="{{ n.isLibrary }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ n.fill }}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3c3 0 5 2 5 4 2 0 4 2 4 4.5S19 16 17 16c0 2.5-2.2 5-5 5s-5-2.5-5-5c-2 0-4-2-4-4.5S5 7 7 7c0-2 2-4 5-4z"></path></svg></sc-if>
+        <sc-if value="{{ n.isProfile }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ n.fill }}" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke-linecap="round"></path></svg></sc-if>
+        <span>{{ n.label }}</span>
+        <span style="position:absolute;bottom:6px;width:18px;height:3px;border-radius:2px;background:var(--accT);opacity:{{ n.bar }};transition:opacity .25s"></span>
+      </button>
+    </sc-for>
+  </div>
+
+  <!-- STATUS + GESTURE -->
+  <div style="position:absolute;left:0;right:0;top:0;height:34px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:12px;font-weight:500;color:{{ statusColor }};pointer-events:none;transition:color .4s">
+    <span>9:41</span>
+    <span style="position:absolute;left:50%;top:10px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#05050a"></span>
+    <span style="display:flex;gap:5px;align-items:center"><svg width="13" height="10" viewBox="0 0 11 8" fill="currentColor"><path d="M5.5 8 0 2.5a8 8 0 0 1 11 0z"></path></svg><svg width="12" height="10" viewBox="0 0 11 8" fill="currentColor"><path d="M0 8h2V6H0zm3 0h2V4H3zm3 0h2V2H6zm3 0h2V0H9z"></path></svg><svg width="16" height="9" viewBox="0 0 13 7"><rect x=".5" y=".5" width="10.5" height="6" rx="1.5" fill="none" stroke="currentColor"></rect><rect x="2" y="2" width="7.5" height="3" rx=".5" fill="currentColor"></rect><rect x="11.5" y="2" width="1.2" height="3" rx=".5" fill="currentColor"></rect></svg></span>
+  </div>
+  <div style="position:absolute;left:50%;bottom:7px;width:108px;height:4px;margin-left:-54px;border-radius:2px;background:{{ statusColor }};opacity:.6;z-index:50;pointer-events:none"></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;},&quot;loadSeconds&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:3.5,&quot;step&quot;:0.5,&quot;min&quot;:1,&quot;max&quot;:10,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;showIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const THEMES = {
+  dark: { pg:'#03050b', bg:'#070b18', bgG:'#070b18', surf:'#0c1226', surf2:'#141b3a', ink:'#efe9f3', mut:'#aaa6cb', title:'#f6e0c8', line:'#55519a', line2:'#232247', acc:'#eab88c', accT:'#f4d3b2', accSoft:'rgba(234,184,140,.3)', glow:'rgba(234,184,140,.22)', pur:'#a68bf0', track:'#24234a', btn:'#0d1120', onAcc:'#1b1222', nav:'rgba(10,14,30,.88)', sh:'0 10px 28px rgba(0,0,0,.35)' },
+  light: { pg:'#b7acd1', bg:'#e0d6ec', bgG:'radial-gradient(120% 60% at 85% -5%,rgba(240,186,156,.55),transparent 55%),radial-gradient(90% 50% at 0% 105%,rgba(150,128,214,.35),transparent 60%),linear-gradient(180deg,#d6cbe9 0%,#e2d8ee 45%,#ecdcd8 100%)', surf:'rgba(238,229,249,.56)', surf2:'rgba(205,192,230,.55)', ink:'#1c1640', mut:'#4a4376', title:'#2a1f5a', line:'#9a8ecb', line2:'rgba(140,126,196,.32)', acc:'#a4572a', accT:'#7f3d17', accSoft:'rgba(164,87,42,.28)', glow:'rgba(214,140,96,.30)', pur:'#5a43b5', track:'rgba(110,94,176,.2)', btn:'rgba(252,236,224,.8)', onAcc:'#fff8f2', nav:'rgba(232,224,244,.78)', sh:'0 10px 28px rgba(60,40,130,.16)' }
+};
+const SCREENS = ['loading','splash','home','scan','questions','analyzing','result','insights','library','history','profile'];
+const NAV = [['Home','home'],['History','history'],['Library','library'],['Profile','profile']];
+const COND = {
+  eczema: { name:'Eczema (Atopic Dermatitis)', short:'Eczema', img:'assets/px-lib1.png', desc:'A common skin condition that causes red, itchy, and inflamed skin. It can be triggered by allergens, stress, or environmental factors.', signs:['Red, inflamed patches','Itching','Dry or scaly skin','Can appear on face, hands, arms, legs'], tips:['Keep the area moisturized','Avoid harsh soaps or fragrances','Use gentle, fragrance-free products','Keep nails short to avoid scratching'], see:['Patches spread quickly','Oozing, crusting, or pus','Itching disrupts sleep','No improvement after 2 weeks'] },
+  contact: { name:'Contact Dermatitis', short:'Contact Dermatitis', img:'assets/px-j1.png', desc:'A reaction where skin touches an irritant or allergen, like metals, fragrances, or cleaning products. The rash usually follows the contact area.', signs:['Rash with clear edges','Burning or stinging','Blisters in severe cases','Appears hours to days after contact'], tips:['Identify and avoid the trigger','Rinse the area with cool water','Wear gloves for chores','Use plain, unscented moisturizer'], see:['Rash on the face or genitals','Blisters spread widely','Signs of infection','Swelling or trouble breathing: seek urgent care'] },
+  fungal: { name:'Fungal Infection', short:'Fungal Infection', img:'assets/px-lib2.png', desc:'Fungi thrive in warm, moist areas and can cause ring-shaped, itchy, scaly patches on skin, feet, or nails.', signs:['Ring-shaped red patch','Scaling at the edges','Itching or burning','Cracked skin between toes'], tips:['Keep the area clean and dry','Wear breathable fabrics','Don’t share towels','Change socks daily'], see:['Spreads despite care','Nail changes','Diabetes or weak immunity','Lasts beyond 4 weeks'] },
+  psoriasis: { name:'Psoriasis', short:'Psoriasis', img:'assets/px-lib3.png', desc:'An immune-related condition that speeds up skin cell growth, forming thick, scaly plaques that may itch or hurt.', signs:['Raised, silvery-scaled plaques','Dry, cracked skin','Common on elbows, knees, scalp','Pitted nails'], tips:['Moisturize thick areas daily','Short sunlight exposure, no burns','Manage stress','Avoid injuring the skin'], see:['Joint pain or swelling','Plaques cover large areas','Affects sleep or daily life','Sudden widespread flare'] },
+  acne: { name:'Acne', short:'Acne', img:'assets/px-lib0.png', desc:'Blocked pores and inflammation cause pimples, blackheads, and sometimes painful cysts. Common on the face, chest, and back.', signs:['Whiteheads or blackheads','Red bumps or pustules','Oily skin','Tender, deeper cysts'], tips:['Wash twice daily with a gentle cleanser','Don’t squeeze or pick','Use non-comedogenic products','Change pillowcases often'], see:['Painful cysts or nodules','Scarring or dark marks','No change after 8 weeks of care','Sudden adult-onset acne'] }
+};
+const LIB = [
+  { key:'acne', cat:'Acne', desc:'Causes, types, and how to manage it.' },
+  { key:'eczema', cat:'Eczema', desc:'Signs, triggers, and home care tips.' },
+  { key:'fungal', cat:'Fungal', desc:'Common types and how to prevent them.' },
+  { key:'psoriasis', cat:'Other', desc:'Understanding the basics and treatment options.' },
+  { key:'contact', cat:'Eczema', desc:'Reactions to irritants and allergens.' }
+];
+const LEVELS = [['None','Not at all'],['Mild','Noticeable, easy to ignore'],['Moderate','Distracting during the day'],['Severe','Disrupts sleep or work']];
+const STEPS = [
+  { key:'loc', type:'multi', title:'Where is the affected area?', sub:'Select all that apply.', opts:['Face','Scalp','Neck','Chest','Back','Arms','Hands','Elbows/Knees','Legs','Feet'] },
+  { key:'dur', type:'single', title:'How long have you had it?', sub:'An estimate is fine.', opts:['Under 1 week','1–4 weeks','1–6 months','6+ months'] },
+  { key:'itch', type:'scale', title:'Is it itchy?', sub:'Pick the closest level.' },
+  { key:'pain', type:'scale', title:'Is it painful or tender?', sub:'Pick the closest level.' },
+  { key:'change', type:'multi', title:'Has it changed over time?', sub:'Select all that apply.', opts:['Spreading','Changing color','Changing size','Bleeding','Oozing','Not changing'] },
+  { key:'notes', type:'text', title:'Anything else we should know?', sub:'Optional. Triggers, products, family history.' }
+];
+const TIPS = ['Use SPF 30+ every day, even indoors near windows.','Moisturize within 3 minutes of showering to lock in water.','Patch-test new products on your inner arm for 48 hours.','Take scan photos in daylight, 15–20 cm from the skin.','Short, lukewarm showers are kinder to the skin barrier.'];
+const DAYS = [['Mon',20],['Tue',21],['Wed',22],['Thu',23],['Fri',24]];
+const empty = () => ({ loc:[], dur:null, itch:null, pain:null, change:[], notes:'' });
+const SEED_A = { loc:['Arms'], dur:'1–4 weeks', itch:2, pain:1, change:['Spreading'], notes:'' };
+const SEED_B = { loc:['Hands'], dur:'Under 1 week', itch:1, pain:0, change:['Not changing'], notes:'' };
+
+function analyze(a) {
+  const s = { eczema:40, contact:20, fungal:15, psoriasis:12, acne:8 };
+  if (a.itch >= 2) { s.eczema += 15; s.fungal += 5; }
+  if (a.loc.includes('Hands')) s.contact += 22;
+  if (a.loc.includes('Feet')) s.fungal += 25;
+  if (a.loc.includes('Face') || a.loc.includes('Back')) s.acne += 18;
+  if (a.loc.includes('Scalp') || a.loc.includes('Elbows/Knees')) s.psoriasis += 22;
+  if (a.dur === '6+ months') { s.psoriasis += 10; s.eczema += 5; }
+  if (a.dur === 'Under 1 week') s.contact += 12;
+  if (a.pain >= 2) s.acne += 6;
+  if (a.change.includes('Spreading')) s.fungal += 6;
+  const tot = Object.values(s).reduce((x, y) => x + y, 0);
+  const list = Object.entries(s).map(([k, v]) => ({ key:k, pct: Math.round(v / tot * 100) })).sort((x, y) => y.pct - x.pct).slice(0, 4);
+  const urgent = a.change.some(c => ['Bleeding','Changing size','Changing color','Oozing'].includes(c)) || a.pain === 3;
+  const gap = list[0].pct - list[1].pct;
+  return { list, urgent, conf: list[0].pct >= 38 && gap > 12 ? 'Moderate' : 'Low', top: list[0].key };
+}
+
+// ===== PIXEL ENGINE (procedural, 1 art px = 1 css px) =====
+const BAY = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5].map(v => (v + .5) / 16);
+const bay = (x, y) => BAY[(y & 3) * 4 + (x & 3)];
+const hx = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+const SKY = ['#04061a','#070925','#0c0e31','#141440','#1e1950','#2b2062','#3d2872','#55327c','#734083','#985284','#c06a84','#e48d84','#f5b38b'].map(hx);
+const CRY = ['#1a1350','#271c78','#382a9e','#4e3cc0','#6a57da','#8a78ec','#ac9df6','#cfc4fd','#efe9ff'].map(hx);
+const MOON = ['#4a3466','#7d527a','#b98189','#e2ae98','#f6d3b4','#fff0dc'].map(hx);
+const P = {}; Object.entries({ rim:'#f0b08c', c1:'#b0607f', c2:'#6a3a7c', c3:'#3a2766', far:'#251c58', farRim:'#5b3a80',
+  colA:'#1b1848', colB:'#221d55', colDk:'#120f33', colLit:'#5a4590', colRim:'#e1a084', cap:'#2c2660', capLit:'#6d5aab', lin:'#29235e', linLit:'#4a3d86',
+  gnd:'#0f0d2a', gndTop:'#4a3d86', gnd2:'#2a2460', brick:'#1c1846', bush:'#17163e', fig:'#0b0a22', figRim:'#e3a588', figL:'#2a2460',
+  kDark:'#1a1350', moonDk:'#1d1846', moonDk2:'#262058', moonRim:'#6c5fb0',
+  peach:'#f2c9a1', cream:'#fff0dc', lav:'#cfc9e6', pur:'#a68bf0', dimPur:'#5d50a6', water:'#060920' }).forEach(([k, v]) => P[k] = hx(v));
+const rng = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
+const sub = (a, b) => [a[0]-b[0], a[1]-b[1], a[2]-b[2]], dot = (a, b) => a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+const cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+const norm = a => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0]/l, a[1]/l, a[2]/l]; };
+const GEM = (() => { const n = 8, v = [[0,-1,0]]; for (let i = 0; i < n; i++) { const a = i / n * 6.2832 + .3927; v.push([Math.cos(a)*.34, -.52, Math.sin(a)*.34]); } for (let i = 0; i < n; i++) { const a = i / n * 6.2832; v.push([Math.cos(a)*.62, -.1, Math.sin(a)*.62]); } v.push([0, 1.3, 0]);
+  const C = i => 1 + (i % n), G = i => 1 + n + (i % n), B = 1 + 2 * n, f = []; for (let i = 0; i < n; i++) { f.push([0, C(i), C(i+1)], [C(i), G(i), G(i+1)], [C(i), G(i+1), C(i+1)], [G(i), B, G(i+1)]); } return { v, f }; })();
+const GEM2 = (() => { const n = 8, v = [[0,-1,0]]; for (let i = 0; i < n; i++) { const a = i / n * 6.2832; v.push([Math.cos(a)*.66, -.04, Math.sin(a)*.66]); } v.push([0, 1, 0]); const f = []; for (let i = 0; i < n; i++) { const c = 1 + i, d = 1 + (i + 1) % n; f.push([0, c, d], [c, n + 1, d]); } return { v, f }; })();
+const L1 = norm([-.45,-.65,-.6]), L2 = norm([-.2,-.3,-1]);
+const GL = [[[0,1,0],[1,1,1],[0,1,0]], [[1,0,1],[0,1,0],[1,0,1]], [[1]], [[0,1,0],[1,0,1],[0,1,0]], [[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1],[0,0,1,0,0],[0,0,1,0,0]], [[0,0,1,0,0],[0,1,1,1,0],[1,1,1,1,1],[0,1,1,1,0],[0,0,1,0,0]], [[1,1,1],[1,0,1],[1,0,1],[1,0,1],[1,1,1]], [[0,1,0],[1,1,0],[0,1,0],[0,1,0],[1,1,1]]];
+const mirrorCols = (cols, W) => cols.map(c => ({ ...c, x: W - c.x - c.w, rim: 'left' }));
+
+function mkScene(cfg) {
+  const W = cfg.W, H = cfg.H, hz = cfg.hz ?? H, u = cfg.u || 1, uI = Math.max(1, Math.round(u)), N = W * H;
+  const base = new Uint8ClampedArray(N * 4), fg = new Uint8ClampedArray(N * 4), mask = new Uint8Array(N), R = rng(cfg.seed || 7);
+  const put = (b, x, y, c, m) => { x = x | 0; y = y | 0; if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4; b[i] = c[0]; b[i+1] = c[1]; b[i+2] = c[2]; b[i+3] = 255; if (m) mask[y * W + x] = 1; };
+  if (!cfg.transparent) {
+    const top = cfg.skyMax ?? SKY.length - 1, pw = cfg.skyPow || 1.9;
+    for (let y = 0; y < hz; y++) for (let x = 0; x < W; x++) { const v = Math.pow(y / hz, pw) * top, i0 = Math.floor(v); put(base, x, y, (v - i0) > bay(x, y) ? SKY[Math.min(i0 + 1, top)] : SKY[i0]); }
+    for (let y = hz; y < H; y++) for (let x = 0; x < W; x++) put(base, x, y, P.water);
+    for (let k = 0; k < (cfg.streaks || 0); k++) { const y = Math.floor(hz * (.45 + R() * .45)), x0 = Math.floor(R() * W), len = Math.floor((20 + R() * 60) * u), v = Math.pow(y / hz, pw) * top, c = SKY[Math.min(top, Math.floor(v) + 2)]; for (let x = x0; x < x0 + len; x++) if (bay(x, y) < .5 * Math.sin((x - x0) / len * Math.PI)) put(base, x % W, y, c); }
+    if (cfg.moon) { const { x: mx, y: my, r } = cfg.moon, bx = mx - r * .42, by = my - r * .28, br = r * .9;
+      for (let y = Math.floor(my - r * 2.4); y < my + r * 2.4; y++) for (let x = Math.floor(mx - r * 2.4); x < mx + r * 2.4; x++) { if (x < 0 || y < 0 || x >= W || y >= hz) continue; const d = Math.hypot(x - mx, y - my), i = (y * W + x) * 4;
+        if (d < r) { const db = Math.hypot(x - bx, y - by); if (db > br) { const k = Math.min(1, (db - br) / (r * .55)), v = k * (MOON.length - 1), i0 = Math.floor(v); let c = (v - i0) > bay(x, y) ? MOON[Math.min(i0 + 1, MOON.length - 1)] : MOON[i0];
+            for (const [ox, oy, cr] of cfg.moon.craters || []) if (Math.hypot(x - (mx + ox * r), y - (my + oy * r)) < cr * r && k > .3) c = MOON[Math.max(1, i0 - 1)]; put(base, x, y, c); }
+          else { put(base, x, y, bay(x, y) > .6 ? P.moonDk2 : P.moonDk); if (d > r - 1.3) put(base, x, y, P.moonRim); } }
+        else { const k = 1 - (d - r) / (r * 1.4); if (k > 0 && k * k * .8 > bay(x, y)) { base[i] = Math.min(255, base[i] + 26); base[i+1] = Math.min(255, base[i+1] + 18); base[i+2] = Math.min(255, base[i+2] + 30); } } } }
+    for (const [px, py, pr] of cfg.puffs || []) for (let y = Math.floor(py - pr); y < py + pr; y++) for (let x = Math.floor(px - pr); x < px + pr; x++) { if (x < 0 || y < 0 || x >= W || y >= hz) continue; const d = Math.hypot(x - px, y - py); if (d > pr) continue; const k = (y - (py - pr)) / (2 * pr), b = bay(x, y); const c = (pr - d < 1.5 * u && y < py) ? P.rim : k < .16 ? (b > .45 ? P.c1 : P.rim) : k < .36 ? (b > .5 ? P.c2 : P.c1) : k < .62 ? (b > .65 ? P.c3 : P.c2) : P.c3; put(base, x, y, c); }
+    if (cfg.clouds) { const cl = cfg.clouds; for (let x = 0; x < W; x++) { const X = x / u, gap = (s) => cl.gapX != null ? 8 * u * Math.exp(-(((x - cl.gapX) / (cl.gapW * s * u)) ** 2)) : 0;
+      const h2 = (cl.h2 + 6 * Math.sin(X * .05 + 2) + 4 * Math.sin(X * .13)) * u - gap(1), t2 = Math.round(hz - h2);
+      for (let y = Math.max(0, t2); y < hz; y++) put(base, x, y, (y - t2 < uI) ? P.farRim : (bay(x, y) > .78 ? P.c3 : P.far));
+      const h1 = (cl.h1 + 5 * Math.sin(X * .08) + 4 * Math.sin(X * .21 + 1.3) + 2 * Math.sin(X * .47 + .4)) * u - gap(.7), t1 = Math.round(hz - h1);
+      for (let y = Math.max(0, t1); y < hz; y++) { const d = (y - t1) / u, b = bay(x, y); put(base, x, y, d < 1 ? P.rim : d < 3 ? (b > .7 ? P.rim : P.c1) : d < 6 ? (b > .5 ? P.c1 : P.c2) : d < 10 ? (b > .8 ? P.c3 : P.c2) : P.c3); } } }
+    for (const [sx, sw, sh] of cfg.spires || []) { const yb = hz - Math.round(10 * u); for (let y = yb - sh; y < yb; y++) for (let x = sx; x < sx + sw; x++) put(base, x, y, x === sx + sw - 1 ? P.farRim : P.far); for (let k = 0; k < Math.round(5 * u); k++) put(base, sx + (sw >> 1), yb - sh - k, P.farRim); }
+  }
+  const grounds = cfg.grounds || [];
+  const gTop = x => { let m = Infinity; for (const g of grounds) if (x >= g.x0 && x <= g.x1) { const t = g.y0 + (g.y1 - g.y0) * (x - g.x0) / Math.max(1, g.x1 - g.x0); if (t < m) m = t; } return m; };
+  for (const g of grounds) for (let x = Math.max(0, g.x0); x <= Math.min(W - 1, g.x1); x++) { const t = Math.round(gTop(x)); for (let y = t; y < H; y++) { const d = y - t; put(fg, x, y, d < uI ? P.gndTop : d < 2 * uI ? P.gnd2 : (bay(x, y) > .94 ? P.brick : P.gnd), 1); } }
+  for (let k = 0; k < (cfg.bushes || 0) && grounds.length; k++) { const g = grounds[k % grounds.length], bx = g.x0 + R() * (g.x1 - g.x0), bw = (4 + R() * 9) * u, hm = 2.5 + R() * 2; for (let dx = 0; dx < bw; dx++) { const gx = Math.round(bx + dx), t = Math.round(gTop(gx)); if (!isFinite(t)) continue; const hh = Math.round(Math.sin(dx / bw * Math.PI) * hm * u) + 1; for (let dy = 0; dy < hh; dy++) put(fg, gx, t - dy, dy >= hh - uI ? P.dimPur : (bay(gx, t - dy) > .5 ? P.c3 : P.bush), 1); } }
+  const cols = cfg.cols || [], capH = Math.max(3, Math.round(3 * u)), lt = Math.max(3, Math.round(3 * u));
+  const colBase = c => { const t = gTop(c.x + c.w / 2); return Math.round(isFinite(t) ? t : hz); };
+  const lintel = (x0, y0, x1, y1) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) || 1; for (let i = 0; i <= n; i++) { const x = Math.round(x0 + (x1 - x0) * i / n), y = Math.round(y0 + (y1 - y0) * i / n); for (let d = -lt; d <= 0; d++) put(fg, x, y + d, d === 0 ? P.linLit : d === -lt ? P.capLit : P.lin, 1); } };
+  for (const ch of cfg.chains || []) for (let i = 0; i < ch.length - 1; i++) { const a = cols[ch[i]], b = cols[ch[i+1]]; lintel(a.x + a.w / 2, a.top, b.x + b.w / 2, b.top); }
+  for (const l of cfg.lintels || []) lintel(l[0], l[1], l[2], l[3]);
+  for (const c of cols) { const b = colBase(c), rr = c.rim !== 'left', joint = Math.round(18 * u);
+    for (let y = c.top + capH; y < b - capH; y++) for (let dx = 0; dx < c.w; dx++) { if (c.broken && y < c.top + capH + ((dx * 7) % 5) * uI) continue;
+      const eR = rr ? dx === c.w - 1 : dx === 0, eR2 = rr ? dx === c.w - 2 : dx === 1, eL = rr ? dx === 0 : dx === c.w - 1;
+      let col = eR ? P.colRim : eR2 ? P.colLit : eL ? P.colDk : (dx % 3 === 0 ? P.colA : P.colB);
+      if (!eR && !eR2 && (y - c.top) % joint === 0) col = P.colDk; else if (!eR && bay(c.x + dx, y) > .95) col = P.colLit;
+      put(fg, c.x + dx, y, col, 1); }
+    if (!c.broken) for (let dx = -uI; dx < c.w + uI; dx++) for (let y = c.top; y < c.top + capH; y++) put(fg, c.x + dx, y, y === c.top ? P.capLit : ((rr && dx === c.w + uI - 1) || (!rr && dx === -uI)) ? P.colRim : P.cap, 1);
+    for (let dx = -uI; dx < c.w + uI; dx++) for (let y = b - capH; y <= b; y++) put(fg, c.x + dx, y, y === b - capH ? P.capLit : P.cap, 1); }
+  if (cfg.platform) { const { cx, y, w } = cfg.platform, t2 = y + Math.round(11 * u), tiers = [[y, w, t2], [t2, Math.round(w * 1.36), H]], rowH = Math.round(5 * u), jw = Math.round(13 * u);
+    for (const [ty, tw, ye] of tiers) for (let yy = ty; yy < ye; yy++) for (let x = Math.round(cx - tw / 2); x <= Math.round(cx + tw / 2); x++) { const d = yy - ty, row = Math.floor(d / rowH); let c = d < uI ? P.gndTop : d < 2 * uI ? P.gnd2 : P.gnd; if (d >= 2 * uI && (d % rowH === 0 || (x + row * 7) % jw === 0)) c = P.brick; if (x === Math.round(cx + tw / 2)) c = P.colLit; put(fg, x, yy, c, 1); } }
+  for (const f of cfg.figures || []) { const hgt = f.h, hr = Math.max(1.5, hgt * .1), top = f.y - hgt; for (let y = Math.floor(top); y < f.y; y++) { const k = (y - top) / hgt; let half; if (k < .2) { const dy = y - (top + hr); half = Math.sqrt(Math.max(0, hr * hr - dy * dy)); } else half = hgt * (.1 + .13 * (k - .2) / .8) + (k < .3 ? hgt * .02 : 0); const x0 = Math.round(f.x - half), x1 = Math.round(f.x + half); for (let x = x0; x <= x1; x++) put(fg, x, y, x === x1 ? P.figRim : x === x0 ? P.figL : P.fig, 1); } }
+  const stars = []; for (let i = 0; i < (cfg.stars || 0); i++) { const x = Math.floor(R() * W), y = Math.floor(R() * hz * (cfg.starH || .75)), r = R(); if (cfg.crystal && Math.hypot(x - cfg.crystal.x, y - cfg.crystal.y) < cfg.crystal.size * 2) continue; stars.push({ x, y, sp: .6 + R() * 2.2, ph: R() * 6.28, big: r > .86, c: r > .7 ? P.cream : r > .45 ? P.pur : P.lav }); }
+  const parts = [], px0 = cfg.crystal ? cfg.crystal.x : W / 2; for (let i = 0; i < (cfg.parts || 0); i++) parts.push({ x: px0 - W * .4 + R() * W * .8, sp: (3 + R() * 7) * u, off: R() * 400, g: GL[Math.floor(R() * GL.length)], c: [P.pur, P.peach, P.lav][i % 3] });
+  const fly = []; for (let i = 0; i < (cfg.flies || 0); i++) fly.push({ x: R() * W, y: hz - R() * hz * .22 });
+  return { cfg, W, H, hz, u, base, fg, mask, stars, parts, fly, zb: new Float32Array(N) };
+}
+
+function drawGem(S, out, cx, cy, sz, ang, tilt, t, scanY) {
+  const W = S.W, H = S.H, zb = S.zb, ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), st = Math.sin(tilt);
+  const GG = (S.cfg.crystal && S.cfg.crystal.geo === 'bi') ? GEM2 : GEM; const V = GG.v.map(([x, y, z]) => { const x1 = x * ca + z * sa, z1 = -x * sa + z * ca; return [x1, y * ct - z1 * st, y * st + z1 * ct]; });
+  const X0 = Math.max(0, Math.floor(cx - sz * .9)), X1 = Math.min(W - 1, Math.ceil(cx + sz * .9)), Y0 = Math.max(0, Math.floor(cy - sz * 1.2)), Y1 = Math.min(H - 1, Math.ceil(cy + sz * 1.5));
+  for (let y = Y0; y <= Y1; y++) for (let x = X0; x <= X1; x++) zb[y * W + x] = 1e9;
+  const per = sz * 1.8;
+  for (const [a, b, c] of GG.f) { const A = V[a], B = V[b], C = V[c]; let n = norm(cross(sub(B, A), sub(C, A))); if (n[2] > 0) n = [-n[0], -n[1], -n[2]];
+    const lvl = .1 + Math.max(0, dot(n, L1)) * .8 + Math.pow(Math.max(0, dot(n, L2)), 14) * .45;
+    const ax = cx + A[0] * sz, ay = cy + A[1] * sz, bx = cx + B[0] * sz, by = cy + B[1] * sz, qx = cx + C[0] * sz, qy = cy + C[1] * sz;
+    const area = (bx - ax) * (qy - ay) - (by - ay) * (qx - ax); if (Math.abs(area) < .5) continue;
+    const hA = Math.abs(area) / (Math.hypot(qx - bx, qy - by) || 1), hB = Math.abs(area) / (Math.hypot(ax - qx, ay - qy) || 1), hC = Math.abs(area) / (Math.hypot(bx - ax, by - ay) || 1);
+    const mnx = Math.max(X0, Math.floor(Math.min(ax, bx, qx))), mxx = Math.min(X1, Math.ceil(Math.max(ax, bx, qx))), mny = Math.max(Y0, Math.floor(Math.min(ay, by, qy))), mxy = Math.min(Y1, Math.ceil(Math.max(ay, by, qy)));
+    for (let y = mny; y <= mxy; y++) for (let x = mnx; x <= mxx; x++) { const px = x + .5, py = y + .5;
+      const w0 = ((bx - px) * (qy - py) - (by - py) * (qx - px)) / area, w1 = ((qx - px) * (ay - py) - (qy - py) * (ax - px)) / area, w2 = 1 - w0 - w1;
+      if (w0 < -.002 || w1 < -.002 || w2 < -.002) continue;
+      const z = w0 * A[2] + w1 * B[2] + w2 * C[2], zi = y * W + x; if (z >= zb[zi]) continue; zb[zi] = z;
+      let l = GG === GEM2 ? lvl * .72 + .06 : lvl; if (Math.min(w0 * hA, w1 * hB, w2 * hC) < .85) l += .3;
+      if (GG === GEM2 && Math.abs(px - cx) < .7) l += .4;
+      if (scanY >= 0 && y < scanY) l += .2;
+      const g = ((x - y * .6 - t * sz * .7) % per + per) % per; if (g < 1.3) l += .55;
+      const v = Math.max(0, Math.min(CRY.length - 1.001, l * (CRY.length - 1))), i0 = Math.floor(v);
+      let col = (v - i0) > bay(x, y) ? CRY[i0 + 1] : CRY[i0]; if (l > 1.18) col = P.cream; if (scanY >= 0 && y < scanY && bay(x, y) > .88) col = P.peach;
+      const j = zi * 4; out[j] = col[0]; out[j+1] = col[1]; out[j+2] = col[2]; out[j+3] = 255; } }
+}
+function vox(put, x, y, v, c, back) { for (let dy = 0; dy < v; dy++) for (let dx = 0; dx < v; dx++) { let cc = c; if (dy === 0 || dx === 0) cc = back ? c : P.cream; if (dx === v - 1 || dy === v - 1) cc = P.kDark; if (v < 3 && dy === 0 && dx === 0) cc = back ? c : P.cream; put(x + dx - (v >> 1), y + dy - (v >> 1), cc); } }
+function drawRing(put, cx, cy, rg, t, back) { const rot = t * rg.speed, ct = Math.cos(rg.tilt), st = Math.sin(rg.tilt);
+  for (let k = 0; k < rg.n; k++) { if (rg.gap && k % rg.gap[0] >= rg.gap[1]) continue; const a = k / rg.n * 6.2832 + rot, x = Math.cos(a) * rg.r, z = Math.sin(a) * rg.r, y2 = -z * st, z2 = z * ct, isBack = z2 > 0; if (isBack !== !!back) continue;
+    const px = Math.round(cx + x), py = Math.round(cy + y2); if (rg.vox) vox(put, px, py, isBack ? Math.max(1, rg.vox - 1) : rg.vox, isBack ? rg.cb : rg.cf, isBack); else put(px, py, isBack ? rg.cb : rg.cf); } }
+function drawSwarm(put, cx, cy, sw, t, back) { for (let i = 0; i < sw.n; i++) { const a = i * 2.39996 + t * .55 * (1 + (i % 3) * .35), el = Math.sin(i * 1.7) * 1.1, r = sw.r * (.75 + .25 * Math.sin(i * 3.1));
+  const x = Math.cos(a) * Math.cos(el) * r, z = Math.sin(a) * Math.cos(el) * r, y = Math.sin(el) * r * .55, isBack = z > 0; if (isBack !== !!back) continue;
+  vox(put, Math.round(cx + x), Math.round(cy + y), isBack ? 2 : (i % 4 === 0 ? 4 : 3), isBack ? P.dimPur : (i % 2 ? P.pur : P.peach), isBack); } }
+function spark(put, x, y, n) { put(x, y, P.cream); for (let i = 1; i <= n; i++) { const c = i === n ? P.dimPur : P.peach; put(x - i, y, c); put(x + i, y, c); put(x, y - i, c); put(x, y + i, c); } if (n > 2) { put(x - 1, y - 1, P.dimPur); put(x + 1, y - 1, P.dimPur); put(x - 1, y + 1, P.dimPur); put(x + 1, y + 1, P.dimPur); } }
+
+function drawScene(S, out, t) {
+  const { W, H, hz, u, cfg } = S, uI = Math.max(1, Math.round(u)); out.set(S.base);
+  const put = (x, y, c) => { x = x | 0; y = y | 0; if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4; out[i] = c[0]; out[i+1] = c[1]; out[i+2] = c[2]; out[i+3] = 255; };
+  const add = (x, y, c) => { x = x | 0; y = y | 0; if (x < 0 || y < 0 || x >= W || y >= hz) return; const i = (y * W + x) * 4; out[i] += c[0]; out[i+1] += c[1]; out[i+2] += c[2]; };
+  for (const s of S.stars) { const b = .5 + .5 * Math.sin(t * s.sp + s.ph); if (b < .2) continue; put(s.x, s.y, b > .65 ? s.c : P.dimPur); if (s.big && b > .55) { const n = b > .9 ? 2 * uI : uI; for (let i = 1; i <= n; i++) { const c = i === n ? P.dimPur : P.lav; put(s.x - i, s.y, c); put(s.x + i, s.y, c); put(s.x, s.y - i, c); put(s.x, s.y + i, c); } } }
+  const cr = cfg.crystal; let scanY = -1;
+  if (cr) { const sz = cr.size, cx = cr.x, cy = cr.y + Math.round(Math.sin(t * 1.4) * (cr.bob ?? 2 * u));
+    if (!cfg.transparent) { const gr = sz * 1.9, pulse = .8 + .2 * Math.sin(t * 2); for (let y = Math.floor(cy - gr); y < cy + gr; y++) for (let x = Math.floor(cx - gr); x < cx + gr; x++) { const d = Math.hypot(x - cx, y - cy) / gr; if (d >= 1) continue; const k = (1 - d) ** 2 * pulse; if (k > bay(x, y) * .9) add(x, y, [44, 28, 94]); if (k > .35 + bay(x, y) * .5) add(x, y, [34, 22, 56]); } }
+    if (cr.scan) { const ph = (t % 4.2) / 1.9; if (ph < 1) scanY = cy - sz * 1.3 + ph * sz * 2.8; }
+    for (const rg of cr.rings || []) drawRing(put, cx, cy, rg, t, 1); if (cr.swarm) drawSwarm(put, cx, cy, cr.swarm, t, 1);
+    drawGem(S, out, cx, cy, sz, t * (cr.spin ?? .7), cr.tilt ?? .28, t, scanY);
+    for (const rg of cr.rings || []) drawRing(put, cx, cy, rg, t, 0); if (cr.swarm) drawSwarm(put, cx, cy, cr.swarm, t, 0);
+    if (cr.sparks) { const r = cr.sparks, n = 2 * uI; spark(put, cx + r, cy, n); spark(put, cx - r, cy, n); spark(put, cx, cy + r, n); spark(put, cx, Math.round(cy - sz * 1.75), n + uI + Math.round((.5 + .5 * Math.sin(t * 2.3)) * uI)); }
+    if (cr.scan) { const ca = Math.floor(t * 2) % 2 ? P.lav : P.dimPur, L = 5 * uI; [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx, sy]) => { const bx = Math.round(cx + sx * sz * .85), by = Math.round(cy + (sy < 0 ? -sz * 1.15 : sz * 1.45)); for (let i = 0; i < L; i++) { put(bx - sx * i, by, ca); put(bx, by - sy * i, ca); } });
+      if (scanY >= 0) for (let x = Math.round(cx - sz * .8); x <= cx + sz * .8; x++) { if (x % 2 === 0) put(x, scanY, P.peach); add(x, scanY - 1, [50, 30, 24]); } }
+    if (cr.beam && hz < H) { for (let y = Math.round(cy + sz * 1.4); y < hz; y++) put(cx, y, (Math.floor(y / uI) + Math.floor(t * 14)) % 4 < 2 ? P.peach : P.c1); const fw = 16 * u; for (let x = Math.round(cx - fw); x <= cx + fw; x++) if (Math.abs(x - cx) / fw < bay(x, hz - 1) + .25) put(x, hz - 1, P.cream); } }
+  for (const p of S.parts) { const span = hz * .78, yy = Math.round(hz - 6 * u - ((t * p.sp + p.off) % span)), fade = Math.min(1, (yy - hz * .1) / (hz * .2)); if (fade <= 0) continue; const g = p.g; for (let gy = 0; gy < g.length; gy++) for (let gx = 0; gx < g[gy].length; gx++) if (g[gy][gx] && fade > bay(gx + (p.x | 0), gy + yy) * .9) put(p.x + gx, yy + gy, p.c); }
+  const fg = S.fg, m = S.mask; for (let i = 0, n = W * H; i < n; i++) if (m[i]) { const j = i * 4; out[j] = fg[j]; out[j+1] = fg[j+1]; out[j+2] = fg[j+2]; out[j+3] = 255; }
+  if (hz < H) { const bx = cr ? cr.x : (cfg.moon && cfg.moon.beam) ? cfg.moon.x : -999, wb = cr ? .6 : cfg.moon ? cfg.moon.r * .22 : 1, grow = cr ? .07 : .12;
+    for (let y = hz; y < H; y++) { const dy = y - hz, sy = Math.max(0, hz - 1 - Math.floor(dy * 1.35)), wob = Math.round(Math.sin(dy * .9 / u - t * 2.4) * Math.min(2 * u, dy * .07)), dk = .5 - Math.min(.24, dy / (H - hz) * .3);
+      for (let x = 0; x < W; x++) { const i = y * W + x; if (m[i]) continue; const sx = Math.min(W - 1, Math.max(0, x + wob)), si = (sy * W + sx) * 4, j = i * 4;
+        let r = out[si] * dk + P.water[0] * (1 - dk), g = out[si+1] * dk + P.water[1] * (1 - dk), b = out[si+2] * dk + P.water[2] * (1 - dk);
+        if ((Math.floor(y / uI) + Math.floor(t * 5)) % 5 === 0 && bay(x, y) > .55) { r += 16; g += 14; b += 34; }
+        const wd = wb + dy * grow; if (Math.abs(x - bx) < wd && Math.sin(x * 2.1 / u + y * 1.7 / u + t * 6) > .35 + Math.abs(x - bx) / wd * .55) { const c = Math.abs(x - bx) < Math.max(1, wd * .2) ? P.cream : Math.abs(x - bx) < wd * .6 ? P.peach : P.c1; r = c[0]; g = c[1]; b = c[2]; }
+        out[j] = r; out[j+1] = g; out[j+2] = b; out[j+3] = 255; } } }
+  S.fly.forEach((f, i) => { const fx = f.x + Math.sin(t * .7 + i) * 8 * u, fy = f.y + Math.sin(t * 1.3 + i * 2) * 4 * u, b = .5 + .5 * Math.sin(t * 3 + i * 1.7); if (b > .35) { put(fx, fy, b > .75 ? P.cream : P.peach); if (b > .85 && uI > 1) { put(fx + 1, fy, P.peach); put(fx, fy + 1, P.peach); } } });
+}
+const SPL_COLS = [{ x:2, w:16, top:60 }, { x:26, w:12, top:116 }, { x:46, w:10, top:156 }, { x:62, w:8, top:188 }, { x:74, w:6, top:212 }];
+const SCENES = {
+  splash: { W:60, H:84, hz:84, transparent:true, crystal:{ x:30, y:42, size:26, bob:1, spin:.55, tilt:.1, geo:'bi' } },
+  loading: { W:360, H:788, hz:560, u:2, seed:21, stars:170, starH:.62, streaks:20, moon:{ x:262, y:300, r:58, craters:[[.32,.1,.12],[.5,.45,.08],[.18,.6,.06]] },
+    puffs:[[-10,470,64],[58,505,52],[118,528,40],[340,468,58],[284,505,46],[222,532,36],[178,548,26],[20,360,36],[66,382,26]], clouds:{ h1:12, h2:24 }, spires:[[300,8,50],[318,6,36]],
+    cols:[{ x:4, w:22, top:328 }, { x:40, w:18, top:350 }, { x:70, w:16, top:368 }, { x:98, w:14, top:384 }, { x:124, w:10, top:420, broken:true }], chains:[[0,1,2,3]], lintels:[[0,322,15,328]],
+    grounds:[{ x0:0, x1:192, y0:472, y1:496 }, { x0:282, x1:359, y0:604, y1:574 }], bushes:18, figures:[{ x:174, y:496, h:52 }], parts:0, flies:8 },
+  analyzing: { W:144, H:144, hz:144, u:1, seed:4, skyMax:4, skyPow:1, stars:40,
+    crystal:{ x:72, y:62, size:30, spin:1.5, bob:2, scan:true, rings:[{ r:50, tilt:1.12, speed:.9, n:36, vox:3, cf:P.peach, cb:P.dimPur }], swarm:{ n:22, r:62 } } },
+  logo: { W:48, H:48, hz:48, transparent:true, crystal:{ x:24, y:19, size:15, bob:1, spin:1.1, rings:[{ r:21, tilt:1.2, speed:.8, n:22, vox:2, cf:P.peach, cb:P.dimPur }] } },
+  insights: { W:324, H:96, hz:76, u:1, seed:11, stars:40, starH:.8, moon:{ x:282, y:20, r:8 }, clouds:{ h1:8, h2:14 },
+    cols:[{ x:12, w:8, top:22 }, { x:34, w:7, top:32 }, { x:52, w:5, top:44, broken:true }, { x:262, w:6, top:40, broken:true, rim:'left' }, { x:280, w:7, top:30, rim:'left' }, { x:302, w:8, top:20, rim:'left' }], chains:[[0,1],[4,5]],
+    grounds:[{ x0:0, x1:72, y0:84, y1:80 }, { x0:250, x1:323, y0:80, y1:84 }], platform:{ cx:162, y:74, w:44 }, figures:[{ x:162, y:74, h:20 }], bushes:8, flies:5 },
+  library: { W:324, H:110, hz:88, u:1, seed:5, stars:40, moon:{ x:28, y:16, r:6 }, clouds:{ h1:8, h2:15 }, spires:[[150,4,18]],
+    cols:[{ x:196, w:8, top:38, broken:true }, { x:214, w:9, top:26 }, { x:236, w:8, top:34 }, { x:262, w:6, top:50, broken:true }, { x:290, w:9, top:22 }, { x:310, w:8, top:30 }], chains:[[1,2],[4,5]],
+    grounds:[{ x0:170, x1:323, y0:96, y1:90 }, { x0:0, x1:50, y0:100, y1:96 }], bushes:10, flies:4 },
+  journey: { W:324, H:140, hz:116, u:1, seed:3, stars:50, moon:{ x:240, y:26, r:9 }, clouds:{ h1:8, h2:16 },
+    cols:[{ x:8, w:10, top:30 }, { x:36, w:9, top:42 }, { x:58, w:6, top:60, broken:true }, { x:262, w:6, top:58, broken:true, rim:'left' }, { x:282, w:9, top:38, rim:'left' }, { x:306, w:10, top:28, rim:'left' }], chains:[[0,1],[4,5]],
+    grounds:[{ x0:0, x1:80, y0:126, y1:118 }, { x0:244, x1:323, y0:118, y1:126 }], bushes:10, flies:6 }
+};
+const SCENE_VIS = { splash:['splash','loading'], loading:['loading'], analyzing:['analyzing','questions'], logo:null, insights:['insights','result','library'], library:['library','home'], journey:['history','home'] };
+
+class Component extends DCLogic {
+  cv = { splash:React.createRef(), loading:React.createRef(), analyzing:React.createRef(), logo:React.createRef(), insights:React.createRef(), library:React.createRef(), journey:React.createRef() };
+  logoEl = React.createRef();
+  startArt() {
+    this.scenes = {}; const dpr = Math.max(1, Math.round(window.devicePixelRatio || 1)); let last = 0;
+    const loop = () => {
+      const now = performance.now(); if (now - last < 30) return; last = now; const t = now / 1000;
+      for (const k in SCENES) { try { const el = this.cv[k].current; if (!el) continue; let S = this.scenes[k]; const vis = SCENE_VIS[k];
+        if (S && vis && !vis.includes(this.state.screen)) continue;
+        if (!S || S.el !== el) { const c = SCENES[k]; S = this.scenes[k] = mkScene(c); S.el = el; S.off = document.createElement('canvas'); S.off.width = c.W; S.off.height = c.H; S.octx = S.off.getContext('2d'); S.img = S.octx.createImageData(c.W, c.H); el.width = c.W * dpr; el.height = c.H * dpr; }
+        drawScene(S, S.img.data, t); S.octx.putImageData(S.img, 0, 0);
+        const ctx = el.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, el.width, el.height); ctx.drawImage(S.off, 0, 0, el.width, el.height); } catch (e) { if (!this._errd) { this._errd = 1; console.warn('SkinNova art', k, e); } } }
+    };
+    this.artTimer = setInterval(loop, 33); loop();
+  }
+  logoPos(th) {
+    const s = this.state.screen, W = this.state.logoW || 258, go = () => { if (s !== 'loading') { clearInterval(this.li); this.setState({ pct:100, msg:3, loaded:true }); this.go('loading'); } };
+    if (s === 'loading') return { t:'translate(14px,100px) scale(1.06)', o:1, co:1, f:'none', pe:'none', onClick:go };
+    if (s === 'splash') return { t:'translate(9px,124px) scale(1)', o:1, co:0, f:'none', pe:'none', onClick:go };
+    const vis = ['home','history','library','profile'].includes(s);
+    return { t:'translate(14px,42px) scale(.42)', o: vis ? 1 : 0, co:1, f: th === 'light' ? 'brightness(.34) saturate(1.5)' : 'none', pe: vis ? 'auto' : 'none', onClick:go };
+  }
+  state = {
+    screen:'loading', prevScreen:null, theme:null, pct:0, msg:0,
+    scanMode:'Photo', flash:false, gallerySel:0, scanImg:'assets/px-scan.png',
+    qStep:0, answers:empty(), lastAnswers:SEED_A, anStep:0,
+    insKey:'eczema', insBack:'result', tab:'Overview', chip:'All', day:2, tip:0,
+    history:[
+      { id:1, day:2, title:'Analysis 1', answers:SEED_A, img:'assets/px-j0.png' },
+      { id:2, day:2, title:'Analysis 2', answers:SEED_B, img:'assets/px-j1.png' }
+    ],
+    curId:1, savedIds:[1,2], saveImg:true, reminder:false
+  };
+  componentDidMount() { this.startArt(); (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(() => { const el = this.logoEl.current; if (el) this.setState({ logoW: el.offsetWidth }); }, 50)); if (this.props.showIntro === false) this.setState({ screen:'loading', pct:100, msg:3, loaded:true }); else this.startLoading(); }
+  componentWillUnmount() { clearInterval(this.artTimer); clearInterval(this.li); clearInterval(this.ai); clearTimeout(this.lt); }
+  startLoading = () => {
+    clearInterval(this.li); clearTimeout(this.lt);
+    const secs = this.props.loadSeconds ?? 3.5, t0 = Date.now();
+    this.setState({ screen:'loading', pct:0, msg:0, loaded:false });
+    this.li = setInterval(() => {
+      const pct = Math.min(100, Math.round((Date.now() - t0) / (secs * 1000) * 100));
+      this.setState({ pct, msg: Math.min(3, Math.floor(pct / 26)) });
+      if (pct >= 100) { clearInterval(this.li); this.lt = setTimeout(() => this.setState({ loaded:true }), 300); }
+    }, 50);
+  };
+  go = (screen) => { const el = null; this.setState(s => ({ prevScreen:s.screen, screen })); };
+  theme() { return this.state.theme || this.props.theme || 'dark'; }
+  setTheme = (t) => this.setState({ theme:t });
+  newScan = () => this.setState({ screen:'scan', scanMode:'Photo', qStep:0, answers:empty() });
+  capture = () => {
+    if (this.state.scanMode === 'Gallery') { this.setState({ qStep:0, answers:empty() }); this.go('questions'); return; }
+    this.setState({ flash:true, scanImg:'assets/px-scan.png' });
+    setTimeout(() => this.setState({ flash:false }), 160);
+    setTimeout(() => { this.setState({ qStep:0, answers:empty() }); this.go('questions'); }, 420);
+  };
+  runAnalysis = () => {
+    clearInterval(this.ai);
+    const id = Date.now();
+    this.setState(s => ({ lastAnswers:s.answers, curId:id, anStep:0, screen:'analyzing' }));
+    this.ai = setInterval(() => {
+      const n = this.state.anStep + 1;
+      if (n > 4) { clearInterval(this.ai); this.go('result'); } else this.setState({ anStep:n });
+    }, 750);
+  };
+  pill(on) {
+    return { border: on ? '1.5px solid var(--acc)' : '1px solid var(--line2)', bg: on ? 'var(--btn)' : 'var(--surf)', color: on ? 'var(--accT)' : 'var(--ink)', glow: on ? '0 0 14px var(--glow)' : 'none' };
+  }
+  renderVals() {
+    const s = this.state, th = this.theme(), T = THEMES[th];
+    const vars = Object.entries(T).map(([k, v]) => `--${k}:${v}`).join(';');
+    const iA = SCREENS.indexOf(s.screen);
+    const sv = {};
+    SCREENS.forEach((k, i) => {
+      const on = k === s.screen;
+      sv[k] = { o: on ? 1 : 0, pe: on ? 'auto' : 'none', z: on ? 20 : (k === s.prevScreen ? 10 : 1),
+        t: on ? 'none' : (k === 'loading' ? 'scale(1.06)' : (i < iA ? 'translateX(-28px) scale(.985)' : 'translateX(28px) scale(.985)')) };
+    });
+    const navScreens = ['home','history','library','profile'];
+    const navOn = navScreens.includes(s.screen);
+    const nav = NAV.map(([label, key], i) => {
+      const on = s.screen === key;
+      return { label, isHome:i===0, isHistory:i===1, isLibrary:i===2, isProfile:i===3, color: on ? 'var(--accT)' : 'var(--mut)', fill: on ? 'var(--accT)' : 'none', inner: on ? 'var(--surf)' : 'currentColor', bar: on ? 1 : 0, onClick: () => this.go(key) };
+    });
+    // loading
+    const filled = Math.round(s.pct / 100 * 24);
+    const words = ['OBSERVE','ANALYZE','UNDERSTAND','ACT'];
+    const load = {
+      pct: s.pct, barO: s.loaded ? 0 : 1, barT: s.loaded ? 'translateY(10px)' : 'none', btnO: s.loaded ? 1 : 0, btnT: s.loaded ? 'none' : 'translateY(14px)', btnPe: s.loaded ? 'auto' : 'none', start: () => this.go('home'),
+      msg: ['Waking the model…','Loading Gemma 4 E2B','Preparing offline vision','All set. Fully offline.'][s.msg],
+      segs: Array.from({ length:24 }, (_, i) => ({ bg: i < filled ? '#eab88c' : '#1d1c3d', sh: i < filled ? '0 0 6px rgba(234,184,140,.6)' : 'none' })),
+      words: words.map((w, i) => ({ w, color: i <= s.msg ? '#f4dcc2' : '#7d79a6', dot: i <= s.msg ? '#eab88c' : '#3a3870' }))
+    };
+    // history
+    const histAll = s.history.map(h => { const r = analyze(h.answers); return { ...h, cond: COND[r.top].short, conf: r.conf }; });
+    const latest = histAll[histAll.length - 1];
+    const home = {
+      tip: TIPS[s.tip], tipCount: `${s.tip + 1}/${TIPS.length}`, nextTip: () => this.setState({ tip:(s.tip + 1) % TIPS.length }),
+      reportsSub: `${s.history.length} saved scan${s.history.length === 1 ? '' : 's'}`,
+      hasRecent: !!latest,
+      recent: latest ? { img:latest.img, cond:latest.cond, conf:latest.conf, when: DAYS[latest.day][0] + ' ' + DAYS[latest.day][1] } : { img:'', cond:'', conf:'', when:'' },
+      openRecent: () => latest && this.openHist(latest)
+    };
+    // scan
+    const gal = ['assets/px-scan.png','assets/px-lib1.png','assets/px-lib2.png','assets/px-j0.png'];
+    const isGallery = s.scanMode === 'Gallery';
+    const scan = {
+      isPhoto: !isGallery, isGallery, flashOp: s.flash ? .9 : 0, shoot: this.capture,
+      sub: isGallery ? 'Pick a clear, close-up photo.' : 'Capture a clear image in natural light.',
+      tip: isGallery ? 'Selected photo is never uploaded.' : 'Tip: Avoid filters and harsh light.',
+      shootGlyph: isGallery ? '→' : '', shootLabel: isGallery ? 'Use photo' : 'Capture',
+      toGallery: () => this.setState({ scanMode:'Gallery' }),
+      modes: ['Photo','Gallery'].map(m => ({ label:m, border: s.scanMode === m ? 'var(--line)' : 'transparent', bg: s.scanMode === m ? 'var(--surf2)' : 'transparent', onClick: () => this.setState({ scanMode:m }) })),
+      gallery: gal.map((img, i) => { const on = s.gallerySel === i; return { img, border: on ? '2px solid var(--acc)' : '1px solid var(--line2)', glow: on ? '0 0 16px var(--glow)' : 'none', check: on ? 1 : 0, onClick: () => this.setState({ gallerySel:i, scanImg:img }) }; })
+    };
+    // questions
+    const st = STEPS[s.qStep], a = s.answers, val = a[st.key];
+    const setA = (k, v) => this.setState(p => ({ answers:{ ...p.answers, [k]:v } }));
+    let opts = [];
+    if (st.type === 'multi' || st.type === 'single') opts = st.opts.map(o => {
+      const on = st.type === 'multi' ? val.includes(o) : val === o;
+      return { label:o, ...this.pill(on), onClick: () => {
+        if (st.type === 'single') return setA(st.key, o);
+        let nv = on ? val.filter(x => x !== o) : [...val, o];
+        if (o === 'Not changing' && !on) nv = ['Not changing']; else if (o !== 'Not changing') nv = nv.filter(x => x !== 'Not changing');
+        setA(st.key, nv);
+      } };
+    });
+    if (st.type === 'scale') opts = LEVELS.map(([label, hint], lv) => ({ label, hint, ...this.pill(val === lv), blocks:[1,2,3].map(b => ({ bg: b <= lv ? 'var(--acc)' : 'var(--track)' })), onClick: () => setA(st.key, lv) }));
+    const can = st.type === 'text' ? true : st.type === 'multi' ? val.length > 0 : val !== null;
+    const last = s.qStep === STEPS.length - 1;
+    const q = {
+      stepLabel: `Step ${s.qStep + 1} of ${STEPS.length}`, title: st.title, sub: st.sub,
+      isChoice: st.type === 'multi' || st.type === 'single', isScale: st.type === 'scale', isText: st.type === 'text',
+      opts, notes: a.notes, onNotes: e => setA('notes', e.target.value),
+      progress: STEPS.map((_, i) => ({ bg: i <= s.qStep ? 'var(--acc)' : 'var(--track)' })),
+      nextLabel: last ? 'Analyze' : 'Next', nextBg: can ? 'var(--acc)' : 'var(--track)', nextColor: can ? 'var(--onAcc)' : 'var(--mut)', nextGlow: can ? '0 8px 22px var(--glow)' : 'none',
+      next: () => { if (!can) return; last ? this.runAnalysis() : this.setState({ qStep:s.qStep + 1 }); },
+      back: () => s.qStep === 0 ? this.go('scan') : this.setState({ qStep:s.qStep - 1 })
+    };
+    // analyzing
+    const an = { steps: ['Reading skin image','Matching your symptoms','Gemma 4 E2B reasoning','Estimating uncertainty'].map((label, i) => {
+      const done = i < s.anStep, act = i === s.anStep;
+      return { label, icon: done ? '✓' : act ? '◆' : '', color: done || act ? 'var(--ink)' : 'var(--mut)', ring: done || act ? 'var(--acc)' : 'var(--line2)', bg: done ? 'var(--acc)' : 'transparent' };
+    }) };
+    // result
+    const r = analyze(s.lastAnswers), la = s.lastAnswers;
+    const saved = s.savedIds.includes(s.curId);
+    const res = {
+      chips: [la.loc.join(', '), la.dur, la.itch !== null ? 'Itch: ' + LEVELS[la.itch][0] : null, la.pain !== null ? 'Pain: ' + LEVELS[la.pain][0] : null].filter(Boolean),
+      conds: r.list.map((c, i) => ({ n:i + 1, name:COND[c.key].name, pct:c.pct, w:c.pct + '%', onClick: () => this.setState({ insKey:c.key, insBack:'result', tab:'Overview', screen:'insights', prevScreen:'result' }) })),
+      conf: r.conf, confW: r.conf === 'Moderate' ? '62%' : '34%',
+      uncertainty: r.conf === 'Moderate' ? `${COND[r.top].short} fits best, but ${COND[r.list[1].key].short.toLowerCase()} can look similar. Photo quality and lighting affect this estimate.` : 'The top results are close together, so the model is unsure. A clearer photo in daylight, or a dermatologist visit, will help.',
+      seeTitle: r.urgent ? 'See a dermatologist soon' : 'When to see a dermatologist',
+      seeBorder: r.urgent ? '1.5px solid var(--acc)' : '1px solid var(--line2)',
+      seeList: r.urgent ? ['You reported changes like bleeding, oozing, or changes in size or color.','Book a visit within the next few days.', 'Seek urgent care if you have fever or the rash spreads fast.'] : COND[r.top].see.slice(0, 3),
+      learn: () => this.setState({ insKey:r.top, insBack:'result', tab:'Overview', screen:'insights', prevScreen:'result' }),
+      saveLabel: saved ? 'Saved ✓' : 'Save to Journey', saveBg: saved ? 'var(--surf2)' : 'var(--acc)', saveColor: saved ? 'var(--mut)' : 'var(--onAcc)',
+      save: () => { if (saved) return; this.setState(p => ({ savedIds:[...p.savedIds, p.curId], day:4, history:[...p.history, { id:p.curId, day:4, title:'Analysis ' + (p.history.length + 1), answers:p.lastAnswers, img:p.scanImg }] })); }
+    };
+    // insights
+    const C = COND[s.insKey];
+    const tabMap = { 'Overview':['Common Signs', C.signs, '✓'], 'Care Tips':['Self-Care Tips', C.tips, '✦'], 'When to See':['See a Dermatologist If', C.see, '!'] };
+    const ins = {
+      title: C.name, desc: C.desc, img: C.img, listTitle: tabMap[s.tab][0], list: tabMap[s.tab][1], icon: tabMap[s.tab][2],
+      back: () => this.go(s.insBack),
+      tabs: Object.keys(tabMap).map(t => { const on = s.tab === t; return { label:t, border: on ? '1.5px solid var(--acc)' : '1px solid transparent', bg: on ? 'var(--btn)' : 'transparent', color: on ? 'var(--accT)' : 'var(--mut)', onClick: () => this.setState({ tab:t }) }; })
+    };
+    // library
+    const lib = {
+      chips: ['All','Acne','Eczema','Fungal'].map(c => ({ label:c, ...this.pill(s.chip === c), onClick: () => this.setState({ chip:c }) })),
+      items: LIB.filter(l => s.chip === 'All' || l.cat === s.chip).map(l => ({ name:COND[l.key].short, desc:l.desc, img:COND[l.key].img, onClick: () => this.setState({ insKey:l.key, insBack:'library', tab:'Overview', screen:'insights', prevScreen:'library' }) }))
+    };
+    const dayItems = histAll.filter(h => h.day === s.day).map(h => ({ ...h, onClick: () => this.openHist(h) }));
+    const hist = {
+      days: DAYS.map(([d, n], i) => { const on = s.day === i; return { d, n, border: on ? '1.5px solid var(--acc)' : '1px solid var(--line2)', bg: on ? 'var(--btn)' : 'var(--surf)', glow: on ? '0 0 14px var(--glow)' : 'none', dot: histAll.some(h => h.day === i) ? 1 : 0, onClick: () => this.setState({ day:i }) }; }),
+      items: dayItems, empty: dayItems.length === 0
+    };
+    const tog = (label, sub, key) => { const on = s[key]; return { label, sub, track: on ? 'var(--acc)' : 'var(--track)', knob: on ? 'var(--onAcc)' : '#ffffff', tx: on ? 'translateX(18px)' : 'none', onClick: () => this.setState({ [key]:!on }) }; };
+    const prof = {
+      summary: `${s.history.length} scans · offline since day one`,
+      themes: [['Dark','dark'],['Light','light']].map(([label, k]) => ({ label, border: th === k ? '1.5px solid var(--acc)' : '1px solid transparent', bg: th === k ? 'var(--btn)' : 'transparent', onClick: () => this.setTheme(k) })),
+      toggles: [tog('Save scan photos','Stored encrypted on this phone','saveImg'), tog('Weekly check-in reminder','Re-scan to track changes','reminder')],
+      replay: this.startLoading, count: `${s.history.length}`,
+      clear: () => this.setState({ history:[], savedIds:[] })
+    };
+    return {
+      landing: (() => { const pr = s.pressed; return { flashO: pr ? 1 : 0, flashS: pr ? 1.35 : .6, ringO: pr ? .9 : 0, ringS: pr ? 1.06 : .96, glowO: pr ? 1 : 0, gemF: pr ? 'brightness(1.45) saturate(1.2)' : 'none', btnSh: pr ? '0 0 26px rgba(242,190,140,.6),inset 0 0 18px rgba(242,190,140,.25)' : 'none',
+        press: () => { if (this.state.pressed) return; this.setState({ pressed:true }); setTimeout(() => { this.go('home'); setTimeout(() => this.setState({ pressed:false }), 600); }, 800); } }; })(),
+      artRef: this.cv.splash, cvLoading: this.cv.loading, cvAnalyzing: this.cv.analyzing, cvInsights: this.cv.insights, cvLibrary: this.cv.library, cvJourney: this.cv.journey, logoRef: this.cv.logo, logoEl: this.logoEl, logo: this.logoPos(th), vars, sv, nav, load, home, scan, q, an, res, ins, lib, hist, prof,
+      navShow: { o: navOn ? 1 : 0, t: navOn ? 'none' : 'translateY(24px)', pe: navOn ? 'auto' : 'none' },
+      statusColor: s.screen === 'loading' ? '#efe9f3' : 'var(--ink)',
+      isDark: th === 'dark', isLight: th === 'light', scanImg: s.scanImg,
+      toggleTheme: () => this.setTheme(th === 'dark' ? 'light' : 'dark'),
+      goHome: () => this.go('home'), goScan: this.newScan, goHistory: () => this.go('history'), goLibrary: () => this.go('library')
+    };
+  }
+  openHist = (h) => this.setState({ lastAnswers:h.answers, scanImg:h.img, curId:h.id, prevScreen:this.state.screen, screen:'result' });
+}
+</script>
+</body>
+</html>
