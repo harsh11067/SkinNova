@@ -17,3 +17,5 @@ __pycache__/
 reports/spotcheck/
 logs/
 .pytest_cache/
+/data
+/models
