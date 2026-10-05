@@ -290,6 +290,8 @@
     <string name="tl_why_coin">no coin in both photos</string>
     <string name="tl_why_align">the photos are hard to align</string>
     <string name="tl_why_noise">the spot has not been calibrated</string>
+    <string name="tl_why_seg">the spot's edge is hard to outline</string>
+    <string name="tl_why_scale">the coin size does not match between photos</string>
     <string name="tl_calibrate">Calibrate (3 photos, same day)</string>
     <string name="tl_calibrate_sub">Take 3 photos of the unchanged spot today so SkinNova learns its normal measurement noise.</string>
     <string name="tl_summary">What changed</string>

@@ -40,7 +40,10 @@ class OutputParser(private val labelKeys: List<String>, private val guards: Cont
             return null
         }
 
-        fun countSentences(text: String) = SENTENCE.findAll(text.trim()).count { it.value.isNotBlank() }
+        private val DECIMAL = Regex("""(\d)\.(\d)""")
+
+        /** Decimals ("8.9 units") are not sentence ends — mirrors ml/llm/validate.py count_sentences. */
+        fun countSentences(text: String) = SENTENCE.findAll(DECIMAL.replace(text.trim(), "$1,$2")).count { it.value.isNotBlank() }
     }
 
     private fun JsonElement?.str(): String? = (this as? JsonPrimitive)?.takeIf { it.isString }?.content

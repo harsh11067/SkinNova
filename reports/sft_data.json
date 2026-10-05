@@ -1,0 +1,51 @@
+{
+ "git_sha": "3814939",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-05T19:37:41+00:00",
+ "n": {
+  "sft_train": 550,
+  "sft_val": 50,
+  "llm_val": 50,
+  "llm_test": 50
+ },
+ "task_mix": {
+  "T7": 32,
+  "T1": 246,
+  "T2": 54,
+  "T4": 45,
+  "T3": 47,
+  "T8": 26,
+  "T9": 18,
+  "T6": 65,
+  "T5": 17
+ },
+ "task_mix_target": {
+  "T1": 0.45,
+  "T2": 0.1,
+  "T3": 0.08,
+  "T4": 0.08,
+  "T5": 0.03,
+  "T6": 0.12,
+  "T7": 0.06,
+  "T8": 0.05,
+  "T9": 0.03
+ },
+ "class_mix_T1": {
+  "scabies": 25,
+  "vitiligo": 22,
+  "eczema_atopic": 26,
+  "suspicious_lesion": 27,
+  "tinea": 22,
+  "other": 23,
+  "benign_lesion": 32,
+  "acne": 24,
+  "psoriasis": 22,
+  "contact_dermatitis": 23
+ },
+ "real_q_share": 0.22439024390243903,
+ "images": 542,
+ "prompt_files_sha": "93931b3de6b6",
+ "generator": "deterministic templates (seed 3407)",
+ "smoke": true
+}

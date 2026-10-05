@@ -1,0 +1,38 @@
+{
+ "git_sha": "3814939",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-05T19:02:02+00:00",
+ "n_pairs": 300,
+ "kinds": {
+  "area_coin": 81,
+  "area": 76,
+  "colour": 74,
+  "light": 69
+ },
+ "align_ok_same_spot": 0.96,
+ "align_ok_different_spot": 0.0,
+ "coin_detected_both_rate": 0.3950617283950617,
+ "area_rel_err_coin": {
+  "median": 0.29533429102486974,
+  "p90": 1.5777171457572834,
+  "n": 32
+ },
+ "area_rel_err_no_coin": {
+  "median": 0.19225991573633278,
+  "p90": 0.4581768653461419
+ },
+ "no_coin_scaled_flagged_low": 1.0,
+ "contrast_abs_err_light_only": 0.7716897690487587,
+ "contrast_abs_delta_light_only": 1.493,
+ "contrast_abs_err_colour": 1.618643855313751,
+ "gates": {
+  "area_coin_median_le_10pct": false,
+  "area_coin_p90_le_20pct": false,
+  "no_coin_low_conf_ge_95pct": true,
+  "light_only_median_le_1_5": true,
+  "colour_err_median_le_2": true,
+  "align_same_ge_95pct": true,
+  "align_diff_le_5pct": true
+ }
+}

@@ -20,7 +20,7 @@ import org.opencv.core.Rect
 import org.opencv.core.Scalar
 import org.opencv.core.Size
 import org.opencv.features2d.BFMatcher
-import org.opencv.features2d.ORB
+import org.opencv.features2d.SIFT
 import org.opencv.imgproc.Imgproc
 import kotlin.math.PI
 import kotlin.math.max
@@ -53,6 +53,9 @@ data class ChangeMetrics(
     @SerialName("lesion_type") val lesionType: Boolean = true,
     @SerialName("timeline_tier") val timelineTier: String = "LOW",
     @SerialName("triggered_rules") val triggeredRules: List<String> = emptyList(),
+    @SerialName("seg_ok") val segOk: Boolean = true,
+    @SerialName("coin_scale_err") val coinScaleErr: Double? = null,
+    @SerialName("area_mm2_base") val areaMm2Base: Double? = null,
     @SerialName("area_raw") val areaRaw: Double? = null,
     @SerialName("contrast_raw") val contrastRaw: Double? = null,
 ) {
@@ -77,18 +80,19 @@ object Timeline {
 
     data class Alignment(val h: Mat?, val ratio: Double, val inliers: Int) { val ok get() = h != null && ratio >= ALIGN_MIN_RATIO && inliers >= ALIGN_MIN_INLIERS }
 
-    /** H maps new → base. */
+    /** H maps new → base. CLAHE grey + SIFT (v1 ORB aligned only 65 % of synthetic same-spot pairs on smooth skin). */
     fun align(baseRgb: Mat, newRgb: Mat): Alignment {
         Core.setRNGSeed(0)
         val g1 = Mat(); val g2 = Mat()
         Imgproc.cvtColor(baseRgb, g1, Imgproc.COLOR_RGB2GRAY); Imgproc.cvtColor(newRgb, g2, Imgproc.COLOR_RGB2GRAY)
-        val orb = ORB.create(1000)
+        val clahe = Imgproc.createCLAHE(2.0, Size(8.0, 8.0)); clahe.apply(g1, g1); clahe.apply(g2, g2)
+        val sift = SIFT.create(2000)
         val k1 = MatOfKeyPoint(); val k2 = MatOfKeyPoint(); val d1 = Mat(); val d2 = Mat()
-        orb.detectAndCompute(g1, Mat(), k1, d1); orb.detectAndCompute(g2, Mat(), k2, d2)
+        sift.detectAndCompute(g1, Mat(), k1, d1); sift.detectAndCompute(g2, Mat(), k2, d2)
         val kp1 = k1.toArray(); val kp2 = k2.toArray()
         if (d1.empty() || d2.empty() || kp1.size < 10 || kp2.size < 10) return Alignment(null, 0.0, 0)
         val knn = ArrayList<MatOfDMatch>()
-        BFMatcher.create(Core.NORM_HAMMING, false).knnMatch(d2, d1, knn, 2)
+        BFMatcher.create(Core.NORM_L2, false).knnMatch(d2, d1, knn, 2)
         val good = ArrayList<DMatch>()
         for (m in knn) { val a = m.toArray(); if (a.size == 2 && a[0].distance < 0.75f * a[1].distance) good += a[0] }
         if (good.size < 8) return Alignment(null, 0.0, 0)
@@ -137,14 +141,38 @@ object Timeline {
         return out
     }
 
-    /** (cx, cy, r) of a coin not overlapping the lesion, or null. */
+    /** Mask with prior r, and its IoU against the mask with prior 1.4 r (unstable segmentation → confidence low). */
+    fun segmentStable(rgb: Mat, seedX: Double, seedY: Double, rFrac: Double): Pair<Mat, Double> {
+        val a = segment(rgb, seedX, seedY, rFrac); val b = segment(rgb, seedX, seedY, 1.4 * rFrac)
+        val inter = Mat(); Core.bitwise_and(a, b, inter); val uni = Mat(); Core.bitwise_or(a, b, uni)
+        val u = Core.countNonZero(uni)
+        return a to (if (u == 0) 0.0 else Core.countNonZero(inter).toDouble() / u)
+    }
+
+    /** (cx, cy, r) of a coin not overlapping the lesion, or null. HOUGH_GRADIENT_ALT candidates verified as metal. */
     fun detectCoin(rgb: Mat, lesion: Mat? = null): DoubleArray? {
         val g = Mat(); Imgproc.cvtColor(rgb, g, Imgproc.COLOR_RGB2GRAY); Imgproc.medianBlur(g, g, 5)
         val m = min(g.cols(), g.rows())
         val c = Mat()
-        Imgproc.HoughCircles(g, c, Imgproc.HOUGH_GRADIENT, 1.2, m * 0.2, 120.0, 40.0, (0.02 * m).toInt(), (0.15 * m).toInt())
+        Imgproc.HoughCircles(g, c, Imgproc.HOUGH_GRADIENT_ALT, 1.5, m * 0.2, 300.0, 0.8, (0.02 * m).toInt(), (0.15 * m).toInt())
+        val hsv = Mat(); Imgproc.cvtColor(rgb, hsv, Imgproc.COLOR_RGB2HSV)
+        val sat = Mat(); Core.extractChannel(hsv, sat, 1)
+        val edges = Mat(); Imgproc.Canny(g, edges, 30.0, 90.0)
         for (i in 0 until c.cols()) {
             val v = c.get(0, i)
+            val disc = Mat.zeros(g.size(), CvType.CV_8U)
+            Imgproc.circle(disc, Point(v[0], v[1]), (v[2] * 0.85).toInt(), Scalar(1.0), -1)
+            if (Core.countNonZero(disc) == 0 || Core.mean(sat, disc).`val`[0] / 255.0 > 0.35) continue   // coloured blob, not metal
+            var support = 0
+            for (k in 0 until 72) {
+                val t = 2 * PI * k / 72; var ok = false
+                for (dr in -2..2) {
+                    val px = Math.round(v[0] + (v[2] + dr) * kotlin.math.cos(t)).toInt(); val py = Math.round(v[1] + (v[2] + dr) * kotlin.math.sin(t)).toInt()
+                    if (px in 0 until g.cols() && py in 0 until g.rows() && edges.get(py, px)[0] > 0) { ok = true; break }
+                }
+                if (ok) support++
+            }
+            if (support / 72.0 < 0.5) continue
             if (lesion != null) {
                 val disc = Mat.zeros(lesion.size(), CvType.CV_8U)
                 Imgproc.circle(disc, Point(v[0], v[1]), v[2].toInt(), Scalar(1.0), -1)
@@ -197,21 +225,27 @@ object Timeline {
         val al = align(b, n)
         if (!al.ok) return ChangeMetrics(alignScore = al.ratio, alignInliers = al.inliers, alignOk = false, lesionType = lesionType, noiseFloor = noise)
         val warped = Mat(); Imgproc.warpPerspective(n, warped, al.h, b.size(), Imgproc.INTER_LINEAR, Core.BORDER_REFLECT)
-        val m0 = segment(b, seedX, seedY); val m1 = segment(warped, seedX, seedY)
+        // adaptive prior + stability (ml/timeline/metrics.py): area ratio from homography-aligned masks (scale-free);
+        // the coin is a scale CHECK, not the area source
+        val mInit = segment(b, seedX, seedY)
+        val rFrac = maxOf(0.12, 1.25 * sqrt(maxOf(1, Core.countNonZero(mInit)).toDouble() / PI) / min(b.cols(), b.rows()))
+        val (m0, iou0) = segmentStable(b, seedX, seedY, rFrac); val (m1, iou1) = segmentStable(warped, seedX, seedY, rFrac)
+        val segOk = minOf(iou0, iou1) >= 0.75
         val a0 = Core.countNonZero(m0).toDouble(); val a1 = Core.countNonZero(m1).toDouble()
+        val areaRatio = if (a0 > 0) a1 / a0 else null
         val c0 = detectCoin(b, m0); val c1 = detectCoin(n)
         val coinBoth = c0 != null && c1 != null && coinMm != null
-        val areaRatio = if (coinBoth) {
-            val hInv = al.h!!.inv(); val m1own = Mat(); Imgproc.warpPerspective(m1, m1own, hInv, n.size(), Imgproc.INTER_NEAREST)
-            val mm0 = a0 * (coinMm!! / (2 * c0!![2])).pow(2); val mm1 = Core.countNonZero(m1own) * (coinMm / (2 * c1!![2])).pow(2)
-            if (mm0 > 0) mm1 / mm0 else null
-        } else if (a0 > 0) a1 / a0 else null
+        val h = al.h!!
+        val homScale = sqrt(kotlin.math.abs(h.get(0, 0)[0] * h.get(1, 1)[0] - h.get(0, 1)[0] * h.get(1, 0)[0]))
+        val coinScaleErr = if (coinBoth) kotlin.math.abs((c0!![2] / c1!![2]) / homScale - 1) else null
+        val coinOk = coinBoth && coinScaleErr!! <= 0.10
         val cd = lesionContrast(warped, m1) - lesionContrast(b, m0)
-        val conf = if (coinBoth && (noise?.n ?: 0) >= 3) "ok" else "low"
+        val conf = if (coinOk && segOk && (noise?.n ?: 0) >= 3) "ok" else "low"
         return ChangeMetrics(alignScore = al.ratio, alignInliers = al.inliers, alignOk = true, coinInBoth = coinBoth, areaRatio = areaRatio,
             contrastDelta = cd, borderIrregularityDelta = irregularity(m1) - irregularity(m0),
             cvShiftJs = if (cvBase != null && cvNew != null) Colour.jsDivergence(cvBase, cvNew) else null,
-            noiseFloor = noise, confidence = conf, lesionType = lesionType)
+            noiseFloor = noise, confidence = conf, lesionType = lesionType, segOk = segOk, coinScaleErr = coinScaleErr,
+            areaMm2Base = if (coinBoth) a0 * (coinMm!! / (2 * c0!![2])).pow(2) else null)
     }
 
     /** Lesion mask overlay for the UI (seed preview). */

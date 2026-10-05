@@ -38,17 +38,21 @@ class CvClassifier(private val ctx: Context, private val allKeys: List<String>) 
     }
 
     /** Float NHWC input tensor (exposed for the C4 parity dump). */
-    fun preprocess(src: Rgb): FloatArray {
-        val p = pre!!
-        val img = ImageOps.cvInput(ImageOps.normalizeLongSide(src, p.normalize_long_side), p.size)
-        val out = FloatArray(p.size * p.size * 3)
-        for (i in img.px.indices) {
-            val v = img.px[i]
-            out[i * 3] = (((v shr 16) and 0xFF) / 255f - p.mean[0]) / p.std[0]
-            out[i * 3 + 1] = (((v shr 8) and 0xFF) / 255f - p.mean[1]) / p.std[1]
-            out[i * 3 + 2] = ((v and 0xFF) / 255f - p.mean[2]) / p.std[2]
+    fun preprocess(src: Rgb): FloatArray = preprocess(src, pre!!)
+
+    companion object {
+        /** Pure: same code path the app runs; JVM-tested against Python (tests/fixtures/cv_preproc, test C4). */
+        fun preprocess(src: Rgb, p: CvPreprocess): FloatArray {
+            val img = ImageOps.cvInput(ImageOps.normalizeLongSide(src, p.normalize_long_side), p.size)
+            val out = FloatArray(p.size * p.size * 3)
+            for (i in img.px.indices) {
+                val v = img.px[i]
+                out[i * 3] = (((v shr 16) and 0xFF) / 255f - p.mean[0]) / p.std[0]
+                out[i * 3 + 1] = (((v shr 8) and 0xFF) / 255f - p.mean[1]) / p.std[1]
+                out[i * 3 + 2] = ((v and 0xFF) / 255f - p.mean[2]) / p.std[2]
+            }
+            return out
         }
-        return out
     }
 
     @Synchronized

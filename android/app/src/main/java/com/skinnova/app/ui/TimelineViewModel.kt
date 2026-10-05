@@ -142,8 +142,13 @@ class TimelineViewModel(app: Application) : AndroidViewModel(app) {
             m.contrastDelta?.let { sb.append(if (kotlin.math.abs(it) < 1.5) " Its colour contrast with the surrounding skin barely changed."
                 else " Its colour contrast with the surrounding skin ${if (it > 0) "increased" else "decreased"} by ${"%.1f".format(kotlin.math.abs(it))} units.") }
             if (m.confidence == "low") sb.append(" This measurement is uncertain because the photos lack a coin for scale or calibration.")
-            sb.append(when (m.timelineTier) { "HIGH" -> " Please show this spot to a doctor within a few days."; "MODERATE" -> " It is worth showing this change to a doctor soon."
-                else -> " Nothing here suggests a worrying change, but keep tracking it." })
+            val big = (m.areaRatio ?: 1.0) >= 1.25 || kotlin.math.abs(m.contrastDelta ?: 0.0) >= 5
+            sb.append(when {
+                m.timelineTier == "HIGH" -> " Please show this spot to a doctor within a few days."
+                m.timelineTier == "MODERATE" -> " It is worth showing this change to a doctor soon."
+                m.confidence == "low" && big -> " Retake the photo with a coin to measure it properly, and show a doctor if it really seems to be growing or darkening."
+                else -> " Nothing here suggests a worrying change, but keep tracking it."
+            })
             return sb.toString()
         }
     }

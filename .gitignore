@@ -19,3 +19,5 @@ logs/
 .pytest_cache/
 /data
 /models
+.venv-export/
+ml/llm/notebooks/build/

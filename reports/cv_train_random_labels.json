@@ -1,0 +1,62 @@
+{
+ "git_sha": "3814939",
+ "dataset_rev": "a138e2d1b593",
+ "model_sha": "",
+ "created_at": "2026-10-05T19:26:46+00:00",
+ "mode": "random_labels",
+ "args": {
+  "arch": "efficientnet_b0.ra_in1k",
+  "epochs": 3,
+  "bs": 32,
+  "lr": 0.0004,
+  "wd": 0.01,
+  "smoothing": 0.1,
+  "workers": 4,
+  "seed": 3407,
+  "overfit64": false,
+  "random_labels": true,
+  "tag": "",
+  "resume": false
+ },
+ "n_train": 18805,
+ "n_val": 3754,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 2.652289644416796,
+   "train_acc": 0.12308347529812606,
+   "val_acc": 0.12200319766998291,
+   "val_bal_acc": 0.11584698534570634,
+   "val_top3": 0.5538092851638794,
+   "val_macro_f1": 0.054042864614643804,
+   "minutes": 4.4063711047172545
+  },
+  {
+   "epoch": 2,
+   "train_loss": 2.2208102545502646,
+   "train_acc": 0.19889267461669505,
+   "val_acc": 0.05727224424481392,
+   "val_bal_acc": 0.09371510557830334,
+   "val_top3": 0.2972829043865204,
+   "val_macro_f1": 0.049753306059634156,
+   "minutes": 8.374863390127818
+  },
+  {
+   "epoch": 3,
+   "train_loss": 2.0362233664757956,
+   "train_acc": 0.29221678023850084,
+   "val_acc": 0.0538092702627182,
+   "val_bal_acc": 0.09190032873302698,
+   "val_top3": 0.2978156507015228,
+   "val_macro_f1": 0.05130010383169834,
+   "minutes": 12.757913327217102
+  }
+ ],
+ "best_val_macro_f1": -1.0,
+ "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+ "torch": "2.11.0+cu130",
+ "timm": "1.0.30",
+ "C1b_chance": 0.1,
+ "C1b_max_val_bal_acc": 0.11584698534570634,
+ "C1b_pass": true
+}

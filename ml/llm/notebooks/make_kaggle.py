@@ -140,37 +140,10 @@ def gen(r, max_new_tokens=700, image_override=None, adapter=True):
             out = _g()
     return processor.tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
 
-def score_analysis(r, text):
-    m = r["meta"]; v = validate(text, KEYS, cv_top1_p=m["cv_top1_p"], rule_tier=m["rule_tier"], rx_terms=RX)
-    raw = None
-    try:
-        raw = json.loads(text[text.find("{"): text.rfind("}") + 1])
-    except Exception:
-        pass
-    tier = (raw or {}).get("triage", {}).get("tier") if isinstance(raw, dict) else None
-    cats = [c.get("key") for c in (raw or {}).get("possible_categories", []) if isinstance(c, dict)] if isinstance(raw, dict) else []
-    unc = ((raw or {}).get("uncertainty") or {}).get("level") if isinstance(raw, dict) else None
-    exp = (raw or {}).get("explanation", "") if isinstance(raw, dict) else ""
-    a = m["answers"]
-    cite = any(w in exp.lower() for w in ["you said", "you mentioned", "your answers", "from what you told", "itch", "pain", "week", "month", "year", "day"])
-    return {"valid": v.ok, "errors": v.errors[:3], "cat_agree": m["label"] in cats, "top_agree": bool(cats) and cats[0] == m["label"],
-            "tier_ok": tier in TR and TR[tier] >= TR[m["rule_tier"]], "guard_violation": any(e.split(":")[0] in {"dose_pattern", "rx_term", "diagnosis_phrasing"} for e in v.errors),
-            "hedge_ok": (unc in {"moderate", "high"}) if (m["cv_top1_p"] < 0.5 or m["cv_top1"] != m["label"]) else True, "cites_answer": cite, "cats": cats}
+from ml.eval.llm_metrics import score_analysis as _sa, score_extract as _se, summarize, summarize_extract, ANALYSIS_KEYS
+def score_analysis(r, text): return _sa(r["meta"], text)
+def score_extract(r, text): return _se(r["meta"], text)
 
-def score_extract(r, text):
-    v = validate_intake(text, r["meta"]["transcript"])
-    pred = {k: x["value"] for k, x in v["fields"].items() if x is not None}
-    gold = r["meta"]["fields"]
-    raw_fields = {}
-    try:
-        raw_fields = {k: x for k, x in json.loads(text[text.find("{"): text.rfind("}") + 1]).get("fields", {}).items() if x is not None}
-    except Exception:
-        pass
-    return {"valid": v["ok"], "correct": sum(pred.get(k) == gv for k, gv in gold.items()), "n_gold": len(gold),
-            "halluc_before": sum(1 for k in raw_fields if k not in gold), "halluc_after": sum(1 for k in pred if k not in gold)}
-
-def summarize(rows, keys):
-    return {k: round(sum(bool(r[k]) for r in rows) / max(1, len(rows)), 4) for k in keys}
 ''')
 cell(r'''
 # ---- base-model sanity (E0) on a few llm_val cases: proves the eval path works before any training ----
@@ -237,8 +210,7 @@ if MODE == "full":
         for r in an:
             o = gen(r, 700, adapter=adapter); res[arm].append({"id": r["id"], "task": r["task"], **score_analysis(r, o), "out": o[:1500]})
         save_report()
-    KS = ["valid", "cat_agree", "top_agree", "tier_ok", "guard_violation", "hedge_ok", "cites_answer"]
-    REPORT["L4_analysis"] = {arm: summarize(rows, KS) for arm, rows in res.items()}
+    REPORT["L4_analysis"] = {arm: summarize(rows, ANALYSIS_KEYS) for arm, rows in res.items()}
     REPORT["L4_analysis_rows"] = res
     gray = Image.new("RGB", (512, 512), (128, 128, 128)); diff = 0; abl = []
     for r, row in list(zip(an, res["E1"]))[:30]:
@@ -249,10 +221,7 @@ if MODE == "full":
     for arm, adapter in [("E1", True), ("E0", False)]:
         for r in ex:
             o = gen(r, 300, adapter=adapter); xr[arm].append({"id": r["id"], **score_extract(r, o), "out": o[:600]})
-    REPORT["L4_extract"] = {arm: {"field_acc": round(sum(x["correct"] for x in rows) / max(1, sum(x["n_gold"] for x in rows)), 4),
-                                  "halluc_before_per_case": round(sum(x["halluc_before"] for x in rows) / max(1, len(rows)), 4),
-                                  "halluc_after": sum(x["halluc_after"] for x in rows), "valid": summarize(rows, ["valid"])["valid"]}
-                            for arm, rows in xr.items()}
+    REPORT["L4_extract"] = {arm: summarize_extract(rows) for arm, rows in xr.items()}
     gr = []
     for q in general:
         r = {"messages": [{"role": "user", "content": [{"type": "text", "text": q["prompt"]}]}]}
@@ -309,7 +278,8 @@ def dataset():
     shutil.copytree(LLM_DATA, d)
     code = d / "code"
     for rel in ["ml/__init__.py", "ml/common/__init__.py", "ml/common/paths.py", "ml/common/schema.py", "ml/common/labels.json",
-                "ml/llm/__init__.py", "ml/llm/validate.py", "ml/voice/__init__.py", "ml/voice/intake.py"]:
+                "ml/llm/__init__.py", "ml/llm/validate.py", "ml/voice/__init__.py", "ml/voice/intake.py",
+                "ml/eval/__init__.py", "ml/eval/llm_metrics.py"]:
         (code / rel).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(REPO / rel, code / rel)
     (code / "ml/llm/safety").mkdir(parents=True, exist_ok=True)

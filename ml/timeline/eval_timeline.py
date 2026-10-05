@@ -53,7 +53,7 @@ def make_pair(args):
     h, w = base.shape[:2]
     m0 = M.segment(base, (0.5, 0.5))
     frac = m0.sum() / (h * w)
-    if not 0.01 <= frac <= 0.45:
+    if not 0.01 <= frac <= 0.25:   # a tracked spot fills a modest part of a 15–20 cm photo
         return None
     ys, xs = np.nonzero(m0); cx, cy = xs.mean(), ys.mean()
     bg = cv2.inpaint(base, cv2.dilate(m0, np.ones((9, 9), np.uint8)) * 255, 7, cv2.INPAINT_TELEA)
@@ -107,7 +107,7 @@ def main():
     df = pd.DataFrame(rows)
     ok = df[df.align_ok]
     rel = lambda d: (d.area_ratio - d.true_area_ratio).abs() / d.true_area_ratio
-    coin = ok[(ok.kind == "area_coin") & ok.coin_in_both]
+    coin = ok[(ok.kind == "area_coin") & (ok.confidence == "ok")]        # what the app would report as confidence OK
     nocoin_scaled = df[(df.kind == "area") & ((df.scale - 1).abs() > 0.05)]
     light = ok[ok.kind == "light"]; col = ok[ok.kind == "colour"]
     rep = {**report_meta(), "n_pairs": int(len(df)), "kinds": df.kind.value_counts().to_dict(),
@@ -116,6 +116,9 @@ def main():
            "coin_detected_both_rate": float(df[df.kind == "area_coin"].coin_in_both.mean()),
            "area_rel_err_coin": {"median": float(rel(coin).median()) if len(coin) else None, "p90": float(rel(coin).quantile(.9)) if len(coin) else None, "n": int(len(coin))},
            "area_rel_err_no_coin": {"median": float(rel(ok[ok.kind == "area"]).median()), "p90": float(rel(ok[ok.kind == "area"]).quantile(.9))},
+           "area_rel_err_seg_stable": {"median": float(rel(ok[ok.kind.str.startswith("area") & ok.seg_ok]).median()),
+                                       "n": int((ok.kind.str.startswith("area") & ok.seg_ok).sum())},
+           "seg_stable_rate": float(ok.seg_ok.mean()), "confidence_ok_rate_coin_pairs": float((df[df.kind == "area_coin"].confidence == "ok").mean()),
            "no_coin_scaled_flagged_low": float((nocoin_scaled.confidence == "low").mean()),
            "contrast_abs_err_light_only": float((light.contrast_delta - light.true_contrast_delta).abs().median()),
            "contrast_abs_delta_light_only": float(light.contrast_delta.abs().median()),

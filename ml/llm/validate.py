@@ -58,8 +58,13 @@ def extract_json(text: str) -> str | None:
     return None
 
 
+DECIMAL_RE = re.compile(r"(\d)\.(\d)")
+
+
 def count_sentences(text: str) -> int:
-    return len([s for s in SENTENCE_RE.findall(text.strip()) if s.strip()])
+    """Decimals ("8.9 units") are not sentence ends — mirrored in OutputParser.countSentences."""
+    t = DECIMAL_RE.sub(r"\1,\2", text.strip())
+    return len([s for s in SENTENCE_RE.findall(t) if s.strip()])
 
 
 def guard_text(text: str, rx_terms: list[str]) -> list[str]:

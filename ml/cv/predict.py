@@ -17,11 +17,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", default=str(MODELS / "cv" / "ckpt" / "best.pt"))
     ap.add_argument("--splits", nargs="+", default=["val", "test", "external_test"])
+    ap.add_argument("--per-class", type=int, default=0, help="class-balanced subset (smoke-test data while the GPU trains)")
+    ap.add_argument("--cpu", action="store_true")
+    ap.add_argument("--suffix", default="")
     a = ap.parse_args()
     model, ck = load_model(a.ckpt)
     T = ck.get("temperature", 1.0)
     for s in a.splits:
-        L, Y, df = logits_for(model, s, ck["classes"])
+        L, Y, df = logits_for(model, s, ck["classes"], per_class=a.per_class, cpu=a.cpu)
+        s = s + a.suffix
         P = (L / T).softmax(1).numpy().astype(np.float32)
         np.savez(PROCESSED / f"cv_probs_{s}.npz", img=df.img.values.astype(str), labels=df.label.values.astype(str),
                  probs=P, classes=np.array(ck["classes"]))

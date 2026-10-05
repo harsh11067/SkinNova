@@ -218,14 +218,14 @@ def analysis_target(y: str, a: dict, cv: list[dict], rule: rf.RuleResult, task: 
 
 # ---------------- CV score sources ----------------
 class CvSource:
-    def __init__(self):
-        z = np.load(PROCESSED / "cv_probs_val.npz", allow_pickle=True)
+    def __init__(self, suffix: str = ""):
+        z = np.load(PROCESSED / f"cv_probs_val{suffix}.npz", allow_pickle=True)
         self.classes = list(z["classes"])
         self.labels = np.array(z["labels"]); self.P = z["probs"]
         self.by_label = {c: np.where(self.labels == c)[0] for c in set(self.labels)}
         self.actual = {}
         for split in ["val", "test"]:
-            zz = np.load(PROCESSED / f"cv_probs_{split}.npz", allow_pickle=True)
+            zz = np.load(PROCESSED / f"cv_probs_{split}{suffix}.npz", allow_pickle=True)
             for img, p in zip(zz["img"], zz["probs"]):
                 self.actual[str(img)] = p
 
@@ -392,9 +392,13 @@ def rec_narrate(rid, rng, cvs):
         b1, a1 = max(before, key=lambda s: s["p"])["key"], max(after, key=lambda s: s["p"])["key"]
         sents.append(f"The image model's closest match changed from {DISPLAY[b1].lower()} to {DISPLAY[a1].lower()}."
                      if b1 != a1 else f"The image model's closest match is still {DISPLAY[a1].lower()}.")
-    sents.append({"LOW": "Nothing here suggests a worrying change, but keep tracking it.",
-                  "MODERATE": "It is worth showing this change to a doctor soon.",
-                  "HIGH": "Please show this spot to a doctor within a few days."}[r.tier])
+    big = area >= 1.25 or abs(contrast) >= 5
+    if r.tier == "LOW" and conf == "low" and big:
+        sents.append("Retake the photo with a coin to measure it properly, and show a doctor if it really seems to be growing or darkening.")
+    else:
+        sents.append({"LOW": "Nothing here suggests a worrying change, but keep tracking it.",
+                      "MODERATE": "It is worth showing this change to a doctor soon.",
+                      "HIGH": "Please show this spot to a doctor within a few days."}[r.tier])
     target = " ".join(sents)
     from ml.llm.validate import count_sentences, guard_text
     assert 2 <= count_sentences(target) <= 4 and not guard_text(target, RX), (rid, target)
@@ -445,13 +449,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=4000)
     ap.add_argument("--seed", type=int, default=3407)
+    ap.add_argument("--smoke", action="store_true", help="small set from partial CV predictions (Kaggle smoke test only)")
     a = ap.parse_args()
     rng = random.Random(a.seed)
-    cvs = CvSource()
+    cvs = CvSource("_smoke" if a.smoke else "")
     classes = json.loads((SPLITS / "classes.json").read_text())["classes"]
     sp = {s: pd.read_csv(SPLITS / f"{s}.csv") for s in ["train", "val", "test"]}
     for s in sp:
         sp[s] = sp[s][sp[s].label.isin(classes)]
+        if s != "train":   # eval sets need the CV model's actual prediction for each image
+            sp[s] = sp[s][sp[s].img.isin(cvs.actual.keys())]
     out_dir = LLM_DATA; img_dir = out_dir / "images"
     if out_dir.exists():
         shutil.rmtree(out_dir)
@@ -488,7 +495,7 @@ def main():
         for i in range(n // 4):
             out.append(rec_extract(f"{tag}-x{i:04d}", rng, held_out=True))
         return out
-    llm_val, llm_test = eval_set(sp["val"], 200, "val"), eval_set(sp["test"], 300, "test")
+    llm_val, llm_test = eval_set(sp["val"], 40 if a.smoke else 200, "val"), eval_set(sp["test"], 40 if a.smoke else 300, "test")
 
     # copy images next to the jsonl (Kaggle dataset is self-contained); paths become relative "images/<file>"
     def relocate(rs):
@@ -513,7 +520,7 @@ def main():
            "class_mix_T1": dict(Counter(r["meta"]["label"] for r in sft_train if r["task"] == "T1")),
            "real_q_share": float(np.mean([r["meta"]["real_q"] for r in sft_train if r["task"] in image_tasks])),
            "images": len(list(img_dir.iterdir())), "prompt_files_sha": prompt_hash,
-           "generator": "deterministic templates (seed %d)" % a.seed}
+           "generator": "deterministic templates (seed %d)" % a.seed, "smoke": bool(a.smoke)}
     (REPORTS / "sft_data.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps(rep, indent=1))
 

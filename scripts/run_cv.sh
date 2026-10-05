@@ -5,10 +5,12 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
 until grep -q PIPELINE_DONE logs/data_pipeline.log 2>/dev/null; do sleep 15; done
+# train alone: wait for any other heavy local job (OOM-killer lessons, decisions.md)
+while pgrep -f "[e]val_timeline|[q]uality_gate|[g]radle" >/dev/null; do sleep 20; done
 echo "[$(date +%T)] data tests"
 $PY -m pytest -q ml/tests/test_data.py 2>&1 | tail -3
 [ -f reports/cv_train_overfit64.json ] || { echo "[$(date +%T)] C1a overfit64"; $PY -m ml.cv.train --overfit64 --epochs 30 --bs 16 --workers 4 2>&1 | grep -E "DONE|Error|Traceback" ; }
-[ -f reports/cv_train_random_labels.json ] || { echo "[$(date +%T)] C1b random labels"; $PY -m ml.cv.train --random-labels --epochs 3 2>&1 | grep -E "DONE|Error|Traceback" ; }
+[ -f reports/cv_train_random_labels.json ] || { echo "[$(date +%T)] C1b random labels"; $PY -m ml.cv.train --random-labels --epochs 3 2>&1 | grep -E --line-buffered "DONE|Error|Traceback|epoch" ; }
 [ -f reports/cv_train_full.json ] || { echo "[$(date +%T)] full training"; $PY -m ml.cv.train --epochs 25 --resume 2>&1 | grep -E --line-buffered "epoch|DONE|resumed|Error|Traceback" ; }
 [ -f reports/cv_calibration.json ] || { echo "[$(date +%T)] calibrate"; $PY -m ml.cv.calibrate; }
 echo "[$(date +%T)] eval val"; $PY -m ml.cv.eval_cv --splits val

@@ -11,7 +11,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
+
+# glibc arena fragmentation made each DataLoader worker grow ~9 MB/min (decoding variable-size JPEGs) → OOM risk on
+# the 7.8 GB box over a 2 h run. Must be in the environment before the forkserver starts; workers inherit it.
+os.environ.setdefault("MALLOC_ARENA_MAX", "2")
 
 import numpy as np
 import pandas as pd
@@ -48,7 +53,7 @@ def main():
     ap.add_argument("--lr", type=float, default=4e-4)
     ap.add_argument("--wd", type=float, default=1e-2)
     ap.add_argument("--smoothing", type=float, default=0.1)
-    ap.add_argument("--workers", type=int, default=10)
+    ap.add_argument("--workers", type=int, default=3)   # ~0.8 GB each (forkserver); 7.8 GB WSL box
     ap.add_argument("--seed", type=int, default=3407)
     ap.add_argument("--overfit64", action="store_true")
     ap.add_argument("--random-labels", action="store_true")
@@ -70,9 +75,14 @@ def main():
     counts = np.bincount(ds_tr.y, minlength=len(classes)).astype(float)
     w = 1.0 / np.maximum(counts, 1)
     sampler = None if a.overfit64 else WeightedRandomSampler([w[y] for y in ds_tr.y], num_samples=len(ds_tr), replacement=True)
-    dl_tr = DataLoader(ds_tr, a.bs, sampler=sampler, shuffle=sampler is None, num_workers=a.workers,
-                       pin_memory=True, drop_last=not a.overfit64, persistent_workers=True)
-    dl_va = DataLoader(ds_va, a.bs * 2, num_workers=a.workers, pin_memory=True)
+    # forkserver: workers start from a clean process, not a fork of the CUDA-initialised trainer (each fork held
+    # ~1.2 GB anon RSS → OOM kills on the 7.8 GB WSL box, 2026-10-05/06)
+    ctx = "forkserver" if a.workers > 0 else None
+    dl_tr = DataLoader(ds_tr, a.bs, sampler=sampler, shuffle=sampler is None, num_workers=a.workers, pin_memory=True,
+                       drop_last=not a.overfit64, persistent_workers=a.workers > 0, multiprocessing_context=ctx, prefetch_factor=2 if a.workers else None)
+    # val in the main process (persistent val workers doubled the process count → OOM kill 2026-10-06 00:42)
+    vw = 0   # in-process: avoids extra ~0.55 GB workers on the 7.8 GB box
+    dl_va = DataLoader(ds_va, a.bs * 2, num_workers=vw, pin_memory=False, multiprocessing_context=ctx if vw else None)
     model = timm.create_model(a.arch, pretrained=True, num_classes=len(classes), drop_rate=0.3).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=a.wd)
     steps = a.epochs * max(1, len(dl_tr))

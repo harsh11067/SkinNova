@@ -181,5 +181,11 @@
   "expect_ok": true,
   "expect_error_prefixes": [],
   "cv_top1_p": 0.9
+ },
+ {
+  "id": "decimals_not_sentence_breaks",
+  "text": "{\"possible_categories\": [{\"key\": \"tinea\", \"likelihood\": \"higher\", \"why\": \"Ring edge and itching for 3 weeks.\"}, {\"key\": \"eczema_atopic\", \"likelihood\": \"possible\", \"why\": \"Itching fits, but the edge is sharp.\"}], \"uncertainty\": {\"level\": \"low\", \"reasons\": []}, \"explanation\": \"You said it itches. The patch grew 1.5 times. Contrast rose 8.9 units. A ring often fits a fungal infection. Eczema can look similar. A doctor can confirm.\", \"what_would_help\": [\"A clearer photo in daylight\"], \"self_care_info\": [\"Keep the area clean and dry.\"], \"triage\": {\"tier\": \"LOW\", \"advice\": \"Watch it; see a doctor if it spreads.\"}, \"disagreement_with_image_model\": false}",
+  "expect_ok": true,
+  "expect_error_prefixes": []
  }
 ]

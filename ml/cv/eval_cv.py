@@ -34,12 +34,17 @@ def load_model(path):
 
 
 @torch.no_grad()
-def logits_for(model, split, classes, bs=64):
+def logits_for(model, split, classes, bs=64, per_class: int = 0, cpu: bool = False):
     df = pd.read_csv(SPLITS / f"{split}.csv")
     df = df[df.label.isin(classes)].reset_index(drop=True)
-    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    if per_class:
+        df = df.groupby("label", group_keys=False).apply(lambda g: g.sample(min(len(g), per_class), random_state=3407)).reset_index(drop=True)
+    dev = "cpu" if cpu or not torch.cuda.is_available() else "cuda"
     model = model.to(dev)
-    dl = DataLoader(SkinDS(df, classes, eval_transform()), bs, num_workers=8)
+    if cpu:
+        torch.set_num_threads(4)
+    dl = DataLoader(SkinDS(df, classes, eval_transform()), 16 if cpu else bs, num_workers=0 if cpu else 4,
+                    multiprocessing_context=None if cpu else "forkserver")
     L, Y = [], []
     for x, y in dl:
         L.append(model(x.to(dev)).float().cpu()); Y.append(y)

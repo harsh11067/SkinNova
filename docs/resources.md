@@ -108,16 +108,20 @@ Keys:  C:\keys\skinnova-release.jks  (never in repo)
 ## 6. Accounts
 Hugging Face (write token, Gemma terms), Kaggle (phone-verified, API token, `HF_TOKEN` secret), optional Gemini/other judge API key for **evaluation only** (never in the app).
 
-## 7. Versions (Opus pins after Phase 0)
+## 7. Versions (pinned 2026-10-05; each row verified by a build/test/run)
 | Item | Version | Verified on |
 |---|---|---|
-| litertlm-android | | |
-| litert / litert-gpu | | |
-| litert-torch-nightly (date) | | |
-| litert-lm CLI / litert-lm-api | | |
-| unsloth / transformers / trl / peft | | |
-| torch / timm / opencv-python | | |
-| OpenCV Android | | |
-| AGP / Kotlin / Compose BOM / compileSdk / minSdk | | |
-| Reference phone (model, SoC, RAM, Android) | | |
-| Second phone | | |
+| litertlm-android | 0.17.1 (Kotlin 2.4 metadata; minSdk 24; arm64 + x86_64 libs) | `./gradlew assembleOfflineDebug` OK; API checked with javap |
+| litert (CV on Android) | com.google.ai.edge.litert:litert 2.2.0 (needs `android.uniquePackageNames=false`) | assemble OK |
+| litert-torch (desktop export) | 0.9.4 in `.venv-export` (CPU torch 2.11.0, timm 1.0.30) | B0 NHWC export: max logit diff 5.6e-11 vs PyTorch |
+| ai-edge-litert (desktop interpreter) | 2.2.0 | parity run |
+| litert-lm CLI / litert-torch-nightly | not installed yet (needed for `.litertlm` export, Kaggle notebook) | — |
+| unsloth / unsloth_zoo / transformers / trl / peft | 2026.9.14 / 2026.9.9 / 5.5.0 (notebook) / latest / 0.21.2 (local) | Kaggle smoke run (pending) |
+| torch / timm / opencv-python | 2.11.0+cu130 (system, RTX 3050 6 GB) / 1.0.30 / 4.x headless | CV training, dedupe |
+| OpenCV Android | org.opencv:opencv 4.12.0 (22 MB arm64 .so) | assemble OK |
+| AGP / Kotlin / Gradle / Compose BOM | 9.0.1 / 2.4.20 / 9.2.1 / 2026.02.00 | `testOfflineDebugUnitTest` green |
+| compileSdk / targetSdk / minSdk | 36 / 36 / 26 | assemble OK |
+| JDK (WSL build) | Temurin 17 (`~/android/jdk`) | gradle |
+| Kaggle CLI | 2.2.4 as uv tool (Python 3.12) — `--accelerator NvidiaTeslaT4` | `kaggle quota` |
+| Reference phone (model, SoC, RAM, Android) | — (Harsh: d2y.md) | |
+| Second phone | — | |

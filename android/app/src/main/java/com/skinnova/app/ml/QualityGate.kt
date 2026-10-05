@@ -14,11 +14,12 @@ data class Quality(
 }
 
 object QualityGate {
-    // Defaults from reports/quality_gate.json (ml/eval/quality_gate.py); kept here so the app has no I/O at check time.
-    var BLUR_MIN = 60.0
-    var LUMA_MIN = 45.0
-    var LUMA_MAX = 225.0
-    var SKIN_MIN = 0.08
+    // Tuned by ml/eval/quality_gate.py on 500 val photos (reports/quality_gate.json, 2026-10-06):
+    // σ=3 blur rejected 98.8 %, clean false rejects 4.8 %; dark ×0.25 rejected 78 %.
+    var BLUR_MIN = 34.8
+    var LUMA_MIN = 41.0
+    var LUMA_MAX = 227.5
+    var SKIN_MIN = 0.038
     const val MIN_SIDE = 224
 
     fun check(img: Rgb): Quality {

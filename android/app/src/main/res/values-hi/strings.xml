@@ -151,6 +151,7 @@
     <string name="hist_add">नई जाँच जोड़ें</string>
     <string name="tl_track_title">इस दाग को ट्रैक करें</string>
     <string name="tl_coin_tip">सलाह: दाग के पास एक सिक्का रखें। इससे असली आकार पता चलता है और बदलाव सही नापा जाता है।</string>
+    <string name="tl_why_seg">दाग का किनारा साफ़ नहीं दिखता</string>
     <string name="tl_no_match">दाग का मिलान नहीं हो पाया। उसी कोण और दूरी से फिर से लें।</string>
     <string name="tl_reminder_title">“%1$s” को फिर से जाँचने का समय</string>
     <string name="tl_reminder_body">बदलाव देखने के लिए नई फ़ोटो लें।</string>

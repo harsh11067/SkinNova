@@ -182,6 +182,8 @@ fun TimelineScreen(vm: SessionViewModel, tvm: TimelineViewModel, spotId: String,
                         color = if (last.confidence == "ok") sn.low else sn.moderate)
                     if (last.confidence == "low") {
                         val why = listOfNotNull(if (!last.coinInBoth) stringResource(R.string.tl_why_coin) else null,
+                            if (last.coinInBoth && (last.coinScaleErr ?: 0.0) > 0.10) stringResource(R.string.tl_why_scale) else null,
+                            if (!last.segOk) stringResource(R.string.tl_why_seg) else null,
                             if ((last.noiseFloor?.n ?: 0) < 3) stringResource(R.string.tl_why_noise) else null).joinToString(", ")
                         if (why.isNotEmpty()) Text(stringResource(R.string.tl_conf_low_why, why), style = SnType.caption, color = sn.mut)
                     }
