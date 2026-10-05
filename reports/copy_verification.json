@@ -1,0 +1,19 @@
+{
+ "git_sha": "6fe1ca6",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-05T18:16:07+00:00",
+ "orb_candidates": 1037421,
+ "orb_verified": 62648,
+ "orb_cross_label_verified": 54,
+ "phash_candidates": 13813,
+ "phash_verified": 4655,
+ "phash_cross_label_candidates": 2234,
+ "phash_cross_label_verified": 16,
+ "thresholds": {
+  "min_inliers": 25,
+  "orb_min_ncc": 0.6,
+  "orb_min_overlap": 0.25,
+  "phash_min_ncc": 0.93
+ }
+}

@@ -1,0 +1,131 @@
+{
+ "git_sha": "6fe1ca6",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-05T14:40:24+00:00",
+ "arch": "vit_small_patch14_dinov2.lvd142m",
+ "k_nn": 32,
+ "min_cos": 0.5,
+ "n_planted": 400,
+ "n_hard_neg": 455,
+ "original_in_topk": 0.98,
+ "chosen": {
+  "min_inliers": 25,
+  "planted_recall": 0.995,
+  "recall_by_transform": {
+   "brightness": 1.0,
+   "crop": 0.9805825242718447,
+   "jpeg": 1.0,
+   "resize": 1.0
+  },
+  "phash_only_recall": 0.9075,
+  "nn_same_label_merge_rate": 0.35384615384615387
+ },
+ "sweep": [
+  {
+   "min_inliers": 10,
+   "planted_recall": 0.995,
+   "recall_by_transform": {
+    "brightness": 1.0,
+    "crop": 0.9805825242718447,
+    "jpeg": 1.0,
+    "resize": 1.0
+   },
+   "phash_only_recall": 0.9075,
+   "nn_same_label_merge_rate": 0.3934065934065934
+  },
+  {
+   "min_inliers": 12,
+   "planted_recall": 0.995,
+   "recall_by_transform": {
+    "brightness": 1.0,
+    "crop": 0.9805825242718447,
+    "jpeg": 1.0,
+    "resize": 1.0
+   },
+   "phash_only_recall": 0.9075,
+   "nn_same_label_merge_rate": 0.389010989010989
+  },
+  {
+   "min_inliers": 15,
+   "planted_recall": 0.995,
+   "recall_by_transform": {
+    "brightness": 1.0,
+    "crop": 0.9805825242718447,
+    "jpeg": 1.0,
+    "resize": 1.0
+   },
+   "phash_only_recall": 0.9075,
+   "nn_same_label_merge_rate": 0.3802197802197802
+  },
+  {
+   "min_inliers": 20,
+   "planted_recall": 0.995,
+   "recall_by_transform": {
+    "brightness": 1.0,
+    "crop": 0.9805825242718447,
+    "jpeg": 1.0,
+    "resize": 1.0
+   },
+   "phash_only_recall": 0.9075,
+   "nn_same_label_merge_rate": 0.36923076923076925
+  },
+  {
+   "min_inliers": 25,
+   "planted_recall": 0.995,
+   "recall_by_transform": {
+    "brightness": 1.0,
+    "crop": 0.9805825242718447,
+    "jpeg": 1.0,
+    "resize": 1.0
+   },
+   "phash_only_recall": 0.9075,
+   "nn_same_label_merge_rate": 0.35384615384615387
+  }
+ ],
+ "cos_pos_quantiles": [
+  0.7789876466989517,
+  0.8402565121650696,
+  0.9806457757949829
+ ],
+ "inliers_pos_quantiles": [
+  51.0,
+  321.5
+ ],
+ "inliers_neg_quantiles": [
+  5.0,
+  241.0,
+  285.97999999999973
+ ],
+ "note": "nn_same_label_merge_rate is an upper bound: some nearest neighbours are genuine copies the pHash stage missed.",
+ "visual_check": {
+  "file": "reports/dedupe_borderline_pairs.jpg",
+  "pairs": 12,
+  "inlier_range": [
+   26,
+   52
+  ],
+  "false_merges": 0,
+  "note": "12 nearest-neighbour pairs verifying at 25\u201360 inliers inspected by eye: all are copies (ISIC shift/rotate augmentations with edge-replicate fill; DermNet re-crops)."
+ },
+ "photometric": {
+  "rule": "edge = ORB/RANSAC >= 25 inliers AND NCC >= 0.6 over >= 25% overlap (non-dark pixels); pHash candidates need dihedral NCC >= 0.93",
+  "planted_copy_ncc_quantiles_p1_p5_p10_p50": [
+   0.93,
+   0.972,
+   0.986,
+   0.998
+  ],
+  "planted_recall_with_photometric": 0.995,
+  "orb_links_ncc_median": {
+   "same_label": 0.942,
+   "cross_label": 0.0
+  },
+  "phash_links_dihedral_ncc_median": {
+   "same_label": 0.87,
+   "cross_label": 0.726
+  },
+  "why": "pHash and ORB alone chained different dermoscopy lesions (shared vignette/pink background) into a 4,688-image cluster; photometric verification reduced the largest group to 15.",
+  "visual_check_bands": "reports/dedupe_ncc_bands.jpg (pairs at NCC 0.57-0.93 are genuine rotated/zoomed/colour-jittered copies)"
+ }
+}

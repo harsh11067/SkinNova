@@ -1,0 +1,51 @@
+{
+  "llm": {
+    "file": "skinnova-e2b-v1.litertlm",
+    "accepted": [
+      {
+        "id": "skinnova-e2b-v1",
+        "label": "SkinNova Gemma 4 E2B (LoRA)",
+        "bytes": 0,
+        "sha256": "",
+        "base": "google/gemma-4-E2B-it",
+        "lora_repo": "",
+        "lora_rev": "",
+        "merged_repo": "",
+        "merged_rev": "",
+        "converter": "",
+        "prompt_version": "v1"
+      },
+      {
+        "id": "gemma-4-E2B-it-stock",
+        "label": "Gemma 4 E2B (stock, litert-community)",
+        "bytes": 2588147712,
+        "sha256": "181938105e0eefd105961417e8da75903eacda102c4fce9ce90f50b97139a63c",
+        "source": "https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm@b3ca0d2f076785a8f4b2219ddbd2bdb99954eae1/gemma-4-E2B-it.litertlm",
+        "url": "https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/b3ca0d2f076785a8f4b2219ddbd2bdb99954eae1/gemma-4-E2B-it.litertlm"
+      }
+    ]
+  },
+  "cv": {
+    "file": "cv/skin_cls.tflite",
+    "input": [
+      1,
+      384,
+      384,
+      3
+    ],
+    "layout": "NHWC",
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "temperature": 1.0,
+    "labels_version": "v1",
+    "sha256": ""
+  }
+}

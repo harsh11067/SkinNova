@@ -1,0 +1,6 @@
+# v1
+BASELINE_DATE: {baseline_date}
+METRICS: {metrics_json}
+IMAGE_MODEL_TOP3_BEFORE: {cv_before_json}
+IMAGE_MODEL_TOP3_AFTER: {cv_after_json}
+TIMELINE_TIER: {timeline_tier}

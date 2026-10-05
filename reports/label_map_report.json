@@ -1,0 +1,539 @@
+{
+ "git_sha": "6fe1ca6",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-05T17:30:42+00:00",
+ "label_map_version": "v2",
+ "n_enumerated": 48138,
+ "n_labeled": 47125,
+ "unaccounted_folders": [],
+ "by_reason": {
+  "folder": 33833,
+  "slug": 13292,
+  "slug_exclude": 390,
+  "slug_only_nomatch": 321,
+  "exclude_folder": 302
+ },
+ "by_label": {
+  "external": {
+   "acne": 0,
+   "benign_lesion": 0,
+   "contact_dermatitis": 0,
+   "eczema_atopic": 381,
+   "other": 0,
+   "psoriasis": 0,
+   "scabies": 301,
+   "seborrheic_dermatitis": 0,
+   "suspicious_lesion": 0,
+   "tinea": 316,
+   "vitiligo": 312
+  },
+  "pool": {
+   "acne": 1248,
+   "benign_lesion": 16136,
+   "contact_dermatitis": 479,
+   "eczema_atopic": 1646,
+   "other": 7884,
+   "psoriasis": 906,
+   "scabies": 492,
+   "seborrheic_dermatitis": 79,
+   "suspicious_lesion": 13370,
+   "tinea": 2779,
+   "vitiligo": 796
+  }
+ },
+ "folder_to_label": [
+  {
+   "source": "mgmitesh",
+   "source_label": "Acne",
+   "label": "<excluded>",
+   "n": 25
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Acne",
+   "label": "acne",
+   "n": 586
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Acne",
+   "label": "other",
+   "n": 140
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Actinic Keratosis",
+   "label": "suspicious_lesion",
+   "n": 3259
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Basal Cell Carcinoma",
+   "label": "suspicious_lesion",
+   "n": 3119
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Chickenpox",
+   "label": "other",
+   "n": 371
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Dermato Fibroma",
+   "label": "benign_lesion",
+   "n": 3110
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Dyshidrotic Eczema",
+   "label": "<excluded>",
+   "n": 169
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Dyshidrotic Eczema",
+   "label": "contact_dermatitis",
+   "n": 2
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Dyshidrotic Eczema",
+   "label": "other",
+   "n": 499
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Dyshidrotic Eczema",
+   "label": "tinea",
+   "n": 955
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Melanoma",
+   "label": "suspicious_lesion",
+   "n": 3210
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Nail Fungus",
+   "label": "tinea",
+   "n": 244
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Nevus",
+   "label": "benign_lesion",
+   "n": 3978
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Normal Skin",
+   "label": "other",
+   "n": 685
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Pigmented Benign Keratosis",
+   "label": "benign_lesion",
+   "n": 3049
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Ringworm",
+   "label": "tinea",
+   "n": 344
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Seborrheic Keratosis",
+   "label": "benign_lesion",
+   "n": 80
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Squamous Cell Carcinoma",
+   "label": "suspicious_lesion",
+   "n": 197
+  },
+  {
+   "source": "mgmitesh",
+   "source_label": "Vascular Lesion",
+   "label": "benign_lesion",
+   "n": 3093
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Acne",
+   "label": "<excluded>",
+   "n": 11
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Acne",
+   "label": "acne",
+   "n": 646
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Actinic_Keratosis",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Actinic_Keratosis",
+   "label": "benign_lesion",
+   "n": 6
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Actinic_Keratosis",
+   "label": "suspicious_lesion",
+   "n": 824
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Benign_tumors",
+   "label": "acne",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Benign_tumors",
+   "label": "benign_lesion",
+   "n": 1080
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Benign_tumors",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Benign_tumors",
+   "label": "suspicious_lesion",
+   "n": 131
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Bullous",
+   "label": "other",
+   "n": 559
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Candidiasis",
+   "label": "other",
+   "n": 275
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "DrugEruption",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "DrugEruption",
+   "label": "eczema_atopic",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "DrugEruption",
+   "label": "other",
+   "n": 606
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Eczema",
+   "label": "<excluded>",
+   "n": 13
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Eczema",
+   "label": "eczema_atopic",
+   "n": 1109
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Infestations_Bites",
+   "label": "<excluded>",
+   "n": 131
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Infestations_Bites",
+   "label": "other",
+   "n": 304
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Infestations_Bites",
+   "label": "scabies",
+   "n": 149
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Lichen",
+   "label": "other",
+   "n": 614
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Lupus",
+   "label": "other",
+   "n": 345
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Moles",
+   "label": "<excluded>",
+   "n": 91
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Moles",
+   "label": "benign_lesion",
+   "n": 287
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Moles",
+   "label": "suspicious_lesion",
+   "n": 23
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Psoriasis",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Psoriasis",
+   "label": "psoriasis",
+   "n": 906
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Rosacea",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Rosacea",
+   "label": "other",
+   "n": 281
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Seborrh_Keratoses",
+   "label": "benign_lesion",
+   "n": 506
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "SkinCancer",
+   "label": "<excluded>",
+   "n": 24
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "SkinCancer",
+   "label": "suspicious_lesion",
+   "n": 746
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Sun_Sunlight_Damage",
+   "label": "acne",
+   "n": 15
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Sun_Sunlight_Damage",
+   "label": "benign_lesion",
+   "n": 86
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Sun_Sunlight_Damage",
+   "label": "other",
+   "n": 244
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Sun_Sunlight_Damage",
+   "label": "vitiligo",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Tinea",
+   "label": "<excluded>",
+   "n": 64
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Tinea",
+   "label": "tinea",
+   "n": 961
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Unknown_Normal",
+   "label": "other",
+   "n": 1800
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Vascular_Tumors",
+   "label": "<excluded>",
+   "n": 179
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Vascular_Tumors",
+   "label": "benign_lesion",
+   "n": 382
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Vascular_Tumors",
+   "label": "suspicious_lesion",
+   "n": 42
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Vasculitis",
+   "label": "other",
+   "n": 513
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Vitiligo",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Vitiligo",
+   "label": "vitiligo",
+   "n": 795
+  },
+  {
+   "source": "pacificrm",
+   "source_label": "Warts",
+   "label": "other",
+   "n": 644
+  },
+  {
+   "source": "pad_ufes20",
+   "source_label": "ACK",
+   "label": "suspicious_lesion",
+   "n": 730
+  },
+  {
+   "source": "pad_ufes20",
+   "source_label": "BCC",
+   "label": "suspicious_lesion",
+   "n": 845
+  },
+  {
+   "source": "pad_ufes20",
+   "source_label": "MEL",
+   "label": "suspicious_lesion",
+   "n": 52
+  },
+  {
+   "source": "pad_ufes20",
+   "source_label": "NEV",
+   "label": "benign_lesion",
+   "n": 244
+  },
+  {
+   "source": "pad_ufes20",
+   "source_label": "SCC",
+   "label": "suspicious_lesion",
+   "n": 192
+  },
+  {
+   "source": "pad_ufes20",
+   "source_label": "SEK",
+   "label": "benign_lesion",
+   "n": 235
+  },
+  {
+   "source": "skindiseasebd",
+   "source_label": "Dermatitis",
+   "label": "<excluded>",
+   "n": 302
+  },
+  {
+   "source": "skindiseasebd",
+   "source_label": "Eczema",
+   "label": "eczema_atopic",
+   "n": 381
+  },
+  {
+   "source": "skindiseasebd",
+   "source_label": "Scabies",
+   "label": "scabies",
+   "n": 301
+  },
+  {
+   "source": "skindiseasebd",
+   "source_label": "Tinea Ringworm",
+   "label": "tinea",
+   "n": 316
+  },
+  {
+   "source": "skindiseasebd",
+   "source_label": "Vitiligo",
+   "label": "vitiligo",
+   "n": 312
+  },
+  {
+   "source": "skindisnet",
+   "source_label": "Atopic Dermatitis (AD)",
+   "label": "eczema_atopic",
+   "n": 70
+  },
+  {
+   "source": "skindisnet",
+   "source_label": "Contact Dermatitis (CD)",
+   "label": "contact_dermatitis",
+   "n": 477
+  },
+  {
+   "source": "skindisnet",
+   "source_label": "Eczema (EC)",
+   "label": "eczema_atopic",
+   "n": 466
+  },
+  {
+   "source": "skindisnet",
+   "source_label": "Scabies (SC)",
+   "label": "scabies",
+   "n": 343
+  },
+  {
+   "source": "skindisnet",
+   "source_label": "Seborrheic Dermatitis (SD)",
+   "label": "seborrheic_dermatitis",
+   "n": 79
+  },
+  {
+   "source": "skindisnet",
+   "source_label": "Tinea Corporis (TC)",
+   "label": "tinea",
+   "n": 275
+  }
+ ]
+}

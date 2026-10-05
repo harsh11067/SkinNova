@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "classes": [
+    {"id": 0, "key": "eczema_atopic",         "display": "Eczema / atopic dermatitis",            "tier_floor": "LOW",      "lesion_type": false},
+    {"id": 1, "key": "contact_dermatitis",    "display": "Contact dermatitis",                    "tier_floor": "LOW",      "lesion_type": false},
+    {"id": 2, "key": "seborrheic_dermatitis", "display": "Seborrheic dermatitis",                 "tier_floor": "LOW",      "lesion_type": false},
+    {"id": 3, "key": "tinea",                 "display": "Fungal infection (tinea/ringworm)",     "tier_floor": "LOW",      "lesion_type": false},
+    {"id": 4, "key": "scabies",               "display": "Scabies",                               "tier_floor": "MODERATE", "lesion_type": false},
+    {"id": 5, "key": "acne",                  "display": "Acne",                                  "tier_floor": "LOW",      "lesion_type": false},
+    {"id": 6, "key": "psoriasis",             "display": "Psoriasis",                             "tier_floor": "MODERATE", "lesion_type": false},
+    {"id": 7, "key": "vitiligo",              "display": "Vitiligo / pigment loss",               "tier_floor": "MODERATE", "lesion_type": false},
+    {"id": 8, "key": "benign_lesion",         "display": "Common benign growth (mole, seborrheic keratosis)", "tier_floor": "LOW", "lesion_type": true},
+    {"id": 9, "key": "suspicious_lesion",     "display": "Spot that needs a doctor's look",       "tier_floor": "HIGH",     "lesion_type": true},
+    {"id": 10,"key": "other",                 "display": "Other / not sure",                      "tier_floor": "MODERATE", "lesion_type": false}
+  ]
+}

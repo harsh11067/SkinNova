@@ -1,0 +1,60 @@
+{
+ "git_sha": "6fe1ca6",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-05T18:16:09+00:00",
+ "n_images": 47125,
+ "n_dup_clusters": 26626,
+ "n_multi_clusters": 7071,
+ "n_kept": 26495,
+ "dropped": {
+  "": 46530,
+  "label_conflict": 570,
+  "touches_external": 25
+ },
+ "orb_min_inliers": 25,
+ "orb_verified_copy_pairs": 62648,
+ "phash_verified_pairs": 4655,
+ "n_groups_kept": 25151,
+ "largest_groups": [
+  15,
+  12,
+  12,
+  11,
+  10,
+  10,
+  10,
+  9,
+  9,
+  8
+ ],
+ "kept_by_label_role": {
+  "external": {
+   "acne": 0,
+   "benign_lesion": 0,
+   "contact_dermatitis": 0,
+   "eczema_atopic": 91,
+   "other": 0,
+   "psoriasis": 0,
+   "scabies": 10,
+   "seborrheic_dermatitis": 0,
+   "suspicious_lesion": 0,
+   "tinea": 26,
+   "vitiligo": 9
+  },
+  "pool": {
+   "acne": 778,
+   "benign_lesion": 8548,
+   "contact_dermatitis": 240,
+   "eczema_atopic": 1204,
+   "other": 5697,
+   "psoriasis": 754,
+   "scabies": 332,
+   "seborrheic_dermatitis": 41,
+   "suspicious_lesion": 6957,
+   "tinea": 1145,
+   "vitiligo": 663
+  }
+ },
+ "cross_source_dup_clusters": 1252
+}

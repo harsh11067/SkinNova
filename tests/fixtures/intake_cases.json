@@ -1,0 +1,225 @@
+[
+ {
+  "id": "hinglish_full",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"1_4w\", \"evidence\": \"teen hafte se\"}, \"body_site\": {\"value\": \"hand\", \"evidence\": \"haath par\"}, \"itch\": {\"value\": 3, \"evidence\": \"bahut khujli\"}, \"others_affected\": {\"value\": true, \"evidence\": \"bhai ko bhi hai\"}, \"pain\": null, \"fever_or_unwell\": null}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_4w",
+   "body_site": "hand",
+   "itch": 3,
+   "others_affected": true
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "hallucinated_negation",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"1_4w\", \"evidence\": \"teen hafte se\"}, \"fever_or_unwell\": {\"value\": false, \"evidence\": \"bukhar nahi hai\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_4w"
+  },
+  "expect_dropped": {
+   "fever_or_unwell": "evidence_not_in_transcript"
+  }
+ },
+ {
+  "id": "stated_negation_kept",
+  "transcript": "Do din se chehre par daane hain, bukhar nahi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"lt_1w\", \"evidence\": \"do din se\"}, \"body_site\": {\"value\": \"face\", \"evidence\": \"chehre par\"}, \"fever_or_unwell\": {\"value\": false, \"evidence\": \"bukhar nahi hai\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "lt_1w",
+   "body_site": "face",
+   "fever_or_unwell": false
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "bad_enum",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"3_weeks\", \"evidence\": \"teen hafte se\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "duration": "bad_value"
+  }
+ },
+ {
+  "id": "scale_out_of_range",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"itch\": {\"value\": 5, \"evidence\": \"bahut khujli\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "itch": "bad_value"
+  }
+ },
+ {
+  "id": "scale_bool_rejected",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"itch\": {\"value\": true, \"evidence\": \"bahut khujli\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "itch": "bad_value"
+  }
+ },
+ {
+  "id": "bool_as_string_rejected",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"others_affected\": {\"value\": \"yes\", \"evidence\": \"bhai ko bhi hai\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "others_affected": "bad_value"
+  }
+ },
+ {
+  "id": "fuzzy_typo_kept",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"1_4w\", \"evidence\": \"teen hafte sey\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_4w"
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "devanagari",
+  "transcript": "तीन हफ्ते से हाथ पर बहुत खुजली है",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"1_4w\", \"evidence\": \"तीन हफ्ते से\"}, \"body_site\": {\"value\": \"hand\", \"evidence\": \"हाथ पर\"}, \"itch\": {\"value\": 3, \"evidence\": \"बहुत खुजली\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_4w",
+   "body_site": "hand",
+   "itch": 3
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "numerals_codemixed",
+  "transcript": "2 weeks se pair mein itching hai, thoda dard bhi.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"1_4w\", \"evidence\": \"2 weeks se\"}, \"body_site\": {\"value\": \"foot\", \"evidence\": \"pair mein\"}, \"itch\": {\"value\": 2, \"evidence\": \"itching hai\"}, \"pain\": {\"value\": 1, \"evidence\": \"thoda dard\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_4w",
+   "body_site": "foot",
+   "itch": 2,
+   "pain": 1
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "english",
+  "transcript": "I have had a dark mole on my back for months and it has started bleeding.",
+  "text": "{\"language\": \"en\", \"fields\": {\"duration\": {\"value\": \"1_6m\", \"evidence\": \"for months\"}, \"body_site\": {\"value\": \"back\", \"evidence\": \"on my back\"}, \"bleeding_or_crusting\": {\"value\": true, \"evidence\": \"started bleeding\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_6m",
+   "body_site": "back",
+   "bleeding_or_crusting": true
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "empty_evidence",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"itch\": {\"value\": 3, \"evidence\": \"\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "itch": "evidence_not_in_transcript"
+  }
+ },
+ {
+  "id": "unrelated_evidence",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"fever_or_unwell\": {\"value\": true, \"evidence\": \"high fever since morning\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "fever_or_unwell": "evidence_not_in_transcript"
+  }
+ },
+ {
+  "id": "unknown_field",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"temperature\": {\"value\": 101, \"evidence\": \"teen hafte se\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "temperature": "unknown_field"
+  }
+ },
+ {
+  "id": "missing_evidence_key",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"itch\": {\"value\": 3}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {
+   "itch": "bad_item"
+  }
+ },
+ {
+  "id": "no_json",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "Sorry, I could not understand.",
+  "expect_ok": false,
+  "expect_fields": {},
+  "expect_dropped": {
+   "_all": "no_json_object"
+  }
+ },
+ {
+  "id": "fenced_with_trailing",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "```json\n{\"language\": \"hi\", \"fields\": {\"itch\": {\"value\": 3, \"evidence\": \"bahut khujli\"}}, \"unparsed_notes\": \"\"}\n```\nDone.",
+  "expect_ok": true,
+  "expect_fields": {
+   "itch": 3
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "case_whitespace_normalised",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"duration\": {\"value\": \"1_4w\", \"evidence\": \"TEEN   Hafte  se\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "duration": "1_4w"
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "truncated_json",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\":\"hi\",\"fields\":{\"itch\":{\"value\":3,\"evidence\":\"bahut khu",
+  "expect_ok": false,
+  "expect_fields": {},
+  "expect_dropped": {
+   "_all": "no_json_object"
+  }
+ },
+ {
+  "id": "fields_not_object",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\":\"hi\",\"fields\":[]}",
+  "expect_ok": false,
+  "expect_fields": {},
+  "expect_dropped": {
+   "_all": "bad_shape"
+  }
+ },
+ {
+  "id": "notes_trimmed",
+  "transcript": "Teen hafte se haath par gol daag hai, bahut khujli hoti hai, ghar mein bhai ko bhi hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {}, \"unparsed_notes\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}",
+  "expect_ok": true,
+  "expect_fields": {},
+  "expect_dropped": {},
+  "expect_notes_len": 200
+ }
+]

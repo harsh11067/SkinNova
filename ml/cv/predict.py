@@ -1,0 +1,33 @@
+"""Dump calibrated CV probabilities per split → data/processed/cv_probs_<split>.npz (img, labels, probs, classes).
+
+Consumers: ml/llm/build_sft_dataset.py (CV scores shown to the LLM), ml/eval (combined arms).
+  python -m ml.cv.predict --splits val test external_test
+"""
+from __future__ import annotations
+
+import argparse
+
+import numpy as np
+
+from ml.common.paths import MODELS, PROCESSED
+from ml.cv.eval_cv import load_model, logits_for
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--ckpt", default=str(MODELS / "cv" / "ckpt" / "best.pt"))
+    ap.add_argument("--splits", nargs="+", default=["val", "test", "external_test"])
+    a = ap.parse_args()
+    model, ck = load_model(a.ckpt)
+    T = ck.get("temperature", 1.0)
+    for s in a.splits:
+        L, Y, df = logits_for(model, s, ck["classes"])
+        P = (L / T).softmax(1).numpy().astype(np.float32)
+        np.savez(PROCESSED / f"cv_probs_{s}.npz", img=df.img.values.astype(str), labels=df.label.values.astype(str),
+                 probs=P, classes=np.array(ck["classes"]))
+        # accuracy printed for val only: test/external numbers come from eval_cv once per final candidate (no peeking)
+        print(s, P.shape, *(["val top1 acc", float((P.argmax(1) == Y.numpy()).mean())] if s == "val" else []))
+
+
+if __name__ == "__main__":
+    main()

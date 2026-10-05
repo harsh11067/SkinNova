@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SkinNova</string>
+
+    <!-- Loading / onboarding -->
+    <string name="load_tagline">Offline. Private. Yours.</string>
+    <string name="load_sub">AI-powered skin information\nthat lives on your device.</string>
+    <string name="load_get_started">Get Started</string>
+    <string name="load_footer">GEMMA 4 E2B · LITERT-LM · NO INTERNET NEEDED</string>
+    <string name="load_w_scan">SCAN</string>
+    <string name="load_w_learn">LEARN</string>
+    <string name="load_w_track">TRACK</string>
+    <string name="load_w_care">CARE</string>
+    <string name="onb_1_title">What SkinNova does</string>
+    <string name="onb_1_body">Take a photo of a skin concern and answer a few questions. SkinNova shows up to three possible categories, how sure it is, and when to see a doctor.</string>
+    <string name="onb_2_title">Private and offline</string>
+    <string name="onb_2_body">Everything runs on this phone. Your photos and answers are never uploaded. History is off unless you turn it on.</string>
+    <string name="onb_3_title">Not a diagnosis</string>
+    <string name="onb_3_body">SkinNova gives preliminary, educational information. It can be wrong. Only a doctor can diagnose a skin condition. In an emergency, seek care immediately.</string>
+    <string name="onb_understand">I understand</string>
+    <string name="onb_next">Next</string>
+    <string name="onb_language">Language</string>
+
+    <!-- Model setup -->
+    <string name="setup_title">One-time setup</string>
+    <string name="setup_body">SkinNova\'s AI explanation model (%1$s) lives on your phone. Import it once; it never needs the internet again.</string>
+    <string name="setup_import">Import model file</string>
+    <string name="setup_download">Download on Wi-Fi</string>
+    <string name="setup_skip">Continue in Basic mode</string>
+    <string name="setup_skip_hint">Basic mode uses the image model, condition notes and safety rules, without written explanations.</string>
+    <string name="setup_storage">Needs %1$s free. Available: %2$s</string>
+    <string name="setup_copying">Copying… %1$d%%</string>
+    <string name="setup_verifying">Verifying file…</string>
+    <string name="setup_ready">Model ready</string>
+    <string name="setup_err_space">Not enough space. Free at least %1$s and try again.</string>
+    <string name="setup_err_wrong">This is not the SkinNova model file (checksum mismatch).</string>
+    <string name="setup_err_io">Could not read the file: %1$s</string>
+    <string name="setup_adb_hint">Developer: adb push the .litertlm to Android/data/com.skinnova.app/files/models/</string>
+
+    <!-- Home -->
+    <string name="home_hello">Hello,\nYou\'re in control.</string>
+    <string name="home_sub">Scan. Learn. Take care.</string>
+    <string name="home_status_ready">Offline · Model ready</string>
+    <string name="home_status_basic">Offline · Basic mode</string>
+    <string name="home_scan">Scan Your Skin</string>
+    <string name="home_scan_sub">Take a photo or pick from gallery.</string>
+    <string name="home_reports">My Reports</string>
+    <string name="home_reports_sub_n">%1$d saved</string>
+    <string name="home_reports_off">History is off</string>
+    <string name="home_library">Skin Library</string>
+    <string name="home_library_sub">Common conditions</string>
+    <string name="home_tip">Quick Tip</string>
+    <string name="home_tip_count">%1$d/%2$d · tap</string>
+    <string name="home_spots">MY TRACKED SPOTS</string>
+    <string name="home_spot_due">Re-check %1$s</string>
+    <string name="home_recent">RECENT ANALYSIS</string>
+    <string name="toggle_theme">Toggle light mode</string>
+    <string-array name="tips">
+        <item>Use sunscreen every day, even indoors near windows.</item>
+        <item>Moisturise within 3 minutes of bathing to lock in water.</item>
+        <item>Patch-test new products on your inner arm for 48 hours.</item>
+        <item>Take scan photos in daylight, 15–20 cm from the skin.</item>
+        <item>Short, lukewarm baths are kinder to the skin barrier.</item>
+    </string-array>
+
+    <!-- Nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_library">Library</string>
+    <string name="nav_profile">Profile</string>
+    <string name="back">Back</string>
+
+    <!-- Scan -->
+    <string name="scan_title">Scan Your Skin</string>
+    <string name="scan_sub">Fill the circle with the spot. Daylight, 15–20 cm away.</string>
+    <string name="scan_mode_photo">Photo</string>
+    <string name="scan_mode_gallery">Gallery</string>
+    <string name="scan_shoot">Take photo</string>
+    <string name="scan_pick">Pick a photo</string>
+    <string name="scan_torch">Torch</string>
+    <string name="scan_hint_ok">Good light · In focus</string>
+    <string name="scan_hint_dark">More light</string>
+    <string name="scan_hint_bright">Too bright</string>
+    <string name="scan_hint_blur">Hold steady</string>
+    <string name="scan_hint_close">Move closer</string>
+    <string name="scan_no_camera">Camera permission is off. You can still pick a photo from the gallery.</string>
+    <string name="scan_allow_camera">Allow camera</string>
+    <string name="qg_title">Photo may not work well</string>
+    <string name="qg_blurry">The photo looks blurry.</string>
+    <string name="qg_dark">The photo is too dark.</string>
+    <string name="qg_bright">The photo is too bright.</string>
+    <string name="qg_small">The photo is too small.</string>
+    <string name="qg_noskin">We could not find much skin in the photo.</string>
+    <string name="qg_retake">Retake</string>
+    <string name="qg_use_anyway">Use anyway</string>
+
+    <!-- Questionnaire -->
+    <string name="q_step">Question %1$d of %2$d</string>
+    <string name="q_next">Next</string>
+    <string name="q_analyze">Analyze</string>
+    <string name="q_skip">Skip</string>
+    <string name="q_speak">Speak instead · बोलिए</string>
+    <string name="q_site">Where is the affected area?</string>
+    <string name="q_site_sub">Pick the main place.</string>
+    <string name="q_duration">How long have you had it?</string>
+    <string name="q_duration_sub">An estimate is fine.</string>
+    <string name="q_itch">Is it itchy?</string>
+    <string name="q_pain">Is it painful or tender?</string>
+    <string name="q_scale_sub">Pick the closest level.</string>
+    <string name="q_changing">Has it changed recently?</string>
+    <string name="q_changing_sub">Pick the closest.</string>
+    <string name="q_yesno_sub">Tap yes or no.</string>
+    <string name="q_bleeding">Is it bleeding, oozing or crusting?</string>
+    <string name="q_fever">Do you have a fever or feel unwell?</string>
+    <string name="q_others">Does anyone you live with have something similar?</string>
+    <string name="q_product">Did you start a new product, medicine or exposure before it began?</string>
+    <string name="q_age">Age of the person with the skin concern</string>
+    <string name="q_tone">Skin tone (optional)</string>
+    <string name="q_tone_sub">Helps us report how well SkinNova works across skin tones. Never required.</string>
+    <string name="q_notes">Anything else we should know?</string>
+    <string name="q_notes_sub">Optional. Triggers, products, family history.</string>
+    <string name="q_notes_hint">e.g. Started after using a new soap. Worse at night.</string>
+    <string name="q_private">Your photo and answers are processed on this phone and never uploaded.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="lvl_0">None</string><string name="lvl_0_h">Not at all</string>
+    <string name="lvl_1">Mild</string><string name="lvl_1_h">Noticeable, easy to ignore</string>
+    <string name="lvl_2">Moderate</string><string name="lvl_2_h">Distracting during the day</string>
+    <string name="lvl_3">Severe</string><string name="lvl_3_h">Disrupts sleep or work</string>
+    <string name="site_face">Face</string><string name="site_scalp">Scalp</string><string name="site_neck">Neck</string>
+    <string name="site_chest">Chest</string><string name="site_back">Back</string><string name="site_abdomen">Abdomen</string>
+    <string name="site_arm">Arm</string><string name="site_hand">Hand</string><string name="site_leg">Leg</string>
+    <string name="site_foot">Foot</string><string name="site_groin">Groin</string><string name="site_nails">Nails</string>
+    <string name="site_other">Other</string>
+    <string name="dur_lt_1w">Under 1 week</string><string name="dur_1_4w">1–4 weeks</string>
+    <string name="dur_1_6m">1–6 months</string><string name="dur_gt_6m">6+ months</string>
+    <string name="chg_no">Not changing</string><string name="chg_growing">Growing</string>
+    <string name="chg_changing_color">Changing colour</string><string name="chg_changing_shape">Changing shape</string>
+    <string name="chg_spreading">Spreading</string><string name="chg_unsure">Not sure</string>
+    <string name="age_lt_12">Under 12</string><string name="age_12_17">12–17</string><string name="age_18_39">18–39</string>
+    <string name="age_40_59">40–59</string><string name="age_60_plus">60+</string>
+    <string name="tone_fitz_1_2">Light</string><string name="tone_fitz_3_4">Medium / brown</string>
+    <string name="tone_fitz_5_6">Dark brown / black</string><string name="tone_unknown">Prefer not to say</string>
+    <string name="q_unanswered">Please answer</string>
+
+    <!-- Voice -->
+    <string name="v_title">Tell us about it</string>
+    <string name="v_sub">Speak freely for up to 30 seconds in Hindi, English or both.</string>
+    <string name="v_listening">Listening…</string>
+    <string name="v_stop">Stop</string>
+    <string name="v_transcribing">Writing down what you said…</string>
+    <string name="v_heard">Here\'s what we heard</string>
+    <string name="v_heard_sub">Fix anything we got wrong.</string>
+    <string name="v_extract">Fill my answers</string>
+    <string name="v_extracting">Finding your answers…</string>
+    <string name="v_filled">%1$d answers filled from your words. Please check each one.</string>
+    <string name="v_none">We couldn\'t pick out answers. Please tap them instead.</string>
+    <string name="v_unclear">Couldn\'t hear clearly. Try again or tap your answers.</string>
+    <string name="v_mic_denied">Microphone permission is off. You can tap your answers instead.</string>
+    <string name="v_needs_model">Voice needs the AI model. Import it in Profile → On-device model.</string>
+    <string name="v_evidence">You said: “%1$s”</string>
+    <string name="v_confirm">Confirm</string>
+    <string name="v_retry">Speak again</string>
+
+    <!-- Analyzing -->
+    <string name="an_title">Analyzing on-device</string>
+    <string name="an_sub">No internet. Nothing leaves your phone.</string>
+    <string name="an_step_photo">Checking photo</string>
+    <string name="an_step_cv">Image model</string>
+    <string name="an_step_rules">Safety checks</string>
+    <string name="an_step_llm">Writing explanation</string>
+    <string name="an_step_translate">Translating</string>
+    <string name="an_loading_model">Loading the AI model (first time takes a little longer)…</string>
+    <string name="an_cancel">Cancel</string>
+
+    <!-- Result -->
+    <string name="res_title">Analysis Result</string>
+    <string name="res_answers">YOUR ANSWERS</string>
+    <string name="res_possible">Possible Conditions</string>
+    <string name="res_possible_sub">Based on image + your answers. Not a diagnosis.</string>
+    <string name="res_lk_higher">higher</string>
+    <string name="res_lk_possible">possible</string>
+    <string name="res_lk_less_likely">less likely</string>
+    <string name="res_uncertainty">How sure is this?</string>
+    <string name="res_unc_low">Fairly consistent</string>
+    <string name="res_unc_moderate">Somewhat uncertain</string>
+    <string name="res_unc_high">Very uncertain</string>
+    <string name="res_explanation">Explanation</string>
+    <string name="res_help">What would help</string>
+    <string name="res_care">General care information</string>
+    <string name="res_basic_mode">Basic mode: the AI explanation is not available, so this result uses the image model, condition notes and safety rules only.</string>
+    <string name="res_disagree">The photo and your answers point in different directions, so this is less certain.</string>
+    <string name="res_read_aloud">Read aloud</string>
+    <string name="res_lang_en">EN</string>
+    <string name="res_lang_hi">हिं</string>
+    <string name="res_learn">Learn more</string>
+    <string name="res_save">Save</string>
+    <string name="res_saved">Saved ✓</string>
+    <string name="res_save_off">Turn on history in Profile to save</string>
+    <string name="res_retake">Retake</string>
+    <string name="res_track">Track this spot</string>
+    <string name="res_tts_missing">Install a Hindi voice in system settings to hear this.</string>
+    <string name="disclaimer">This is not a diagnosis. SkinNova gives preliminary, educational information. For an accurate diagnosis, consult a dermatologist.</string>
+
+    <!-- Triage (deterministic, human-written; never from the LLM) -->
+    <string name="tier_LOW">Low concern</string>
+    <string name="tier_MODERATE">See a doctor soon</string>
+    <string name="tier_HIGH">See a doctor this week</string>
+    <string name="tier_URGENT">Seek care today</string>
+    <string name="tier_adv_LOW">Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn\'t improve in 2 weeks.</string>
+    <string name="tier_adv_MODERATE">Book a doctor visit within 1–2 weeks, sooner if it gets worse.</string>
+    <string name="tier_adv_HIGH">Please see a doctor or dermatologist within a few days.</string>
+    <string name="tier_adv_URGENT">Please seek medical care today. If you feel very unwell, go to emergency care.</string>
+
+    <!-- Red-flag messages (contracts §4) -->
+    <string name="rf_r1">Fever or feeling unwell with a painful or spreading rash can mean infection. Seek care today.</string>
+    <string name="rf_r2">A spot that is growing or changing colour or shape should be checked by a doctor.</string>
+    <string name="rf_r3">Bleeding or crusting that lasts more than a week should be checked by a doctor.</string>
+    <string name="rf_r4">The image model sees features that doctors like to check in person.</string>
+    <string name="rf_r5">Skin problems in children under 12 should be seen by a doctor.</string>
+    <string name="rf_r6">Painful rashes on the face or groin should be seen by a doctor.</string>
+    <string name="rf_r7">Others at home have it too. It may spread by contact; everyone affected should be checked together.</string>
+    <string name="rf_r8">The photo quality was poor, so this result is very uncertain.</string>
+    <string name="rf_t1">This spot looks larger than on %1$s.</string>
+    <string name="rf_t2">The colour of this spot has changed compared with %1$s.</string>
+    <string name="rf_t3">This area seems to be spreading.</string>
+
+    <!-- Category display names (contracts §1) -->
+    <string name="cat_eczema_atopic">Eczema / atopic dermatitis</string>
+    <string name="cat_contact_dermatitis">Contact dermatitis</string>
+    <string name="cat_seborrheic_dermatitis">Seborrheic dermatitis</string>
+    <string name="cat_tinea">Fungal infection (tinea/ringworm)</string>
+    <string name="cat_scabies">Scabies</string>
+    <string name="cat_acne">Acne</string>
+    <string name="cat_psoriasis">Psoriasis</string>
+    <string name="cat_vitiligo">Vitiligo / pigment loss</string>
+    <string name="cat_benign_lesion">Common benign growth</string>
+    <string name="cat_suspicious_lesion">Spot that needs a doctor\'s look</string>
+    <string name="cat_other">Other / not sure</string>
+
+    <!-- Insights / Library -->
+    <string name="ins_title">Detailed Insights</string>
+    <string name="ins_tab_about">About</string>
+    <string name="ins_tab_care">Care</string>
+    <string name="ins_tab_doctor">See a doctor</string>
+    <string name="ins_signs">Common signs</string>
+    <string name="ins_care">General care</string>
+    <string name="ins_see">See a doctor if</string>
+    <string name="ins_sources">Sources</string>
+    <string name="lib_title">Skin Library</string>
+    <string name="lib_sub">Learn the basics. Available offline.</string>
+    <string name="lib_all">All</string>
+    <string name="lib_rash">Rashes</string>
+    <string name="lib_infection">Infections</string>
+    <string name="lib_spots">Spots</string>
+    <string name="lib_quote">Knowledge is a\nform of care.</string>
+
+    <!-- History / Journey -->
+    <string name="hist_title">Your Journey</string>
+    <string name="hist_sub">Track your progress over time.</string>
+    <string name="hist_off">History is off. Turn it on in Profile to keep your results on this phone.</string>
+    <string name="hist_empty">No scans on this day.</string>
+    <string name="hist_none">No saved scans yet.</string>
+    <string name="hist_add">Add New Analysis</string>
+    <string name="hist_possible">Possible: %1$s</string>
+    <string name="hist_quote">“Small steps today.\nHealthier skin tomorrow.”</string>
+    <string name="hist_spots">Tracked spots</string>
+
+    <!-- Timeline -->
+    <string name="tl_track_title">Track this spot</string>
+    <string name="tl_name">Name the spot</string>
+    <string name="tl_name_hint">e.g. left forearm spot</string>
+    <string name="tl_reminder">Remind me to re-check</string>
+    <string name="tl_days">%1$d days</string>
+    <string name="tl_coin_tip">Tip: place a coin next to the spot. It gives real size, so changes are measured accurately.</string>
+    <string name="tl_tap_seed">Tap the centre of the spot</string>
+    <string name="tl_start">Start tracking</string>
+    <string name="tl_recapture">Re-check now</string>
+    <string name="tl_align">Line up with the faint previous photo</string>
+    <string name="tl_align_ok">Aligned</string>
+    <string name="tl_align_weak">Almost</string>
+    <string name="tl_align_bad">Move to match</string>
+    <string name="tl_coin">Coin detected</string>
+    <string name="tl_no_match">Couldn\'t match the spot. Retake from the same angle and distance.</string>
+    <string name="tl_size">Size change</string>
+    <string name="tl_contrast">Colour contrast change</string>
+    <string name="tl_conf_ok">Confidence: OK</string>
+    <string name="tl_conf_low">Confidence: Low</string>
+    <string name="tl_conf_low_why">Low because %1$s.</string>
+    <string name="tl_why_coin">no coin in both photos</string>
+    <string name="tl_why_align">the photos are hard to align</string>
+    <string name="tl_why_noise">the spot has not been calibrated</string>
+    <string name="tl_calibrate">Calibrate (3 photos, same day)</string>
+    <string name="tl_calibrate_sub">Take 3 photos of the unchanged spot today so SkinNova learns its normal measurement noise.</string>
+    <string name="tl_summary">What changed</string>
+    <string name="tl_export">Export Doctor Visit Summary (PDF)</string>
+    <string name="tl_rebaseline">Use as new baseline</string>
+    <string name="tl_delete">Stop tracking</string>
+    <string name="tl_reminder_title">Time to re-check “%1$s”</string>
+    <string name="tl_reminder_body">Take a new photo to see if it has changed.</string>
+    <string name="tl_captures">%1$d photos</string>
+    <string name="tl_baseline">Baseline</string>
+
+    <!-- Profile / settings -->
+    <string name="prof_guest">Guest</string>
+    <string name="prof_summary">%1$d scans · %2$d tracked spots</string>
+    <string name="prof_appearance">APPEARANCE</string>
+    <string name="prof_dark">Dark</string>
+    <string name="prof_light">Light</string>
+    <string name="prof_language">LANGUAGE</string>
+    <string name="prof_model">ON-DEVICE MODEL</string>
+    <string name="prof_model_name">Gemma 4 E2B</string>
+    <string name="prof_model_badge">LoRA · Derm</string>
+    <string name="prof_model_missing">Not imported</string>
+    <string name="prof_runtime">Runtime</string>
+    <string name="prof_vision">Vision</string>
+    <string name="prof_network">Network</string>
+    <string name="prof_network_none">Not required</string>
+    <string name="prof_backend">Backend</string>
+    <string name="prof_privacy">PRIVACY &amp; DATA</string>
+    <string name="prof_history">Save history on this phone</string>
+    <string name="prof_history_sub">Off by default. Encrypted on this phone.</string>
+    <string name="prof_tts">Read results aloud</string>
+    <string name="prof_tts_sub">Uses your phone\'s voice engine.</string>
+    <string name="prof_coin">Coin size for tracking</string>
+    <string name="prof_coin_sub">%1$.1f mm (₹1 coin by default; check yours)</string>
+    <string name="prof_replay">Replay intro</string>
+    <string name="prof_clear">Delete everything</string>
+    <string name="prof_clear_confirm">Delete all scans, tracked spots and photos from this phone? This cannot be undone.</string>
+    <string name="prof_clear_model">Also delete the AI model file</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="prof_about">ABOUT</string>
+    <string name="prof_about_body">SkinNova is for preliminary information and education. It does not replace a professional medical diagnosis.</string>
+    <string name="about_sources">Data sources and licenses</string>
+    <string name="about_sources_body">Image model trained on: PAD-UFES-20 (CC BY 4.0), SkinDisNet (CC BY-NC 4.0), DermNet NZ images via a Kaggle mirror (non-commercial, educational), mgmitesh Kaggle set (CC BY 4.0). Tested on SkinDiseaseBD (CC BY-NC 4.0). Language model: Gemma 4 E2B (Apache-2.0). Condition notes summarise AAD, NHS, DermNet and WHO public pages in our own words.</string>
+    <string name="about_limits">Limitations</string>
+    <string name="about_limits_body">Most training photos show lighter skin under clinical lighting, so results on brown and dark skin may be less reliable. The model only knows 11 broad categories. Voice input in languages other than Hindi and English is beta.</string>
+    <string name="about_version">Version %1$s · prompts %2$s · model %3$s</string>
+    <string name="beta">beta</string>
+</resources>

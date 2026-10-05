@@ -1,0 +1,111 @@
+{
+ "git_sha": "6fe1ca6",
+ "dataset_rev": "a138e2d1b593",
+ "model_sha": "",
+ "created_at": "2026-10-05T18:16:19+00:00",
+ "classes": [
+  "eczema_atopic",
+  "contact_dermatitis",
+  "tinea",
+  "scabies",
+  "acne",
+  "psoriasis",
+  "vitiligo",
+  "benign_lesion",
+  "suspicious_lesion",
+  "other"
+ ],
+ "dropped_d5": {
+  "seborrheic_dermatitis": 41
+ },
+ "n": {
+  "train": 18805,
+  "val": 3754,
+  "test": 3759,
+  "external_test": 136
+ },
+ "per_class": {
+  "train": {
+   "benign_lesion": 6119,
+   "suspicious_lesion": 4968,
+   "other": 4080,
+   "eczema_atopic": 860,
+   "tinea": 830,
+   "acne": 551,
+   "psoriasis": 538,
+   "vitiligo": 472,
+   "scabies": 234,
+   "contact_dermatitis": 153
+  },
+  "val": {
+   "benign_lesion": 1202,
+   "suspicious_lesion": 997,
+   "other": 805,
+   "eczema_atopic": 186,
+   "tinea": 157,
+   "acne": 114,
+   "psoriasis": 107,
+   "vitiligo": 94,
+   "scabies": 48,
+   "contact_dermatitis": 44
+  },
+  "test": {
+   "benign_lesion": 1227,
+   "suspicious_lesion": 992,
+   "other": 812,
+   "eczema_atopic": 158,
+   "tinea": 158,
+   "acne": 113,
+   "psoriasis": 109,
+   "vitiligo": 97,
+   "scabies": 50,
+   "contact_dermatitis": 43
+  },
+  "external_test": {
+   "eczema_atopic": 91,
+   "tinea": 26,
+   "scabies": 10,
+   "vitiligo": 9
+  }
+ },
+ "share_pct": {
+  "train": {
+   "benign_lesion": 32.54,
+   "suspicious_lesion": 26.42,
+   "other": 21.7,
+   "eczema_atopic": 4.57,
+   "tinea": 4.41,
+   "acne": 2.93,
+   "psoriasis": 2.86,
+   "vitiligo": 2.51,
+   "scabies": 1.24,
+   "contact_dermatitis": 0.81
+  },
+  "val": {
+   "benign_lesion": 32.02,
+   "suspicious_lesion": 26.56,
+   "other": 21.44,
+   "eczema_atopic": 4.95,
+   "tinea": 4.18,
+   "acne": 3.04,
+   "psoriasis": 2.85,
+   "vitiligo": 2.5,
+   "scabies": 1.28,
+   "contact_dermatitis": 1.17
+  },
+  "test": {
+   "benign_lesion": 32.64,
+   "suspicious_lesion": 26.39,
+   "other": 21.6,
+   "eczema_atopic": 4.2,
+   "tinea": 4.2,
+   "acne": 3.01,
+   "psoriasis": 2.9,
+   "vitiligo": 2.58,
+   "scabies": 1.33,
+   "contact_dermatitis": 1.14
+  }
+ },
+ "D6_max_share_diff_pts": 0.75,
+ "D6_pass": true
+}

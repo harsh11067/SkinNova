@@ -1,0 +1,6 @@
+# v1
+Your previous reply was not valid. Problems: {errors}
+Reply again with ONLY one JSON object that matches SCHEMA. No code fences, no text before or after.
+Keep the same meaning, fix only the listed problems. Never name prescription medicines or doses, never say "you have".
+SCHEMA: {schema_compact}
+PREVIOUS: <<<{previous}>>>

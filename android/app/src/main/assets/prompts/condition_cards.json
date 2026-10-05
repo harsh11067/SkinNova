@@ -1,0 +1,105 @@
+{
+  "version": "v1",
+  "review": {"status": "draft — needs Harsh's sentence-by-sentence check (diy.md §6.3)", "reviewed_by": "", "date": ""},
+  "cards": {
+    "eczema_atopic": {
+      "summary": "A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. It is not contagious.",
+      "typical_features": ["very itchy dry patches", "rough or thickened skin from scratching", "on brown skin may look dark brown, purple or grey rather than red", "often starts in childhood"],
+      "common_sites": ["inside elbows and knees", "hands", "neck", "face in babies"],
+      "distinguishing_from": {"tinea": "eczema edges are usually blurry; fungal rings have a sharp scaly edge", "psoriasis": "psoriasis plaques are thicker with silvery scale and sharp borders"},
+      "see_doctor_if": ["itching stops sleep", "weeping, crusting or pus", "no better after 2 weeks of gentle care", "a baby or young child is affected"],
+      "general_care": ["moisturise often with a plain, fragrance-free cream", "short lukewarm baths and gentle soap-free wash", "keep nails short and avoid known triggers"],
+      "sources": ["AAD: Atopic dermatitis", "NHS: Atopic eczema", "DermNet: Atopic dermatitis"]
+    },
+    "contact_dermatitis": {
+      "summary": "A rash caused by something touching the skin, either an irritant (soap, detergent) or an allergy (nickel, fragrance, hair dye).",
+      "typical_features": ["rash shaped like the area of contact", "itching, burning or stinging", "small blisters in strong reactions", "appears hours to days after contact"],
+      "common_sites": ["hands", "wrists and earlobes (jewellery)", "face and eyelids", "where a new product was used"],
+      "distinguishing_from": {"eczema_atopic": "contact rashes follow where something touched and improve when it is avoided"},
+      "see_doctor_if": ["rash on the face, eyes or genitals", "blisters spread widely", "signs of infection", "swelling of lips or trouble breathing: seek urgent care"],
+      "general_care": ["stop using the suspected product", "rinse the area with plain cool water", "wear gloves for wet or chemical work", "use plain unscented moisturiser"],
+      "sources": ["AAD: Contact dermatitis", "NHS: Contact dermatitis", "DermNet: Contact dermatitis"]
+    },
+    "seborrheic_dermatitis": {
+      "summary": "A common, harmless flaky rash in oily areas. It tends to come and go and is linked to a yeast that normally lives on skin.",
+      "typical_features": ["greasy yellow or white flakes", "mild itching", "dandruff", "on darker skin may show as lighter patches"],
+      "common_sites": ["scalp", "eyebrows", "sides of the nose", "behind the ears", "centre of the chest"],
+      "distinguishing_from": {"psoriasis": "psoriasis scale is thicker and drier and often also on elbows and knees"},
+      "see_doctor_if": ["it spreads beyond the usual areas", "skin becomes painful or weepy", "no better after a few weeks of gentle care"],
+      "general_care": ["wash the scalp regularly with a gentle shampoo", "avoid harsh scrubbing", "manage stress and sleep, which can trigger flares"],
+      "sources": ["AAD: Seborrheic dermatitis", "NHS: Seborrhoeic dermatitis", "DermNet: Seborrhoeic dermatitis"]
+    },
+    "tinea": {
+      "summary": "A fungal skin infection (ringworm; no worm involved). It spreads by touch, towels and clothing and is very common in hot, humid weather.",
+      "typical_features": ["ring-shaped patch with a raised scaly edge", "clearer centre", "itching", "slowly spreading outward"],
+      "common_sites": ["groin and inner thighs", "waist and buttocks", "feet and between toes", "scalp and nails"],
+      "distinguishing_from": {"eczema_atopic": "fungal rings have a sharper active edge", "psoriasis": "psoriasis does not usually clear in the centre"},
+      "see_doctor_if": ["it keeps spreading despite care", "scalp or nails are affected", "you have diabetes or weak immunity", "it lasts more than 4 weeks"],
+      "general_care": ["keep the area clean and fully dry", "wear loose cotton clothes and change daily", "do not share towels, combs or clothes", "wash clothes and bedding in hot water"],
+      "sources": ["AAD: Ringworm", "NHS: Ringworm", "DermNet: Tinea corporis"]
+    },
+    "scabies": {
+      "summary": "A very itchy rash caused by tiny mites that burrow in the skin. It spreads by close contact, so families often have it together.",
+      "typical_features": ["intense itching, worse at night", "small bumps or thin lines (burrows)", "other people at home itching too"],
+      "common_sites": ["between fingers", "wrists", "waist", "armpits", "groin"],
+      "distinguishing_from": {"eczema_atopic": "scabies itch is worse at night and often affects several people in one home"},
+      "see_doctor_if": ["you suspect scabies: everyone close needs treatment at the same time", "sores become crusted or infected", "a baby, older adult or someone with weak immunity is affected"],
+      "general_care": ["wash clothes, towels and bedding in hot water", "seal items that cannot be washed in a bag for several days", "avoid close skin contact until checked"],
+      "sources": ["WHO: Scabies", "NHS: Scabies", "AAD: Scabies"]
+    },
+    "acne": {
+      "summary": "Blocked hair follicles with oil and inflammation causing spots. Very common in teenagers and also in adults.",
+      "typical_features": ["blackheads and whiteheads", "red bumps and pus spots", "deeper painful lumps", "dark marks after spots heal, especially on brown skin"],
+      "common_sites": ["face", "chest", "upper back", "shoulders"],
+      "distinguishing_from": {"other": "sudden widespread spots with fever or new medicines need a doctor's look"},
+      "see_doctor_if": ["painful deep lumps or cysts", "scarring or dark marks", "no better after 8 weeks of gentle care", "acne starts suddenly in adulthood"],
+      "general_care": ["wash twice a day with a mild cleanser", "do not squeeze or pick spots", "choose oil-free, non-comedogenic products", "change pillowcases often"],
+      "sources": ["AAD: Acne", "NHS: Acne", "DermNet: Acne"]
+    },
+    "psoriasis": {
+      "summary": "A long-term immune condition that makes skin cells build up into thick, scaly patches. It is not contagious.",
+      "typical_features": ["raised plaques with sharp edges", "silvery-white scale", "on brown skin may look purple, grey or dark brown", "nail pits or thickening"],
+      "common_sites": ["elbows and knees", "scalp", "lower back", "nails"],
+      "distinguishing_from": {"eczema_atopic": "psoriasis plaques are thicker with sharper borders", "seborrheic_dermatitis": "psoriasis scale is drier and thicker"},
+      "see_doctor_if": ["joint pain or swelling", "large areas are affected", "it affects sleep, work or mood", "sudden widespread flare"],
+      "general_care": ["moisturise thick areas daily", "short sun exposure without burning", "avoid scratching or injuring the skin", "manage stress"],
+      "sources": ["AAD: Psoriasis", "NHS: Psoriasis", "DermNet: Psoriasis"]
+    },
+    "vitiligo": {
+      "summary": "Loss of skin colour in patches because pigment cells stop working. It is not contagious and not painful, but can matter a lot to people.",
+      "typical_features": ["milky-white patches with clear edges", "patches more visible on brown and dark skin", "white hair in affected areas"],
+      "common_sites": ["around eyes and mouth", "hands and fingers", "elbows and knees", "skin folds"],
+      "distinguishing_from": {"tinea": "some fungal infections cause lighter, slightly scaly patches; vitiligo patches are smooth and fully white"},
+      "see_doctor_if": ["new or spreading light patches, to confirm the cause", "patches are scaly, itchy or numb", "it affects how you feel"],
+      "general_care": ["protect white patches from sunburn with clothing and shade", "be gentle with the skin; injury can trigger new patches", "support groups can help"],
+      "sources": ["AAD: Vitiligo", "NHS: Vitiligo", "DermNet: Vitiligo"]
+    },
+    "benign_lesion": {
+      "summary": "Common harmless growths such as moles and seborrhoeic keratoses. They are usually stable for years.",
+      "typical_features": ["even colour", "round or oval with a smooth border", "stable size", "warty stuck-on look for seborrhoeic keratosis"],
+      "common_sites": ["anywhere on the body", "face, chest and back with age"],
+      "distinguishing_from": {"suspicious_lesion": "watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving"},
+      "see_doctor_if": ["it changes size, shape or colour", "it bleeds, itches or crusts without injury", "it looks different from your other moles", "a new spot appears after age 40"],
+      "general_care": ["photograph it to compare over time", "protect skin from strong sun", "check your skin once a month"],
+      "sources": ["AAD: Moles", "NHS: Moles", "DermNet: Seborrhoeic keratosis"]
+    },
+    "suspicious_lesion": {
+      "summary": "A spot with features that doctors want to check in person. Most checked spots turn out harmless, but early checks matter.",
+      "typical_features": ["uneven shape or border", "several colours", "growing or changing", "sore that bleeds or does not heal", "on dark skin, can appear on palms, soles or under nails"],
+      "common_sites": ["sun-exposed skin", "palms, soles and nails"],
+      "distinguishing_from": {"benign_lesion": "benign spots are even and stable; change over time is the key warning sign"},
+      "see_doctor_if": ["always: book a skin check soon", "it bleeds, grows quickly or a new dark line appears in a nail: go sooner"],
+      "general_care": ["do not try to remove or burn it at home", "photograph it with a coin for size", "protect skin from strong sun"],
+      "sources": ["AAD: Skin cancer warning signs", "NHS: Skin cancer (melanoma)", "DermNet: Melanoma"]
+    },
+    "other": {
+      "summary": "The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. That is not a sign of anything serious by itself.",
+      "typical_features": ["mixed or unclear features", "photo blurry, dark or too far away"],
+      "common_sites": [],
+      "distinguishing_from": {},
+      "see_doctor_if": ["you are worried", "it is painful, spreading or not improving", "you feel unwell or have a fever"],
+      "general_care": ["retake the photo in daylight, 15-20 cm away", "keep the area clean and avoid new products until checked"],
+      "sources": ["NHS: Skin rashes", "AAD: Find a dermatologist"]
+    }
+  }
+}

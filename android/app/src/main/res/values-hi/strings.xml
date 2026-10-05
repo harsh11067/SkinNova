@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hindi. Safety strings (rf_*, tier_*, cat_*, disclaimer) must be reviewed by a native speaker (diy.md / d2y.md). -->
+<resources>
+    <string name="load_tagline">ऑफ़लाइन। निजी। आपका।</string>
+    <string name="load_sub">त्वचा की जानकारी देने वाला AI\nजो आपके फ़ोन पर ही चलता है।</string>
+    <string name="load_get_started">शुरू करें</string>
+    <string name="onb_1_title">SkinNova क्या करता है</string>
+    <string name="onb_1_body">त्वचा की समस्या की फ़ोटो लें और कुछ सवालों के जवाब दें। SkinNova तीन संभावित श्रेणियाँ दिखाता है, वह कितना पक्का है, और डॉक्टर को कब दिखाना चाहिए।</string>
+    <string name="onb_2_title">निजी और ऑफ़लाइन</string>
+    <string name="onb_2_body">सब कुछ इसी फ़ोन पर चलता है। आपकी फ़ोटो और जवाब कभी अपलोड नहीं होते। हिस्ट्री तब तक बंद रहती है जब तक आप उसे चालू न करें।</string>
+    <string name="onb_3_title">यह निदान नहीं है</string>
+    <string name="onb_3_body">SkinNova शुरुआती, शैक्षिक जानकारी देता है। यह गलत भी हो सकता है। त्वचा रोग का निदान केवल डॉक्टर कर सकते हैं। आपात स्थिति में तुरंत इलाज लें।</string>
+    <string name="onb_understand">मैं समझ गया/गई</string>
+    <string name="onb_next">आगे</string>
+    <string name="onb_language">भाषा</string>
+
+    <string name="home_hello">नमस्ते,\nनियंत्रण आपके हाथ में है।</string>
+    <string name="home_sub">स्कैन करें। समझें। ध्यान रखें।</string>
+    <string name="home_status_ready">ऑफ़लाइन · मॉडल तैयार</string>
+    <string name="home_status_basic">ऑफ़लाइन · बेसिक मोड</string>
+    <string name="home_scan">त्वचा स्कैन करें</string>
+    <string name="home_scan_sub">फ़ोटो लें या गैलरी से चुनें।</string>
+    <string name="home_reports">मेरी रिपोर्ट</string>
+    <string name="home_library">त्वचा लाइब्रेरी</string>
+    <string name="home_library_sub">आम समस्याएँ</string>
+    <string name="home_tip">छोटी सलाह</string>
+    <string name="nav_home">होम</string>
+    <string name="nav_history">हिस्ट्री</string>
+    <string name="nav_library">लाइब्रेरी</string>
+    <string name="nav_profile">प्रोफ़ाइल</string>
+
+    <string name="scan_title">त्वचा स्कैन करें</string>
+    <string name="scan_sub">गोले में दाग को रखें। दिन की रोशनी, 15–20 सेमी दूर।</string>
+    <string name="scan_mode_photo">फ़ोटो</string>
+    <string name="scan_mode_gallery">गैलरी</string>
+    <string name="scan_hint_ok">अच्छी रोशनी · साफ़ फ़ोटो</string>
+    <string name="scan_hint_dark">और रोशनी चाहिए</string>
+    <string name="scan_hint_bright">बहुत ज़्यादा रोशनी</string>
+    <string name="scan_hint_blur">फ़ोन स्थिर रखें</string>
+    <string name="scan_hint_close">थोड़ा पास लाएँ</string>
+    <string name="qg_title">फ़ोटो ठीक से काम नहीं कर सकती</string>
+    <string name="qg_blurry">फ़ोटो धुंधली लग रही है।</string>
+    <string name="qg_dark">फ़ोटो बहुत अंधेरी है।</string>
+    <string name="qg_bright">फ़ोटो बहुत ज़्यादा चमकीली है।</string>
+    <string name="qg_retake">फिर से लें</string>
+    <string name="qg_use_anyway">फिर भी इस्तेमाल करें</string>
+
+    <string name="q_step">सवाल %1$d / %2$d</string>
+    <string name="q_next">आगे</string>
+    <string name="q_analyze">जाँच करें</string>
+    <string name="q_skip">छोड़ें</string>
+    <string name="q_site">समस्या कहाँ है?</string>
+    <string name="q_duration">यह कब से है?</string>
+    <string name="q_itch">क्या खुजली होती है?</string>
+    <string name="q_pain">क्या दर्द या छूने पर दुखता है?</string>
+    <string name="q_changing">क्या हाल में यह बदला है?</string>
+    <string name="q_bleeding">क्या इससे खून, पानी या पपड़ी आती है?</string>
+    <string name="q_fever">क्या बुखार है या तबीयत ठीक नहीं लग रही?</string>
+    <string name="q_others">क्या घर में किसी और को भी ऐसा ही है?</string>
+    <string name="q_product">क्या शुरू होने से पहले कोई नया प्रोडक्ट, दवा या संपर्क हुआ था?</string>
+    <string name="q_age">जिसे समस्या है उसकी उम्र</string>
+    <string name="q_notes">और कुछ बताना चाहेंगे?</string>
+    <string name="q_private">आपकी फ़ोटो और जवाब इसी फ़ोन पर प्रोसेस होते हैं, कभी अपलोड नहीं होते।</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="lvl_0">बिल्कुल नहीं</string><string name="lvl_1">हल्का</string><string name="lvl_2">मध्यम</string><string name="lvl_3">बहुत ज़्यादा</string>
+    <string name="site_face">चेहरा</string><string name="site_scalp">सिर की त्वचा</string><string name="site_neck">गर्दन</string>
+    <string name="site_chest">छाती</string><string name="site_back">पीठ</string><string name="site_abdomen">पेट</string>
+    <string name="site_arm">बाँह</string><string name="site_hand">हाथ</string><string name="site_leg">पैर (टाँग)</string>
+    <string name="site_foot">पैर का पंजा</string><string name="site_groin">जांघ का जोड़</string><string name="site_nails">नाखून</string>
+    <string name="site_other">अन्य</string>
+    <string name="dur_lt_1w">1 हफ़्ते से कम</string><string name="dur_1_4w">1–4 हफ़्ते</string>
+    <string name="dur_1_6m">1–6 महीने</string><string name="dur_gt_6m">6+ महीने</string>
+    <string name="chg_no">नहीं बदला</string><string name="chg_growing">बढ़ रहा है</string>
+    <string name="chg_changing_color">रंग बदल रहा है</string><string name="chg_changing_shape">आकार बदल रहा है</string>
+    <string name="chg_spreading">फैल रहा है</string><string name="chg_unsure">पता नहीं</string>
+    <string name="age_lt_12">12 से कम</string><string name="age_60_plus">60+</string>
+    <string name="q_unanswered">कृपया जवाब दें</string>
+
+    <string name="v_title">इसके बारे में बताइए</string>
+    <string name="v_sub">30 सेकंड तक हिंदी, अंग्रेज़ी या दोनों में खुलकर बोलिए।</string>
+    <string name="v_listening">सुन रहे हैं…</string>
+    <string name="v_stop">रोकें</string>
+    <string name="v_heard">हमने यह सुना</string>
+    <string name="v_heard_sub">जो गलत है उसे ठीक करें।</string>
+    <string name="v_extract">मेरे जवाब भरें</string>
+    <string name="v_filled">आपके शब्दों से %1$d जवाब भरे गए। कृपया हर एक जाँच लें।</string>
+    <string name="v_none">हम जवाब नहीं निकाल पाए। कृपया टैप करके जवाब दें।</string>
+    <string name="v_unclear">साफ़ सुनाई नहीं दिया। फिर से बोलें या टैप करके जवाब दें।</string>
+    <string name="v_evidence">आपने कहा: “%1$s”</string>
+    <string name="v_confirm">पक्का करें</string>
+
+    <string name="an_title">फ़ोन पर ही जाँच हो रही है</string>
+    <string name="an_sub">इंटरनेट नहीं। कुछ भी फ़ोन से बाहर नहीं जाता।</string>
+    <string name="an_cancel">रद्द करें</string>
+
+    <string name="res_title">जाँच का नतीजा</string>
+    <string name="res_answers">आपके जवाब</string>
+    <string name="res_possible">संभावित समस्याएँ</string>
+    <string name="res_possible_sub">फ़ोटो और आपके जवाबों पर आधारित। यह निदान नहीं है।</string>
+    <string name="res_lk_higher">ज़्यादा संभव</string>
+    <string name="res_lk_possible">संभव</string>
+    <string name="res_lk_less_likely">कम संभव</string>
+    <string name="res_uncertainty">यह कितना पक्का है?</string>
+    <string name="res_unc_low">काफ़ी हद तक मेल खाता है</string>
+    <string name="res_unc_moderate">कुछ अनिश्चित</string>
+    <string name="res_unc_high">बहुत अनिश्चित</string>
+    <string name="res_explanation">समझाइश</string>
+    <string name="res_help">क्या मदद करेगा</string>
+    <string name="res_care">सामान्य देखभाल की जानकारी</string>
+    <string name="res_basic_mode">बेसिक मोड: AI समझाइश उपलब्ध नहीं है, इसलिए यह नतीजा केवल इमेज मॉडल, जानकारी कार्ड और सुरक्षा नियमों पर आधारित है।</string>
+    <string name="res_save">सेव करें</string>
+    <string name="res_retake">फिर से लें</string>
+    <string name="res_track">इस दाग को ट्रैक करें</string>
+    <string name="disclaimer">यह निदान नहीं है। SkinNova शुरुआती, शैक्षिक जानकारी देता है। सही निदान के लिए त्वचा रोग विशेषज्ञ (डर्मेटोलॉजिस्ट) से मिलें।</string>
+
+    <string name="tier_LOW">कम चिंता</string>
+    <string name="tier_MODERATE">जल्द डॉक्टर को दिखाएँ</string>
+    <string name="tier_HIGH">इसी हफ़्ते डॉक्टर को दिखाएँ</string>
+    <string name="tier_URGENT">आज ही इलाज लें</string>
+    <string name="tier_adv_LOW">ध्यान रखें और हल्की देखभाल करें। अगर यह फैले, दर्द करे या 2 हफ़्ते में ठीक न हो तो डॉक्टर को दिखाएँ।</string>
+    <string name="tier_adv_MODERATE">1–2 हफ़्ते में डॉक्टर से मिलें, बिगड़े तो पहले।</string>
+    <string name="tier_adv_HIGH">कृपया कुछ ही दिनों में डॉक्टर या त्वचा विशेषज्ञ को दिखाएँ।</string>
+    <string name="tier_adv_URGENT">कृपया आज ही डॉक्टर के पास जाएँ। बहुत ज़्यादा तबीयत खराब हो तो इमरजेंसी में जाएँ।</string>
+
+    <string name="rf_r1">बुखार या तबीयत खराब होने के साथ दर्द वाला या फैलता दाने का मतलब संक्रमण हो सकता है। आज ही इलाज लें।</string>
+    <string name="rf_r2">जो दाग बढ़ रहा है या जिसका रंग या आकार बदल रहा है, उसे डॉक्टर को दिखाना चाहिए।</string>
+    <string name="rf_r3">एक हफ़्ते से ज़्यादा समय तक खून आना या पपड़ी बनना डॉक्टर को दिखाना चाहिए।</string>
+    <string name="rf_r4">इमेज मॉडल को ऐसे लक्षण दिखे हैं जिन्हें डॉक्टर खुद देखना पसंद करते हैं।</string>
+    <string name="rf_r5">12 साल से कम उम्र के बच्चों की त्वचा की समस्या डॉक्टर को दिखानी चाहिए।</string>
+    <string name="rf_r6">चेहरे या जांघ के जोड़ पर दर्द वाले दाने डॉक्टर को दिखाने चाहिए।</string>
+    <string name="rf_r7">घर में दूसरों को भी है। यह छूने से फैल सकता है; सभी प्रभावित लोगों की जाँच साथ में होनी चाहिए।</string>
+    <string name="rf_r8">फ़ोटो की क्वालिटी खराब थी, इसलिए यह नतीजा बहुत अनिश्चित है।</string>
+    <string name="rf_t1">यह दाग %1$s के मुकाबले बड़ा दिख रहा है।</string>
+    <string name="rf_t2">इस दाग का रंग %1$s के मुकाबले बदल गया है।</string>
+    <string name="rf_t3">यह हिस्सा फैलता हुआ लग रहा है।</string>
+
+    <string name="cat_eczema_atopic">एक्ज़िमा</string>
+    <string name="cat_contact_dermatitis">कॉन्टैक्ट डर्मेटाइटिस (किसी चीज़ से एलर्जी/जलन)</string>
+    <string name="cat_seborrheic_dermatitis">सेबोरिक डर्मेटाइटिस (रूसी जैसा)</string>
+    <string name="cat_tinea">फंगल संक्रमण (दाद)</string>
+    <string name="cat_scabies">खुजली रोग (स्केबीज़)</string>
+    <string name="cat_acne">मुंहासे</string>
+    <string name="cat_psoriasis">सोरायसिस</string>
+    <string name="cat_vitiligo">सफ़ेद दाग (विटिलिगो)</string>
+    <string name="cat_benign_lesion">आम हानिरहित उभार (तिल आदि)</string>
+    <string name="cat_suspicious_lesion">ऐसा दाग जिसे डॉक्टर को दिखाना चाहिए</string>
+    <string name="cat_other">अन्य / पक्का नहीं</string>
+
+    <string name="hist_title">आपकी यात्रा</string>
+    <string name="hist_add">नई जाँच जोड़ें</string>
+    <string name="tl_track_title">इस दाग को ट्रैक करें</string>
+    <string name="tl_coin_tip">सलाह: दाग के पास एक सिक्का रखें। इससे असली आकार पता चलता है और बदलाव सही नापा जाता है।</string>
+    <string name="tl_no_match">दाग का मिलान नहीं हो पाया। उसी कोण और दूरी से फिर से लें।</string>
+    <string name="tl_reminder_title">“%1$s” को फिर से जाँचने का समय</string>
+    <string name="tl_reminder_body">बदलाव देखने के लिए नई फ़ोटो लें।</string>
+    <string name="prof_history">इस फ़ोन पर हिस्ट्री सेव करें</string>
+    <string name="prof_clear">सब कुछ मिटाएँ</string>
+    <string name="prof_about_body">SkinNova शुरुआती जानकारी और शिक्षा के लिए है। यह डॉक्टर के निदान की जगह नहीं लेता।</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete">मिटाएँ</string>
+</resources>

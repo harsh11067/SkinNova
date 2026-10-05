@@ -1,0 +1,8 @@
+# v1
+IMAGE_MODEL_TOP3: {cv_top3_json}
+RULE_TIER: {rule_tier}
+RULE_MESSAGES: {rule_messages_json}
+ANSWERS: {answers_json}
+USER_FREE_TEXT: <<<{free_text}>>>
+CONDITION_NOTES: {cards_json}
+SCHEMA: {schema_compact}

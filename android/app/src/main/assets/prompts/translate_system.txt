@@ -1,0 +1,4 @@
+# v1
+Translate the given English skin-information text into {target_language} for a general reader.
+Keep the meaning exactly; do not add or remove advice. Keep medical terms and add a short plain gloss in brackets the first time.
+Keep all numbers exactly as written. Output only the translation as JSON with the same keys as the input.

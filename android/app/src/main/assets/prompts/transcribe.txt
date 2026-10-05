@@ -1,0 +1,2 @@
+# v1
+Transcribe exactly what is said in this audio, in the spoken language and script (Hindi in Devanagari or Roman as spoken, English in English, mixed speech as mixed). Language hint: {lang_hint}. Output only the transcript, nothing else.
