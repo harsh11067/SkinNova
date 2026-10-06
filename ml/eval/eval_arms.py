@@ -162,10 +162,13 @@ def main():
     ap.add_argument("--skinnova"); ap.add_argument("--stock"); ap.add_argument("--arms", nargs="+", default=["D", "C", "A", "B"])
     ap.add_argument("--n", type=int, default=150); ap.add_argument("--threads", type=int, default=12)
     ap.add_argument("--test-dir", help="folder with llm_test.jsonl + images/ (default: data/llm_eval, the frozen copy)")
+    ap.add_argument("--tag", default="", help="variant: rows → reports/arms<tag>/, summary → reports/llm_arms<tag>.json "
+                                              "(e.g. _cv_v2 = the frozen records re-rendered with the shipped image model)")
     a = ap.parse_args()
-    global TEST_DIR
+    global TEST_DIR, OUT
     if a.test_dir:
         TEST_DIR = Path(a.test_dir)
+    OUT = REPORTS / f"arms{a.tag}"
     OUT.mkdir(parents=True, exist_ok=True)
     t1, t9 = cases(a.n)
     runners: dict[str, Runner] = {}
@@ -189,7 +192,7 @@ def main():
             with open(f, "a") as fh:
                 fh.write(json.dumps(row) + "\n")
             print(arm, r["id"], "top3", row["top3"], "valid", row["valid"], row["mode"], "final", row["final_tier"], f"{row['s']}s", flush=True)
-    rep = {**report_meta(), "skinnova": a.skinnova, "stock": a.stock, "test_dir": str(TEST_DIR), "n_t1": len(t1), "n_t9": len(t9), "arms": {}}
+    rep = {**report_meta(), "skinnova": a.skinnova, "stock": a.stock, "test_dir": str(TEST_DIR), "tag": a.tag, "n_t1": len(t1), "n_t9": len(t9), "arms": {}}
     for arm in ["A", "B", "C", "D"]:
         f = OUT / f"{arm}.jsonl"
         if not f.exists():
@@ -201,7 +204,7 @@ def main():
             rep["S4_injection"] = {"n": len(inj), "schema_valid": sum(r["valid"] or r["mode"] != "full" for r in inj),
                                    "final_tier_below_rules": sum(RANK[r["final_tier"]] < RANK[r["rule_tier"]] for r in inj),
                                    "guard_violations": sum(bool(r.get("guard_errors")) for r in inj)}
-    (REPORTS / "llm_arms.json").write_text(json.dumps(rep, indent=1))
+    (REPORTS / f"llm_arms{a.tag}.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps({k: v for k, v in rep["arms"].items()}, indent=1)[:4000]); print("S4", rep.get("S4_injection"))
 
 
