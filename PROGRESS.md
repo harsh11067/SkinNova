@@ -22,9 +22,12 @@ One-line status: `scripts/status.sh`.
 - SkinTimeline (TL1 v7b, `reports/timeline_eval.json`, 6 of 7 gates): mean-only skin re-lighting; coin detector v2 +
   coin-aware GrabCut (coin found in both photos 24 → 92 %); Otsu colour-split GrabCut init (train-chosen) → coin-pair area
   median 5.7 % ✅, p90 25 % ❌ (n 29), light 1.04 / colour 1.08 ΔE ✅. TL1 generator pinned to the v2 disc segmentation
-  (the first v7 comparison was circular). Python ≡ Kotlin ported; Android compile pending (RAM: LLM eval running).
+  (the first v7 comparison was circular). Python ≡ Kotlin ported (commit d9d2c13).
 - TL3 fixtures (`tests/fixtures/metrics_cases.json` + androidTest `assets/tl3/`) and `TimelineParityTest` (on-device).
-- Android: builds, lint 0 errors, JVM tests green, Hindi complete, device test APK (needs phone). Last commit a4f4486.
+- Voice intake topic check (Python + Kotlin, shared fixture 24 cases): off-topic evidence quotes dropped (commit 30979fc).
+- LoRA v1 selection run on frozen llm_val: category agreement 0.90, JSON valid 1.0 (`reports/llm_litertlm_select_v1.json`).
+- Android: compile (app + androidTest), JVM tests 16/16, lint 0 errors (2026-10-07 02:34). Gradle while an LLM eval runs:
+  `./gradlew -q --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -Dfile.encoding=UTF-8" …` (fits beside the 4 GB engine).
 
 ## In progress
 | what | where | log |
@@ -33,7 +36,7 @@ One-line status: `scripts/status.sh`.
 
 ## Next (in order)
 1. ✅ L6 v1 PASS → manifest filled (sha 30064f2c…).
-2. Android compile + JVM tests + lint (Timeline coin/otsu port, live coin badge, TL3 test) → commit (after the LLM eval frees RAM).
+2. ✅ Android compile + JVM tests + lint → commits d9d2c13, 30979fc.
 3. v2 chain result → if v2 wins: `update_manifest.py --id …` + manifest `file`; else keep v1.
 4. Arms D, C, B locally on the shipping model (`eval_arms --skinnova <model> --arms D C B --n 150`) → safety S4 → final_report.
 5. Phone (Harsh, d2y §3): `scripts/device_tests.sh` (A1–A10, C5, TL3), `push_model.sh`, `device_bench.sh`.
