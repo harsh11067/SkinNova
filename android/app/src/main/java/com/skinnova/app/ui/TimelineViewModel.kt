@@ -48,6 +48,8 @@ class TimelineViewModel(app: Application) : AndroidViewModel(app) {
     private val c = (app as SkinNovaApp).container
     private val _rec = MutableStateFlow<RecaptureState>(RecaptureState.Idle); val rec: StateFlow<RecaptureState> = _rec
     private val _baseline = MutableStateFlow<Bitmap?>(null); val baseline: StateFlow<Bitmap?> = _baseline
+    /** The spot's tap on the baseline (normalised): the live coin badge must not take the spot itself for the coin. */
+    private val _seed = MutableStateFlow<Pair<Double, Double>?>(null); val seed: StateFlow<Pair<Double, Double>?> = _seed
 
     private fun cvJson(cv: List<CvScore>) = SnJson.encodeToString(ListSerializer(CvScore.serializer()), cv)
     private fun cvFrom(s: String) = SnJson.decodeFromString(ListSerializer(CvScore.serializer()), s)
@@ -66,6 +68,7 @@ class TimelineViewModel(app: Application) : AndroidViewModel(app) {
 
     fun loadBaseline(spotId: String) = viewModelScope.launch {
         val s = c.db.dao().spot(spotId) ?: return@launch
+        _seed.value = s.seedX.toDouble() to s.seedY.toDouble()
         val cap = s.baselineCaptureId?.let { c.db.dao().capture(it) } ?: return@launch
         _baseline.value = c.images.load(cap.imageRef)
     }

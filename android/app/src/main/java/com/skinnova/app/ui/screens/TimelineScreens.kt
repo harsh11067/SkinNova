@@ -265,6 +265,7 @@ fun RecaptureScreen(vm: SessionViewModel, tvm: TimelineViewModel, spotArg: Strin
     val calibration = spotArg.endsWith("?cal")
     val spotId = spotArg.removeSuffix("?cal")
     val baseline by tvm.baseline.collectAsState()
+    val seed by tvm.seed.collectAsState()
     val st by tvm.rec.collectAsState()
     var align by remember { mutableFloatStateOf(0f) }
     var coin by remember { mutableStateOf(false) }
@@ -282,7 +283,9 @@ fun RecaptureScreen(vm: SessionViewModel, tvm: TimelineViewModel, spotArg: Strin
                     val b = baseSmall ?: return@CameraPreview
                     runCatching {
                         val m = Timeline.toRgbMat(small); val a = Timeline.align(b, m)
-                        align = if (a.h == null) 0f else a.ratio.toFloat(); coin = Timeline.detectCoin(m) != null
+                        align = if (a.h == null) 0f else a.ratio.toFloat()
+                        val sp = seed?.let { (x, y) -> a.h?.let { h -> Timeline.seedInNew(h, x, y, b) } }   // the spot in this frame
+                        coin = Timeline.detectCoin(m, sp) != null
                     }
                 })
                 baseline?.let { Image(it.asImageBitmap(), null, Modifier.fillMaxSize().alpha(0.35f), contentScale = ContentScale.Crop) }

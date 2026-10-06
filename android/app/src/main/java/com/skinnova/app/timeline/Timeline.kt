@@ -65,6 +65,8 @@ data class ChangeMetrics(
 object Timeline {
     const val ALIGN_MIN_RATIO = 0.25
     const val ALIGN_MIN_INLIERS = 30
+    /** Coin disc × this (rim + contact shadow) is background for the lesion segmentation (metrics.py COIN_EXCLUDE). */
+    const val COIN_EXCLUDE = 1.15
     /** Loaded in the object initializer: runs before ANY Timeline method (camera-frame callbacks included). */
     val ready: Boolean = OpenCVLoader.initLocal()
 
@@ -106,8 +108,8 @@ object Timeline {
         return Alignment(h, n.toDouble() / good.size, n)
     }
 
-    /** GrabCut seeded at the tap (normalised x,y). Returns CV_8U 0/1 mask. */
-    fun segment(rgb: Mat, seedX: Double, seedY: Double, rFrac: Double = 0.12, iters: Int = 5): Mat {
+    /** GrabCut seeded at the tap (normalised x,y). Returns CV_8U 0/1 mask. [exclude] = (cx, cy, r) of a detected coin → background. */
+    fun segment(rgb: Mat, seedX: Double, seedY: Double, rFrac: Double = 0.12, iters: Int = 5, exclude: DoubleArray? = null): Mat {
         Core.setRNGSeed(0)
         val w = rgb.cols(); val h = rgb.rows()
         val sx = (seedX * w).toInt(); val sy = (seedY * h).toInt()
@@ -120,6 +122,9 @@ object Timeline {
         Imgproc.rectangle(mask, Point(0.0, (h - b).toDouble()), Point((w - 1).toDouble(), (h - 1).toDouble()), Scalar(Imgproc.GC_BGD.toDouble()), -1)
         Imgproc.rectangle(mask, Point(0.0, 0.0), Point((b - 1).toDouble(), (h - 1).toDouble()), Scalar(Imgproc.GC_BGD.toDouble()), -1)
         Imgproc.rectangle(mask, Point((w - b).toDouble(), 0.0), Point((w - 1).toDouble(), (h - 1).toDouble()), Scalar(Imgproc.GC_BGD.toDouble()), -1)
+        if (exclude != null) Imgproc.circle(mask, Point(exclude[0].toInt().toDouble(), exclude[1].toInt().toDouble()), (COIN_EXCLUDE * exclude[2]).toInt(),
+            Scalar(Imgproc.GC_BGD.toDouble()), -1)
+        otsuInit(rgb, mask, sx, sy, r)   // metrics.py SEG_INIT = "otsu"
         val bgr = Mat(); Imgproc.cvtColor(rgb, bgr, Imgproc.COLOR_RGB2BGR)
         Imgproc.grabCut(bgr, mask, Rect(), Mat(), Mat(), iters, Imgproc.GC_INIT_WITH_MASK)
         // fg = (mask == FGD) | (mask == PR_FGD), as 0/1
@@ -142,25 +147,60 @@ object Timeline {
         return out
     }
 
+    /**
+     * metrics.py _otsu_init: inside the probable-lesion disc (1.6 r), probable FG where the Lab distance from the surrounding
+     * skin (mean of the annulus 1.6–2.2 r, frame/coin excluded) is above Otsu's threshold, probable BG elsewhere.
+     * 8-bit OpenCV Lab, double maths, half-even rounding (Math.rint ≡ numpy rint) — bit-identical to Python.
+     */
+    private fun otsuInit(rgb: Mat, mask: Mat, sx: Int, sy: Int, r: Double) {
+        val h = mask.rows(); val w = mask.cols(); val c = Point(sx.toDouble(), sy.toDouble()); val n = w * h
+        val disc = Mat.zeros(h, w, CvType.CV_8U); Imgproc.circle(disc, c, (1.6 * r).toInt(), Scalar(1.0), -1)
+        val ann = Mat.zeros(h, w, CvType.CV_8U); Imgproc.circle(ann, c, (2.2 * r).toInt(), Scalar(1.0), -1)
+        val mk = ByteArray(n); mask.get(0, 0, mk); val dk = ByteArray(n); disc.get(0, 0, dk); val ak = ByteArray(n); ann.get(0, 0, ak)
+        val lab = Mat(); Imgproc.cvtColor(rgb, lab, Imgproc.COLOR_RGB2Lab); val lk = ByteArray(n * 3); lab.get(0, 0, lk)
+        var cnt = 0; var sL = 0.0; var sA = 0.0; var sB = 0.0
+        for (i in 0 until n) if (ak[i].toInt() != 0 && dk[i].toInt() == 0 && mk[i].toInt() != Imgproc.GC_BGD) {
+            cnt++; sL += lk[3 * i].toInt() and 255; sA += lk[3 * i + 1].toInt() and 255; sB += lk[3 * i + 2].toInt() and 255
+        }
+        if (cnt < 50) return
+        val mL = sL / cnt; val mA = sA / cnt; val mB = sB / cnt
+        val pr = ArrayList<Int>(); val d8 = IntArray(n)
+        for (i in 0 until n) {
+            val m = mk[i].toInt()
+            if (dk[i].toInt() == 0 || m == Imgproc.GC_BGD || m == Imgproc.GC_FGD) continue
+            val dl = (lk[3 * i].toInt() and 255) - mL; val da = (lk[3 * i + 1].toInt() and 255) - mA; val db = (lk[3 * i + 2].toInt() and 255) - mB
+            d8[i] = Math.rint(2.0 * sqrt(dl * dl + da * da + db * db)).coerceIn(0.0, 255.0).toInt(); pr += i
+        }
+        if (pr.size < 50) return
+        val col = Mat(pr.size, 1, CvType.CV_8U); col.put(0, 0, ByteArray(pr.size) { d8[pr[it]].toByte() })
+        val t = Imgproc.threshold(col, Mat(), 0.0, 255.0, Imgproc.THRESH_BINARY or Imgproc.THRESH_OTSU)
+        for (i in pr) mk[i] = (if (d8[i] > t) Imgproc.GC_PR_FGD else Imgproc.GC_PR_BGD).toByte()
+        mask.put(0, 0, mk)
+    }
+
     /** Mask with prior r, and its IoU against the mask with prior 1.4 r (unstable segmentation → confidence low). */
-    fun segmentStable(rgb: Mat, seedX: Double, seedY: Double, rFrac: Double): Pair<Mat, Double> {
-        val a = segment(rgb, seedX, seedY, rFrac); val b = segment(rgb, seedX, seedY, 1.4 * rFrac)
+    fun segmentStable(rgb: Mat, seedX: Double, seedY: Double, rFrac: Double, exclude: DoubleArray? = null): Pair<Mat, Double> {
+        val a = segment(rgb, seedX, seedY, rFrac, exclude = exclude); val b = segment(rgb, seedX, seedY, 1.4 * rFrac, exclude = exclude)
         val inter = Mat(); Core.bitwise_and(a, b, inter); val uni = Mat(); Core.bitwise_or(a, b, uni)
         val u = Core.countNonZero(uni)
         return a to (if (u == 0) 0.0 else Core.countNonZero(inter).toDouble() / u)
     }
 
-    /** (cx, cy, r) of a coin not overlapping the lesion, or null. HOUGH_GRADIENT_ALT candidates verified as metal. */
-    fun detectCoin(rgb: Mat, lesion: Mat? = null): DoubleArray? {
-        val g = Mat(); Imgproc.cvtColor(rgb, g, Imgproc.COLOR_RGB2GRAY); Imgproc.medianBlur(g, g, 5)
+    /**
+     * (cx, cy, r) of a coin, or null. HOUGH_GRADIENT_ALT candidates (radius 4–15 % of the short side) verified as metal;
+     * a circle containing the tapped spot [seedPx] (this photo's pixels) is the lesion, never the coin.
+     */
+    fun detectCoin(rgb: Mat, seedPx: DoubleArray? = null): DoubleArray? {
+        val g = Mat(); Imgproc.cvtColor(rgb, g, Imgproc.COLOR_RGB2GRAY); Imgproc.medianBlur(g, g, 3)
         val m = min(g.cols(), g.rows())
         val c = Mat()
-        Imgproc.HoughCircles(g, c, Imgproc.HOUGH_GRADIENT_ALT, 1.5, m * 0.2, 300.0, 0.8, (0.02 * m).toInt(), (0.15 * m).toInt())
+        Imgproc.HoughCircles(g, c, Imgproc.HOUGH_GRADIENT_ALT, 1.5, m * 0.05, 300.0, 0.8, (0.04 * m).toInt(), (0.15 * m).toInt())
         val hsv = Mat(); Imgproc.cvtColor(rgb, hsv, Imgproc.COLOR_RGB2HSV)
         val sat = Mat(); Core.extractChannel(hsv, sat, 1)
         val edges = Mat(); Imgproc.Canny(g, edges, 30.0, 90.0)
         for (i in 0 until c.cols()) {
             val v = c.get(0, i)
+            if (seedPx != null && kotlin.math.hypot(v[0] - seedPx[0], v[1] - seedPx[1]) <= v[2]) continue   // that is the lesion
             val disc = Mat.zeros(g.size(), CvType.CV_8U)
             Imgproc.circle(disc, Point(v[0], v[1]), (v[2] * 0.85).toInt(), Scalar(1.0), -1)
             if (Core.countNonZero(disc) == 0 || Core.mean(sat, disc).`val`[0] / 255.0 > 0.35) continue   // coloured blob, not metal
@@ -174,12 +214,6 @@ object Timeline {
                 if (ok) support++
             }
             if (support / 72.0 < 0.5) continue
-            if (lesion != null) {
-                val disc = Mat.zeros(lesion.size(), CvType.CV_8U)
-                Imgproc.circle(disc, Point(v[0], v[1]), v[2].toInt(), Scalar(1.0), -1)
-                val inter = Mat(); Core.bitwise_and(disc, lesion, inter)
-                if (Core.countNonZero(inter) > 0.1 * Core.countNonZero(disc)) continue
-            }
             return v
         }
         return null
@@ -211,6 +245,25 @@ object Timeline {
         return Colour.ciede2000(l, r)
     }
 
+    /**
+     * ml/timeline/metrics.py skin_normalised_lab (SKIN_NORM = "mean") + lesion_contrast: the new photo is re-lit onto the
+     * base photo by matching the surrounding-skin ring's mean Lab colour (exposure / white-balance offsets cancel; a real
+     * change of the lesion relative to its own skin remains). Chosen on TL1: mean-only beat no normalisation and mean+spread
+     * on both gates (light-only drift 0.92 ΔE, colour-change error 1.53 ΔE). lesion' = lesion − μ_new + μ_base, ring' = μ_base.
+     */
+    fun lesionContrastRelit(newRgb: Mat, m1: Mat, baseRgb: Mat, m0: Mat): Double {
+        val lesion = meanLab(newRgb, m1) ?: return 0.0
+        val muN = ringMean(newRgb, m1); val muB = ringMean(baseRgb, m0)
+        if (muN == null || muB == null) return lesionContrast(newRgb, m1)
+        return Colour.ciede2000(DoubleArray(3) { lesion[it] - muN[it] + muB[it] }, muB)
+    }
+
+    /** Mean Lab of the skin ring around [mask]; null below 20 pixels (same threshold as Python). */
+    private fun ringMean(rgb: Mat, mask: Mat): DoubleArray? {
+        val r = ring(mask)
+        return if (Core.countNonZero(r) < 20) null else meanLab(rgb, r)
+    }
+
     fun irregularity(mask: Mat): Double {
         val cs = ArrayList<MatOfPoint>(); Imgproc.findContours(mask.clone(), cs, Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
         val c = cs.maxByOrNull { Imgproc.contourArea(it) } ?: return 0.0
@@ -226,21 +279,23 @@ object Timeline {
         val al = align(b, n)
         if (!al.ok) return ChangeMetrics(alignScore = al.ratio, alignInliers = al.inliers, alignOk = false, lesionType = lesionType, noiseFloor = noise)
         val warped = Mat(); Imgproc.warpPerspective(n, warped, al.h, b.size(), Imgproc.INTER_LINEAR, Core.BORDER_REFLECT)
-        // adaptive prior + stability (ml/timeline/metrics.py): area ratio from homography-aligned masks (scale-free);
-        // the coin is a scale CHECK, not the area source
-        val mInit = segment(b, seedX, seedY)
+        // coins first (each in its own photo, the tap mapped into the new photo by H⁻¹) so their discs are background for
+        // GrabCut; adaptive prior + stability (ml/timeline/metrics.py): area ratio from homography-aligned masks
+        // (scale-free); the coin is a scale CHECK, not the area source
+        val h = al.h!!
+        val homScale = sqrt(kotlin.math.abs(h.get(0, 0)[0] * h.get(1, 1)[0] - h.get(0, 1)[0] * h.get(1, 0)[0]))
+        val c0 = detectCoin(b, doubleArrayOf(seedX * b.cols(), seedY * b.rows())); val c1 = detectCoin(n, seedInNew(h, seedX, seedY, b))
+        val c1w = c1?.let { val q = project(h, it[0], it[1]); doubleArrayOf(q[0], q[1], it[2] * homScale) }   // in the base frame
+        val mInit = segment(b, seedX, seedY, exclude = c0)
         val rFrac = maxOf(0.12, 1.25 * sqrt(maxOf(1, Core.countNonZero(mInit)).toDouble() / PI) / min(b.cols(), b.rows()))
-        val (m0, iou0) = segmentStable(b, seedX, seedY, rFrac); val (m1, iou1) = segmentStable(warped, seedX, seedY, rFrac)
+        val (m0, iou0) = segmentStable(b, seedX, seedY, rFrac, c0); val (m1, iou1) = segmentStable(warped, seedX, seedY, rFrac, c1w)
         val segOk = minOf(iou0, iou1) >= 0.75
         val a0 = Core.countNonZero(m0).toDouble(); val a1 = Core.countNonZero(m1).toDouble()
         val areaRatio = if (a0 > 0) a1 / a0 else null
-        val c0 = detectCoin(b, m0); val c1 = detectCoin(n)
         val coinBoth = c0 != null && c1 != null && coinMm != null
-        val h = al.h!!
-        val homScale = sqrt(kotlin.math.abs(h.get(0, 0)[0] * h.get(1, 1)[0] - h.get(0, 1)[0] * h.get(1, 0)[0]))
         val coinScaleErr = if (coinBoth) kotlin.math.abs((c0!![2] / c1!![2]) / homScale - 1) else null
         val coinOk = coinBoth && coinScaleErr!! <= 0.10
-        val cd = lesionContrast(warped, m1) - lesionContrast(b, m0)
+        val cd = lesionContrastRelit(warped, m1, b, m0) - lesionContrast(b, m0)
         val conf = if (coinOk && segOk && (noise?.n ?: 0) >= 3) "ok" else "low"
         return ChangeMetrics(alignScore = al.ratio, alignInliers = al.inliers, alignOk = true, coinInBoth = coinBoth, areaRatio = areaRatio,
             contrastDelta = cd, borderIrregularityDelta = irregularity(m1) - irregularity(m0),
@@ -248,6 +303,16 @@ object Timeline {
             noiseFloor = noise, confidence = conf, lesionType = lesionType, segOk = segOk, coinScaleErr = coinScaleErr,
             areaMm2Base = if (coinBoth) a0 * (coinMm!! / (2 * c0!![2])).pow(2) else null)
     }
+
+    /** p' = H·p (homogeneous). */
+    fun project(h: Mat, x: Double, y: Double): DoubleArray {
+        val w = h.get(2, 0)[0] * x + h.get(2, 1)[0] * y + h.get(2, 2)[0]
+        return doubleArrayOf((h.get(0, 0)[0] * x + h.get(0, 1)[0] * y + h.get(0, 2)[0]) / w, (h.get(1, 0)[0] * x + h.get(1, 1)[0] * y + h.get(1, 2)[0]) / w)
+    }
+
+    /** The tap (normalised in [base]) in the new photo's pixels: H maps new → base, so H⁻¹. */
+    fun seedInNew(h: Mat, seedX: Double, seedY: Double, base: Mat): DoubleArray =
+        project(h.inv(), seedX * base.cols(), seedY * base.rows())
 
     /** Lesion mask overlay for the UI (seed preview). */
     fun maskBitmap(photo: Bitmap, seedX: Double, seedY: Double): Bitmap {
