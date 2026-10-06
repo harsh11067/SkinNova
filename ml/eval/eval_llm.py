@@ -36,8 +36,10 @@ def main():
     ap.add_argument("--constrained", action="store_true"); ap.add_argument("--gray", action="store_true", help="image ablation")
     ap.add_argument("--threads", type=int, default=0, help="CPU threads for LiteRT-LM (0 = runtime default)")
     ap.add_argument("--greedy", action="store_true", help="top_k=1, temperature 0 (model-vs-model comparisons); default = app sampling")
+    ap.add_argument("--data-dir", default=str(LLM_DATA), help="records + images; data/llm_eval = frozen sets (LoRA v1/v2 selection)")
     a = ap.parse_args()
-    recs = [json.loads(l) for l in open(LLM_DATA / f"{a.set}.jsonl")]
+    data = Path(a.data_dir)
+    recs = [json.loads(l) for l in open(data / f"{a.set}.jsonl")]
     an = [r for r in recs if r["task"] in {"T1", "T9"}][:a.n]
     ex = [r for r in recs if r["task"] == "T6"][:max(5, a.n // 4)]
     t0 = time.time()
@@ -48,7 +50,7 @@ def main():
     gray = None
     if a.gray:
         from PIL import Image
-        gray = str(Path(LLM_DATA / "gray_512.jpg")); Image.new("RGB", (512, 512), (128, 128, 128)).save(gray)
+        gray = str(data / "gray_512.jpg"); Image.new("RGB", (512, 512), (128, 128, 128)).save(gray)
 
     def run(r):
         sys_msg = r["messages"][0]["content"]
@@ -56,7 +58,7 @@ def main():
         parts = []
         for c in user:
             if c["type"] == "image":
-                parts.append(L.Content.ImageFile(gray or str((LLM_DATA / r["image"]).resolve())))
+                parts.append(L.Content.ImageFile(gray or str((data / r["image"]).resolve())))
             else:
                 parts.append(L.Content.Text(c["text"]))
         # system message in the app's form (one-part list), so the rendered prompt is the phone's
@@ -82,7 +84,7 @@ def main():
     for r in ex:
         text, dt = run(r)
         xrows.append({"id": r["id"], "s": round(dt, 2), **score_extract(r["meta"], text), "out": text[:600]})
-    rep = {**report_meta(model_sha=file_sha(Path(a.model))[:16]), "tag": a.tag, "set": a.set, "backend": "CPU", "runtime": "litert-lm-api 0.17.1",
+    rep = {**report_meta(model_sha=file_sha(Path(a.model))[:16]), "tag": a.tag, "set": a.set, "data_dir": a.data_dir, "backend": "CPU", "runtime": "litert-lm-api 0.17.1",
            "decoding": "greedy" if a.greedy else "app sampling (top_k 40, top_p 0.95, T 0.2, seed 3407)",
            "load_s": round(load_s, 1), "gray_image": bool(a.gray), "n_analysis": len(rows), "n_extract": len(xrows),
            "analysis": summarize(rows, ANALYSIS_KEYS), "extract": summarize_extract(xrows),

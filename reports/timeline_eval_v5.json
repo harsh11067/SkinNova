@@ -1,0 +1,58 @@
+{
+ "git_sha": "a4f4486",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-06T15:52:04+00:00",
+ "n_pairs": 300,
+ "kinds": {
+  "light": 77,
+  "area_coin": 76,
+  "colour": 76,
+  "area": 71
+ },
+ "align_ok_same_spot": 0.9666666666666667,
+ "align_ok_different_spot": 0.01,
+ "coin_detected_both_rate": 0.23684210526315788,
+ "area_rel_err_coin": {
+  "median": 0.12173951713335579,
+  "p90": 0.33841520575727785,
+  "n": 6
+ },
+ "area_rel_err_no_coin": {
+  "median": 0.18919827300585218,
+  "p90": 0.5442228654146691
+ },
+ "area_rel_err_seg_stable": {
+  "median": 0.17429765524466817,
+  "n": 100
+ },
+ "seg_stable_rate": 0.6551724137931034,
+ "confidence_ok_rate_coin_pairs": 0.07894736842105263,
+ "no_coin_scaled_flagged_low": 1.0,
+ "contrast_abs_err_light_only": 0.8064646893112037,
+ "contrast_abs_delta_light_only": 1.203,
+ "contrast_abs_err_colour": 1.351242207285686,
+ "gates": {
+  "area_coin_median_le_10pct": false,
+  "area_coin_p90_le_20pct": false,
+  "no_coin_low_conf_ge_95pct": true,
+  "light_only_median_le_1_5": true,
+  "colour_err_median_le_2": true,
+  "align_same_ge_95pct": true,
+  "align_diff_le_5pct": true
+ },
+ "contrast_variants": {
+  "none": {
+   "light_abs_delta_median": 1.647,
+   "colour_abs_err_median": 1.5553680326564614
+  },
+  "mean": {
+   "light_abs_delta_median": 1.203,
+   "colour_abs_err_median": 1.351242207285686
+  },
+  "meanstd": {
+   "light_abs_delta_median": 1.079,
+   "colour_abs_err_median": 3.0364456454425914
+  }
+ }
+}

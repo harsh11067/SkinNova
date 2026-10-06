@@ -45,6 +45,14 @@ def main():
     if adopt:
         L += ["", f"v2 adoption (val only, rule pre-registered): {adopt['decision']} — full val F1 v1 {adopt['full_val_f1']['v1']} vs v2 "
                   f"{adopt['full_val_f1']['v2']}; v1-val images v2 {adopt['v1_val_images_f1']['v2']} (≥ 0.723 required)."]
+    sens = load(f"cv_metrics{tag}_no_unknown_normal.json")
+    if sens:
+        L += ["", "Sensitivity (same model, no selection uses it): without PacificRM `Unknown_Normal` — mostly non-skin photos "
+                  "labelled `other` by design (plan T5), easy cases that flatter in-distribution scores — "
+                  + "; ".join(f"{s} top-1 {ci(m['top1'])}, macro-F1 {ci(m['macro_f1_present_classes'])} (n {m['n']})"
+                              for s, m in sens["splits"].items())]
+    else:
+        todo.append("CV sensitivity without Unknown_Normal (eval_cv --exclude-source-label)")
     par = load("cv_parity.json")
     L += ["", f"C3 .tflite parity: max |Δp| {par['max_abs_dprob']:.2g}, top-1 agreement {pct(par['top1_agreement'])} → "
               f"{'PASS' if par['C3_pass'] else 'FAIL'}" if par else "C3: not yet measured"]

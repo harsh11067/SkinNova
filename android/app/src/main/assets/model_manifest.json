@@ -5,15 +5,18 @@
       {
         "id": "skinnova-e2b-v1",
         "label": "SkinNova Gemma 4 E2B (LoRA)",
-        "bytes": 0,
-        "sha256": "",
-        "base": "google/gemma-4-E2B-it",
-        "lora_repo": "",
+        "bytes": 3862170848,
+        "sha256": "30064f2c81cfd0395894be0e7074b8c0046a158e7764652b381e67011eab886a",
+        "base": "google/gemma-4-E2B-it (unsloth/gemma-4-E2B-it)",
+        "lora_repo": "kaggle-dataset:harsh11067/skinnova-lora-v1 (adapter of kernel skinnova-gemma4-e2b-lora v8)",
         "lora_rev": "",
         "merged_repo": "",
         "merged_rev": "",
-        "converter": "",
-        "prompt_version": "v1"
+        "converter": "litert-torch 0.9.4 export_hf + ml/llm/notebooks/export_patched.py, dynamic_wi8_emb4_afp32, vision 280",
+        "prompt_version": "v1",
+        "chat_template_sha": "02b3091acf53c0b7",
+        "l6_pass": true,
+        "sft_dataset_rev": "a529400"
       },
       {
         "id": "gemma-4-E2B-it-stock",

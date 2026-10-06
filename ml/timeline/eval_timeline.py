@@ -47,11 +47,21 @@ def draw_coin(img: np.ndarray, c, r) -> None:
 
 
 def make_pair(args):
+    p = synth_pair(args)
+    if p is None:
+        return None
+    base_c, after_cam, seed_xy, coin, truth = p
+    met = M.change_metrics(base_c, after_cam, seed_xy, coin_mm=COIN_MM if coin else None, noise={"n": 3}, lesion_type=True)
+    return {"i": args[0], "kind": args[3], **truth, **met}
+
+
+def synth_pair(args):
+    """→ (base photo, after photo, seed_xy, coin pasted?, ground truth) or None if the spot is out of range."""
     i, path, seed, kind = args
     rng = random.Random(seed)
     base = load(path)
     h, w = base.shape[:2]
-    m0 = M.segment(base, (0.5, 0.5))
+    m0 = M.segment(base, (0.5, 0.5), init="disc")    # generator's lesion region: pinned (TL1 ≤ v6), independent of SEG_INIT
     frac = m0.sum() / (h * w)
     if not 0.01 <= frac <= 0.25:   # a tracked spot fills a modest part of a 15–20 cm photo
         return None
@@ -76,14 +86,23 @@ def make_pair(args):
     coin = kind == "area_coin"
     base_c = base.copy()
     if coin:
-        r0 = 0.07 * min(h, w); cc = (w - 1.6 * r0, h - 1.6 * r0) if cx < w / 2 else (1.6 * r0, h - 1.6 * r0)
+        # beside the spot, as the app tells users (strings tl_coin_tip): just outside the (possibly grown) lesion, towards the
+        # image centre, kept inside the frame. v3 drew it in a corner, where the ±20° / ±15 % camera move cut it off in half of
+        # the pairs (coin found in both photos: 47 %).
+        r0 = 0.07 * min(h, w); rl = math.sqrt(m0.sum() / math.pi) * math.sqrt(A)
+        vx, vy = (w / 2 - cx), (h / 2 - cy); nv = math.hypot(vx, vy)
+        if nv < 0.05 * min(h, w):                   # centred spot (typical): put the coin below-right of it instead
+            vx, vy, nv = 1.0, 1.0, math.sqrt(2.0)
+        d = rl + 1.6 * r0
+        cc = (float(np.clip(cx + vx / nv * d, 1.8 * r0, w - 1.8 * r0)), float(np.clip(cy + vy / nv * d, 1.8 * r0, h - 1.8 * r0)))
         draw_coin(base_c, cc, r0); draw_coin(after, cc, r0)
     rot, sc = rng.uniform(-20, 20), rng.uniform(0.85, 1.15)
     R = cv2.getRotationMatrix2D((w / 2, h / 2), rot, sc)
     Hc = np.vstack([R, [rng.uniform(-2e-4, 2e-4), rng.uniform(-2e-4, 2e-4), 1]])
     after_cam = cv2.warpPerspective(after, Hc, (w, h), borderMode=cv2.BORDER_REFLECT)
-    met = M.change_metrics(base_c, after_cam, (cx / w, cy / h), coin_mm=COIN_MM if coin else None, noise={"n": 3}, lesion_type=True)
-    return {"i": i, "kind": kind, "true_area_ratio": float(true_area), "true_contrast_delta": float(true_cd), "rot": rot, "scale": sc, **met}
+    truth = {"true_area_ratio": float(true_area), "true_contrast_delta": float(true_cd), "rot": rot, "scale": sc,
+             "coin_xyr": [cc[0], cc[1], r0] if coin else None}       # in base-photo pixels
+    return base_c, after_cam, (cx / w, cy / h), coin, truth
 
 
 def diff_pair(args):
@@ -96,11 +115,13 @@ def diff_pair(args):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--n", type=int, default=300); ap.add_argument("--workers", type=int, default=10)
+    ap.add_argument("--kinds", nargs="+", default=["area", "area_coin", "colour", "light"])
+    ap.add_argument("--out", default="timeline_eval.json")
     a = ap.parse_args()
     va = pd.read_csv(SPLITS / "val.csv")
     les = va[va.label.isin(["benign_lesion", "suspicious_lesion"])].sample(frac=1, random_state=7).img.tolist()
-    kinds = ["area", "area_coin", "colour", "light"]
-    jobs = [(i, les[i % len(les)], 1000 + i, kinds[i % 4]) for i in range(int(a.n * 1.4))]
+    kinds = a.kinds
+    jobs = [(i, les[i % len(les)], 1000 + i, kinds[i % len(kinds)]) for i in range(int(a.n * 1.4))]
     with ProcessPoolExecutor(a.workers) as ex:
         rows = [r for r in ex.map(make_pair, jobs, chunksize=4) if r is not None][:a.n]
         diffs = list(ex.map(diff_pair, [(i, les[i], les[-1 - i]) for i in range(100)], chunksize=4))
@@ -133,7 +154,14 @@ def main():
         "align_same_ge_95pct": rep["align_ok_same_spot"] >= 0.95,
         "align_diff_le_5pct": rep["align_ok_different_spot"] <= 0.05,
     }
-    (REPORTS / "timeline_eval.json").write_text(json.dumps(rep, indent=1, default=float))
+    # contrast normalisation variants (ml/timeline/metrics.py SKIN_NORM): same alignment/masks, three re-lighting choices
+    if "contrast_variants" in df:
+        rep["contrast_variants"] = {}
+        for mode in ("none", "mean", "meanstd"):
+            lv = light.contrast_variants.map(lambda d: d[mode]); cv_ = col.contrast_variants.map(lambda d: d[mode])
+            rep["contrast_variants"][mode] = {"light_abs_delta_median": float(lv.abs().median()) if len(lv) else None,
+                                              "colour_abs_err_median": float((cv_ - col.true_contrast_delta).abs().median()) if len(cv_) else None}
+    (REPORTS / a.out).write_text(json.dumps(rep, indent=1, default=float))
     df.to_csv(REPORTS / "timeline_eval_pairs.csv", index=False)
     print(json.dumps({k: v for k, v in rep.items() if k not in ("git_sha", "created_at")}, indent=1, default=float))
 

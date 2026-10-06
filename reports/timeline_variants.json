@@ -1,0 +1,56 @@
+{
+ "git_sha": "a4f4486",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-06T15:29:35+00:00",
+ "n_pairs": 200,
+ "kinds": {
+  "colour": 103,
+  "light": 97
+ },
+ "align_ok_same_spot": 0.97,
+ "align_ok_different_spot": 0.01,
+ "coin_detected_both_rate": NaN,
+ "area_rel_err_coin": {
+  "median": null,
+  "p90": null,
+  "n": 0
+ },
+ "area_rel_err_no_coin": {
+  "median": NaN,
+  "p90": NaN
+ },
+ "area_rel_err_seg_stable": {
+  "median": NaN,
+  "n": 0
+ },
+ "seg_stable_rate": 0.5876288659793815,
+ "confidence_ok_rate_coin_pairs": NaN,
+ "no_coin_scaled_flagged_low": NaN,
+ "contrast_abs_err_light_only": 1.7141048659806435,
+ "contrast_abs_delta_light_only": 1.5175,
+ "contrast_abs_err_colour": 3.484029398030053,
+ "gates": {
+  "area_coin_median_le_10pct": false,
+  "area_coin_p90_le_20pct": false,
+  "no_coin_low_conf_ge_95pct": false,
+  "light_only_median_le_1_5": false,
+  "colour_err_median_le_2": false,
+  "align_same_ge_95pct": true,
+  "align_diff_le_5pct": true
+ },
+ "contrast_variants": {
+  "none": {
+   "light_abs_delta_median": 1.137,
+   "colour_abs_err_median": 1.6585706614995859
+  },
+  "mean": {
+   "light_abs_delta_median": 0.9195,
+   "colour_abs_err_median": 1.5290759667166185
+  },
+  "meanstd": {
+   "light_abs_delta_median": 1.5175,
+   "colour_abs_err_median": 3.484029398030053
+  }
+ }
+}

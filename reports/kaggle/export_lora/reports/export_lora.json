@@ -1,0 +1,37 @@
+{
+ "mode": "lora",
+ "steps": [
+  {
+   "rc": 0,
+   "s": 704,
+   "files": [
+    "/tmp/exp/model.litertlm"
+   ],
+   "mem_total_mb": 32099,
+   "mem_min_available_mb": 4745,
+   "released": [
+    "[skinnova] released 2.17 B parameters after the text export",
+    "[skinnova] released 2.77 B parameters after the per-layer embedder export"
+   ],
+   "stdout_tail": "xport > Export vision encoder models > \nLiteRT-Torch Convert > Merge MLIR Modules (+00:00)\n(10:48) [START] LiteRT GenAI Export > Export vision encoder models > \nLiteRT-Torch Convert > Run LiteRT Converter Passes\n(10:48) [ DONE] LiteRT GenAI Export > Export vision encoder models > \nLiteRT-Torch Convert > Run LiteRT Converter Passes (+00:00)\n(10:48) [ DONE] LiteRT GenAI Export > Export vision encoder models > \nLiteRT-Torch Convert (+00:20)\n(10:48) [START] LiteRT GenAI Export > Export vision encoder models > Write Model\nto /tmp/exp/tmp8qjk17g2/vision_adapter.tflite\n(10:48) [ DONE] LiteRT GenAI Export > Export vision encoder models > Write Model\nto /tmp/exp/tmp8qjk17g2/vision_adapter.tflite (+00:00)\n(10:48) [START] LiteRT GenAI Export > Export vision encoder models > Quantize \nmodel\nModel name: /tmp/exp/tmp8qjk17g2/vision_adapter.tflite\nOriginal model size: 4.51 MiB\nQuantized model size: 1.15 MiB\nQuantization Ratio: 0.26 (3.9x smaller)\nTotal time: 11.89 ms\n(10:48) [ DONE] LiteRT GenAI Export > Export vision encoder models > Quantize \nmodel (+00:00)\n(10:49) [ DONE] LiteRT GenAI Export > Export vision encoder models (+01:56)\n(10:49) [START] LiteRT GenAI Export > Export tokenizer\n(10:51) [ DONE] LiteRT GenAI Export > Export tokenizer (+00:01)\n(10:51) [START] LiteRT GenAI Export > Package model\n(11:07) [ DONE] LiteRT GenAI Export > Package model (+00:16)\n(11:10) [ DONE] LiteRT GenAI Export (+11:10)\nCleaning up temporary files.\nExport complete. Model saved to: /tmp/exp/model.litertlm\n",
+   "stderr_tail": "Generating Quantization Parameters::  40%|\u2588\u2588\u2588\u2588      | 2180/5420 [00:37<03:01, 17.86it/s]\nGenerating Quantization Parameters::  40%|\u2588\u2588\u2588\u2588      | 2189/5420 [00:37<02:39, 20.28it/s]\nGenerating Quantization Parameters::  41%|\u2588\u2588\u2588\u2588      | 2204/5420 [00:37<02:00, 26.59it/s]\nGenerating Quantization Parameters::  41%|\u2588\u2588\u2588\u2588      | 2214/5420 [00:39<03:29, 15.30it/s]\nGenerating Quantization Parameters::  41%|\u2588\u2588\u2588\u2588\u258f     | 2240/5420 [00:39<02:03, 25.65it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2251/5420 [00:41<03:19, 15.90it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2276/5420 [00:41<02:04, 25.24it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2287/5420 [00:43<03:17, 15.86it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2312/5420 [00:43<02:04, 24.88it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2323/5420 [00:45<03:16, 15.74it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2348/5420 [00:45<02:04, 24.61it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258e     | 2360/5420 [00:46<03:11, 16.01it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258e     | 2369/5420 [00:47<02:43, 18.66it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2384/5420 [00:47<02:00, 25.21it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2394/5420 [00:48<03:28, 14.50it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2403/5420 [01:05<23:10,  2.17it/s]\nGenerating Quantization Parameters::  87%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b | 4716/5420 [01:05<00:03, 180.00it/s]\nGenerating Quantization Parameters:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 5420/5420 [01:05<00:00, 82.94it/s] \n\nApplying Transformations to tensors::   0%|          | 0/7214 [00:00<?, ?it/s]\nApplying Transformations to tensors:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 7214/7214 [00:00<00:00, 101357.03it/s]\nModule size is greater than 2GB\nModule size is greater than 2GB\n\nGenerating Quantization Parameters::   0%|          | 0/2654 [00:00<?, ?it/s]\nGenerating Quantization Parameters::   4%|\u258d         | 119/2654 [00:00<00:02, 1109.58it/s]\nGenerating Quantization Parameters::  11%|\u2588\u258f        | 301/2654 [00:00<00:01, 1466.70it/s]\nGenerating Quantization Parameters::  18%|\u2588\u258a        | 483/2654 [00:00<00:01, 1557.95it/s]\nGenerating Quantization Parameters::  25%|\u2588\u2588\u258c       | 665/2654 [00:00<00:01, 1592.26it/s]\nGenerating Quantization Parameters::  32%|\u2588\u2588\u2588\u258f      | 842/2654 [00:00<00:01, 1652.43it/s]\nGenerating Quantization Parameters::  38%|\u2588\u2588\u2588\u258a      | 1008/2654 [00:00<00:01, 1622.73it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 1171/2654 [00:00<00:00, 1595.22it/s]\nGenerating Quantization Parameters::  50%|\u2588\u2588\u2588\u2588\u2588     | 1331/2654 [00:00<00:00, 1554.97it/s]\nGenerating Quantization Parameters::  56%|\u2588\u2588\u2588\u2588\u2588\u258b    | 1494/2654 [00:00<00:00, 1527.88it/s]\nGenerating Quantization Parameters:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2654/2654 [00:01<00:00, 2522.57it/s]\n\nApplying Transformations to tensors::   0%|          | 0/3603 [00:00<?, ?it/s]\nApplying Transformations to tensors:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 3603/3603 [00:00<00:00, 144034.29it/s]\n"
+  }
+ ],
+ "merge": {
+  "rc": 0,
+  "s": 68,
+  "adapter": "/kaggle/input/skinnova-lora-v1",
+  "tail": "wrote model-00000.safetensors: 755 tensors, 6.12 GB\nwrote model-00001.safetensors: 311 tensors, 2.02 GB\nwrote model-00002.safetensors: 788 tensors, 2.00 GB\nwrote model-00003.safetensors: 157 tensors, 0.10 GB\nmerged 494 weights (scale 1.0) -> /tmp/merged, 10.25 GB in 4 shards\n"
+ },
+ "source": "/tmp/merged",
+ "litertlm": {
+  "path": "/kaggle/working/export/skinnova-e2b-lora.litertlm",
+  "bytes": 3862170848,
+  "sha256": "30064f2c81cfd0395894be0e7074b8c0046a158e7764652b381e67011eab886a"
+ },
+ "capabilities": {
+  "text": true,
+  "vision": true,
+  "audio": false
+ }
+}

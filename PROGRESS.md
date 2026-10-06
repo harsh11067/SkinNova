@@ -3,35 +3,37 @@
 Repo: `/home/hash/mini/SkinNova/skinnova` (WSL native; C: drive is full, so NOT /mnt/c/dev). Data/models symlinked from `~/skinnova-data`.
 Python: `.venv` (training, CUDA torch) and `.venv-export` (litert-torch 0.9.4 / litert-lm-api 0.17.1, CPU torch).
 Long jobs: always `setsid nohup … > logs/<name>.log 2>&1 < /dev/null &` — WSL restarts and session ends kill everything else.
-Gradle from WSL: `cd android && JAVA_HOME=~/android/jdk ANDROID_HOME=~/android/sdk ./gradlew …` (Android Studio is open on
-`/home/hash/mini` as a plain folder, not the Gradle project). adb: Windows `adb.exe` via `scripts/_adb.sh` (phone not attached yet).
-Kaggle CLI: `~/.local/bin/kaggle` (uv tool 2.2.4), env from `.env`.
+Never `pkill -f`/`pgrep -f` a pattern that also appears in your own command line (exit 144 self-kill): find PIDs, then kill.
+Gradle from WSL: `cd android && JAVA_HOME=~/android/jdk ANDROID_HOME=~/android/sdk ./gradlew …`; stop the daemon after
+(`./gradlew --stop`, it holds ~4 GB of the 7.8 GB WSL RAM). adb: Windows `adb.exe` via `scripts/_adb.sh` (phone not attached yet).
+Kaggle CLI: `~/.local/bin/kaggle`, env from `.env`. Big Kaggle outputs: `scripts/kaggle_output_url.py` + `scripts/dl_url.sh`.
+One-line status: `scripts/status.sh`.
 
 ## Done (verified on disk, 2026-10-06)
-- Data pipeline, verified dedupe, splits (train 18,805 / val 3,754 / test 3,759 / external 136), data card — `reports/`.
-- CV v1 EfficientNet-B0: val macro-F1 0.747, **test 0.757**, top-3 97.4 %; **external SkinDiseaseBD top-1 16 %** (domain shift:
-  brown-skin phone photos → "other"). T = 0.876. `.tflite` C3 pass (3.2e-5), assets + manifest + C4/C5 fixtures written.
-- Android: builds, JVM tests 16/16 green, offline APK has no INTERNET (91.9 MB). Commit 2b4b746.
-- Gemma: smoke v3–v5 diagnosed (Unsloth template repr bug; random paraphrases; collator resize). Notebook now trains with the
-  **LiteRT-LM runtime template** (`ml/llm/chat_template_litertlm.jinja`, from Google's official .litertlm).
-- Export: `export_patched.py` makes litert-torch export fit 32 GB; v10 = stock export runs (vision ✓, audio ✗), but our file
-  lacks `end_of_vision` and is worse/slower than the official file (valid 0.4 vs 0.9, 116 vs 65 s/case on Kaggle CPU).
+- Data: v2 with SCIN (CC BY 4.0) — frozen v1 splits kept, 0 v1 images moved; data card. PacificRM `Unknown_Normal` (1,471,
+  mostly non-skin objects) is mapped to `other` by design (plan T5 / test S5: non-skin → other + high uncertainty).
+- CV v2 ADOPTED (val-only pre-registered rule): external top-3 66.2 % (v1 28.7 %), S1 gate 75 % still FAIL (disclosed);
+  `.tflite` C3 pass; S2 91.9 %, S3 60/60. `reports/cv_metrics_v2.json`, `cv_v2_adoption.json`, `safety.json`.
+- Gemma LoRA v1 (Kaggle full run v8) → adapter dataset `harsh11067/skinnova-lora-v1` → export kernel v14 (streaming manual
+  merge W += (α/r)·B·A, 494 modules) → `models/litertlm/skinnova/skinnova-e2b-v1.litertlm` (3.86 GB, sha256 30064f2c…,
+  verified against the kernel report; text + vision). The kernel's own greedy suite OOM'd after the export (not needed).
+- Arms A (stock .litertlm, no CV) on frozen llm_test n=150 (Kaggle CPU): top-1 56 %, top-3 66 %, JSON valid 76.7 %,
+  under-triage HIGH/URGENT 0/32 → `reports/arms/A.jsonl`.
+- SkinTimeline (TL1 v7b, `reports/timeline_eval.json`, 6 of 7 gates): mean-only skin re-lighting; coin detector v2 +
+  coin-aware GrabCut (coin found in both photos 24 → 92 %); Otsu colour-split GrabCut init (train-chosen) → coin-pair area
+  median 5.7 % ✅, p90 25 % ❌ (n 29), light 1.04 / colour 1.08 ΔE ✅. TL1 generator pinned to the v2 disc segmentation
+  (the first v7 comparison was circular). Python ≡ Kotlin ported; Android compile pending (RAM: LLM eval running).
+- TL3 fixtures (`tests/fixtures/metrics_cases.json` + androidTest `assets/tl3/`) and `TimelineParityTest` (on-device).
+- Android: builds, lint 0 errors, JVM tests green, Hindi complete, device test APK (needs phone). Last commit a4f4486.
 
-## In progress — chained setsid scripts (re-run any of them after a WSL restart; all restart-safe)
-| script | waits for | does | log |
-|---|---|---|---|
-| scripts/run_v2.sh | — | CV v2 training (`--tag _v2`) → calibrate → val metrics → V2_TRAINED | logs/run_v2.log |
-| scripts/v2_finish.sh | V2_TRAINED | adoption rule (ml/cv/adopt_v2.py, val only) → if ADOPT: test/external once, robustness, safety, promote best_v2 → best.pt, .tflite → TL1 v3 | logs/v2_finish.log |
-| watcher (bash -c in logs/watch_full.log) | Kaggle LoRA v8 | fetch reports → FETCHED | logs/watch_full.log |
-| scripts/after_lora.sh | FETCHED | merged export on Kaggle → stream .litertlm → (after V2_TRAINED) local L6 | logs/after_lora.log |
-| scripts/lora_v2.sh | V2_FINISH_DONE + export started | SFT v2 (SCIN) → dataset → LoRA v2 push | logs/lora_v2.log |
-| watcher (logs/watch_arms.log) | Kaggle arms kernel | arm A (stock) on frozen data/llm_eval → reports/arms/A.jsonl | logs/watch_arms.log |
-Frozen eval sets: data/llm_eval/{llm_test,llm_val}.jsonl + images (never rebuilt).
+## In progress
+| what | where | log |
+|---|---|---|
+| LoRA v2 (trained: still ignores the photo, gray-image ablation 0/16) → dataset skinnova-lora-v2 → export v15 → download → L6 → v1/v2 selection on frozen llm_val (100, greedy; ties → v1) | `scripts/after_lora_v2.sh` | logs/after_lora_v2.log |
 
 ## Next (in order)
-1. After v8: `make_export --mode merged` on Kaggle (module_diff + L6 vs HF E1) → download via scripts/kaggle_output_url.py +
-   scripts/dl_url.sh → local `ml.eval.parity_l6` (threads 12) → fill manifest sha → arms A–D + safety on llm_test.
-2. After V2_TRAINED: apply adoption rule; if adopted: eval test/external once (`eval_cv --ckpt best_v2.pt --tag _v2`),
-   robustness `--tag _v2`, export .tflite from best_v2 (export_tflite reads best.pt → copy/rename after adoption), SFT rebuild
-   with SCIN real_q → consider LoRA v2.
-3. Android (after ML stable): device tests A1–A10 on the phone, perf bench, design check; .wslconfig (d2y §2).
+1. ✅ L6 v1 PASS → manifest filled (sha 30064f2c…).
+2. Android compile + JVM tests + lint (Timeline coin/otsu port, live coin badge, TL3 test) → commit (after the LLM eval frees RAM).
+3. v2 chain result → if v2 wins: `update_manifest.py --id …` + manifest `file`; else keep v1.
+4. Arms D, C, B locally on the shipping model (`eval_arms --skinnova <model> --arms D C B --n 150`) → safety S4 → final_report.
+5. Phone (Harsh, d2y §3): `scripts/device_tests.sh` (A1–A10, C5, TL3), `push_model.sh`, `device_bench.sh`.

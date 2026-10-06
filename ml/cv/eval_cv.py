@@ -6,6 +6,9 @@ classes it actually contains (its label space is a subset).
 
   python -m ml.cv.eval_cv --splits val            # during development
   python -m ml.cv.eval_cv --splits val test external_test   # final candidate only (run once)
+  python -m ml.cv.eval_cv --splits val test --ckpt …/best.pt --tag _v2_no_unknown_normal --exclude-source-label Unknown_Normal
+      # sensitivity slice of the same final model (no selection uses it): PacificRM Unknown_Normal is mostly non-skin
+      # photos labelled `other` by design (plan T5) — trivially easy cases that flatter in-distribution scores
 """
 from __future__ import annotations
 
@@ -34,9 +37,12 @@ def load_model(path):
 
 
 @torch.no_grad()
-def logits_for(model, split, classes, bs=64, per_class: int = 0, cpu: bool = False):
+def logits_for(model, split, classes, bs=64, per_class: int = 0, cpu: bool = False, exclude_source_labels=()):
     df = pd.read_csv(SPLITS / f"{split}.csv")
-    df = df[df.label.isin(classes)].reset_index(drop=True)
+    keep = df.label.isin(classes)
+    if exclude_source_labels and "source_label" in df:
+        keep &= ~df.source_label.isin(list(exclude_source_labels))
+    df = df[keep].reset_index(drop=True)
     if per_class:
         df = df.groupby("label", group_keys=False).apply(lambda g: g.sample(min(len(g), per_class), random_state=3407)).reset_index(drop=True)
     dev = "cpu" if cpu or not torch.cuda.is_available() else "cuda"
@@ -90,14 +96,16 @@ def main():
     ap.add_argument("--ckpt", default=str(MODELS / "cv" / "ckpt" / "best.pt"))
     ap.add_argument("--splits", nargs="+", default=["val"])
     ap.add_argument("--tag", default="", help="report suffix, e.g. _v2 → reports/cv_metrics_v2.json")
+    ap.add_argument("--exclude-source-label", nargs="*", default=[], help="drop rows with these source labels (sensitivity slices)")
     a = ap.parse_args()
     model, ck = load_model(a.ckpt)
     T = ck.get("temperature", 1.0)
     sha = hashlib.sha256(open(a.ckpt, "rb").read()).hexdigest()[:16]
     from ml.common.paths import dataset_rev
-    rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=sha), "arch": ck["arch"], "classes": ck["classes"], "temperature": T, "splits": {}}
+    rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=sha), "arch": ck["arch"], "classes": ck["classes"], "temperature": T,
+           "excluded_source_labels": a.exclude_source_label, "splits": {}}
     for s in a.splits:
-        L, Y, df = logits_for(model, s, ck["classes"])
+        L, Y, df = logits_for(model, s, ck["classes"], exclude_source_labels=a.exclude_source_label)
         rep["splits"][s] = metrics(L, Y, ck["classes"], T, df)
         m = rep["splits"][s]
         print(f"{s}: n={m['n']} top1={m['top1']['value']:.3f} top3={m['top3']['value']:.3f} "

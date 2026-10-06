@@ -25,14 +25,50 @@ def save():
 from huggingface_hub import hf_hub_download, snapshot_download  # noqa: E402
 
 MERGE_PY = r"""
-import sys, torch
-from transformers import AutoModelForImageTextToText
-from peft import PeftModel
+# Streaming manual LoRA merge: W <- W + (alpha/r) * B @ A for every adapted layer (fp32 maths, base dtype out), one tensor
+# at a time, written as ~2 GB shards + model.safetensors.index.json — peak RAM ~2 GB. (Export v13 loaded the whole 10 GB
+# checkpoint plus its serialised copy and the container was killed without a log. PEFT cannot wrap Gemma4ClippableLinear.)
+import glob, json, os, shutil, sys, time, torch
+from safetensors import safe_open
+from safetensors.torch import save_file
 base, adapter, out = sys.argv[1:4]
-m = AutoModelForImageTextToText.from_pretrained(base, torch_dtype=torch.float32)
-m = PeftModel.from_pretrained(m, adapter).merge_and_unload()     # W + (alpha/r)·B·A, computed in fp32
-m.to(torch.bfloat16).save_pretrained(out, safe_serialization=True)   # the base checkpoint's own dtype; ~10 GB on disk
-print("merged ->", out, flush=True)
+log = open(os.environ.get("MERGE_LOG", "/kaggle/working/merge.log"), "a")
+def say(*a):
+    print(*a, flush=True); print(time.strftime("%H:%M:%S"), *a, file=log, flush=True)
+cfg = json.load(open(os.path.join(adapter, "adapter_config.json")))
+scale = cfg["lora_alpha"] / (cfg["r"] ** 0.5 if cfg.get("use_rslora") else cfg["r"])
+A, B = {}, {}
+with safe_open(os.path.join(adapter, "adapter_model.safetensors"), "pt") as f:
+    for k in f.keys():
+        mod = k.replace("base_model.model.", "", 1).split(".lora_")[0]
+        (A if ".lora_A." in k else B)[mod] = f.get_tensor(k).float()
+assert set(A) == set(B), "unpaired LoRA tensors"
+os.makedirs(out, exist_ok=True)
+done, wmap, buf, size, part, total = set(), {}, {}, 0, 0, 0
+def flush():
+    global buf, size, part
+    if not buf:
+        return
+    name = f"model-{part:05d}.safetensors"; save_file(buf, os.path.join(out, name), metadata={"format": "pt"})
+    for k in buf: wmap[k] = name
+    say(f"wrote {name}: {len(buf)} tensors, {size / 1e9:.2f} GB"); buf, size, part = {}, 0, part + 1
+for shard in sorted(glob.glob(os.path.join(base, "*.safetensors"))):
+    with safe_open(shard, "pt") as f:
+        for k in f.keys():
+            t = f.get_tensor(k); mod = k[:-len(".weight")] if k.endswith(".weight") else None
+            if mod in A:
+                t = (t.float() + scale * (B[mod] @ A[mod])).to(t.dtype); done.add(mod)
+            buf[k] = t.contiguous(); n = t.numel() * t.element_size(); size += n; total += n
+            if size >= 2e9:
+                flush()
+flush()
+missing = set(A) - done
+assert not missing, f"{len(missing)} adapted modules not found in the base checkpoint, e.g. {sorted(missing)[:3]}"
+json.dump({"metadata": {"total_size": total}, "weight_map": wmap}, open(os.path.join(out, "model.safetensors.index.json"), "w"))
+for f in glob.glob(os.path.join(base, "*.json")) + glob.glob(os.path.join(base, "*.jinja")):
+    if not os.path.basename(f).startswith("model.safetensors"):
+        shutil.copy(f, out)
+say(f"merged {len(done)} weights (scale {scale}) -> {out}, {total / 1e9:.2f} GB in {part} shards")
 """
 
 if MODE == "stock":
@@ -44,9 +80,6 @@ elif MODE.startswith("lora"):   # adapter dataset (adapter_config.json + reports
     t = time.time(); mp = subprocess.run([sys.executable, "/tmp/merge.py", base, adapter, "/tmp/merged"], capture_output=True, text=True)
     REPORT["merge"] = {"rc": mp.returncode, "s": round(time.time() - t), "adapter": adapter, "tail": (mp.stdout + mp.stderr)[-1500:]}; save()
     assert mp.returncode == 0, REPORT["merge"]["tail"]
-    for f in glob.glob(base + "/*.json") + glob.glob(base + "/*.jinja"):   # tokenizer / processor files for the exporter
-        if not os.path.exists("/tmp/merged/" + os.path.basename(f)):
-            subprocess.run(["cp", f, "/tmp/merged/"])
     SRC = "/tmp/merged"
 else:
     SRC = os.path.dirname(glob.glob("/kaggle/input/**/merged/config.json", recursive=True)[0])
@@ -150,7 +183,7 @@ def run_suite(path, tag, cases, n_gray):
     for i, r in enumerate(cases):
         parts, kinds = [], []
         for c in r["messages"][1]["content"]:
-            parts.append(L.Content.ImageFile(f'{DATA}/{r["image"]}') if c["type"] == "image" else L.Content.Text(c["text"]))
+            parts.append(L.Content.ImageFile(f'{VAL_DIR}/{r["image"]}') if c["type"] == "image" else L.Content.Text(c["text"]))
             kinds.append(c["type"])
         t1 = time.time(); txt = ask(eng, parts, r["messages"][0]["content"]); dt = time.time() - t1
         row = {"id": r["id"], "task": r["task"], "s": round(dt, 1), **score_analysis(r["meta"], txt), "out": txt}
@@ -212,6 +245,7 @@ def module_diff():
 
 
 REPORT["capabilities"] = caps(dst); save(); print("capabilities", REPORT["capabilities"], flush=True)
+VAL_DIR = DATA
 lval = {json.loads(line)["id"]: json.loads(line) for line in open(f"{DATA}/llm_val.jsonl")}
 hf = None
 if MODE == "merged" or MODE.startswith("lora"):
@@ -220,6 +254,12 @@ if MODE == "merged" or MODE.startswith("lora"):
     except Exception as e:  # noqa: BLE001
         REPORT["module_diff"] = f"error: {type(e).__name__}: {e}"
     hf = json.load(open(glob.glob("/kaggle/input/**/reports/full.json", recursive=True)[0]))
+    # val records of THIS LoRA's SFT build (ids are reused across rebuilds): current dataset, else the frozen v1 copy
+    cur = json.load(open(f"{DATA}/sft_data.json")).get("created_at")
+    if hf.get("dataset_meta", {}).get("created_at") != cur:
+        VAL_DIR = f"{DATA}/llm_eval"
+        lval = {json.loads(line)["id"]: json.loads(line) for line in open(f"{VAL_DIR}/llm_val.jsonl")}
+    REPORT["val_dir"] = VAL_DIR
     cases = [lval[x["id"]] for x in hf["L4_analysis_rows"]["E1"]]
 else:
     cases = [r for r in lval.values() if r["task"] == "T1"][:10]

@@ -1,0 +1,434 @@
+{
+ "git_sha": "a4f4486",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-06T19:18:10+00:00",
+ "opencv_python": "5.0.0",
+ "tolerance": {
+  "area_ratio_rel": 0.02,
+  "contrast_delta_abs": 0.5
+ },
+ "noise_floor_n": 3,
+ "cases": [
+  {
+   "id": "area_000",
+   "kind": "area",
+   "base": "area_000_base.png",
+   "new": "area_000_new.png",
+   "seed_xy": [
+    0.4754489828673658,
+    0.5644150424062693
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.4214123006833712,
+    "true_contrast_delta": 1.679173653382918,
+    "rot": 6.7930223823699905,
+    "scale": 0.8797418811774451,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 153,
+    "align_score": 0.6955,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": true,
+    "area_ratio": 1.3108,
+    "contrast_delta": 1.956,
+    "border_irregularity_delta": -0.1267,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "area_coin_001",
+   "kind": "area_coin",
+   "base": "area_coin_001_base.png",
+   "new": "area_coin_001_new.png",
+   "seed_xy": [
+    0.502092050209205,
+    0.43601895734597157
+   ],
+   "coin_mm": 20.0,
+   "truth": {
+    "true_area_ratio": 1.2666666666666666,
+    "true_contrast_delta": -9.268801227555965,
+    "rot": -17.654950690078618,
+    "scale": 1.0780719321922272,
+    "coin_xyr": [
+     116.52909532430712,
+     184.414,
+     14.770000000000001
+    ]
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 74,
+    "align_score": 0.5873,
+    "coin_in_both": true,
+    "coin_scale_err": 0.4829,
+    "seg_ok": false,
+    "area_ratio": 1.0096,
+    "contrast_delta": 0.065,
+    "border_irregularity_delta": 0.0243,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "light_003",
+   "kind": "light",
+   "base": "light_003_base.png",
+   "new": "light_003_new.png",
+   "seed_xy": [
+    0.6594381765695048,
+    0.5330119870976398
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0,
+    "true_contrast_delta": 0.19695451180839196,
+    "rot": -1.8656139361480868,
+    "scale": 0.8577777036034548,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 909,
+    "align_score": 0.9945,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": true,
+    "area_ratio": 0.65,
+    "contrast_delta": -0.595,
+    "border_irregularity_delta": 0.2004,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "area_coin_005",
+   "kind": "area_coin",
+   "base": "area_coin_005_base.png",
+   "new": "area_coin_005_new.png",
+   "seed_xy": [
+    0.5711451569264069,
+    0.5040476190476191
+   ],
+   "coin_mm": 20.0,
+   "truth": {
+    "true_area_ratio": 1.1865151515151515,
+    "true_contrast_delta": 3.172841499992746,
+    "rot": 16.087319969874443,
+    "scale": 1.0112371580538593,
+    "coin_xyr": [
+     53.043393209592736,
+     108.64581687725162,
+     15.680000000000001
+    ]
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 144,
+    "align_score": 0.9412,
+    "coin_in_both": true,
+    "coin_scale_err": 0.0119,
+    "seg_ok": false,
+    "area_ratio": 1.2592,
+    "contrast_delta": 0.915,
+    "border_irregularity_delta": -0.0757,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "light_007",
+   "kind": "light",
+   "base": "light_007_base.png",
+   "new": "light_007_new.png",
+   "seed_xy": [
+    0.47787513040009816,
+    0.5462980008727432
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0,
+    "true_contrast_delta": 2.5549098802582435,
+    "rot": 9.662326788273358,
+    "scale": 1.0929301116853931,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 30,
+    "align_score": 0.8571,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": false,
+    "area_ratio": 1.3077,
+    "contrast_delta": 1.944,
+    "border_irregularity_delta": -0.0153,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "area_008",
+   "kind": "area",
+   "base": "area_008_base.png",
+   "new": "area_008_new.png",
+   "seed_xy": [
+    0.5632867528320566,
+    0.4568505176015534
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.2143599065177877,
+    "true_contrast_delta": 1.0527458187027356,
+    "rot": 18.335954977602036,
+    "scale": 0.9520886907299819,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 584,
+    "align_score": 0.9026,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": false,
+    "area_ratio": 1.7178,
+    "contrast_delta": 2.465,
+    "border_irregularity_delta": -0.2768,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "area_coin_009",
+   "kind": "area_coin",
+   "base": "area_coin_009_base.png",
+   "new": "area_coin_009_new.png",
+   "seed_xy": [
+    0.5332026241753695,
+    0.49099280560865305
+   ],
+   "coin_mm": 20.0,
+   "truth": {
+    "true_area_ratio": 0.9447060469019535,
+    "true_contrast_delta": -0.03278868549488134,
+    "rot": -0.5055090798897943,
+    "scale": 0.8732775101195253,
+    "coin_xyr": [
+     383.69887228916036,
+     299.24036606509395,
+     26.880000000000003
+    ]
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 121,
+    "align_score": 0.9453,
+    "coin_in_both": true,
+    "coin_scale_err": 0.0961,
+    "seg_ok": false,
+    "area_ratio": 0.9353,
+    "contrast_delta": -0.013,
+    "border_irregularity_delta": -0.1085,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "colour_010",
+   "kind": "colour",
+   "base": "colour_010_base.png",
+   "new": "colour_010_new.png",
+   "seed_xy": [
+    0.4374206356509257,
+    0.4715317779454526
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0,
+    "true_contrast_delta": 9.708312668478623,
+    "rot": 14.26214123448301,
+    "scale": 0.9240943712018211,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 187,
+    "align_score": 0.959,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": true,
+    "area_ratio": 1.6066,
+    "contrast_delta": 6.727,
+    "border_irregularity_delta": -0.5852,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "light_011",
+   "kind": "light",
+   "base": "light_011_base.png",
+   "new": "light_011_new.png",
+   "seed_xy": [
+    0.33404017270673136,
+    0.32935203638708377
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0,
+    "true_contrast_delta": -0.2334012379721031,
+    "rot": 11.35467728448791,
+    "scale": 0.9828021942490053,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 1103,
+    "align_score": 0.9982,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": false,
+    "area_ratio": 2.1761,
+    "contrast_delta": 0.54,
+    "border_irregularity_delta": -0.0576,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "area_012",
+   "kind": "area",
+   "base": "area_012_base.png",
+   "new": "area_012_new.png",
+   "seed_xy": [
+    0.4716920067618131,
+    0.5025018541533034
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0707718623048963,
+    "true_contrast_delta": -0.2742595232785545,
+    "rot": -14.207344232967007,
+    "scale": 0.912469632787046,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": true,
+    "align_inliers": 932,
+    "align_score": 0.8168,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": false,
+    "area_ratio": 1.0706,
+    "contrast_delta": -0.33,
+    "border_irregularity_delta": 0.0302,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "colour_014",
+   "kind": "colour",
+   "base": "colour_014_base.png",
+   "new": "colour_014_new.png",
+   "seed_xy": [
+    0.424217006511571,
+    0.5181628504172908
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0,
+    "true_contrast_delta": 9.490613849090234,
+    "rot": -10.42932979642671,
+    "scale": 0.8604670154055322,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": false,
+    "align_inliers": 25,
+    "align_score": 0.9615,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": null,
+    "area_ratio": null,
+    "contrast_delta": null,
+    "border_irregularity_delta": null,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "colour_018",
+   "kind": "colour",
+   "base": "colour_018_base.png",
+   "new": "colour_018_new.png",
+   "seed_xy": [
+    0.5282557852056962,
+    0.32895932225738395
+   ],
+   "coin_mm": null,
+   "truth": {
+    "true_area_ratio": 1.0,
+    "true_contrast_delta": 4.742260568541069,
+    "rot": 10.841596542185087,
+    "scale": 1.062719202265889,
+    "coin_xyr": null
+   },
+   "expected": {
+    "align_ok": false,
+    "align_inliers": 21,
+    "align_score": 0.7778,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": null,
+    "area_ratio": null,
+    "contrast_delta": null,
+    "border_irregularity_delta": null,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "diff_000",
+   "kind": "different_spot",
+   "base": "diff_000_base.png",
+   "new": "diff_000_new.png",
+   "seed_xy": [
+    0.5,
+    0.5
+   ],
+   "coin_mm": null,
+   "truth": {},
+   "expected": {
+    "align_ok": false,
+    "align_inliers": 0,
+    "align_score": 0.0,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": null,
+    "area_ratio": null,
+    "contrast_delta": null,
+    "border_irregularity_delta": null,
+    "confidence": "low"
+   }
+  },
+  {
+   "id": "diff_001",
+   "kind": "different_spot",
+   "base": "diff_001_base.png",
+   "new": "diff_001_new.png",
+   "seed_xy": [
+    0.5,
+    0.5
+   ],
+   "coin_mm": null,
+   "truth": {},
+   "expected": {
+    "align_ok": false,
+    "align_inliers": 0,
+    "align_score": 0.0,
+    "coin_in_both": false,
+    "coin_scale_err": null,
+    "seg_ok": null,
+    "area_ratio": null,
+    "contrast_delta": null,
+    "border_irregularity_delta": null,
+    "confidence": "low"
+   }
+  }
+ ]
+}
