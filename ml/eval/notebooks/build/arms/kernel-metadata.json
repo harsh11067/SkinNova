@@ -1,0 +1,17 @@
+{
+ "id": "harsh11067/skinnova-arms-eval",
+ "title": "skinnova-arms-eval",
+ "code_file": "arms.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "dataset_sources": [
+  "harsh11067/skinnova-sft-data"
+ ],
+ "competition_sources": [],
+ "kernel_sources": [],
+ "model_sources": []
+}

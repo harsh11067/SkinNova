@@ -28,7 +28,17 @@ def main():
     a = ap.parse_args()
     hf = json.load(open(a.hf_report))
     e1 = hf["L4_analysis_rows"]["E1"]
-    recs = {json.loads(l)["id"]: json.loads(l) for l in open(LLM_DATA / "llm_val.jsonl")}
+    # the val records this LoRA was evaluated on: the SFT build named in the training report. Ids are reused across
+    # rebuilds, so match the build (created_at), not the ids: current data/llm, else the frozen v1 copy in data/llm_eval.
+    built = hf.get("dataset_meta", {}).get("created_at")
+    current = json.loads((REPORTS / "sft_data.json").read_text()).get("created_at")
+    frozen = LLM_DATA.parent / "llm_eval"
+    base = LLM_DATA if built == current else frozen
+    if base == frozen:
+        assert json.loads((frozen / "sft_data_v1.json").read_text()).get("created_at") == built, "no copy of this LoRA's val set"
+    recs = {json.loads(l)["id"]: json.loads(l) for l in open(base / "llm_val.jsonl")}
+    missing = [h["id"] for h in e1 if h["id"] not in recs]
+    assert not missing, f"E1 records not found in {base}: {missing[:5]}"
     cpu = (lambda: L.Backend.CPU(thread_count=a.threads)) if a.threads else (lambda: L.Backend.CPU())
     caps = L.Capabilities(a.model); m = caps.input_modalities; has_vision, has_audio = bool(m.vision), bool(m.audio); caps.close()
     t0 = time.time()
@@ -37,7 +47,7 @@ def main():
     gray = str(LLM_DATA / "gray_512.jpg"); Image.new("RGB", (512, 512), (128, 128, 128)).save(gray)
 
     def ask(r, image=None):
-        parts = [L.Content.ImageFile(image or str((LLM_DATA / r["image"]).resolve())) if c["type"] == "image" else L.Content.Text(c["text"])
+        parts = [L.Content.ImageFile(image or str((base / r["image"]).resolve())) if c["type"] == "image" else L.Content.Text(c["text"])
                  for c in r["messages"][1]["content"]]
         conv = eng.create_conversation(system_message=runtime_system_message(r["messages"][0]["content"]),
                                        sampler_config=L.SamplerConfig(top_k=1, top_p=1.0, temperature=0.0, seed=3407),

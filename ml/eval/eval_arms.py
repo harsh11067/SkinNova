@@ -43,8 +43,11 @@ def strip_cv(text: str) -> str:
     return re.sub(r"^IMAGE_MODEL_TOP3: .*\n", "", text, flags=re.M)
 
 
+TEST_DIR = (LLM_DATA.parent / "llm_eval") if (LLM_DATA.parent / "llm_eval" / "llm_test.jsonl").exists() else LLM_DATA
+
+
 def cases(n: int) -> tuple[list[dict], list[dict]]:
-    recs = [json.loads(l) for l in open(LLM_DATA / "llm_test.jsonl")]
+    recs = [json.loads(l) for l in open(TEST_DIR / "llm_test.jsonl")]
     t1 = [r for r in recs if r["task"] == "T1"]
     by = defaultdict(list)
     for r in t1:
@@ -82,7 +85,7 @@ class Runner:
         for c in r["messages"][1]["content"]:
             if c["type"] == "image":
                 if self.vision:
-                    ps.append(L.Content.ImageFile(str((LLM_DATA / r["image"]).resolve())))
+                    ps.append(L.Content.ImageFile(str((TEST_DIR / r["image"]).resolve())))
             else:
                 ps.append(L.Content.Text(user_text))
         return ps
@@ -158,7 +161,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--skinnova"); ap.add_argument("--stock"); ap.add_argument("--arms", nargs="+", default=["D", "C", "A", "B"])
     ap.add_argument("--n", type=int, default=150); ap.add_argument("--threads", type=int, default=12)
+    ap.add_argument("--test-dir", help="folder with llm_test.jsonl + images/ (default: data/llm_eval, the frozen copy)")
     a = ap.parse_args()
+    global TEST_DIR
+    if a.test_dir:
+        TEST_DIR = Path(a.test_dir)
     OUT.mkdir(parents=True, exist_ok=True)
     t1, t9 = cases(a.n)
     runners: dict[str, Runner] = {}
@@ -182,7 +189,7 @@ def main():
             with open(f, "a") as fh:
                 fh.write(json.dumps(row) + "\n")
             print(arm, r["id"], "top3", row["top3"], "valid", row["valid"], row["mode"], "final", row["final_tier"], f"{row['s']}s", flush=True)
-    rep = {**report_meta(), "skinnova": a.skinnova, "stock": a.stock, "n_t1": len(t1), "n_t9": len(t9), "arms": {}}
+    rep = {**report_meta(), "skinnova": a.skinnova, "stock": a.stock, "test_dir": str(TEST_DIR), "n_t1": len(t1), "n_t9": len(t9), "arms": {}}
     for arm in ["A", "B", "C", "D"]:
         f = OUT / f"{arm}.jsonl"
         if not f.exists():

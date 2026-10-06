@@ -17,11 +17,16 @@ Kaggle CLI: `~/.local/bin/kaggle` (uv tool 2.2.4), env from `.env`.
 - Export: `export_patched.py` makes litert-torch export fit 32 GB; v10 = stock export runs (vision ✓, audio ✗), but our file
   lacks `end_of_vision` and is worse/slower than the official file (valid 0.4 vs 0.9, 116 vs 65 s/case on Kaggle CPU).
 
-## In progress (2026-10-06 17:20)
-- `scripts/run_v2.sh` (setsid): SCIN data pipeline (frozen v1 splits) → data tests → CV v2 (`--tag _v2`) → calibrate → val
-  metrics → V2_TRAINED. Re-run the script after a WSL restart (restart-safe). Adoption rule in decisions.md (val only).
-- Kaggle `skinnova-gemma4-e2b-lora` v8 full LoRA run (watcher: logs/watch_full.log; re-arm after restart).
-- Stock comparison DONE (official 0.9 valid / ours 0.4); hybrid rejected; export now uses 280 vision soft tokens.
+## In progress — chained setsid scripts (re-run any of them after a WSL restart; all restart-safe)
+| script | waits for | does | log |
+|---|---|---|---|
+| scripts/run_v2.sh | — | CV v2 training (`--tag _v2`) → calibrate → val metrics → V2_TRAINED | logs/run_v2.log |
+| scripts/v2_finish.sh | V2_TRAINED | adoption rule (ml/cv/adopt_v2.py, val only) → if ADOPT: test/external once, robustness, safety, promote best_v2 → best.pt, .tflite → TL1 v3 | logs/v2_finish.log |
+| watcher (bash -c in logs/watch_full.log) | Kaggle LoRA v8 | fetch reports → FETCHED | logs/watch_full.log |
+| scripts/after_lora.sh | FETCHED | merged export on Kaggle → stream .litertlm → (after V2_TRAINED) local L6 | logs/after_lora.log |
+| scripts/lora_v2.sh | V2_FINISH_DONE + export started | SFT v2 (SCIN) → dataset → LoRA v2 push | logs/lora_v2.log |
+| watcher (logs/watch_arms.log) | Kaggle arms kernel | arm A (stock) on frozen data/llm_eval → reports/arms/A.jsonl | logs/watch_arms.log |
+Frozen eval sets: data/llm_eval/{llm_test,llm_val}.jsonl + images (never rebuilt).
 
 ## Next (in order)
 1. After v8: `make_export --mode merged` on Kaggle (module_diff + L6 vs HF E1) → download via scripts/kaggle_output_url.py +

@@ -490,10 +490,15 @@ def dataset():
     if d.exists():
         shutil.rmtree(d)
     shutil.copytree(LLM_DATA, d)
+    if (LLM_DATA.parent / "llm_eval").exists():   # frozen arms/safety set (ml/eval/eval_arms.py), survives SFT rebuilds
+        shutil.copytree(LLM_DATA.parent / "llm_eval", d / "llm_eval")
     code = d / "code"
     for rel in ["ml/__init__.py", "ml/common/__init__.py", "ml/common/paths.py", "ml/common/schema.py", "ml/common/labels.json",
                 "ml/llm/__init__.py", "ml/llm/validate.py", "ml/voice/__init__.py", "ml/voice/intake.py",
-                "ml/eval/__init__.py", "ml/eval/llm_metrics.py"]:
+                "ml/eval/__init__.py", "ml/eval/llm_metrics.py",
+                # arms / safety evaluation on Kaggle CPU (ml/eval/notebooks/make_arms.py)
+                "ml/eval/eval_arms.py", "ml/eval/redflags.py", "ml/eval/bootstrap.py", "ml/llm/prompt_builder.py",
+                "ml/llm/cards/condition_cards.json"] + [str(f.relative_to(REPO)) for f in sorted((REPO / "ml/llm/prompts").glob("*.txt"))]:
         (code / rel).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(REPO / rel, code / rel)
     (code / "ml/llm/safety").mkdir(parents=True, exist_ok=True)
