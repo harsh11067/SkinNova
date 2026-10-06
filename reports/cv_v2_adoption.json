@@ -1,0 +1,23 @@
+{
+ "git_sha": "544351e",
+ "dataset_rev": "a2a7226bedaa",
+ "model_sha": "",
+ "created_at": "2026-10-06T14:09:24+00:00",
+ "n_val": 4363,
+ "n_v1_val": 3754,
+ "full_val_f1": {
+  "v1": 0.6623,
+  "v2": 0.6838
+ },
+ "v1_val_images_f1": {
+  "v1": 0.7471,
+  "v2": 0.7366
+ },
+ "scin_val_images_f1": {
+  "v1": 0.1614,
+  "v2": 0.2493
+ },
+ "rule_a": true,
+ "rule_b": true,
+ "decision": "ADOPT"
+}

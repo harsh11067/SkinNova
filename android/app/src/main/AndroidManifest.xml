@@ -9,6 +9,18 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Android 11+ package visibility: the on-device speech service (voice fallback when the model has no audio
+         encoder, ml/OnDeviceSpeech.kt) must be visible to SpeechRecognizer.isOnDeviceRecognitionAvailable. -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <!-- read-aloud of results (i18n/Tts.kt): the TTS engine must be visible on Android 11+ -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:name=".SkinNovaApp"
         android:allowBackup="false"

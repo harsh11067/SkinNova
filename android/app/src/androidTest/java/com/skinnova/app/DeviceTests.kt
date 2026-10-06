@@ -90,13 +90,31 @@ class DeviceTests {
         val img = File(ctx.cacheDir, "bench.jpg").also { f -> f.outputStream().use { bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, it) } }
         val cv = c.cv.classify(bmp.toRgb())
         val ans = QuestionnaireAnswers("arm", "1_4w", 2, 0, "spreading", false, false, true, false, "18_39")
+        val initsBefore = c.engineHolder.initCount
         val t0 = System.nanoTime()
         var ttft = -1L
         val r = c.pipeline().run(ans, cv, false, img.path, "en") { s -> if (ttft < 0 && s is com.skinnova.app.ml.AnalysisState.Generating) ttft = System.nanoTime() }
         val total = (System.nanoTime() - t0) / 1e9
         val out = File(ctx.getExternalFilesDir("bench"), "outputs.jsonl")
         out.appendText("""{"model":"${model!!.id}","backend":"${c.engineHolder.backendName}","mode":"${r.mode}","fallback":"${r.fallbackReason}","total_s":$total,"ttft_s":${if (ttft > 0) (ttft - t0) / 1e9 else -1},"tier":"${r.finalTier}","engine_inits":${c.engineHolder.initCount}}""" + "\n")
-        assertEquals("one engine per process", 1, c.engineHolder.initCount)
+        assertTrue("one engine per process (no re-init per analysis)", c.engineHolder.initCount - initsBefore <= 1)
         assertTrue("S8 CPU budget 120 s", total <= 120.0)
+    }
+
+    /** A9: GPU-failure path — with the CPU backend forced, a full (LLM) result is still produced. */
+    @Test fun cpuFallbackProducesResult() = runBlocking {
+        val model = c.models.scanAndVerify()
+        assumeTrue("no verified .litertlm on the device", model != null)
+        val bmp = testCtx.assets.open("cv_fixtures/00.jpg").use { BitmapFactory.decodeStream(it) }
+        val img = File(ctx.cacheDir, "a9.jpg").also { f -> f.outputStream().use { bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 95, it) } }
+        val ans = QuestionnaireAnswers("arm", "1_4w", 2, 0, "spreading", false, false, true, false, "18_39")
+        c.engineHolder.forceBackend("CPU")
+        try {
+            val r = c.pipeline().run(ans, c.cv.classify(bmp.toRgb()), false, img.path, "en") {}
+            assertEquals("CPU", c.engineHolder.backendName)
+            assertEquals(Mode.full, r.mode)
+        } finally {
+            c.engineHolder.forceBackend("GPU")
+        }
     }
 }

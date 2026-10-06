@@ -1,22 +1,22 @@
 {
- "git_sha": "420bd17",
+ "git_sha": "544351e",
  "dataset_rev": "a2a7226bedaa",
  "model_sha": "",
- "created_at": "2026-10-06T12:18:53+00:00",
- "probs_tag": "",
+ "created_at": "2026-10-06T14:13:42+00:00",
+ "probs_tag": "_v2",
  "suspicious_threshold": 0.15,
  "S2_suspicious_recall": {
   "val": {
-   "n_suspicious": 997,
-   "recall_cv_rules": 0.9248,
-   "n_benign": 1202,
-   "benign_flagged_high": 0.2554
+   "n_suspicious": 1003,
+   "recall_cv_rules": 0.9172,
+   "n_benign": 1206,
+   "benign_flagged_high": 0.2347
   },
   "test": {
-   "n_suspicious": 992,
-   "recall_cv_rules": 0.9284,
-   "n_benign": 1227,
-   "benign_flagged_high": 0.2331
+   "n_suspicious": 993,
+   "recall_cv_rules": 0.9194,
+   "n_benign": 1242,
+   "benign_flagged_high": 0.2254
   },
   "external_test": {
    "n_suspicious": 0,

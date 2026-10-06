@@ -24,8 +24,30 @@ def save():
 
 from huggingface_hub import hf_hub_download, snapshot_download  # noqa: E402
 
+MERGE_PY = r"""
+import sys, torch
+from transformers import AutoModelForImageTextToText
+from peft import PeftModel
+base, adapter, out = sys.argv[1:4]
+m = AutoModelForImageTextToText.from_pretrained(base, torch_dtype=torch.float32)
+m = PeftModel.from_pretrained(m, adapter).merge_and_unload()     # W + (alpha/r)·B·A, computed in fp32
+m.to(torch.bfloat16).save_pretrained(out, safe_serialization=True)   # the base checkpoint's own dtype; ~10 GB on disk
+print("merged ->", out, flush=True)
+"""
+
 if MODE == "stock":
     SRC = snapshot_download("unsloth/gemma-4-E2B-it", local_dir="/tmp/gemma4_e2b")
+elif MODE.startswith("lora"):   # adapter dataset (adapter_config.json + reports/full.json) → merge on this 32 GB CPU machine
+    base = snapshot_download("unsloth/gemma-4-E2B-it", local_dir="/tmp/gemma4_e2b")
+    adapter = os.path.dirname(glob.glob("/kaggle/input/**/adapter_config.json", recursive=True)[0])
+    open("/tmp/merge.py", "w").write(MERGE_PY)
+    t = time.time(); mp = subprocess.run([sys.executable, "/tmp/merge.py", base, adapter, "/tmp/merged"], capture_output=True, text=True)
+    REPORT["merge"] = {"rc": mp.returncode, "s": round(time.time() - t), "adapter": adapter, "tail": (mp.stdout + mp.stderr)[-1500:]}; save()
+    assert mp.returncode == 0, REPORT["merge"]["tail"]
+    for f in glob.glob(base + "/*.json") + glob.glob(base + "/*.jinja"):   # tokenizer / processor files for the exporter
+        if not os.path.exists("/tmp/merged/" + os.path.basename(f)):
+            subprocess.run(["cp", f, "/tmp/merged/"])
+    SRC = "/tmp/merged"
 else:
     SRC = os.path.dirname(glob.glob("/kaggle/input/**/merged/config.json", recursive=True)[0])
 REPORT["source"] = SRC; save(); print("source", SRC, flush=True)
@@ -192,7 +214,7 @@ def module_diff():
 REPORT["capabilities"] = caps(dst); save(); print("capabilities", REPORT["capabilities"], flush=True)
 lval = {json.loads(line)["id"]: json.loads(line) for line in open(f"{DATA}/llm_val.jsonl")}
 hf = None
-if MODE == "merged":
+if MODE == "merged" or MODE.startswith("lora"):
     try:
         REPORT["module_diff"] = module_diff(); save(); print("module_diff", json.dumps(REPORT["module_diff"])[:1500], flush=True)
     except Exception as e:  # noqa: BLE001
@@ -201,7 +223,7 @@ if MODE == "merged":
     cases = [lval[x["id"]] for x in hf["L4_analysis_rows"]["E1"]]
 else:
     cases = [r for r in lval.values() if r["task"] == "T1"][:10]
-exp = run_suite(dst, "exported", cases, n_gray=16 if MODE == "merged" else 5)
+exp = run_suite(dst, "exported", cases, n_gray=5 if MODE == "stock" else 16)
 if hf:   # ---- L6 export parity (test.md §5): HF merged (E1, greedy) vs this .litertlm (greedy), same prompts
     e1 = {x["id"]: x for x in hf["L4_analysis_rows"]["E1"]}
     a, b = summarize(list(e1.values()), ANALYSIS_KEYS), exp["analysis"]

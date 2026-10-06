@@ -17,11 +17,12 @@ from ml.common.paths import REPO
 from ml.llm.notebooks.make_kaggle import DATASET, KAGGLE, KERNEL, OWNER
 
 EXPORT_KERNEL = f"{OWNER}/skinnova-gemma4-e2b-export"
+LORA_DATASETS = {"lora": f"{OWNER}/skinnova-lora-v1", "lora2": f"{OWNER}/skinnova-lora-v2"}
 BUILD = REPO / "ml/llm/notebooks/build"
 PINS = ["litert-torch==0.9.4", "litert-lm-api==0.17.1", "litert-lm-builder==0.17.1", "ai-edge-litert==2.2.0", "ai-edge-quantizer==0.9.0",
         "litert-converter==0.4.0", "transformers==5.18.0", "tokenizers==0.23.2", "huggingface-hub==1.33.0", "protobuf==7.36.2",
         "torchao==0.18.0", "safetensors==0.8.0", "sentencepiece==0.2.2", "numpy==2.5.2", "pillow==12.3.0", "jax==0.11.2", "jaxlib==0.11.2",
-        "pydantic", "python-dotenv", "soundfile", "datasets"]
+        "pydantic", "python-dotenv", "soundfile", "datasets", "peft"]
 RUN_PY = (REPO / "ml/llm/notebooks/export_run.py").read_text()
 PATCH_PY = (REPO / "ml/llm/notebooks/export_patched.py").read_text()
 
@@ -52,11 +53,13 @@ def push(mode: str):
     meta = {"id": EXPORT_KERNEL, "title": "skinnova-gemma4-e2b-export", "code_file": "export.ipynb", "language": "python",
             "kernel_type": "notebook", "is_private": True, "enable_gpu": False, "enable_tpu": False, "enable_internet": True,
             # (a "Tpu1VmV38" request was silently ignored by Kaggle — TPU quota stayed 0.00 h — so stay on the CPU machine)
-            "dataset_sources": [DATASET], "competition_sources": [], "kernel_sources": [KERNEL] if mode == "merged" else [], "model_sources": []}
+            "dataset_sources": [DATASET] + ([LORA_DATASETS[mode]] if mode in LORA_DATASETS else []), "competition_sources": [],
+            "kernel_sources": [KERNEL] if mode == "merged" else [], "model_sources": []}
     (d / "kernel-metadata.json").write_text(json.dumps(meta, indent=1))
     subprocess.run([KAGGLE, "kernels", "push", "-p", str(d)], check=True)
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("--mode", choices=["stock", "merged"], required=True)
-    push(ap.parse_args().mode)
+    ap = argparse.ArgumentParser(); ap.add_argument("--mode", choices=["stock", "merged", "lora", "lora2"], required=True)
+    a = ap.parse_args()
+    push(a.mode)

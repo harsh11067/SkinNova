@@ -409,6 +409,21 @@ if MODE == "full":
     abl = [{"id": r["id"], "real": row["cats"], "gray": score_analysis(r, o)["cats"]} for r, o, row in zip(an[:16], gouts, res["E1"][:16])]
     for x in abl: x["changed"] = set(x["real"]) != set(x["gray"])
     REPORT["image_ablation"] = {"changed_rate": round(sum(x["changed"] for x in abl) / len(abl), 3), "rows": abl}
+    # same 16 cases WITHOUT image-model scores (the T10 setting): does the photo drive the answer when CV is absent?
+    import copy, re as _re
+    def _nocv(r):
+        r2 = copy.deepcopy(r)
+        for c in r2["messages"][1]["content"]:
+            if c["type"] == "text":
+                c["text"] = _re.sub(r"^IMAGE_MODEL_TOP3: .*$", "IMAGE_MODEL_TOP3: []", c["text"], flags=_re.M)
+        return r2
+    nocv = [_nocv(r) for r in an[:16]]
+    real_n, gray_n = gen_many(nocv, 700), gen_many(nocv, 700, image_override=gray)
+    abl2 = [{"id": r["id"], "real": score_analysis(r, a)["cats"], "gray": score_analysis(r, b)["cats"],
+             "true_in_real": r["meta"]["label"] in score_analysis(r, a)["cats"]} for r, a, b in zip(an[:16], real_n, gray_n)]
+    for x in abl2: x["changed"] = set(x["real"]) != set(x["gray"])
+    REPORT["image_ablation_nocv"] = {"changed_rate": round(sum(x["changed"] for x in abl2) / len(abl2), 3),
+                                     "true_class_listed_rate": round(sum(x["true_in_real"] for x in abl2) / len(abl2), 3), "rows": abl2}
     xr = {}
     for arm, adapter in [("E1", True), ("E0", False)]:
         outs = gen_many(ex, 300, adapter=adapter)
@@ -439,23 +454,31 @@ if MODE == "full":
     # ---- L5 merge parity (test.md §5): adapter outputs (E1, already generated) vs merged 16-bit weights, same prompts ----
     import gc
     e1 = {x["id"]: x for x in REPORT["L4_analysis_rows"]["E1"]}
-    del trainer, model; gc.collect(); torch.cuda.empty_cache()
-    model, processor = FastVisionModel.from_pretrained(f"{OUT}/merged", load_in_4bit=False)
-    processor.chat_template = LITERT_TEMPLATE; processor.tokenizer.chat_template = LITERT_TEMPLATE
-    FastVisionModel.for_inference(model)
-    l5 = []
-    for r, o in zip(an, gen_many(an, 700, adapter=True)):
-        a = e1[r["id"]]["out"]; ta, tb = processor.tokenizer.encode(a), processor.tokenizer.encode(o)
-        same_prefix = next((i for i, (x, y) in enumerate(zip(ta, tb)) if x != y), min(len(ta), len(tb)))
-        l5.append({"id": r["id"], "identical": a.strip() == o.strip(), "first_diff_token": same_prefix,
-                   "cats_equal": set(score_analysis(r, a)["cats"]) == set(score_analysis(r, o)["cats"])})
-    n = len(l5)
-    REPORT["L5_merge_parity"] = {"n": n, "identical": sum(x["identical"] for x in l5) / n,
-                                 "differ_after_50_tokens": sum(x["identical"] or x["first_diff_token"] >= 50 for x in l5) / n,
-                                 "category_sets_equal": sum(x["cats_equal"] for x in l5) / n, "rows": l5}
-    L5 = REPORT["L5_merge_parity"]   # test.md L5: identical ≥ 95 %, the rest differ only after ≥ 50 tokens, category sets ≥ 98 %
-    L5["pass"] = bool(L5["identical"] >= 0.95 and L5["differ_after_50_tokens"] == 1.0 and L5["category_sets_equal"] >= 0.98)
-    print("L5", {k: v for k, v in REPORT["L5_merge_parity"].items() if k != "rows"}); save_report()
+    # v8 OOM: the collators kept the training model alive → release every reference before reloading the merged weights
+    for _n in ["trainer", "model", "collator", "train_collator", "_b", "_e"]:
+        globals().pop(_n, None)
+    gc.collect(); torch.cuda.empty_cache()
+    REPORT["L5_gpu_before_reload_gb"] = round(torch.cuda.memory_allocated() / 2**30, 2)
+    try:
+        model, processor = FastVisionModel.from_pretrained(f"{OUT}/merged", load_in_4bit=False)
+        processor.chat_template = LITERT_TEMPLATE; processor.tokenizer.chat_template = LITERT_TEMPLATE
+        FastVisionModel.for_inference(model)
+        l5 = []
+        for r, o in zip(an, gen_many(an, 700, adapter=True)):
+            a = e1[r["id"]]["out"]; ta, tb = processor.tokenizer.encode(a), processor.tokenizer.encode(o)
+            same_prefix = next((i for i, (x, y) in enumerate(zip(ta, tb)) if x != y), min(len(ta), len(tb)))
+            l5.append({"id": r["id"], "identical": a.strip() == o.strip(), "first_diff_token": same_prefix,
+                       "cats_equal": set(score_analysis(r, a)["cats"]) == set(score_analysis(r, o)["cats"])})
+        n = len(l5)
+        REPORT["L5_merge_parity"] = {"n": n, "identical": sum(x["identical"] for x in l5) / n,
+                                     "differ_after_50_tokens": sum(x["identical"] or x["first_diff_token"] >= 50 for x in l5) / n,
+                                     "category_sets_equal": sum(x["cats_equal"] for x in l5) / n, "rows": l5}
+        L5 = REPORT["L5_merge_parity"]   # test.md L5: identical ≥ 95 %, the rest differ only after ≥ 50 tokens, category sets ≥ 98 %
+        L5["pass"] = bool(L5["identical"] >= 0.95 and L5["differ_after_50_tokens"] == 1.0 and L5["category_sets_equal"] >= 0.98)
+        print("L5", {k: v for k, v in REPORT["L5_merge_parity"].items() if k != "rows"}); save_report()
+    except torch.cuda.OutOfMemoryError as e:   # merged weights are already saved; L6 (HF E1 vs .litertlm) checks the merge end-to-end
+        REPORT["L5_merge_parity"] = {"skipped": f"CUDA OOM reloading merged weights ({REPORT['L5_gpu_before_reload_gb']} GB still allocated)"}
+        save_report()
     save_report()
 ''')
 

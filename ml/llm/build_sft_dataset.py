@@ -31,7 +31,7 @@ import pandas as pd
 from PIL import Image, ImageDraw, ImageFilter
 
 from ml.common.paths import LLM_DATA, PROCESSED, REPO, REPORTS, SPLITS, report_meta
-from ml.common.schema import TIER_RANK, load_labels, max_tier
+from ml.common.schema import BODY_SITES, DURATIONS, TIER_RANK, load_labels, max_tier
 from ml.eval import redflags as rf
 from ml.llm import phrasebank as PB
 from ml.llm import prompt_builder as pb
@@ -45,7 +45,9 @@ DISPLAY = {c["key"]: c["display"] for c in LABELS["classes"]}
 FLOOR = {c["key"]: c["tier_floor"] for c in LABELS["classes"]}
 CARDS = pb.load_cards()
 RX = load_rx_terms()
-SHARE = {"T1": .45, "T2": .10, "T3": .08, "T4": .08, "T5": .03, "T6": .12, "T7": .06, "T8": .05, "T9": .03}
+SHARE = {"T1": .39, "T2": .10, "T3": .08, "T4": .08, "T5": .03, "T6": .12, "T7": .06, "T8": .05, "T9": .03, "T10": .06}
+# T10 (added for LoRA v2): no image-model scores + class-independent answers + notes for the true class and 2 shuffled
+# distractors → only the photo tells them apart. LoRA v1 ignored the image completely (gray-image ablation changed 0 %).
 TIER_ADVICE = {
     "LOW": "Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.",
     "MODERATE": "Book a doctor visit within 1–2 weeks, sooner if it gets worse.",
@@ -260,6 +262,47 @@ def sysmsg(text):
     return {"role": "system", "content": text}
 
 
+def neutral_answers(rng: random.Random) -> dict:
+    """Answers that carry no class information (T10): uniform over the enums, no red-flag combinations."""
+    return dict(body_site=rng.choice(BODY_SITES[:-1]), duration=rng.choice(DURATIONS), itch=rng.randint(0, 3), pain=rng.randint(0, 1),
+                changing="unsure", bleeding_or_crusting=False, fever_or_unwell=False, others_affected=False,
+                new_product_or_exposure=False, age_band=rng.choice(["18_39", "40_59"]), skin_tone="unknown", free_text="", source="tap")
+
+
+def rec_image_only(rid, row, rng):
+    """T10: the photo is the only evidence; the target lists the true class first as 'possible' with moderate/high uncertainty."""
+    y = row["label"]
+    a = neutral_answers(rng)
+    distract = rng.sample([k for k in KEYS if k != y], 2)
+    cands = [y] + distract; rng.shuffle(cands)
+    rule = rf.evaluate(a, [], LABELS)
+    p = pb.build_analysis(a, [], rule.tier, rule.messages, note_keys=cands)
+    card = CARDS[y]
+    cats = [{"key": y, "likelihood": "possible", "why": ("Matches the photo pattern; typical sign: " + rng.choice(card["typical_features"]) + ".")[:200]}]
+    for k in distract:
+        d = CARDS[y]["distinguishing_from"].get(k) or CARDS[k]["distinguishing_from"].get(y)
+        cats.append({"key": k, "likelihood": "less_likely",
+                     "why": (("Less likely: " + d[0].lower() + d[1:]) if d else "Less likely: the photo fits it less well.")[:200].rstrip(".") + "."})
+    unc = rng.choice(["moderate", "high"])
+    explanation = " ".join([rng.choice(["No image-model scores were available, so this is based on the photo alone.",
+                                        "This estimate comes from the photo alone, without image-model scores."]),
+                            rng.choice(["The closest match is {n}.", "{n} fits best so far."]).format(n=DISPLAY[y]),
+                            first_sentence(card["summary"])])
+    tier = max_tier(rule.tier, FLOOR[y])
+    tgt = {"possible_categories": cats, "uncertainty": {"level": unc, "reasons": ["The photo is the only evidence"]},
+           "explanation": explanation, "what_would_help": ["A clearer photo in daylight, 15–20 cm away", "A doctor's examination in person"],
+           "self_care_info": [c[0].upper() + c[1:] + ("" if c.endswith(".") else ".") for c in rng.sample(card["general_care"], k=min(2, len(card["general_care"])))],
+           "triage": {"tier": tier, "advice": TIER_ADVICE[tier]}, "disagreement_with_image_model": False}
+    txt = json.dumps(tgt, ensure_ascii=False, separators=(",", ":"))
+    v = validate(txt, KEYS, cv_top1_p=0.0, rule_tier=rule.tier, rx_terms=RX)
+    assert v.ok, (rid, v.errors, txt)
+    return {"id": rid, "task": "T10", "image": row["img"],
+            "messages": [sysmsg(p["system"]), {"role": "user", "content": [{"type": "image"}, {"type": "text", "text": p["user"]}]},
+                         {"role": "assistant", "content": [{"type": "text", "text": txt}]}],
+            "meta": {"label": y, "real_q": False, "imputed": list(a), "rule_tier": rule.tier, "rules": rule.fired, "cv_top1": "",
+                     "cv_top1_p": 0.0, "source": row.get("source", "synthetic"), "answers": a, "cv": [], "candidates": cands}}
+
+
 def rec_analysis(rid, task, row, cvs, rng, split_cv="sample", image_path=None):
     y = row["label"]
     a, real, imputed = qn.from_row(row, y, rng)
@@ -464,13 +507,13 @@ def main():
         shutil.rmtree(out_dir)
     img_dir.mkdir(parents=True)
     counts = {t: int(round(a.n * s)) for t, s in SHARE.items()}
-    image_tasks = ["T1", "T2", "T3", "T4", "T9"]
+    image_tasks = ["T1", "T2", "T3", "T4", "T9", "T10"]
     train_rows = balanced_rows(sp["train"], sum(counts[t] for t in image_tasks), rng)
     recs, k = [], 0
     for t in image_tasks:
         for _ in range(counts[t]):
             row = train_rows[k]; k += 1
-            recs.append(rec_analysis(f"{t}-{len(recs):05d}", t, row, cvs, rng))
+            recs.append(rec_image_only(f"{t}-{len(recs):05d}", row, rng) if t == "T10" else rec_analysis(f"{t}-{len(recs):05d}", t, row, cvs, rng))
     srcs = sp["train"].sample(counts["T5"], random_state=a.seed).to_dict("records")
     for i, row in enumerate(srcs):
         pth = nonskin_image(rng, Image.open(REPO / row["img"]), img_dir / f"nonskin_{i:04d}.jpg")

@@ -246,9 +246,10 @@ fun VoiceSheet(vm: SessionViewModel, onClose: () -> Unit) {
                             Spacer(Modifier.height(12.dp)); PrimaryButton(stringResource(R.string.v_confirm)) { onClose() }
                         }
                         is VoiceState.Error -> {
-                            Text(stringResource(if (s.kind == "model") R.string.v_needs_model else R.string.v_unclear), style = SnType.body, color = sn.moderate)
+                            Text(stringResource(when (s.kind) { "model" -> R.string.v_needs_model; "speech_pack" -> R.string.v_needs_speech_pack; else -> R.string.v_unclear }),
+                                style = SnType.body, color = sn.moderate)
                             Spacer(Modifier.height(12.dp))
-                            if (s.kind != "model") OutlineButton(stringResource(R.string.v_retry), Modifier.fillMaxWidth()) { vm.resetVoice() }
+                            if (s.kind == "unclear") OutlineButton(stringResource(R.string.v_retry), Modifier.fillMaxWidth()) { vm.resetVoice() }
                         }
                     }
                     Spacer(Modifier.height(10.dp))

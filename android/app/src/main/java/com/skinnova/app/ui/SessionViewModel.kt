@@ -147,9 +147,11 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
             // Custom exports may lose Gemma's audio encoder (plan §6 risk): then transcribe with the on-device recogniser.
             runCatching { c.engineHolder.use { } }
             if (!c.engineHolder.supportsAudio) {
-                if (!com.skinnova.app.ml.OnDeviceSpeech.available(getApplication())) { _voice.value = VoiceState.Error("unclear"); return@launch }
+                if (!com.skinnova.app.ml.OnDeviceSpeech.available(getApplication())) { _voice.value = VoiceState.Error("speech_pack"); return@launch }
                 _voice.value = VoiceState.Recording(0f, 0)
-                val t = com.skinnova.app.ml.OnDeviceSpeech.listen(getApplication(), c.settings.lang.value) { l -> _voice.value = VoiceState.Recording(l, 0) }
+                val t = try {
+                    com.skinnova.app.ml.OnDeviceSpeech.listen(getApplication(), c.settings.lang.value) { l -> _voice.value = VoiceState.Recording(l, 0) }
+                } catch (e: com.skinnova.app.ml.SpeechPackMissing) { _voice.value = VoiceState.Error("speech_pack"); return@launch }
                 _voice.value = if (t.count { it.isLetter() } < 3) VoiceState.Error("unclear") else VoiceState.Heard(t)
                 return@launch
             }

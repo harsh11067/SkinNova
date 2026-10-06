@@ -47,12 +47,14 @@ def top3(cv: list[dict]) -> list[dict]:
 
 
 def build_analysis(answers: dict, cv: list[dict], rule_tier: str, rule_messages: list[str],
-                   cards: dict | None = None, root: Path = PROMPTS) -> dict:
+                   cards: dict | None = None, root: Path = PROMPTS, note_keys: list[str] | None = None) -> dict:
+    """note_keys: condition notes to include when there are no image-model scores (SFT task T10); default = CV top-3."""
     cards = load_cards() if cards is None else cards
     v_sys, system = load_template("analyze_system.txt", root)
     v_usr, user_t = load_template("analyze_user.txt", root)
     t3 = top3(cv)
-    notes = {s["key"]: {f: cards[s["key"]][f] for f in CARD_FIELDS} for s in t3 if s["key"] in cards}
+    keys = note_keys if note_keys is not None else [s["key"] for s in t3]
+    notes = {k: {f: cards[k][f] for f in CARD_FIELDS} for k in keys if k in cards}
     ans = {k: answers[k] for k in ANSWER_FIELDS if k in answers}
     user = (user_t.replace("{cv_top3_json}", cj(t3))
             .replace("{rule_tier}", rule_tier)

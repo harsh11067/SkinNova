@@ -11,6 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+
+/** The phone has no offline speech pack for the chosen language (SpeechRecognizer errors 12 / 13). */
+class SpeechPackMissing : Exception()
 
 /**
  * plan §6 USP-2 fallback: when the imported .litertlm has no audio encoder (custom export), transcribe with Android's
@@ -21,7 +25,8 @@ object OnDeviceSpeech {
     fun available(ctx: Context): Boolean =
         Build.VERSION.SDK_INT >= 33 && SpeechRecognizer.isOnDeviceRecognitionAvailable(ctx)
 
-    /** Must be called on the main thread's looper (SpeechRecognizer requirement). Returns transcript or "" on failure. */
+    /** Must be called on the main thread's looper (SpeechRecognizer requirement). Returns the transcript, "" when nothing
+     *  was understood, or throws [SpeechPackMissing] when the language's offline pack is not installed. */
     suspend fun listen(ctx: Context, lang: String, onLevel: (Float) -> Unit): String = withContext(Dispatchers.Main) {
         if (Build.VERSION.SDK_INT < 31) return@withContext ""
         suspendCancellableCoroutine { cont ->
@@ -32,7 +37,12 @@ object OnDeviceSpeech {
                     val t = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull() ?: ""
                     sr.destroy(); if (cont.isActive) cont.resume(t)
                 }
-                override fun onError(error: Int) { sr.destroy(); if (cont.isActive) cont.resume("") }
+                override fun onError(error: Int) {
+                    sr.destroy()
+                    if (!cont.isActive) return
+                    // 12 = ERROR_LANGUAGE_NOT_SUPPORTED, 13 = ERROR_LANGUAGE_UNAVAILABLE: the offline pack is missing
+                    if (error == 12 || error == 13) cont.resumeWithException(SpeechPackMissing()) else cont.resume("")
+                }
                 override fun onRmsChanged(rmsdB: Float) { onLevel(((rmsdB + 2f) / 12f).coerceIn(0f, 1f)) }
                 override fun onReadyForSpeech(params: Bundle?) {}
                 override fun onBeginningOfSpeech() {}

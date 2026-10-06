@@ -39,6 +39,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skinnova.app.R
@@ -120,6 +122,7 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
     val res by vm.result.collectAsState()
     val photo by vm.photo.collectAsState()
     val history by vm.c.settings.history.collectAsState()
+    val tts by vm.c.settings.tts.collectAsState()
     val r: FinalResult = res ?: return
     var showHi by remember { mutableStateOf(r.localized != null && r.lang == "hi") }
     var saved by remember { mutableStateOf(vm.savedId != null) }
@@ -201,9 +204,12 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
                     if (r.localized != null) {
                         SmallTag(if (showHi) stringResource(R.string.res_lang_en) else stringResource(R.string.res_lang_hi))
                         Spacer(Modifier.width(4.dp))
-                        Box(Modifier.size(48.dp).clickable(role = Role.Button) { showHi = !showHi }, contentAlignment = Alignment.Center) { Text("⇄", color = sn.accT) }
+                        val switchLabel = stringResource(if (showHi) R.string.res_lang_en else R.string.res_lang_hi)
+                        Box(Modifier.size(48.dp).semantics { contentDescription = switchLabel }.clickable(role = Role.Button) { showHi = !showHi },
+                            contentAlignment = Alignment.Center) { Text("⇄", color = sn.accT) }
                     }
-                    if (vm.c.settings.tts.value) Box(Modifier.size(48.dp).clickable(role = Role.Button) {
+                    val readAloud = stringResource(R.string.res_read_aloud)
+                    if (tts) Box(Modifier.size(48.dp).semantics { contentDescription = readAloud }.clickable(role = Role.Button) {
                         Tts.speak(ctx, loc?.explanation ?: r.output.explanation, if (showHi) "hi" else "en")
                     }, contentAlignment = Alignment.Center) { Text("🔊", fontSize = 16.sp) }
                 }

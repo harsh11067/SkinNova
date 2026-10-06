@@ -23,6 +23,9 @@ N = 150
 RUN = f'''
 import glob, os, subprocess, sys
 data = os.path.dirname(glob.glob("/kaggle/input/**/llm_test.jsonl", recursive=True)[0])
+need = [data + "/code/ml/eval/eval_arms.py", data + "/llm_eval/llm_test.jsonl"]
+print("dataset:", data, {{n: os.path.exists(n) for n in need}}, flush=True)
+assert all(map(os.path.exists, need)), "stale dataset version mounted (no eval_arms / llm_eval) — re-push after the dataset is ready"
 os.makedirs("/tmp/d", exist_ok=True)
 if not os.path.exists("/tmp/d/llm"): os.symlink(data, "/tmp/d/llm")          # ml.common.paths: LLM_DATA = DATA/llm
 subprocess.run(["rm", "-rf", "/kaggle/working/code"]); subprocess.run(["cp", "-r", data + "/code", "/kaggle/working/code"])

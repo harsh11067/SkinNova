@@ -28,7 +28,7 @@ def train():
 
 def test_every_analysis_target_validates(train):
     for r in train + load("sft_val") + load("llm_val") + load("llm_test"):
-        if r["task"] in {"T1", "T2", "T3", "T4", "T5", "T9"}:
+        if r["task"] in {"T1", "T2", "T3", "T4", "T5", "T9", "T10"}:
             m = r["meta"]
             txt = r["messages"][-1]["content"][0]["text"]
             v = validate(txt, KEYS, cv_top1_p=m["cv_top1_p"], rule_tier=m["rule_tier"], rx_terms=RX)
@@ -42,7 +42,7 @@ def test_rendered_with_shipped_prompts(train):
                for n in ["analyze_system.txt", "extract_system.txt", "narrate_system.txt"]}
     for r in train:
         sys_txt = r["messages"][0]["content"]
-        if r["task"] in {"T1", "T2", "T3", "T4", "T5", "T9"}:
+        if r["task"] in {"T1", "T2", "T3", "T4", "T5", "T9", "T10"}:
             assert sys_txt == shipped["analyze_system.txt"]
         elif r["task"] == "T6":
             assert sys_txt == shipped["extract_system.txt"]
@@ -98,3 +98,16 @@ def test_heldout_phrasing_not_in_training(train):
             for f, item in json.loads(r["messages"][-1]["content"][0]["text"])["fields"].items():
                 if item is not None:
                     assert item["evidence"] not in held, (r["id"], item["evidence"])
+
+
+def test_t10_photo_is_the_only_evidence(train):
+    """T10: no image-model scores, notes for exactly the true class + 2 distractors, true class first but only 'possible'."""
+    t10 = [r for r in train if r["task"] == "T10"]
+    if not t10:
+        pytest.skip("SFT build without T10 (LoRA v1 data)")
+    for r in t10:
+        m = r["meta"]; user = r["messages"][1]["content"][1]["text"]
+        assert "IMAGE_MODEL_TOP3: []" in user and m["label"] in m["candidates"] and len(m["candidates"]) == 3
+        out = json.loads(r["messages"][-1]["content"][0]["text"])
+        assert out["possible_categories"][0]["key"] == m["label"] and out["possible_categories"][0]["likelihood"] == "possible"
+        assert out["uncertainty"]["level"] in {"moderate", "high"}
