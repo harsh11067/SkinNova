@@ -25,7 +25,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("model"); ap.add_argument("--l6", required=True); ap.add_argument("--train", required=True)
     ap.add_argument("--lora-source", help="where the merged adapter came from, e.g. kaggle-dataset:harsh11067/skinnova-lora-v1")
-    ap.add_argument("--id", default="skinnova-e2b-v1", help="manifest entry to fill")
+    ap.add_argument("--id", default="skinnova-e2b-v1", help="manifest entry to fill (created if missing)")
+    ap.add_argument("--label", help="label for a new entry")
+    ap.add_argument("--ship", action="store_true", help="make this the model the app imports (llm.file, first accepted entry)")
     ap.add_argument("--allow-l6-fail", action="store_true", help="record a model whose L6 failed (beta builds only; logged)")
     a = ap.parse_args()
     model = Path(a.model); sha = sha256(model)
@@ -35,7 +37,13 @@ def main():
     tr = json.loads(Path(a.train).read_text())
     template_sha = hashlib.sha256((REPO / "ml/llm/chat_template_litertlm.jinja").read_bytes()).hexdigest()[:16]
     m = json.loads(MANIFEST.read_text())
-    entry = next(e for e in m["llm"]["accepted"] if e["id"] == a.id)
+    acc = m["llm"]["accepted"]
+    entry = next((e for e in acc if e["id"] == a.id), None)
+    if entry is None:
+        entry = {"id": a.id, "label": a.label or a.id, "lora_rev": "", "merged_repo": "", "merged_rev": "", "prompt_version": "v1"}
+        acc.insert(0, entry)
+    if a.ship:
+        acc.remove(entry); acc.insert(0, entry); m["llm"]["file"] = model.name
     entry.update({"bytes": model.stat().st_size, "sha256": sha, "base": "google/gemma-4-E2B-it (unsloth/gemma-4-E2B-it)",
                   "lora_repo": a.lora_source or tr.get("hf_lora_repo", "kaggle:harsh11067/skinnova-gemma4-e2b-lora (output: lora/)"),
                   "converter": "litert-torch 0.9.4 export_hf + ml/llm/notebooks/export_patched.py, dynamic_wi8_emb4_afp32, vision 280",

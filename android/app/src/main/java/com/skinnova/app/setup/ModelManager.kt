@@ -73,9 +73,11 @@ class ModelManager(private val ctx: Context, private val fs: FileOps = FileOps.R
     suspend fun scanAndVerify(onProgress: (Float) -> Unit = {}): AcceptedModel? = withContext(Dispatchers.IO) {
         for (f in candidates()) {
             verifiedCached(f)?.let { return@withContext it }
-            val match = accepted.firstOrNull { it.bytes == f.length() } ?: continue
+            // several accepted models can share a size (LoRA v1 and v2: identical tensor shapes): hash once, match by sha
+            if (accepted.none { it.bytes == f.length() }) continue
             val sha = fs.sha256(f.inputStream(), f.length(), onProgress)
-            if (sha == match.sha256) { prefs.edit().putString(key(f), match.id).apply(); return@withContext match }
+            val match = accepted.firstOrNull { it.bytes == f.length() && it.sha256 == sha } ?: continue
+            prefs.edit().putString(key(f), match.id).apply(); return@withContext match
         }
         null
     }

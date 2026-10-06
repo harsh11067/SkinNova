@@ -1,7 +1,23 @@
 {
   "llm": {
-    "file": "skinnova-e2b-v1.litertlm",
+    "file": "skinnova-e2b-v2.litertlm",
     "accepted": [
+      {
+        "id": "skinnova-e2b-v2",
+        "label": "SkinNova Gemma 4 E2B (LoRA v2)",
+        "lora_rev": "",
+        "merged_repo": "",
+        "merged_rev": "",
+        "prompt_version": "v1",
+        "bytes": 3862170848,
+        "sha256": "046020629f9dadf1f4d02d23c72810d6c08d877a7f3d6405e0f341e3bc2d22ed",
+        "base": "google/gemma-4-E2B-it (unsloth/gemma-4-E2B-it)",
+        "lora_repo": "kaggle-dataset:harsh11067/skinnova-lora-v2 (LoRA v2 run: SFT v2 with SCIN + T10)",
+        "converter": "litert-torch 0.9.4 export_hf + ml/llm/notebooks/export_patched.py, dynamic_wi8_emb4_afp32, vision 280",
+        "chat_template_sha": "02b3091acf53c0b7",
+        "l6_pass": true,
+        "sft_dataset_rev": "544351e"
+      },
       {
         "id": "skinnova-e2b-v1",
         "label": "SkinNova Gemma 4 E2B (LoRA)",

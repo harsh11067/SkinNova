@@ -39,6 +39,6 @@ One-line status: `scripts/status.sh`.
 ## Next (in order)
 1. ✅ L6 v1 PASS → manifest filled (sha 30064f2c…).
 2. ✅ Android compile + JVM tests + lint → commits d9d2c13, 30979fc.
-3. v2 chain result → if v2 wins: `update_manifest.py --id …` + manifest `file`; else keep v1.
+3. ✅ Selection: v2 0.91 vs v1 0.90 (one case; pre-registered rule) → **v2 ships** (manifest `file` = skinnova-e2b-v2.litertlm; v1 still accepted). ModelManager fixed: same-size models matched by sha.
 4. Arms D, C, B locally on the shipping model (`eval_arms --skinnova <model> --arms D C B --n 150`) → safety S4 → final_report.
 5. Phone (Harsh, d2y §3): `scripts/device_tests.sh` (A1–A10, C5, TL3), `push_model.sh`, `device_bench.sh`.
