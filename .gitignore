@@ -1,5 +1,5 @@
-data/
-models/
+/data/
+/models/
 *.litertlm
 *.tflite
 !android/app/src/main/assets/cv/skin_cls.tflite

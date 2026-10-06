@@ -1,0 +1,333 @@
+{
+ "version": "v2",
+ "note": "Label = first matching slug rule (DermNet topic slug in the filename) -> else folder map -> else excluded. Folders listed in `slug_only` never fall back to their folder label (their folder name is wrong for most files). `EXCLUDE` = ambiguous/impure, dropped on purpose. Test D4 asserts every observed (source, folder) pair is in `folder_map`, `slug_only` or `exclude_folders`. | scin: explicit condition table (consensus weight ≥ 0.5), DermNet-rule-consistent; added 2026-10-06",
+ "slug_sources": [
+  "mgmitesh",
+  "pacificrm"
+ ],
+ "slug_rules": [
+  [
+   "melanoma-mimic|pigmentation|minocycline|eczema-impetiginized|id-reaction|tinea-incognito|tinea-laboratory|atypical-nevi|dsap|nevus-comedonicus|fordyce|milia|acne-scar|acnescar|pitted|scar",
+   "EXCLUDE"
+  ],
+  [
+   "lentigo-maligna|malignant-melanoma|melanoma|basal-cell|squamous|sq-cell|keratoacanthoma|kaposi|ctcl|actinic-cheilitis|bowen",
+   "suspicious_lesion"
+  ],
+  [
+   "actinic-keratosis|actinickeratosis",
+   "suspicious_lesion"
+  ],
+  [
+   "^scabies|[-_]scabies",
+   "scabies"
+  ],
+  [
+   "tinea|ringworm|tincorp|tinped|kerion|majocchi-granuloma|onychomycosis|nail-fungus",
+   "tinea"
+  ],
+  [
+   "candid|intertrigo|perleche|erythrasma|erosio-interdigitalis|pityrosporum|blastomycosis|coccidio|mycetoma|actinomycosis|monialisis|confluent-reticulate",
+   "other"
+  ],
+  [
+   "seborrheic-dermatitis|seb-derm|sebderm",
+   "seborrheic_dermatitis"
+  ],
+  [
+   "contact-derm|contactderm|allergic-contact|irritant",
+   "contact_dermatitis"
+  ],
+  [
+   "eczema|atopic|dyshidrotic|pompholyx",
+   "eczema_atopic"
+  ],
+  [
+   "psoria",
+   "psoriasis"
+  ],
+  [
+   "vitiligo",
+   "vitiligo"
+  ],
+  [
+   "perioral|rosacea|rhinophyma|hidradenitis|steroidperioral",
+   "other"
+  ],
+  [
+   "acne|comedo|comedone",
+   "acne"
+  ],
+  [
+   "seborrheic-kerato|sebks|sks-|stucco|dermatosis-papulosa|melanocytic-nevi|congenital-nevus|nevus-spilus|halo-nevus|becker-nevus|blue-nevus|spitz|melanotic-macule|mongolian|nevus-repigmented|lentigo-adults|lentigo-children|dermatofibroma|epidermal-cyst|pilar-cyst|skin-tags|sebaceous-hyperplasia|syringoma|hydrocystoma|cherry-angioma|venous-lake|angiokeratoma|hemangioma|pyogenic-granuloma|spider-angioma|fibroma|neurofibroma|cylindroma|leiomyoma|epidermal-nevus|nevus-sebaceous|keloid|chondrodermatitis|porokeratosis|seborrheickeratosis",
+   "benign_lesion"
+  ],
+  [
+   "bullous|pemphig|herpetiformis|epidermolysis|diabetic-bullae|lupus|^sle|dle-|plaque-le|lichen|drug|fixed-drug|vasculitis|erythema-multiforme|schamberg|erythema-nodosum|pyoderma|henoch|stevens|sweets|wart|sun-damaged|phototoxic|sunburn|actinic-comedones|biting-insects|tick-bite|spider-bite|flea-bites|lice|larva-migrans|lyme|myiasis|duck-itch|jelly-fish|fire-ants|wasp|caterpillar|chickenpox|varicella|urticaria|hives",
+   "other"
+  ]
+ ],
+ "folder_map": {
+  "mgmitesh": {
+   "Acne": "acne",
+   "Actinic Keratosis": "suspicious_lesion",
+   "Basal Cell Carcinoma": "suspicious_lesion",
+   "Chickenpox": "other",
+   "Dermato Fibroma": "benign_lesion",
+   "Melanoma": "suspicious_lesion",
+   "Nail Fungus": "tinea",
+   "Nevus": "benign_lesion",
+   "Normal Skin": "other",
+   "Pigmented Benign Keratosis": "benign_lesion",
+   "Ringworm": "tinea",
+   "Seborrheic Keratosis": "benign_lesion",
+   "Squamous Cell Carcinoma": "suspicious_lesion",
+   "Vascular Lesion": "benign_lesion"
+  },
+  "pacificrm": {
+   "Acne": "acne",
+   "Actinic_Keratosis": "suspicious_lesion",
+   "Eczema": "eczema_atopic",
+   "Psoriasis": "psoriasis",
+   "SkinCancer": "suspicious_lesion",
+   "Tinea": "tinea",
+   "Unknown_Normal": "other",
+   "Vitiligo": "vitiligo",
+   "Seborrh_Keratoses": "benign_lesion",
+   "Moles": "benign_lesion",
+   "Benign_tumors": "benign_lesion",
+   "Bullous": "other",
+   "DrugEruption": "other",
+   "Lichen": "other",
+   "Lupus": "other",
+   "Rosacea": "other",
+   "Sun_Sunlight_Damage": "other",
+   "Vasculitis": "other",
+   "Warts": "other",
+   "Candidiasis": "other"
+  },
+  "pad_ufes20": {
+   "ACK": "suspicious_lesion",
+   "BCC": "suspicious_lesion",
+   "MEL": "suspicious_lesion",
+   "SCC": "suspicious_lesion",
+   "NEV": "benign_lesion",
+   "SEK": "benign_lesion"
+  },
+  "skindisnet": {
+   "Atopic Dermatitis (AD)": "eczema_atopic",
+   "Contact Dermatitis (CD)": "contact_dermatitis",
+   "Eczema (EC)": "eczema_atopic",
+   "Scabies (SC)": "scabies",
+   "Seborrheic Dermatitis (SD)": "seborrheic_dermatitis",
+   "Tinea Corporis (TC)": "tinea"
+  },
+  "skindiseasebd": {
+   "Eczema": "eczema_atopic",
+   "Scabies": "scabies",
+   "Tinea Ringworm": "tinea",
+   "Vitiligo": "vitiligo"
+  },
+  "scin": {
+   "AKV - Acrokeratosis verruciformis": "other",
+   "Abscess": "other",
+   "Acanthosis nigricans": "other",
+   "Acne": "acne",
+   "Actinic Keratosis": "suspicious_lesion",
+   "Actinic granuloma": "other",
+   "Acute constitutional eczema": "eczema_atopic",
+   "Acute-on-chronic dyshidrotic eczema of hands": "eczema_atopic",
+   "Agminate folliculitis": "other",
+   "Allergic Contact Dermatitis": "contact_dermatitis",
+   "Amyloidosis of skin": "other",
+   "Annular erythema": "other",
+   "Arsenical keratosis": "suspicious_lesion",
+   "B-Cell Cutaneous Lymphoma": "suspicious_lesion",
+   "Basal Cell Carcinoma": "suspicious_lesion",
+   "Bullous Pemphigoid": "other",
+   "CD - Contact dermatitis": "contact_dermatitis",
+   "Candida intertrigo": "other",
+   "Cellulitis": "other",
+   "Cheilitis": "other",
+   "Chicken pox exanthem": "other",
+   "Chilblain": "other",
+   "Clavus": "other",
+   "Condyloma acuminatum": "other",
+   "Confluent and reticulate papillomatosis": "other",
+   "Contact dermatitis caused by Rhus diversiloba": "contact_dermatitis",
+   "Contact dermatitis, NOS": "contact_dermatitis",
+   "Cutaneous T Cell Lymphoma": "suspicious_lesion",
+   "Cutaneous larva migrans": "other",
+   "Cutaneous lupus": "other",
+   "Cutaneous metastasis": "suspicious_lesion",
+   "Cutaneous sarcoidosis": "other",
+   "Cyst": "benign_lesion",
+   "Deep fungal infection": "other",
+   "Dermatofibroma": "benign_lesion",
+   "Drug Rash": "other",
+   "Ecthyma": "other",
+   "Ecthyma gangrenosum": "other",
+   "Eczema": "eczema_atopic",
+   "Elephantiasis nostras": "other",
+   "Epidermal nevus": "benign_lesion",
+   "Eruptive xanthoma": "other",
+   "Erythema ab igne": "other",
+   "Erythema dyschromicum perstans": "other",
+   "Erythema gyratum repens": "other",
+   "Erythema migrans": "other",
+   "Erythema multiforme": "other",
+   "Erythema nodosum": "other",
+   "Folliculitis": "other",
+   "Foot ulcer": "other",
+   "Granuloma annulare": "other",
+   "Grover's disease": "other",
+   "HK - Hyperkeratosis": "other",
+   "Hand foot and mouth disease": "other",
+   "Hemangioma": "benign_lesion",
+   "Hemosiderin pigmentation of lower limb due to varicose veins of lower limb": "other",
+   "Hemosiderin pigmentation of skin due to venous insufficiency": "other",
+   "Herpes Simplex": "other",
+   "Herpes Zoster": "other",
+   "Hidradenitis": "other",
+   "Hyperpigmentation": "other",
+   "Hypersensitivity": "other",
+   "Ichthyosis": "other",
+   "Idiopathic guttate hypomelanosis": "other",
+   "Impetigo": "other",
+   "Insect Bite": "other",
+   "Intertrigo": "other",
+   "Inverse psoriasis": "psoriasis",
+   "Irritant Contact Dermatitis": "contact_dermatitis",
+   "Jessner lymphocytic infiltrate": "other",
+   "Keratoderma": "other",
+   "Keratolysis exfoliativa": "other",
+   "Keratosis pilaris": "other",
+   "Knuckle pads": "other",
+   "Leukocytoclastic Vasculitis": "other",
+   "Leukonychia": "other",
+   "Lichen Simplex Chronicus": "other",
+   "Lichen nitidus": "other",
+   "Lichen planus/lichenoid eruption": "other",
+   "Lichen sclerosus": "other",
+   "Lichen spinulosus": "other",
+   "Lichen striatus": "other",
+   "Lichenified eczema": "eczema_atopic",
+   "Lichenified eczematous dermatitis": "eczema_atopic",
+   "Lichenoid myxedema": "other",
+   "Livedo reticularis": "other",
+   "Localized skin infection": "other",
+   "Lymphangioma": "benign_lesion",
+   "Majocchi granuloma": "tinea",
+   "Melanin pigmentation due to exogenous substance": "other",
+   "Melanocytic Nevus": "benign_lesion",
+   "Melasma": "other",
+   "Miliaria": "other",
+   "Molluscum Contagiosum": "other",
+   "Morbilliform eruption": "other",
+   "Morphea/Scleroderma": "other",
+   "Onychodystrophy": "other",
+   "Onychomycosis": "tinea",
+   "Paronychia": "other",
+   "Pemphigus vulgaris": "other",
+   "Perforating dermatosis": "other",
+   "Perioral Dermatitis": "other",
+   "Photodermatitis": "other",
+   "Phytophotodermatitis": "other",
+   "Pigmented purpuric eruption": "other",
+   "Pincer nail deformity": "other",
+   "Pityriasis lichenoides": "other",
+   "Pityriasis rosea": "other",
+   "Poikiloderma": "other",
+   "Poisoning by nematocyst": "other",
+   "Porokeratosis": "benign_lesion",
+   "Post-Inflammatory hyperpigmentation": "other",
+   "Post-Inflammatory hypopigmentation": "other",
+   "Pressure ulcer": "other",
+   "Prurigo": "other",
+   "Prurigo nodularis": "other",
+   "Psoriasis": "psoriasis",
+   "Purpura": "other",
+   "Pyogenic granuloma": "benign_lesion",
+   "Rheumatoid nodule": "other",
+   "Rosacea": "other",
+   "SCC/SCCIS": "suspicious_lesion",
+   "SK/ISK": "benign_lesion",
+   "Scabies": "scabies",
+   "Seborrheic Dermatitis": "seborrheic_dermatitis",
+   "Skin infection": "other",
+   "Skin ulcer": "other",
+   "Stasis Dermatitis": "other",
+   "Sunburn": "other",
+   "Syphilis": "other",
+   "TMEP - telangiectasia macularis eruptiva perstans": "other",
+   "Tinea": "tinea",
+   "Tinea Versicolor": "tinea",
+   "Traction alopecia": "other",
+   "Urticaria": "other",
+   "Varicose veins of lower extremity": "other",
+   "Vasculitis of the skin": "other",
+   "Venous Stasis Ulcer": "other",
+   "Verruca vulgaris": "other",
+   "Viral Exanthem": "other",
+   "Vitiligo": "vitiligo",
+   "Xerosis": "other",
+   "unilateral laterothoracic exanthem": "other",
+   "varicose vein": "other"
+  }
+ },
+ "slug_only": {
+  "mgmitesh": {
+   "Dyshidrotic Eczema": "folder is DermNet's tinea/candida category (tinea-*, candidiasis-*, intertrigo, perleche); no eczema slugs present"
+  },
+  "pacificrm": {
+   "Infestations_Bites": "keep only scabies slugs; bites/lice/larva migrans are not our classes",
+   "Vascular_Tumors": "benign vascular slugs kept, kaposi -> suspicious, malformations/telangiectasia dropped"
+  }
+ },
+ "exclude_folders": {
+  "skindiseasebd": {
+   "Dermatitis": "unspecified dermatitis type; cannot map to contact vs atopic"
+  },
+  "scin": {
+   "Abrasion, scrape, or scab": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Acne keloidalis": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Acne urticata": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Acute and chronic dermatitis": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Acute dermatitis, NOS": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Animal bite - wound": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Blister": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Burn of skin": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Chronic dermatitis, NOS": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Foreign body reaction of the skin": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Geographic tongue": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Infected eczema": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Inflicted skin lesions": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Koebner phenomenon": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Local infection of wound": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Milia": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "O/E - ecchymoses present": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "O/E - petechiae on skin": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "O/E - petechiae present": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "O/E - pustules": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "O/E - vesicles present": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "On examination - follicular pustules": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Remove from labeling tool": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Scar Condition": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Skin lesion in drug addict": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Superficial wound of body region": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Traumatic blister": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Traumatic petechiae": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "Traumatic ulcer": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "hyperlinear palm": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)",
+   "wound/abrasion": "not a single skin diagnosis / ambiguous (see decisions 2026-10-06)"
+  }
+ },
+ "external_only_sources": [
+  "skindiseasebd"
+ ],
+ "license_noncommercial_sources": [
+  "pacificrm",
+  "skindisnet",
+  "skindiseasebd"
+ ]
+}
