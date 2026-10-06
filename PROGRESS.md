@@ -8,6 +8,7 @@ Gradle from WSL: `cd android && JAVA_HOME=~/android/jdk ANDROID_HOME=~/android/s
 (`./gradlew --stop`, it holds ~4 GB of the 7.8 GB WSL RAM). adb: Windows `adb.exe` via `scripts/_adb.sh` (phone not attached yet).
 Kaggle CLI: `~/.local/bin/kaggle`, env from `.env`. Big Kaggle outputs: `scripts/kaggle_output_url.py` + `scripts/dl_url.sh`.
 One-line status: `scripts/status.sh`.
+**After a PC / WSL restart: `cd ~/mini/SkinNova/skinnova && scripts/resume.sh`** (relaunches only unfinished chains).
 
 ## Done (verified on disk, 2026-10-06)
 - Data: v2 with SCIN (CC BY 4.0) — frozen v1 splits kept, 0 v1 images moved; data card. PacificRM `Unknown_Normal` (1,471,
@@ -32,7 +33,8 @@ One-line status: `scripts/status.sh`.
 ## In progress
 | what | where | log |
 |---|---|---|
-| LoRA v2 (trained: still ignores the photo, gray-image ablation 0/16) → dataset skinnova-lora-v2 → export v15 → download → L6 → v1/v2 selection on frozen llm_val (100, greedy; ties → v1) | `scripts/after_lora_v2.sh` | logs/after_lora_v2.log |
+| LoRA v2 (still ignores the photo) → export v15 → L6 PASS (agreement drop 2.5 pts) → v1/v2 selection on frozen llm_val (100, greedy; ties → v1; v1 = 0.90) | `scripts/after_lora_v2.sh` | logs/after_lora_v2.log |
+| arms D C B on the selected model (frozen set) + D C on the CV v2 re-render → safety → final report (~6 h, resumes per case) | `scripts/run_arms.sh` | logs/run_arms.log |
 
 ## Next (in order)
 1. ✅ L6 v1 PASS → manifest filled (sha 30064f2c…).
