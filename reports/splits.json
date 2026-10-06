@@ -1,8 +1,8 @@
 {
- "git_sha": "6fe1ca6",
- "dataset_rev": "a138e2d1b593",
+ "git_sha": "420bd17",
+ "dataset_rev": "a2a7226bedaa",
  "model_sha": "",
- "created_at": "2026-10-05T18:16:19+00:00",
+ "created_at": "2026-10-06T12:04:40+00:00",
  "classes": [
   "eczema_atopic",
   "contact_dermatitis",
@@ -16,50 +16,50 @@
   "other"
  ],
  "dropped_d5": {
-  "seborrheic_dermatitis": 41
+  "seborrheic_dermatitis": 69
  },
  "n": {
-  "train": 18805,
-  "val": 3754,
-  "test": 3759,
+  "train": 21712,
+  "val": 4363,
+  "test": 4342,
   "external_test": 136
  },
  "per_class": {
   "train": {
-   "benign_lesion": 6119,
-   "suspicious_lesion": 4968,
-   "other": 4080,
-   "eczema_atopic": 860,
-   "tinea": 830,
-   "acne": 551,
-   "psoriasis": 538,
-   "vitiligo": 472,
-   "scabies": 234,
-   "contact_dermatitis": 153
+   "benign_lesion": 6151,
+   "other": 5646,
+   "suspicious_lesion": 5007,
+   "eczema_atopic": 1425,
+   "tinea": 961,
+   "psoriasis": 634,
+   "acne": 632,
+   "contact_dermatitis": 531,
+   "vitiligo": 476,
+   "scabies": 249
   },
   "val": {
-   "benign_lesion": 1202,
-   "suspicious_lesion": 997,
-   "other": 805,
-   "eczema_atopic": 186,
-   "tinea": 157,
-   "acne": 114,
-   "psoriasis": 107,
+   "benign_lesion": 1206,
+   "other": 1117,
+   "suspicious_lesion": 1003,
+   "eczema_atopic": 309,
+   "tinea": 193,
+   "contact_dermatitis": 144,
+   "acne": 126,
+   "psoriasis": 123,
    "vitiligo": 94,
-   "scabies": 48,
-   "contact_dermatitis": 44
+   "scabies": 48
   },
   "test": {
-   "benign_lesion": 1227,
-   "suspicious_lesion": 992,
-   "other": 812,
-   "eczema_atopic": 158,
-   "tinea": 158,
-   "acne": 113,
-   "psoriasis": 109,
+   "benign_lesion": 1242,
+   "other": 1129,
+   "suspicious_lesion": 993,
+   "eczema_atopic": 261,
+   "tinea": 189,
+   "contact_dermatitis": 134,
+   "psoriasis": 126,
+   "acne": 118,
    "vitiligo": 97,
-   "scabies": 50,
-   "contact_dermatitis": 43
+   "scabies": 53
   },
   "external_test": {
    "eczema_atopic": 91,
@@ -70,42 +70,71 @@
  },
  "share_pct": {
   "train": {
-   "benign_lesion": 32.54,
-   "suspicious_lesion": 26.42,
-   "other": 21.7,
-   "eczema_atopic": 4.57,
-   "tinea": 4.41,
-   "acne": 2.93,
-   "psoriasis": 2.86,
-   "vitiligo": 2.51,
-   "scabies": 1.24,
-   "contact_dermatitis": 0.81
+   "benign_lesion": 28.33,
+   "other": 26.0,
+   "suspicious_lesion": 23.06,
+   "eczema_atopic": 6.56,
+   "tinea": 4.43,
+   "psoriasis": 2.92,
+   "acne": 2.91,
+   "contact_dermatitis": 2.45,
+   "vitiligo": 2.19,
+   "scabies": 1.15
   },
   "val": {
-   "benign_lesion": 32.02,
-   "suspicious_lesion": 26.56,
-   "other": 21.44,
-   "eczema_atopic": 4.95,
-   "tinea": 4.18,
-   "acne": 3.04,
-   "psoriasis": 2.85,
-   "vitiligo": 2.5,
-   "scabies": 1.28,
-   "contact_dermatitis": 1.17
+   "benign_lesion": 27.64,
+   "other": 25.6,
+   "suspicious_lesion": 22.99,
+   "eczema_atopic": 7.08,
+   "tinea": 4.42,
+   "contact_dermatitis": 3.3,
+   "acne": 2.89,
+   "psoriasis": 2.82,
+   "vitiligo": 2.15,
+   "scabies": 1.1
   },
   "test": {
-   "benign_lesion": 32.64,
-   "suspicious_lesion": 26.39,
-   "other": 21.6,
-   "eczema_atopic": 4.2,
-   "tinea": 4.2,
-   "acne": 3.01,
+   "benign_lesion": 28.6,
+   "other": 26.0,
+   "suspicious_lesion": 22.87,
+   "eczema_atopic": 6.01,
+   "tinea": 4.35,
+   "contact_dermatitis": 3.09,
    "psoriasis": 2.9,
-   "vitiligo": 2.58,
-   "scabies": 1.33,
-   "contact_dermatitis": 1.14
+   "acne": 2.72,
+   "vitiligo": 2.23,
+   "scabies": 1.22
   }
  },
- "D6_max_share_diff_pts": 0.75,
- "D6_pass": true
+ "D6_max_share_diff_pts": 1.0700000000000003,
+ "D6_pass": true,
+ "frozen_v1_images": 26318,
+ "v1_images_moved": 0,
+ "new_images_split": 4099,
+ "per_source": {
+  "train": {
+   "mgmitesh": 8556,
+   "pacificrm": 8059,
+   "scin": 2907,
+   "pad_ufes20": 1582,
+   "skindisnet": 608
+  },
+  "val": {
+   "mgmitesh": 1711,
+   "pacificrm": 1609,
+   "scin": 609,
+   "pad_ufes20": 297,
+   "skindisnet": 137
+  },
+  "test": {
+   "mgmitesh": 1713,
+   "pacificrm": 1609,
+   "scin": 583,
+   "pad_ufes20": 316,
+   "skindisnet": 121
+  },
+  "external_test": {
+   "skindiseasebd": 136
+  }
+ }
 }

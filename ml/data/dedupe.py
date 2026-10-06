@@ -20,7 +20,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from ml.common.paths import PROCESSED, REPORTS, report_meta
+from ml.common.paths import SPLITS, PROCESSED, REPORTS, report_meta
 
 PHASH_T = 6
 DIH_T = 4
@@ -127,9 +127,13 @@ def main():
     # external isolation
     ext_groups = set(df.loc[df.split_role == "external", "group"])
     df.loc[(df.split_role == "pool") & df.group.isin(ext_groups), "drop_reason"] = "touches_external"
-    # one representative per dup_cluster (largest original resolution)
-    ok = df[df.drop_reason == ""].assign(_px=lambda d: d.w * d.h)
-    keep_idx = ok.sort_values("_px", ascending=False).groupby("dup_cluster").head(1).index
+    # one representative per dup_cluster: an image already used by the frozen v1 splits if the cluster has one (so adding a
+    # source never swaps a v1 image for its copy), then largest original resolution, then path — a total, stable order.
+    # (v2 first run: unstable ties on resolution swapped 2,486 v1 images for same-size copies.)
+    frozen_path = SPLITS / "frozen_v1.csv"
+    frozen = set(pd.read_csv(frozen_path).img) if frozen_path.exists() else set()
+    ok = df[df.drop_reason == ""].assign(_px=lambda d: d.w * d.h, _v1=lambda d: d.img.isin(frozen))
+    keep_idx = ok.sort_values(["_v1", "_px", "img"], ascending=[False, False, True], kind="mergesort").groupby("dup_cluster").head(1).index
     df["keep"] = df.index.isin(keep_idx)
     df.to_csv(PROCESSED / "manifest.csv", index=False)
 

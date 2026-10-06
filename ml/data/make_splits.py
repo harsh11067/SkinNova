@@ -45,7 +45,11 @@ def main():
                   ).to_csv(frozen_path, index=False)
     frozen = pd.read_csv(frozen_path).set_index("img").split.to_dict() if frozen_path.exists() else {}
     pool["split"] = pool.img.map(frozen)
-    grp = pool.dropna(subset=["split"]).groupby("group").split.agg(lambda x: x.value_counts().index[0])
+    # a group inherits the v1 split of ANY of its members in the full manifest (kept or not), so a copy of a v1 test
+    # image can never land in train even if dedupe kept a different copy this time
+    allrows = pd.read_csv(PROCESSED / "manifest.csv", usecols=["img", "group"], low_memory=False)
+    allrows["split"] = allrows.img.map(frozen)
+    grp = allrows.dropna(subset=["split"]).groupby("group").split.agg(lambda x: x.value_counts().index[0])
     pool["split"] = pool.split.fillna(pool.group.map(grp))
     new = pool[pool.split.isna()]
     if len(new):

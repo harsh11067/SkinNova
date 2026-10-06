@@ -17,16 +17,16 @@ Kaggle CLI: `~/.local/bin/kaggle` (uv tool 2.2.4), env from `.env`.
 - Export: `export_patched.py` makes litert-torch export fit 32 GB; v10 = stock export runs (vision ✓, audio ✗), but our file
   lacks `end_of_vision` and is worse/slower than the official file (valid 0.4 vs 0.9, 116 vs 65 s/case on Kaggle CPU).
 
-## In progress
-- Kaggle `skinnova-gemma4-e2b-lora` **v7 full LoRA run** (v6 was hard-killed with no log → lazy images + RAM guard added).
-- Download of export v10 `.litertlm` → `models/litertlm/export_v10/` (logs/dl_export_v10.log) for the hybrid test.
-- SCIN download (CC BY 4.0, 6,506 images) → `data/raw/scin/images` (resumable: `data/raw/scin/download.sh`).
+## In progress (2026-10-06 17:20)
+- `scripts/run_v2.sh` (setsid): SCIN data pipeline (frozen v1 splits) → data tests → CV v2 (`--tag _v2`) → calibrate → val
+  metrics → V2_TRAINED. Re-run the script after a WSL restart (restart-safe). Adoption rule in decisions.md (val only).
+- Kaggle `skinnova-gemma4-e2b-lora` v8 full LoRA run (watcher: logs/watch_full.log; re-arm after restart).
+- Stock comparison DONE (official 0.9 valid / ours 0.4); hybrid rejected; export now uses 280 vision soft tokens.
 
 ## Next (in order)
-1. Hybrid `.litertlm`: official sections (`models/litertlm/stock/sections/`, rebuilt OK with litert-lm-builder) + OUR decoder
-   (`prefill_decode`) → test locally (16-core CPU is ~2× Kaggle). If good: same for the merged LoRA decoder (keeps official
-   vision/audio → Gemma voice back). Needs module_diff to confirm LoRA touched only the decoder.
-2. After v7: merged export (`make_export --mode merged`) → L5/L6 → hybrid → desktop eval (eval_llm) → arms A–D, safety S4/S5/S9.
-3. SCIN → label map (explicit condition table) → pipeline (freeze existing splits, add SCIN groups) → CV v2 → external re-test.
-4. Android: LLM image at 512 px like training; manifest sha for the SkinNova model; instrumentation tests when phone attached.
-5. Keep documentation.md / d2y.md / teach.md (in /home/hash/mini) current.
+1. After v8: `make_export --mode merged` on Kaggle (module_diff + L6 vs HF E1) → download via scripts/kaggle_output_url.py +
+   scripts/dl_url.sh → local `ml.eval.parity_l6` (threads 12) → fill manifest sha → arms A–D + safety on llm_test.
+2. After V2_TRAINED: apply adoption rule; if adopted: eval test/external once (`eval_cv --ckpt best_v2.pt --tag _v2`),
+   robustness `--tag _v2`, export .tflite from best_v2 (export_tflite reads best.pt → copy/rename after adoption), SFT rebuild
+   with SCIN real_q → consider LoRA v2.
+3. Android (after ML stable): device tests A1–A10 on the phone, perf bench, design check; .wslconfig (d2y §2).

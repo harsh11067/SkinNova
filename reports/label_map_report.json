@@ -1,18 +1,18 @@
 {
- "git_sha": "6fe1ca6",
+ "git_sha": "420bd17",
  "dataset_rev": "",
  "model_sha": "",
- "created_at": "2026-10-05T17:30:42+00:00",
+ "created_at": "2026-10-06T11:46:02+00:00",
  "label_map_version": "v2",
- "n_enumerated": 48138,
- "n_labeled": 47125,
+ "n_enumerated": 52739,
+ "n_labeled": 51392,
  "unaccounted_folders": [],
  "by_reason": {
-  "folder": 33833,
+  "folder": 38100,
   "slug": 13292,
+  "exclude_folder": 636,
   "slug_exclude": 390,
-  "slug_only_nomatch": 321,
-  "exclude_folder": 302
+  "slug_only_nomatch": 321
  },
  "by_label": {
   "external": {
@@ -29,17 +29,17 @@
    "vitiligo": 312
   },
   "pool": {
-   "acne": 1248,
-   "benign_lesion": 16136,
-   "contact_dermatitis": 479,
-   "eczema_atopic": 1646,
-   "other": 7884,
-   "psoriasis": 906,
-   "scabies": 492,
-   "seborrheic_dermatitis": 79,
-   "suspicious_lesion": 13370,
-   "tinea": 2779,
-   "vitiligo": 796
+   "acne": 1348,
+   "benign_lesion": 16190,
+   "contact_dermatitis": 1064,
+   "eczema_atopic": 2462,
+   "other": 10161,
+   "psoriasis": 1037,
+   "scabies": 510,
+   "seborrheic_dermatitis": 107,
+   "suspicious_lesion": 13418,
+   "tinea": 2985,
+   "vitiligo": 800
   }
  },
  "folder_to_label": [
@@ -468,6 +468,1056 @@
    "source_label": "SEK",
    "label": "benign_lesion",
    "n": 235
+  },
+  {
+   "source": "scin",
+   "source_label": "AKV - Acrokeratosis verruciformis",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Abrasion, scrape, or scab",
+   "label": "<excluded>",
+   "n": 16
+  },
+  {
+   "source": "scin",
+   "source_label": "Abscess",
+   "label": "other",
+   "n": 14
+  },
+  {
+   "source": "scin",
+   "source_label": "Acanthosis nigricans",
+   "label": "other",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Acne",
+   "label": "acne",
+   "n": 100
+  },
+  {
+   "source": "scin",
+   "source_label": "Acne keloidalis",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Acne urticata",
+   "label": "<excluded>",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Actinic Keratosis",
+   "label": "suspicious_lesion",
+   "n": 11
+  },
+  {
+   "source": "scin",
+   "source_label": "Actinic granuloma",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Acute and chronic dermatitis",
+   "label": "<excluded>",
+   "n": 28
+  },
+  {
+   "source": "scin",
+   "source_label": "Acute constitutional eczema",
+   "label": "eczema_atopic",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Acute dermatitis, NOS",
+   "label": "<excluded>",
+   "n": 74
+  },
+  {
+   "source": "scin",
+   "source_label": "Acute-on-chronic dyshidrotic eczema of hands",
+   "label": "eczema_atopic",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Agminate folliculitis",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Allergic Contact Dermatitis",
+   "label": "contact_dermatitis",
+   "n": 490
+  },
+  {
+   "source": "scin",
+   "source_label": "Amyloidosis of skin",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Animal bite - wound",
+   "label": "<excluded>",
+   "n": 6
+  },
+  {
+   "source": "scin",
+   "source_label": "Annular erythema",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Arsenical keratosis",
+   "label": "suspicious_lesion",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "B-Cell Cutaneous Lymphoma",
+   "label": "suspicious_lesion",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Basal Cell Carcinoma",
+   "label": "suspicious_lesion",
+   "n": 10
+  },
+  {
+   "source": "scin",
+   "source_label": "Blister",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Bullous Pemphigoid",
+   "label": "other",
+   "n": 6
+  },
+  {
+   "source": "scin",
+   "source_label": "Burn of skin",
+   "label": "<excluded>",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "CD - Contact dermatitis",
+   "label": "contact_dermatitis",
+   "n": 29
+  },
+  {
+   "source": "scin",
+   "source_label": "Candida intertrigo",
+   "label": "other",
+   "n": 8
+  },
+  {
+   "source": "scin",
+   "source_label": "Cellulitis",
+   "label": "other",
+   "n": 15
+  },
+  {
+   "source": "scin",
+   "source_label": "Cheilitis",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Chicken pox exanthem",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Chilblain",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Chronic dermatitis, NOS",
+   "label": "<excluded>",
+   "n": 26
+  },
+  {
+   "source": "scin",
+   "source_label": "Clavus",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Condyloma acuminatum",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Confluent and reticulate papillomatosis",
+   "label": "other",
+   "n": 9
+  },
+  {
+   "source": "scin",
+   "source_label": "Contact dermatitis caused by Rhus diversiloba",
+   "label": "contact_dermatitis",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Contact dermatitis, NOS",
+   "label": "contact_dermatitis",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Cutaneous T Cell Lymphoma",
+   "label": "suspicious_lesion",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Cutaneous larva migrans",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Cutaneous lupus",
+   "label": "other",
+   "n": 15
+  },
+  {
+   "source": "scin",
+   "source_label": "Cutaneous metastasis",
+   "label": "suspicious_lesion",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Cutaneous sarcoidosis",
+   "label": "other",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Cyst",
+   "label": "benign_lesion",
+   "n": 8
+  },
+  {
+   "source": "scin",
+   "source_label": "Deep fungal infection",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Dermatofibroma",
+   "label": "benign_lesion",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "Drug Rash",
+   "label": "other",
+   "n": 45
+  },
+  {
+   "source": "scin",
+   "source_label": "Ecthyma",
+   "label": "other",
+   "n": 18
+  },
+  {
+   "source": "scin",
+   "source_label": "Ecthyma gangrenosum",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Eczema",
+   "label": "eczema_atopic",
+   "n": 802
+  },
+  {
+   "source": "scin",
+   "source_label": "Elephantiasis nostras",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Epidermal nevus",
+   "label": "benign_lesion",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Eruptive xanthoma",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Erythema ab igne",
+   "label": "other",
+   "n": 12
+  },
+  {
+   "source": "scin",
+   "source_label": "Erythema dyschromicum perstans",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Erythema gyratum repens",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Erythema migrans",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Erythema multiforme",
+   "label": "other",
+   "n": 14
+  },
+  {
+   "source": "scin",
+   "source_label": "Erythema nodosum",
+   "label": "other",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Folliculitis",
+   "label": "other",
+   "n": 217
+  },
+  {
+   "source": "scin",
+   "source_label": "Foot ulcer",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Foreign body reaction of the skin",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Geographic tongue",
+   "label": "<excluded>",
+   "n": 8
+  },
+  {
+   "source": "scin",
+   "source_label": "Granuloma annulare",
+   "label": "other",
+   "n": 27
+  },
+  {
+   "source": "scin",
+   "source_label": "Grover's disease",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "HK - Hyperkeratosis",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Hand foot and mouth disease",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Hemangioma",
+   "label": "benign_lesion",
+   "n": 10
+  },
+  {
+   "source": "scin",
+   "source_label": "Hemosiderin pigmentation of lower limb due to varicose veins of lower limb",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Hemosiderin pigmentation of skin due to venous insufficiency",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Herpes Simplex",
+   "label": "other",
+   "n": 99
+  },
+  {
+   "source": "scin",
+   "source_label": "Herpes Zoster",
+   "label": "other",
+   "n": 107
+  },
+  {
+   "source": "scin",
+   "source_label": "Hidradenitis",
+   "label": "other",
+   "n": 9
+  },
+  {
+   "source": "scin",
+   "source_label": "Hyperpigmentation",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Hypersensitivity",
+   "label": "other",
+   "n": 33
+  },
+  {
+   "source": "scin",
+   "source_label": "Ichthyosis",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Idiopathic guttate hypomelanosis",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Impetigo",
+   "label": "other",
+   "n": 69
+  },
+  {
+   "source": "scin",
+   "source_label": "Infected eczema",
+   "label": "<excluded>",
+   "n": 8
+  },
+  {
+   "source": "scin",
+   "source_label": "Inflicted skin lesions",
+   "label": "<excluded>",
+   "n": 14
+  },
+  {
+   "source": "scin",
+   "source_label": "Insect Bite",
+   "label": "other",
+   "n": 314
+  },
+  {
+   "source": "scin",
+   "source_label": "Intertrigo",
+   "label": "other",
+   "n": 8
+  },
+  {
+   "source": "scin",
+   "source_label": "Inverse psoriasis",
+   "label": "psoriasis",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Irritant Contact Dermatitis",
+   "label": "contact_dermatitis",
+   "n": 60
+  },
+  {
+   "source": "scin",
+   "source_label": "Jessner lymphocytic infiltrate",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Keratoderma",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Keratolysis exfoliativa",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Keratosis pilaris",
+   "label": "other",
+   "n": 55
+  },
+  {
+   "source": "scin",
+   "source_label": "Knuckle pads",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Koebner phenomenon",
+   "label": "<excluded>",
+   "n": 6
+  },
+  {
+   "source": "scin",
+   "source_label": "Leukocytoclastic Vasculitis",
+   "label": "other",
+   "n": 54
+  },
+  {
+   "source": "scin",
+   "source_label": "Leukonychia",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichen Simplex Chronicus",
+   "label": "other",
+   "n": 43
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichen nitidus",
+   "label": "other",
+   "n": 15
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichen planus/lichenoid eruption",
+   "label": "other",
+   "n": 37
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichen sclerosus",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichen spinulosus",
+   "label": "other",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichen striatus",
+   "label": "other",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichenified eczema",
+   "label": "eczema_atopic",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichenified eczematous dermatitis",
+   "label": "eczema_atopic",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "Lichenoid myxedema",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Livedo reticularis",
+   "label": "other",
+   "n": 14
+  },
+  {
+   "source": "scin",
+   "source_label": "Local infection of wound",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Localized skin infection",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Lymphangioma",
+   "label": "benign_lesion",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Majocchi granuloma",
+   "label": "tinea",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Melanin pigmentation due to exogenous substance",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Melanocytic Nevus",
+   "label": "benign_lesion",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "Melasma",
+   "label": "other",
+   "n": 6
+  },
+  {
+   "source": "scin",
+   "source_label": "Milia",
+   "label": "<excluded>",
+   "n": 5
+  },
+  {
+   "source": "scin",
+   "source_label": "Miliaria",
+   "label": "other",
+   "n": 18
+  },
+  {
+   "source": "scin",
+   "source_label": "Molluscum Contagiosum",
+   "label": "other",
+   "n": 33
+  },
+  {
+   "source": "scin",
+   "source_label": "Morbilliform eruption",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Morphea/Scleroderma",
+   "label": "other",
+   "n": 5
+  },
+  {
+   "source": "scin",
+   "source_label": "O/E - ecchymoses present",
+   "label": "<excluded>",
+   "n": 50
+  },
+  {
+   "source": "scin",
+   "source_label": "O/E - petechiae on skin",
+   "label": "<excluded>",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "O/E - petechiae present",
+   "label": "<excluded>",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "O/E - pustules",
+   "label": "<excluded>",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "O/E - vesicles present",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "On examination - follicular pustules",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Onychodystrophy",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Onychomycosis",
+   "label": "tinea",
+   "n": 12
+  },
+  {
+   "source": "scin",
+   "source_label": "Paronychia",
+   "label": "other",
+   "n": 9
+  },
+  {
+   "source": "scin",
+   "source_label": "Pemphigus vulgaris",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Perforating dermatosis",
+   "label": "other",
+   "n": 6
+  },
+  {
+   "source": "scin",
+   "source_label": "Perioral Dermatitis",
+   "label": "other",
+   "n": 31
+  },
+  {
+   "source": "scin",
+   "source_label": "Photodermatitis",
+   "label": "other",
+   "n": 24
+  },
+  {
+   "source": "scin",
+   "source_label": "Phytophotodermatitis",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Pigmented purpuric eruption",
+   "label": "other",
+   "n": 91
+  },
+  {
+   "source": "scin",
+   "source_label": "Pincer nail deformity",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Pityriasis lichenoides",
+   "label": "other",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Pityriasis rosea",
+   "label": "other",
+   "n": 70
+  },
+  {
+   "source": "scin",
+   "source_label": "Poikiloderma",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Poisoning by nematocyst",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Porokeratosis",
+   "label": "benign_lesion",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Post-Inflammatory hyperpigmentation",
+   "label": "other",
+   "n": 15
+  },
+  {
+   "source": "scin",
+   "source_label": "Post-Inflammatory hypopigmentation",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Pressure ulcer",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Prurigo",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Prurigo nodularis",
+   "label": "other",
+   "n": 28
+  },
+  {
+   "source": "scin",
+   "source_label": "Psoriasis",
+   "label": "psoriasis",
+   "n": 129
+  },
+  {
+   "source": "scin",
+   "source_label": "Purpura",
+   "label": "other",
+   "n": 24
+  },
+  {
+   "source": "scin",
+   "source_label": "Pyogenic granuloma",
+   "label": "benign_lesion",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Remove from labeling tool",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Rheumatoid nodule",
+   "label": "other",
+   "n": 5
+  },
+  {
+   "source": "scin",
+   "source_label": "Rosacea",
+   "label": "other",
+   "n": 48
+  },
+  {
+   "source": "scin",
+   "source_label": "SCC/SCCIS",
+   "label": "suspicious_lesion",
+   "n": 16
+  },
+  {
+   "source": "scin",
+   "source_label": "SK/ISK",
+   "label": "benign_lesion",
+   "n": 13
+  },
+  {
+   "source": "scin",
+   "source_label": "Scabies",
+   "label": "scabies",
+   "n": 18
+  },
+  {
+   "source": "scin",
+   "source_label": "Scar Condition",
+   "label": "<excluded>",
+   "n": 25
+  },
+  {
+   "source": "scin",
+   "source_label": "Seborrheic Dermatitis",
+   "label": "seborrheic_dermatitis",
+   "n": 28
+  },
+  {
+   "source": "scin",
+   "source_label": "Skin infection",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Skin lesion in drug addict",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Skin ulcer",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Stasis Dermatitis",
+   "label": "other",
+   "n": 33
+  },
+  {
+   "source": "scin",
+   "source_label": "Sunburn",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "Superficial wound of body region",
+   "label": "<excluded>",
+   "n": 16
+  },
+  {
+   "source": "scin",
+   "source_label": "Syphilis",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "TMEP - telangiectasia macularis eruptiva perstans",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Tinea",
+   "label": "tinea",
+   "n": 134
+  },
+  {
+   "source": "scin",
+   "source_label": "Tinea Versicolor",
+   "label": "tinea",
+   "n": 59
+  },
+  {
+   "source": "scin",
+   "source_label": "Traction alopecia",
+   "label": "other",
+   "n": 2
+  },
+  {
+   "source": "scin",
+   "source_label": "Traumatic blister",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Traumatic petechiae",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Traumatic ulcer",
+   "label": "<excluded>",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Urticaria",
+   "label": "other",
+   "n": 368
+  },
+  {
+   "source": "scin",
+   "source_label": "Varicose veins of lower extremity",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Vasculitis of the skin",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "Venous Stasis Ulcer",
+   "label": "other",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Verruca vulgaris",
+   "label": "other",
+   "n": 31
+  },
+  {
+   "source": "scin",
+   "source_label": "Viral Exanthem",
+   "label": "other",
+   "n": 20
+  },
+  {
+   "source": "scin",
+   "source_label": "Vitiligo",
+   "label": "vitiligo",
+   "n": 4
+  },
+  {
+   "source": "scin",
+   "source_label": "Xerosis",
+   "label": "other",
+   "n": 7
+  },
+  {
+   "source": "scin",
+   "source_label": "hyperlinear palm",
+   "label": "<excluded>",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "unilateral laterothoracic exanthem",
+   "label": "other",
+   "n": 1
+  },
+  {
+   "source": "scin",
+   "source_label": "varicose vein",
+   "label": "other",
+   "n": 3
+  },
+  {
+   "source": "scin",
+   "source_label": "wound/abrasion",
+   "label": "<excluded>",
+   "n": 3
   },
   {
    "source": "skindiseasebd",

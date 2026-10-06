@@ -1,21 +1,21 @@
 {
- "git_sha": "6fe1ca6",
+ "git_sha": "420bd17",
  "dataset_rev": "",
  "model_sha": "",
- "created_at": "2026-10-05T18:16:09+00:00",
- "n_images": 47125,
- "n_dup_clusters": 26626,
- "n_multi_clusters": 7071,
- "n_kept": 26495,
+ "created_at": "2026-10-06T12:04:33+00:00",
+ "n_images": 51368,
+ "n_dup_clusters": 30755,
+ "n_multi_clusters": 7170,
+ "n_kept": 30622,
  "dropped": {
-  "": 46530,
-  "label_conflict": 570,
+  "": 50769,
+  "label_conflict": 574,
   "touches_external": 25
  },
  "orb_min_inliers": 25,
- "orb_verified_copy_pairs": 62648,
- "phash_verified_pairs": 4655,
- "n_groups_kept": 25151,
+ "orb_verified_copy_pairs": 62744,
+ "phash_verified_pairs": 4665,
+ "n_groups_kept": 27189,
  "largest_groups": [
   15,
   12,
@@ -43,18 +43,18 @@
    "vitiligo": 9
   },
   "pool": {
-   "acne": 778,
-   "benign_lesion": 8548,
-   "contact_dermatitis": 240,
-   "eczema_atopic": 1204,
-   "other": 5697,
-   "psoriasis": 754,
-   "scabies": 332,
-   "seborrheic_dermatitis": 41,
-   "suspicious_lesion": 6957,
-   "tinea": 1145,
-   "vitiligo": 663
+   "acne": 876,
+   "benign_lesion": 8599,
+   "contact_dermatitis": 809,
+   "eczema_atopic": 1995,
+   "other": 7892,
+   "psoriasis": 883,
+   "scabies": 350,
+   "seborrheic_dermatitis": 69,
+   "suspicious_lesion": 7003,
+   "tinea": 1343,
+   "vitiligo": 667
   }
  },
- "cross_source_dup_clusters": 1252
+ "cross_source_dup_clusters": 1253
 }
