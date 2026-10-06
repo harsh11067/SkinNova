@@ -62,7 +62,10 @@ def export():
            "--experimental_lightweight_conversion=True",
            # LiteRT-LM's Jinja engine rejects the HF repo template ("unknown method", export v9) → bundle the template from
            # Google's official .litertlm, which is also the template the LoRA was trained with
-           f"--jinja_chat_template_override={DATA}/code/chat_template_litertlm.jinja"]
+           f"--jinja_chat_template_override={DATA}/code/chat_template_litertlm.jinja",
+           # vision budget = training's (HF Gemma4ImageProcessor: image_seq_length 280 → ≤ 2,520 patches); litert-torch 0.9.4
+           # defaults to 140 soft tokens (max_num_patches 1,260), i.e. half the image detail the model was trained on
+           "--gemma4_vision_max_soft_tokens=280"]
     t = time.time()
     p = subprocess.run(cmd, capture_output=True, text=True)
     files = glob.glob(f"{out}/**/*.litertlm", recursive=True)

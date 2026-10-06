@@ -44,6 +44,7 @@ Dropped by D5 (< 150 distinct images): {'seborrheic_dermatitis': 41}
 - **skindisnet**: CC BY-NC 4.0 (Mendeley yj3md44hxg v2).
 - **pad_ufes20**: CC BY 4.0 (Mendeley zr7vgbcyr2).
 - **skindiseasebd**: CC BY-NC 4.0 (Mendeley 9ggd3shdr7). Augmentation-only release; one image per near-duplicate group scored.
+- **scin**: CC BY 4.0 (Google Research + Stanford, github.com/google-research-datasets/scin). Crowdsourced US phone photos with dermatologist labels; consensus label (weight ≥ 0.5) only.
 
 ## Known limitations
 - Most inflammatory-class images are DermNet clinical photos (lighter skin tones over-represented, professional lighting).

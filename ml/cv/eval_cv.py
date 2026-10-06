@@ -70,6 +70,12 @@ def metrics(L, Y, classes, T, df):
         if sup[i]:
             out["per_class"][k] = {"precision": float(pr[i]), "recall": float(rc[i]), "f1": float(f1[i]), "support": int(sup[i]),
                                    "top3_recall": float(top3[y == i].mean())}
+    if "source" in df and df.source.nunique() > 1:   # e.g. v2: frozen v1 images vs newly added SCIN images
+        out["per_source"] = {}
+        for src, g in df.groupby("source"):
+            idx = g.index.values
+            out["per_source"][str(src)] = {"n": int(len(idx)), "top1": float((pred[idx] == y[idx]).mean()), "top3": float(top3[idx].mean()),
+                                           "macro_f1": float(f1_score(y[idx], pred[idx], labels=sorted(set(y[idx].tolist())), average="macro", zero_division=0))}
     if "skin_tone" in df and df.skin_tone.notna().any():
         out["per_skin_tone"] = {}
         for tone, g in df.groupby(df.skin_tone.fillna("unknown")):
@@ -83,6 +89,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", default=str(MODELS / "cv" / "ckpt" / "best.pt"))
     ap.add_argument("--splits", nargs="+", default=["val"])
+    ap.add_argument("--tag", default="", help="report suffix, e.g. _v2 → reports/cv_metrics_v2.json")
     a = ap.parse_args()
     model, ck = load_model(a.ckpt)
     T = ck.get("temperature", 1.0)
@@ -96,7 +103,7 @@ def main():
         print(f"{s}: n={m['n']} top1={m['top1']['value']:.3f} top3={m['top3']['value']:.3f} "
               f"macroF1={m['macro_f1_present_classes']['value']:.3f} ECE {m['ece_raw']:.3f}->{m['ece_calibrated']:.3f}")
     REPORTS.mkdir(exist_ok=True)
-    (REPORTS / "cv_metrics.json").write_text(json.dumps(rep, indent=1))
+    (REPORTS / f"cv_metrics{a.tag}.json").write_text(json.dumps(rep, indent=1))
 
 
 if __name__ == "__main__":

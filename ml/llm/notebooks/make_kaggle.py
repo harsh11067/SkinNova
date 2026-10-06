@@ -82,7 +82,7 @@ threading.Thread(target=_mem_watch, daemon=True).start()
 cell(r'''
 from PIL import Image
 def to_conv(r, with_answer=True, image_override=None):
-    msgs = []
+    msgs = []; images = []
     for m in r["messages"]:
         if m["role"] == "system":
             # one-part list, exactly as the app sends it (LiteRT-LM Kotlin: systemInstruction = Contents.of(text) → JSON list);
@@ -94,12 +94,18 @@ def to_conv(r, with_answer=True, image_override=None):
         content = []
         for c in m["content"]:
             if c["type"] == "image":
-                img = image_override if image_override is not None else Image.open(f'{DATA}/{r["image"]}').convert("RGB")
-                content.append({"type": "image", "image": img})
+                images.append(image_override if image_override is not None else Image.open(f'{DATA}/{r["image"]}').convert("RGB"))
+                content.append({"type": "image"})   # placeholder; the pixels go in "images"
             else:
                 content.append({"type": "text", "text": c["text"]})
         msgs.append({"role": m["role"], "content": content})
-    return {"messages": msgs}
+    # Images travel in a separate "images" field: UnslothVisionDataCollator uses those unresized, whereas images inside
+    # the messages go through process_vision_info(size_factor=32), which snaps their size (full run v7: 1,306 vs 1,320
+    # tokens for the same record). Unresized = what Gemma's own processor and the phone's LiteRT-LM see.
+    out = {"messages": msgs}
+    if images:
+        out["images"] = images
+    return out
 def target(r): return r["messages"][-1]["content"][0]["text"]
 ''')
 cell(r'''
@@ -151,7 +157,7 @@ for r in random.Random(1).sample(train, 60):
 n_img = 0
 for r in [x for x in random.Random(2).sample(train, 80) if x.get("image")][:12]:
     cb = collator([to_conv(r)])["input_ids"].shape[1]
-    conv = to_conv(r)["messages"]; img = [c["image"] for m in conv for c in m["content"] if c["type"] == "image"][0]
+    cv_ = to_conv(r); conv = cv_["messages"]; img = cv_["images"][0]
     ib = processor(img, processor.apply_chat_template(_tmpl(conv), tokenize=False, add_generation_prompt=False),
                    add_special_tokens=False, return_tensors="pt")["input_ids"].shape[1]
     assert cb == ib, (r["id"], cb, ib, "training and inference paths tokenise the image differently")
@@ -172,8 +178,7 @@ print("L1 PASS", REPORT["L1"]); save_report()
 cell(r'''
 # ---- inference helpers ----
 def gen(r, max_new_tokens=700, image_override=None, adapter=True):
-    conv = to_conv(r, with_answer=False, image_override=image_override)["messages"]
-    imgs = [c["image"] for m in conv if isinstance(m["content"], list) for c in m["content"] if c["type"] == "image"]
+    cv_ = to_conv(r, with_answer=False, image_override=image_override); conv = cv_["messages"]; imgs = cv_.get("images", [])
     tmpl = [{"role": m["role"], "content": m["content"] if isinstance(m["content"], str) else
              [{"type": "image"} if c["type"] == "image" else {"type": "text", "text": c["text"]} for c in m["content"]]} for m in conv]
     text = processor.apply_chat_template(tmpl, add_generation_prompt=True)
@@ -194,8 +199,8 @@ def gen_many(recs, max_new_tokens=700, image_override=None, adapter=True, bs=8):
     tok = processor.tokenizer; tok.padding_side = "left"
     for s0 in range(0, len(recs), bs):
         chunk = recs[s0:s0 + bs]
-        convs = [to_conv(r, with_answer=False, image_override=image_override)["messages"] for r in chunk]
-        imgs = [[c["image"] for m in cv if isinstance(m["content"], list) for c in m["content"] if c["type"] == "image"] for cv in convs]
+        cvs_ = [to_conv(r, with_answer=False, image_override=image_override) for r in chunk]
+        convs = [c["messages"] for c in cvs_]; imgs = [c.get("images", []) for c in cvs_]
         texts = [processor.apply_chat_template([{"role": m["role"], "content": m["content"] if isinstance(m["content"], str) else
                   [{"type": "image"} if c["type"] == "image" else {"type": "text", "text": c["text"]} for c in m["content"]]} for m in cv],
                   add_generation_prompt=True) for cv in convs]
@@ -253,8 +258,7 @@ if MODE == "smoke":
     small = [r for r in train if r["task"] in {"T1", "T2", "T3", "T4", "T9"}][:12] + [r for r in train if r["task"] in {"T6", "T7", "T8"}][:4]
     RESP_IDS = processor.tokenizer.encode("<|turn>model\n", add_special_tokens=False)
     def _prompt_inputs(r, suffix=""):
-        conv = to_conv(r, with_answer=False)["messages"]
-        imgs = [c["image"] for m in conv if isinstance(m["content"], list) for c in m["content"] if c["type"] == "image"]
+        cv_ = to_conv(r, with_answer=False); conv = cv_["messages"]; imgs = cv_.get("images", [])
         tmpl = [{"role": m["role"], "content": m["content"] if isinstance(m["content"], str) else
                  [{"type": "image"} if c["type"] == "image" else {"type": "text", "text": c["text"]} for c in m["content"]]} for m in conv]
         text = processor.apply_chat_template(tmpl, add_generation_prompt=True) + suffix

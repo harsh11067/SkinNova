@@ -1,0 +1,45 @@
+{
+ "git_sha": "2b4b746",
+ "dataset_rev": "",
+ "model_sha": "aa02dc8399e70b27",
+ "created_at": "2026-10-06T11:06:25+00:00",
+ "hybrid": "/home/hash/skinnova-data/models/litertlm/hybrid/stock-hybrid.litertlm",
+ "bytes": 4027465920,
+ "sha256": "aa02dc8399e70b27fc2c304dfd183fb6ce7f30307ee018faa46fb22b2ebcbe42",
+ "decoder_from": "/home/hash/skinnova-data/models/litertlm/export_v10/skinnova-e2b-stock.litertlm",
+ "decoder_sha256": "e2f1de841ab6a3ef8903b33f9a1337e6f9743b51a8cadf1a83fdd455a8c44695",
+ "official": "/home/hash/mini/SkinNova/skinnova/models/litertlm/stock/gemma-4-E2B-it.litertlm",
+ "kept_mtp_drafter": false,
+ "interface": {
+  "ours_signatures": [
+   "decode",
+   "prefill_128"
+  ],
+  "official_signatures": [
+   "decode",
+   "prefill_1024",
+   "prefill_128",
+   "verify"
+  ],
+  "decode_inputs_ours": [
+   "embeddings",
+   "input_pos",
+   "mask",
+   "per_layer_embeddings"
+  ],
+  "decode_inputs_official": [
+   "embeddings",
+   "input_pos",
+   "mask",
+   "param_tensor",
+   "per_layer_embeddings"
+  ],
+  "decode_outputs_ours": [
+   "logits"
+  ],
+  "decode_outputs_official": [
+   "activations",
+   "logits"
+  ]
+ }
+}

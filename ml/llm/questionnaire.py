@@ -115,6 +115,33 @@ def from_row(row: dict, label: str, rng: random.Random) -> tuple[dict, bool, lis
         site = next((v for k, v in SDN_REGION.items() if k in loc), None)
         for k, v in [("body_site", site), ("age_band", age_band(row.get("sdn_age")))]:
             if v: a[k] = v; imputed.remove(k)
+    elif row.get("source") == "scin":
+        real = True
+        sites = {SCIN_PART[x] for x in str(row.get("scin_parts") or "").split(";") if x in SCIN_PART}
+        dur = SCIN_DURATION.get(str(row.get("scin_duration")))
+        age = SCIN_AGE.get(str(row.get("scin_age")))
+        for k, v in [("body_site", next(iter(sites)) if len(sites) == 1 else None), ("duration", dur), ("age_band", age)]:
+            if v: a[k] = v; imputed.remove(k)
+        sym = {x for x in str(row.get("scin_symptoms") or "").split(";") if x}
+        if sym:   # an unticked symptom counts as "no" only when the person ticked something on that question
+            none = "no_relevant_experience" in sym
+            a["itch"] = 0 if none or "itching" not in sym else rng.choice([1, 2]); imputed.remove("itch")   # SCIN has presence only
+            a["pain"] = 0 if none or "pain" not in sym else rng.choice([1, 2]); imputed.remove("pain")
+            a["bleeding_or_crusting"] = (not none) and "bleeding" in sym; imputed.remove("bleeding_or_crusting")
+            if "increasing_size" in sym or "darkening" in sym:
+                a["changing"] = "growing" if "increasing_size" in sym else "changing_color"; imputed.remove("changing")
+        if _tf(row.get("scin_fever")):
+            a["fever_or_unwell"] = True; imputed.remove("fever_or_unwell")
+        if row.get("skin_tone") in {"fitz_1_2", "fitz_3_4", "fitz_5_6"}: a["skin_tone"] = row["skin_tone"]; imputed.remove("skin_tone")
     for k in ("free_text", "source"):
         if k in imputed: imputed.remove(k)
     return a, real, imputed
+
+
+# SCIN self-reported fields → contracts enums (ambiguous ones left unanswered, i.e. imputed and marked)
+SCIN_PART = {"arm": "arm", "palm": "hand", "back_of_hand": "hand", "torso_front": "chest", "torso_back": "back",
+             "genitalia_or_groin": "groin", "leg": "leg", "foot_top_or_side": "foot", "foot_sole": "foot"}
+SCIN_DURATION = {"ONE_DAY": "lt_1w", "LESS_THAN_ONE_WEEK": "lt_1w", "ONE_TO_FOUR_WEEKS": "1_4w", "ONE_TO_THREE_MONTHS": "1_6m",
+                 "MORE_THAN_ONE_YEAR": "gt_6m", "MORE_THAN_FIVE_YEARS": "gt_6m"}
+SCIN_AGE = {"AGE_18_TO_29": "18_39", "AGE_30_TO_39": "18_39", "AGE_40_TO_49": "40_59", "AGE_50_TO_59": "40_59",
+            "AGE_60_TO_69": "60_plus", "AGE_70_TO_79": "60_plus", "AGE_80_OR_ABOVE": "60_plus"}

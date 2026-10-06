@@ -1,0 +1,255 @@
+{
+ "git_sha": "2b4b746",
+ "dataset_rev": "",
+ "model_sha": "aa02dc8399e70b27",
+ "created_at": "2026-10-06T11:32:50+00:00",
+ "tag": "hybrid_stock_greedy10",
+ "set": "llm_val",
+ "backend": "CPU",
+ "runtime": "litert-lm-api 0.17.1",
+ "decoding": "greedy",
+ "load_s": 7.8,
+ "gray_image": false,
+ "n_analysis": 10,
+ "n_extract": 5,
+ "analysis": {
+  "valid": 0.0,
+  "cat_agree": 0.0,
+  "top_agree": 0.0,
+  "tier_ok": 0.0,
+  "guard_violation": 0.0,
+  "hedge_ok": 0.7,
+  "cites_answer": 0.0
+ },
+ "extract": {
+  "field_acc": 0.0,
+  "halluc_before_per_case": 0.0,
+  "halluc_after": 0,
+  "valid": 0.0
+ },
+ "s_per_analysis_median": 99.36,
+ "rows": [
+  {
+   "id": "val-0000",
+   "task": "T1",
+   "s": 108.7,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonscript{\\n\"subject\":eye://</divgroupcasescrollspanwraptabelement()**)**/\\n\"label\":<|\"|>acne<|\"|>\\n\"precmatchphoto1\":1.0000000000008888,\\n\"reason\":2,\"\"reason_label\":\"from_score2\",\"benefits\":[],\"rises\":[],\"findings\":[],\"classifier_comment\":\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\"\\\"\"\""
+  },
+  {
+   "id": "val-0001",
+   "task": "T1",
+   "s": 105.2,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonscriptjsonpairetreeeretreeschemamappingthought]}.{schemaIdTopicShouldBecauseMostareyesfoundstingetepsimpanelnotesetesterbacksetscoresscoresearchtextsearchingedceresearchtonesearchwordssearchpatternssearchphrasesearchnlp_search_entity_idgroundbankeathallerpasseusbrainbrewbrainscratchgutfactsiregistryeterscultokidsvocab_ids2entity_countmapgraphmapthingpossepdocsticksubsumoriesetcextractiondatatabtreestoolstooltypesfactspeoplepersonsplacesthorganizationssequencesgeneric_partstextsuitsightsetsayserlddataxlistsdictssitelinkslacesmapsmapsrelations_entitiesnotentitiesflaverskinsetainsfoodsfactseat_recipesfireesupprecipestoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolstoolsto"
+  },
+  {
+   "id": "val-0002",
+   "task": "T1",
+   "s": 103.87,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonscriptjsonpairetureplaytreetooltagsetskiprulespringscoreidmapmap[xuiennfwdicsdrsdempfpsdscdscpdsdffdfdfdfdfddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddp\",\"label\":\"possible_categories\",\"eventuality\":\"uncertain\",\"uncertainwhenprobunplist\":[],\"uncertainifpossible\u1260\u1275\":[],\"probabilityscorescorescorest\":[],\"probability\uc5d0scorescorees\":[],\"reasonscoredropscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscorefallscountscore"
+  },
+  {
+   "id": "val-0003",
+   "task": "T1",
+   "s": 99.36,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonscriptjsonpairetreeer['\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0\u26a1\ufe0f\ud83e\udde0"
+  },
+  {
+   "id": "val-0004",
+   "task": "T1",
+   "s": 90.34,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonsparcextructuretreeerestreameruleetreeetreerecordsetreejsonjson</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>|</table>"
+  },
+  {
+   "id": "val-0005",
+   "task": "T1",
+   "s": 85.94,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonscriptjson>!}{{{\"reason\":labelfirstchosen\",reasontext\":\"chosen_label\":\"acne\",\"finish\":\"confirmed\",\"likelihood\":\"high\",\"explanation\":\"The image shows signs suggestive or consistent to diagnostic skin-dise ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++"
+  },
+  {
+   "id": "val-0006",
+   "task": "T1",
+   "s": 110.55,
+   "valid": false,
+   "errors": [
+    "json_parse:Expecting property name enclosed in double quotes"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonscriptructure{{}{}}{\n{\"category_statistics\":[{{\"label\":\"suspicious_lesion\",\"\"value\":\"0.82\"\"\"comment\":\"\"\"label_idpartseqdiffratiosqrtdiffratiodiffrankcallbyrankcopypctxpctrelpctrelencountpctpct_percxpctrelsharedpctpcttxtpctpct_pctreleratevalpctpctrelsharedpctpcttxtpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpctpc"
+  },
+  {
+   "id": "val-0007",
+   "task": "T1",
+   "s": 92.94,
+   "valid": false,
+   "errors": [
+    "json_parse:Expecting property name enclosed in double quotes"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonschema]{schema_schema}{{https{type_string `,schemaNameIdIDs`,typeStringExtisors`,typeIds`,updatedDateIdIndexUTC`,updatedUTCDate`,updatedUTCSecondsUTC`,updatedUTCMillisecondsUTCUTCTZSTZULUTZTZXDBETZULUMKSAWCSTZTZVSUNETZ`,updatedUTCTZSTZULUTZTZXDBETZULUMKSAWCSTZ`,updatedUTCUTCTZIDOffsetSuiteUTCSZUTCDNMTUXTLVWSTTZSTZ`,updatedUTCTZESOffsetSuiteTLSIDOTZ,updatedUTCTZXONETZ`,updatedUTCTZSTZTZOTZ`,updatedUTCTZSTZUTCPOSTsTZSTZTZSTZ`,updatedUTCUTCNTPREFIX`,updatedUTCNTPOSTZSTZ`,updatedUTCNTPREFIXUTC`,updatedUTCNTPOSTZSTZUTC`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCNTPOSTZSTZTZSTZ`,updatedUTCNTPREFIXUTCTZ`,updatedUTCN"
+  },
+  {
+   "id": "val-0008",
+   "task": "T1",
+   "s": 90.99,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonschema}{{\n\"type\":[\"SCHEMA\",\"Triage\",\"Commentageerror\",\"SeverityInformationscore[],\"ReasonVerdict\"],\"properties\":{\"type_\":[\"\"string1\"\",\"string2\"\",\"stringvalueNumber]\",\"typeidxmax\":\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"type_\":[\"\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"type__\":[\"\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"type__\":[\"\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"type___\":[\"\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"type____\":[\"\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"string2\"\",\"stringvalueNumber\"],\"type_____\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"type______\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"typeidxmax\":\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"type_______\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"typeidxmax\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"type_______\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"typeidxmax\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"type_______\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"typeidxmax\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"type_______\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stringvalueNumber\"],\"\"typeidxmax\"\":[\"\"string1\"\",\"\"string2\"\",\"\"stri"
+  },
+  {
+   "id": "val-0009",
+   "task": "T9",
+   "s": 91.58,
+   "valid": false,
+   "errors": [
+    "no_json_object"
+   ],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": false,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": false,
+   "cats": [],
+   "out": "```jsonjsonresponse\":{\n\"contentthought\":\"Thinking Process -\ufffdproducts and usingphreesearchtoolsetryingowaterfindappropriatecontentanswerssystemfunctioncalloutputtimespassingovertogemjsonresponse\",\"candidates\":[\"_candidate_name1\",\"_candidate_name2\"],\"response_metationnotesetagsystemscoreoutputtimespassperingscorescorescoreesystemscorescorescoreesystemscorescorescoreesystemscorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescorescorescoreesystemscorescorescoresc"
+  }
+ ],
+ "extract_rows": [
+  {
+   "id": "val-x0000",
+   "s": 13.08,
+   "valid": false,
+   "correct": 0,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "```jsonlanguage\":\"utf\"\",\"fields\":{\"\"\"body_site\"\":null,\"\"\"duration\"\":\"\"\"\"\",\"\"\"itch\"\":\"\"\"\"\",\"\"\"pain\"\":\"\"\"\"\",\"\"\"changing\"\":\"\"\"\"\",\"\"\"bleeding_or_crusting, fever_or_unwell\"\":false\",\"\"\"others_affected\"\":\"\"\"\"\",\"\"\"new__product_or_exposure\"\":false\",\"\"\"age_band\"\":\"\"\"\"\"},\"unparsed_notes\":\"\"\"\"\"\"\"\"}\n```"
+  },
+  {
+   "id": "val-x0001",
+   "s": 35.4,
+   "valid": false,
+   "correct": 0,
+   "n_gold": 6,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "```jsonlabel{{\"language\":\"<\",\"textContent\u304f\u3060\u3055\u3044\u3068\u306d\u3080\u308b\uff3c\",\"textType=\"\")\"fields\":{\"\"\"body_site\"\":null,\"\"duration\"\":\"5_mahine\",\"\"itch\"\":\"\",\"\"pain\"\":\"\",\"\"changing\"\":\"\",\"\"bleeding_or_crusting, fever_or_unwell\"\":false,\"\"others_affected\"\":\"\",\"\"new_product_or_exposure\"\":false,\"\"age_band\"\":null},\"\"unparsed_notes\":\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\""
+  },
+  {
+   "id": "val-x0002",
+   "s": 17.94,
+   "valid": false,
+   "correct": 0,
+   "n_gold": 6,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "```{language\":\",\"fields\":{\"body_site\":\"abdomen\",\"duration\":\"1_1w\",\"itch\":\"1-3\",\"pain\":\"0-3\",\"changing\":\"no\",\"bleeding_or_crusting, fever_or_unwell\":\"false\",\"others_affected\":\"false\",\"new_product_or_exposure\":\"false\",\"age_band\":null},\"unparsed_notes\":\"*I itching keeps me awake otherwise I feel fine around my navel*\"}\n```"
+  },
+  {
+   "id": "val-x0003",
+   "s": 4.91,
+   "valid": false,
+   "correct": 0,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "```json\": {\"language\": \"\", \"fields\": {<null> \"\": {}, \"unparsed_notes\": \"\"\"}}\n```"
+  },
+  {
+   "id": "val-x0004",
+   "s": 35.6,
+   "valid": false,
+   "correct": 0,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "```json_36kleanformalike_outputmostscoreoffatherscorefalldescriptionspectfeaturessequentialobservationscorefoundinessscoreappearancereactionstrengthmeasureabilitydetectionpellationiconsequencechronologydevelopmentmenarchepsychologydynamicsreactionssens sensationsmotivationsaversationsaverssensationsstimingatoryaffe resentsensorypainthigesthesiadiskesthesiatractionirritationrhenumiareasens hypersalituringastheniaamathesiairritossensitorypainteisesthesiaovnosesthesianeualgesiaestion doulou\u4e0d\u75db\u4e0d\u5feb\u75db\u6162\u75db\u6162\u53d7\u75db\u6162\u6c14\u75db\u6162\u7b4b\u75db\u808c\u7b4b\u75db\u8282\u819c\u7b4b\u808c\u5c42\u819c\u7b4b\u819c\u795e\u7ecf\u7b4b\u6746\u819c\u795e\u7ecf\u808c\u795e\u7ecf\u7b4b\u7ed3\u819c\u795e\u7ecf\u4fd7\u7b4b\u795e\u7ecf\u808c\u819c\u795e\u7ecf\u808c\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e\u7ecf\u7b4b\u819c\u795e\u7ecf\u7b4b\u795e"
+  }
+ ]
+}

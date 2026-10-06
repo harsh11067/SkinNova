@@ -18,6 +18,9 @@ import com.skinnova.app.ml.ModelMissing
 import com.skinnova.app.ml.Quality
 import com.skinnova.app.ml.QualityGate
 import com.skinnova.app.ml.toRgb
+import com.skinnova.app.ml.toBitmap
+import com.skinnova.app.ml.Rgb
+import com.skinnova.app.ml.ImageOps
 import com.skinnova.app.model.CvScore
 import com.skinnova.app.model.FinalResult
 import com.skinnova.app.model.QuestionnaireAnswers
@@ -105,7 +108,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 if (!c.cv.available) { _state.value = AnalysisState.Failed("Image model not found in this build"); return@launch }
                 val cv = withContext(Dispatchers.Default) { c.cv.classify(rgb) }
                 _cv.value = cv
-                val img = withContext(Dispatchers.IO) { writeLlmImage(bmp) }
+                val img = withContext(Dispatchers.IO) { writeLlmImage(rgb) }
                 val res = c.pipeline().run(answers, cv, qualityForced, img.path, c.settings.lang.value) { _state.value = it }
                 _result.value = res
                 if (c.settings.history.value) save(res)
@@ -200,10 +203,12 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
 
     fun resetVoice() { _voice.value = VoiceState.Idle }
 
-    private fun writeLlmImage(bmp: Bitmap): File {
+    /** Image handed to Gemma = the training images' preprocessing (ml/data/normalize.py): long side 512 with Pillow's
+     *  LANCZOS (Kotlin port in ImageOps), JPEG quality 95. Gemma's own vision preprocessing then fits it to ≤ 2,520 patches. */
+    private fun writeLlmImage(rgb: Rgb): File {
         val f = File(getApplication<Application>().cacheDir, "llm_input.jpg")
-        val b = downscale(bmp, 768)
-        f.outputStream().use { b.compress(Bitmap.CompressFormat.JPEG, 90, it) }
+        val b = ImageOps.normalizeLongSide(rgb).toBitmap()
+        f.outputStream().use { b.compress(Bitmap.CompressFormat.JPEG, 95, it) }
         return f
     }
 

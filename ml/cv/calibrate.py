@@ -42,8 +42,12 @@ def fit_temperature(logits: torch.Tensor, y: torch.Tensor) -> float:
 
 
 def main():
+    import argparse
+    from ml.common.paths import dataset_rev
     from ml.cv.eval_cv import load_model, logits_for
-    ck_path = MODELS / "cv" / "ckpt" / "best.pt"
+    ap = argparse.ArgumentParser(); ap.add_argument("--tag", default="", help="e.g. _v2 → ckpt best_v2.pt, report cv_calibration_v2.json")
+    a = ap.parse_args()
+    ck_path = MODELS / "cv" / "ckpt" / f"best{a.tag}.pt"
     model, ck = load_model(ck_path)
     L, Y, _ = logits_for(model, "val", ck["classes"])
     T = fit_temperature(L, Y)
@@ -51,10 +55,10 @@ def main():
     nll = torch.nn.CrossEntropyLoss()
     ck["temperature"] = T
     torch.save(ck, ck_path)
-    rep = {**report_meta(), "temperature": T, "val_ece_before": before, "val_ece_after": after,
+    rep = {**report_meta(dataset_rev=dataset_rev()), "ckpt": ck_path.name, "temperature": T, "val_ece_before": before, "val_ece_after": after,
            "val_nll_before": float(nll(L, Y)), "val_nll_after": float(nll(L / T, Y)),
            "reliability_before": reliability(L.softmax(1), Y), "reliability_after": reliability((L / T).softmax(1), Y)}
-    (REPORTS / "cv_calibration.json").write_text(json.dumps(rep, indent=1))
+    (REPORTS / f"cv_calibration{a.tag}.json").write_text(json.dumps(rep, indent=1))
     print(f"T={T:.3f} ECE {before:.4f} -> {after:.4f}")
 
 

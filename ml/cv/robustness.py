@@ -80,6 +80,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", default=str(MODELS / "cv" / "ckpt" / "best.pt"))
     ap.add_argument("--per-class", type=int, default=100)
+    ap.add_argument("--tag", default="", help="report suffix, e.g. _v2")
     a = ap.parse_args()
     model, ck = load_model(a.ckpt); classes = ck["classes"]; T = ck.get("temperature", 1.0)
     dev = "cuda" if torch.cuda.is_available() else "cpu"; model = model.to(dev)
@@ -102,7 +103,7 @@ def main():
     sha = hashlib.sha256(open(a.ckpt, "rb").read()).hexdigest()[:16]
     rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=sha), "n": int(len(y)), "per_class": a.per_class, "temperature": T,
            "corruptions": out, "quality_gate": "reports/quality_gate.json (C6 gate half)"}
-    (REPORTS / "cv_robustness.json").write_text(json.dumps(rep, indent=1))
+    (REPORTS / f"cv_robustness{a.tag}.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps({k: (v["top3"], v["top3_drop_pts"]) for k, v in out.items()}))
 
 

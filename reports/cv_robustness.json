@@ -1,0 +1,48 @@
+{
+ "git_sha": "2b4b746",
+ "dataset_rev": "a138e2d1b593",
+ "model_sha": "9e81509ebc9b0bc3",
+ "created_at": "2026-10-06T10:28:18+00:00",
+ "n": 886,
+ "per_class": 100,
+ "temperature": 0.8764549493789673,
+ "corruptions": {
+  "clean": {
+   "top1": 0.8014,
+   "top3": 0.947,
+   "top1_drop_pts": 0.0,
+   "top3_drop_pts": 0.0
+  },
+  "blur_sigma2": {
+   "top1": 0.7054,
+   "top3": 0.8995,
+   "top1_drop_pts": 9.6,
+   "top3_drop_pts": 4.75
+  },
+  "jpeg_q40": {
+   "top1": 0.7664,
+   "top3": 0.9368,
+   "top1_drop_pts": 3.5,
+   "top3_drop_pts": 1.02
+  },
+  "brightness_0.7": {
+   "top1": 0.7912,
+   "top3": 0.9492,
+   "top1_drop_pts": 1.02,
+   "top3_drop_pts": -0.22
+  },
+  "brightness_1.3": {
+   "top1": 0.7935,
+   "top3": 0.9413,
+   "top1_drop_pts": 0.79,
+   "top3_drop_pts": 0.57
+  },
+  "rotate_15": {
+   "top1": 0.7856,
+   "top3": 0.9436,
+   "top1_drop_pts": 1.58,
+   "top3_drop_pts": 0.34
+  }
+ },
+ "quality_gate": "reports/quality_gate.json (C6 gate half)"
+}

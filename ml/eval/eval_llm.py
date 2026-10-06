@@ -34,12 +34,16 @@ def main():
     ap.add_argument("--model", required=True); ap.add_argument("--tag", required=True)
     ap.add_argument("--set", default="llm_val"); ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--constrained", action="store_true"); ap.add_argument("--gray", action="store_true", help="image ablation")
+    ap.add_argument("--threads", type=int, default=0, help="CPU threads for LiteRT-LM (0 = runtime default)")
+    ap.add_argument("--greedy", action="store_true", help="top_k=1, temperature 0 (model-vs-model comparisons); default = app sampling")
     a = ap.parse_args()
     recs = [json.loads(l) for l in open(LLM_DATA / f"{a.set}.jsonl")]
     an = [r for r in recs if r["task"] in {"T1", "T9"}][:a.n]
     ex = [r for r in recs if r["task"] == "T6"][:max(5, a.n // 4)]
     t0 = time.time()
-    eng = L.Engine(a.model, backend=L.Backend.CPU(), vision_backend=L.Backend.CPU(), max_num_tokens=4096)
+    cpu = (lambda: L.Backend.CPU(thread_count=a.threads)) if a.threads else (lambda: L.Backend.CPU())
+    caps = L.Capabilities(a.model); has_vision = bool(caps.input_modalities.vision); caps.close()
+    eng = L.Engine(a.model, backend=cpu(), vision_backend=cpu() if has_vision else None, max_num_tokens=4096)
     load_s = time.time() - t0
     gray = None
     if a.gray:
@@ -57,7 +61,8 @@ def main():
                 parts.append(L.Content.Text(c["text"]))
         # system message in the app's form (one-part list), so the rendered prompt is the phone's
         kw = dict(system_message=runtime_system_message(sys_msg),
-                  sampler_config=L.SamplerConfig(top_k=40, top_p=0.95, temperature=TEMP[r["task"]], seed=3407),
+                  sampler_config=(L.SamplerConfig(top_k=1, top_p=1.0, temperature=0.0, seed=3407) if a.greedy else
+                                  L.SamplerConfig(top_k=40, top_p=0.95, temperature=TEMP[r["task"]], seed=3407)),
                   thinking_config=L.ThinkingConfig(enable_thinking=False), max_output_tokens=MAXTOK[r["task"]])
         conv = eng.create_conversation(**kw)
         try:
@@ -78,6 +83,7 @@ def main():
         text, dt = run(r)
         xrows.append({"id": r["id"], "s": round(dt, 2), **score_extract(r["meta"], text), "out": text[:600]})
     rep = {**report_meta(model_sha=file_sha(Path(a.model))[:16]), "tag": a.tag, "set": a.set, "backend": "CPU", "runtime": "litert-lm-api 0.17.1",
+           "decoding": "greedy" if a.greedy else "app sampling (top_k 40, top_p 0.95, T 0.2, seed 3407)",
            "load_s": round(load_s, 1), "gray_image": bool(a.gray), "n_analysis": len(rows), "n_extract": len(xrows),
            "analysis": summarize(rows, ANALYSIS_KEYS), "extract": summarize_extract(xrows),
            "s_per_analysis_median": sorted(r["s"] for r in rows)[len(rows) // 2] if rows else None, "rows": rows, "extract_rows": xrows}
