@@ -8,6 +8,7 @@ A = REPO / "android/app/src/main/assets"
 PAIRS = [(p, A / "prompts" / p.name) for p in sorted((REPO / "ml/llm/prompts").glob("*.txt"))] + [
     (REPO / "ml/llm/cards/condition_cards.json", A / "prompts/condition_cards.json"),
     (REPO / "ml/llm/safety/rx_terms.txt", A / "safety/rx_terms.txt"),
+    (REPO / "ml/llm/safety/intake_topics.json", A / "safety/intake_topics.json"),
     (REPO / "ml/common/labels.json", A / "labels.json"),
 ]
 

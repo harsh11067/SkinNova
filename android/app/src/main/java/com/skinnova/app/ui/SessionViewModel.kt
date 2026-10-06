@@ -175,7 +175,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
         try {
             val user = c.prompts.template("extract_user.txt").second.replace("{transcript}", transcript.replace("<<<", "").replace(">>>", ""))
             val out = c.llm.generate(LlmTask.EXTRACT, c.prompts.extractSystem(), user)
-            val r = IntakeValidator.validate(out, transcript)
+            val r = IntakeValidator.validate(out, transcript, c.intakeTopics)
             val n = applyIntake(r, transcript)
             _voice.value = VoiceState.Filled(n, r.dropped.size)
         } catch (e: Throwable) { _voice.value = VoiceState.Error("unclear") }

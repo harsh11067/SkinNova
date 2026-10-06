@@ -37,6 +37,7 @@ class SharedFixtureTest {
     private fun asset(path: String) = File("src/main/assets/$path").readText()
     private val labels = SnJson.decodeFromString(Labels.serializer(), asset("labels.json"))
     private val guards = ContentGuards(ContentGuards.parseTerms(asset("safety/rx_terms.txt")))
+    private val topics = IntakeValidator.parseTopics(asset("safety/intake_topics.json"))
     private fun cv(e: JsonElement) = e.jsonArray.map { CvScore(it.jsonObject["key"]!!.jsonPrimitive.content, it.jsonObject["p"]!!.jsonPrimitive.doubleOrNull!!) }
     private fun answers(e: JsonElement) = SnJson.decodeFromJsonElement<QuestionnaireAnswers>(e)
     private fun strs(e: JsonElement?) = e!!.jsonArray.map { it.jsonPrimitive.content }
@@ -108,7 +109,7 @@ class SharedFixtureTest {
         for (c in fixture("intake_cases.json")) {
             val o = c.jsonObject
             val id = o["id"]!!.jsonPrimitive.content
-            val r = IntakeValidator.validate(o["text"]!!.jsonPrimitive.content, o["transcript"]!!.jsonPrimitive.content)
+            val r = IntakeValidator.validate(o["text"]!!.jsonPrimitive.content, o["transcript"]!!.jsonPrimitive.content, topics)
             assertEquals(id, o["expect_ok"]!!.jsonPrimitive.booleanOrNull, r.ok)
             val kept = r.fields.filterValues { it != null }.mapValues { (_, v) -> v!!.value }
             val exp = o["expect_fields"]!!.jsonObject

@@ -221,5 +221,39 @@
   "expect_fields": {},
   "expect_dropped": {},
   "expect_notes_len": 200
+ },
+ {
+  "id": "misattributed_quote_hi",
+  "transcript": "नमस्ते, काला होता जा रहा है, और किसी को नहीं है।",
+  "text": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"changing_color\",\"evidence\":\"काला होता जा रहा है\"},\"bleeding_or_crusting\":{\"value\":false,\"evidence\":\"किसी को नहीं है\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "changing": "changing_color"
+  },
+  "expect_dropped": {
+   "bleeding_or_crusting": "evidence_off_topic"
+  }
+ },
+ {
+  "id": "oozing_kept_hinglish",
+  "transcript": "Pair par daane hain aur unse paani nikalta hai.",
+  "text": "{\"language\": \"hi\", \"fields\": {\"bleeding_or_crusting\": {\"value\": true, \"evidence\": \"paani nikalta hai\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "bleeding_or_crusting": true
+  },
+  "expect_dropped": {}
+ },
+ {
+  "id": "word_start_terms",
+  "transcript": "I will be okay, it does not itch.",
+  "text": "{\"language\": \"en\", \"fields\": {\"fever_or_unwell\": {\"value\": false, \"evidence\": \"I will be okay\"}, \"itch\": {\"value\": 0, \"evidence\": \"it does not itch\"}}, \"unparsed_notes\": \"\"}",
+  "expect_ok": true,
+  "expect_fields": {
+   "itch": 0
+  },
+  "expect_dropped": {
+   "fever_or_unwell": "evidence_off_topic"
+  }
  }
 ]

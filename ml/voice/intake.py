@@ -2,7 +2,9 @@
 
 A field survives only if: its value is valid for the field AND its evidence quote matches the transcript
 (normalised: Unicode NFC, lowercase, whitespace collapsed; exact substring, else best same-length window with
-Levenshtein similarity ≥ 0.8). Failing fields become null — never defaulted, never guessed.
+Levenshtein similarity ≥ 0.8) AND, for the yes/no and 0–3 fields, the quote mentions the field's topic
+(ml/llm/safety/intake_topics.json: a real quote attached to the wrong field, e.g. "nobody else has it" → bleeding = false,
+is dropped). Failing fields become null — never defaulted, never guessed.
 """
 from __future__ import annotations
 
@@ -10,6 +12,7 @@ import json
 import re
 import unicodedata
 
+from ml.common.paths import REPO
 from ml.common.schema import AGE_BANDS, BODY_SITES, CHANGING, DURATIONS
 from ml.llm.validate import extract_json
 
@@ -20,6 +23,8 @@ FIELDS = {
     "others_affected": ("bool", None), "new_product_or_exposure": ("bool", None),
 }
 MIN_SIM = 0.8
+TOPICS_FILE = REPO / "ml/llm/safety/intake_topics.json"   # == android assets/safety/intake_topics.json
+TOPICS = {k: v for k, v in json.loads(TOPICS_FILE.read_text()).items() if not k.startswith("_")}
 
 
 def norm(s: str) -> str:
@@ -46,6 +51,18 @@ def evidence_ok(evidence: str, transcript: str) -> bool:
     if n > len(t):
         return 1 - lev(e, t) / max(n, len(t)) >= MIN_SIM
     return max(1 - lev(e, t[i:i + n]) / n for i in range(len(t) - n + 1)) >= MIN_SIM
+
+
+def topic_ok(field: str, evidence: str) -> bool:
+    """The quote mentions the field's topic. Latin-script terms must start a word ('ill' ≠ 'will'); Devanagari anywhere."""
+    terms = TOPICS.get(field)
+    if not terms:
+        return True
+    e = norm(evidence)
+    for t in map(norm, terms):
+        if (re.search(r"(?<![a-z])" + re.escape(t), e) if t.isascii() else t in e):
+            return True
+    return False
 
 
 def value_ok(field: str, v) -> bool:
@@ -84,5 +101,7 @@ def validate_intake(text: str, transcript: str) -> dict:
             out["dropped"][f] = "bad_value"; continue
         if not evidence_ok(item["evidence"], transcript):
             out["dropped"][f] = "evidence_not_in_transcript"; continue
+        if not topic_ok(f, item["evidence"]):
+            out["dropped"][f] = "evidence_off_topic"; continue
         out["fields"][f] = {"value": item["value"], "evidence": item["evidence"]}
     return out

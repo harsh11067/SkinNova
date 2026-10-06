@@ -2,6 +2,7 @@ package com.skinnova.app.ml
 
 import com.skinnova.app.model.Enums
 import com.skinnova.app.model.SnJson
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -12,7 +13,9 @@ import java.text.Normalizer
 
 /**
  * contracts §9 — Python twin ml/voice/intake.py (shared fixture intake_cases.json).
- * Voice intake never guesses: a field survives only with a valid value AND an evidence quote found in the transcript.
+ * Voice intake never guesses: a field survives only with a valid value AND an evidence quote found in the transcript AND,
+ * for the yes/no and 0–3 fields, a quote that mentions the field's topic (assets/safety/intake_topics.json: a real quote
+ * attached to the wrong field — "nobody else has it" → bleeding = false — is dropped).
  */
 data class IntakeField(val value: JsonElement, val evidence: String)
 
@@ -59,6 +62,20 @@ object IntakeValidator {
         return best >= MIN_SIM
     }
 
+    /** assets/safety/intake_topics.json → field → terms ("_doc" keys skipped). */
+    fun parseTopics(json: String): Map<String, List<String>> =
+        (SnJson.parseToJsonElement(json) as JsonObject).filterKeys { !it.startsWith("_") }
+            .mapValues { (_, v) -> (v as JsonArray).map { (it as JsonPrimitive).content } }
+
+    /** ml/voice/intake.py topic_ok: Latin-script terms must start a word ("ill" ≠ "will"); Devanagari terms match anywhere. */
+    fun topicOk(field: String, evidence: String, topics: Map<String, List<String>>): Boolean {
+        val terms = topics[field] ?: return true
+        val e = norm(evidence)
+        return terms.map(::norm).any { t ->
+            if (t.all { it.code < 128 }) Regex("(?<![a-z])" + Regex.escape(t)).containsMatchIn(e) else e.contains(t)
+        }
+    }
+
     private fun valueOk(kind: Kind, allowed: List<String>?, v: JsonElement): Boolean {
         val p = v as? JsonPrimitive ?: return false
         return when (kind) {
@@ -68,7 +85,7 @@ object IntakeValidator {
         }
     }
 
-    fun validate(text: String, transcript: String): IntakeResult {
+    fun validate(text: String, transcript: String, topics: Map<String, List<String>>): IntakeResult {
         val empty = FIELDS.keys.associateWith { null as IntakeField? }
         fun fail(r: String) = IntakeResult(false, null, empty, mapOf("_all" to r), "")
         val raw = OutputParser.extractJson(text) ?: return fail("no_json_object")
@@ -85,6 +102,7 @@ object IntakeValidator {
             if (obj == null || !obj.containsKey("value") || ev == null) { dropped[f] = "bad_item"; continue }
             if (!valueOk(spec.first, spec.second, obj["value"]!!)) { dropped[f] = "bad_value"; continue }
             if (!evidenceOk(ev, transcript)) { dropped[f] = "evidence_not_in_transcript"; continue }
+            if (!topicOk(f, ev, topics)) { dropped[f] = "evidence_off_topic"; continue }
             fields[f] = IntakeField(obj["value"]!!, ev)
         }
         val lang = (d["language"] as? JsonPrimitive)?.takeIf { it.isString }?.content
