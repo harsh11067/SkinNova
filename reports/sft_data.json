@@ -1,24 +1,24 @@
 {
- "git_sha": "3814939",
+ "git_sha": "a529400",
  "dataset_rev": "",
  "model_sha": "",
- "created_at": "2026-10-05T19:37:41+00:00",
+ "created_at": "2026-10-06T07:34:08+00:00",
  "n": {
-  "sft_train": 550,
-  "sft_val": 50,
-  "llm_val": 50,
-  "llm_test": 50
+  "sft_train": 3040,
+  "sft_val": 160,
+  "llm_val": 250,
+  "llm_test": 375
  },
  "task_mix": {
-  "T7": 32,
-  "T1": 246,
-  "T2": 54,
-  "T4": 45,
-  "T3": 47,
-  "T8": 26,
-  "T9": 18,
-  "T6": 65,
-  "T5": 17
+  "T1": 1368,
+  "T4": 245,
+  "T6": 370,
+  "T2": 304,
+  "T7": 183,
+  "T8": 152,
+  "T9": 93,
+  "T5": 88,
+  "T3": 237
  },
  "task_mix_target": {
   "T1": 0.45,
@@ -32,20 +32,20 @@
   "T9": 0.03
  },
  "class_mix_T1": {
-  "scabies": 25,
-  "vitiligo": 22,
-  "eczema_atopic": 26,
-  "suspicious_lesion": 27,
-  "tinea": 22,
-  "other": 23,
-  "benign_lesion": 32,
-  "acne": 24,
-  "psoriasis": 22,
-  "contact_dermatitis": 23
+  "eczema_atopic": 127,
+  "contact_dermatitis": 147,
+  "psoriasis": 149,
+  "tinea": 131,
+  "other": 127,
+  "benign_lesion": 142,
+  "vitiligo": 134,
+  "acne": 139,
+  "suspicious_lesion": 132,
+  "scabies": 140
  },
- "real_q_share": 0.22439024390243903,
- "images": 542,
+ "real_q_share": 0.23052959501557632,
+ "images": 2874,
  "prompt_files_sha": "93931b3de6b6",
  "generator": "deterministic templates (seed 3407)",
- "smoke": true
+ "smoke": false
 }

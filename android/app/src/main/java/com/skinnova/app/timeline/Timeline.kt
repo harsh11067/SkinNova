@@ -65,7 +65,8 @@ data class ChangeMetrics(
 object Timeline {
     const val ALIGN_MIN_RATIO = 0.25
     const val ALIGN_MIN_INLIERS = 30
-    val ready: Boolean by lazy { OpenCVLoader.initLocal() }
+    /** Loaded in the object initializer: runs before ANY Timeline method (camera-frame callbacks included). */
+    val ready: Boolean = OpenCVLoader.initLocal()
 
     fun toRgbMat(b: Bitmap): Mat {
         val rgba = Mat(); Utils.bitmapToMat(b.copy(Bitmap.Config.ARGB_8888, false), rgba)

@@ -110,7 +110,8 @@ assert visible.strip().startswith("{") and "IMAGE_MODEL_TOP3" not in visible
 ```
 
 ### L2 — Overfit test (proves the pipeline can learn; 10 min)
-Train on **16** records, 100 steps, lr 2e-4, no eval. Pass: final loss < 0.3 (relative to E2B's expected ~13–15 starting loss per Unsloth), and greedy generation on those same 16 reproduces the target JSON exactly for ≥ 14. If this fails, the full run will fail; debug template/masking first.
+~~(original)~~ Train on **16** records, 100 steps, lr 2e-4, no eval. Pass: final loss < 0.3 (relative to E2B's expected ~13–15 starting loss per Unsloth), and greedy generation on those same 16 reproduces the target JSON exactly for ≥ 14. If this fails, the full run will fail; debug template/masking first.
+**Revised 2026-10-06 (evidence: `reports/kaggle/smoke4/`):** the SFT generator draws paraphrases at random (which template sentence, which typical feature, which care tips), so word-for-word reproduction also requires memorising coin flips — smoke v4 reached 3/10/11 exact at 100/200/300 steps while every remaining divergence was a paraphrase token with p ≈ 0.2–0.48. Pass now: final loss < 0.3 **and** the record-specific decisions (category keys + order + likelihoods, uncertainty level, tier, disagreement flag; whole object for extraction and translation; full text for narration) reproduce for ≥ 14/16 within 200 steps (v4: 9/16 at 100, 14/16 at 200). Exact-match counts are still reported. Also required: training-path and inference-path token counts are identical (template parity) and batched generation equals one-by-one generation.
 
 ### L3 — Full training monitoring
 - Starting loss ~13–15 is normal for Gemma 4 E2B multimodal (Unsloth note). Loss of 100+ → gradient-accumulation bug → stop.

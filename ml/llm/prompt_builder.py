@@ -93,3 +93,10 @@ def build_translate(source: dict, target_language: str, root: Path = PROMPTS) ->
     _, user_t = load_template("translate_user.txt", root)
     return {"system": system.replace("{target_language}", target_language),
             "user": user_t.replace("{source_json}", cj(source)), "prompt_version": v}
+
+
+def runtime_system_message(system: str) -> str:
+    """System message for LiteRT-LM's Python/C API in the same form the app sends (Kotlin `Contents.of(text)` → a one-part
+    JSON list; the C API parses JSON when it can). The Gemma 4 template renders a list as "<text> <turn|>" and a plain
+    string as "<text><turn|>", so desktop evals must use this to see exactly the phone's prompt."""
+    return json.dumps([{"type": "text", "text": system}], ensure_ascii=False)

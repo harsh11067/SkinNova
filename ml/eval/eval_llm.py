@@ -14,7 +14,7 @@ from pathlib import Path
 
 from ml.common.paths import LLM_DATA, REPORTS, report_meta
 from ml.eval.llm_metrics import ANALYSIS_KEYS, score_analysis, score_extract, summarize, summarize_extract
-from ml.llm.prompt_builder import SCHEMA_COMPACT  # noqa: F401  (documents the schema the prompt carries)
+from ml.llm.prompt_builder import SCHEMA_COMPACT, runtime_system_message  # noqa: F401  (SCHEMA_COMPACT documents the schema)
 
 TEMP = {"T1": 0.2, "T9": 0.2, "T6": 0.2}
 MAXTOK = {"T1": 700, "T9": 700, "T6": 300}
@@ -55,7 +55,9 @@ def main():
                 parts.append(L.Content.ImageFile(gray or str((LLM_DATA / r["image"]).resolve())))
             else:
                 parts.append(L.Content.Text(c["text"]))
-        kw = dict(system_message=sys_msg, sampler_config=L.SamplerConfig(top_k=40, top_p=0.95, temperature=TEMP[r["task"]], seed=3407),
+        # system message in the app's form (one-part list), so the rendered prompt is the phone's
+        kw = dict(system_message=runtime_system_message(sys_msg),
+                  sampler_config=L.SamplerConfig(top_k=40, top_p=0.95, temperature=TEMP[r["task"]], seed=3407),
                   thinking_config=L.ThinkingConfig(enable_thinking=False), max_output_tokens=MAXTOK[r["task"]])
         conv = eng.create_conversation(**kw)
         try:

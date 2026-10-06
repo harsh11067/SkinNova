@@ -79,7 +79,8 @@ def main():
             d = float(np.abs(pt - tl).max()); maxd = max(maxd, d); agree += int(pt.argmax() == tl.argmax())
             rows.append({"img": p, "max_abs_dprob": d})
     tfl_sha = sha(tfl)
-    rep = {**report_meta(model_sha=tfl_sha[:16]), "ckpt_sha": sha(ck_path)[:16], "tflite_sha256": tfl_sha, "tflite_bytes": tfl.stat().st_size,
+    from ml.common.paths import dataset_rev
+    rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=tfl_sha[:16]), "ckpt_sha": sha(ck_path)[:16], "tflite_sha256": tfl_sha, "tflite_bytes": tfl.stat().st_size,
            "precision": "fp32", "n": len(va), "max_abs_dprob": maxd, "top1_agreement": agree / len(va),
            "input": inp["shape"].tolist(), "input_dtype": str(inp["dtype"]), "output": outp["shape"].tolist()}
     rep["C3_pass"] = bool(maxd <= 0.01 and rep["top1_agreement"] >= 0.995)
@@ -90,7 +91,7 @@ def main():
     # ---- ship to the app
     cv_assets = ANDROID_ASSETS / "cv"; cv_assets.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(tfl, cv_assets / "skin_cls.tflite")
-    from ml.data.make_splits import dataset_rev
+    from ml.common.paths import dataset_rev
     pre = {"size": SIZE, "mean": list(MEAN), "std": list(STD), "temperature": T, "classes": ck["classes"], "layout": "NHWC",
            "normalize_long_side": 512, "model_sha256": tfl_sha, "dataset_rev": dataset_rev(), "arch": ck["arch"]}
     (cv_assets / "preprocess.json").write_text(json.dumps(pre, indent=1))

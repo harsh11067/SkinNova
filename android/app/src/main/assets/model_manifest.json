@@ -44,8 +44,20 @@
       0.224,
       0.225
     ],
-    "temperature": 1.0,
+    "temperature": 0.8764549493789673,
     "labels_version": "v1",
-    "sha256": ""
+    "sha256": "9178b73dc88c0cf98a07b79d9c90595e5256ffe536c416f8bef4ccbbd79e3d6b",
+    "classes": [
+      "eczema_atopic",
+      "contact_dermatitis",
+      "tinea",
+      "scabies",
+      "acne",
+      "psoriasis",
+      "vitiligo",
+      "benign_lesion",
+      "suspicious_lesion",
+      "other"
+    ]
   }
 }

@@ -102,6 +102,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 val rgb = withContext(Dispatchers.Default) { bmp.toRgb() }
                 if (_quality.value == null) _quality.value = withContext(Dispatchers.Default) { QualityGate.check(rgb) }
                 _state.value = AnalysisState.Classifying
+                if (!c.cv.available) { _state.value = AnalysisState.Failed("Image model not found in this build"); return@launch }
                 val cv = withContext(Dispatchers.Default) { c.cv.classify(rgb) }
                 _cv.value = cv
                 val img = withContext(Dispatchers.IO) { writeLlmImage(bmp) }
@@ -140,6 +141,15 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     fun startRecording() {
         if (c.models.activeModelPath() == null) { _voice.value = VoiceState.Error("model"); return }
         viewModelScope.launch {
+            // Custom exports may lose Gemma's audio encoder (plan §6 risk): then transcribe with the on-device recogniser.
+            runCatching { c.engineHolder.use { } }
+            if (!c.engineHolder.supportsAudio) {
+                if (!com.skinnova.app.ml.OnDeviceSpeech.available(getApplication())) { _voice.value = VoiceState.Error("unclear"); return@launch }
+                _voice.value = VoiceState.Recording(0f, 0)
+                val t = com.skinnova.app.ml.OnDeviceSpeech.listen(getApplication(), c.settings.lang.value) { l -> _voice.value = VoiceState.Recording(l, 0) }
+                _voice.value = if (t.count { it.isLetter() } < 3) VoiceState.Error("unclear") else VoiceState.Heard(t)
+                return@launch
+            }
             try {
                 val wav = audio.record({ l -> _voice.value = VoiceState.Recording(l, (_voice.value as? VoiceState.Recording)?.ms ?: 0) },
                     { ms -> _voice.value = VoiceState.Recording((_voice.value as? VoiceState.Recording)?.level ?: 0f, ms) })

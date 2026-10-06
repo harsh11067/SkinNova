@@ -127,7 +127,7 @@ def main():
                     "best": best, "hist": hist, "epoch": ep + 1}, tmp)
         tmp.replace(last)
     REPORTS.mkdir(exist_ok=True)
-    from ml.data.make_splits import dataset_rev
+    from ml.common.paths import dataset_rev
     rep = {**report_meta(dataset_rev=dataset_rev()), "mode": mode, "args": vars(a),
            "n_train": len(ds_tr), "n_val": len(ds_va), "history": hist, "best_val_macro_f1": best,
            "gpu": torch.cuda.get_device_name(0) if dev == "cuda" else "cpu", "torch": torch.__version__, "timm": timm.__version__}

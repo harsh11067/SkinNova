@@ -1,0 +1,358 @@
+{
+ "mode": "smoke",
+ "gpu": "Tesla T4",
+ "dataset_meta": {
+  "git_sha": "3814939",
+  "dataset_rev": "",
+  "model_sha": "",
+  "created_at": "2026-10-05T19:37:41+00:00",
+  "n": {
+   "sft_train": 550,
+   "sft_val": 50,
+   "llm_val": 50,
+   "llm_test": 50
+  },
+  "task_mix": {
+   "T7": 32,
+   "T1": 246,
+   "T2": 54,
+   "T4": 45,
+   "T3": 47,
+   "T8": 26,
+   "T9": 18,
+   "T6": 65,
+   "T5": 17
+  },
+  "task_mix_target": {
+   "T1": 0.45,
+   "T2": 0.1,
+   "T3": 0.08,
+   "T4": 0.08,
+   "T5": 0.03,
+   "T6": 0.12,
+   "T7": 0.06,
+   "T8": 0.05,
+   "T9": 0.03
+  },
+  "class_mix_T1": {
+   "scabies": 25,
+   "vitiligo": 22,
+   "eczema_atopic": 26,
+   "suspicious_lesion": 27,
+   "tinea": 22,
+   "other": 23,
+   "benign_lesion": 32,
+   "acne": 24,
+   "psoriasis": 22,
+   "contact_dermatitis": 23
+  },
+  "real_q_share": 0.22439024390243903,
+  "images": 542,
+  "prompt_files_sha": "93931b3de6b6",
+  "generator": "deterministic templates (seed 3407)",
+  "smoke": true
+ },
+ "load_in_4bit": false,
+ "load_s": 81.7,
+ "trainable_params": 36925440,
+ "L1": {
+  "template_ok": true,
+  "masking_ok": true,
+  "visible_head": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) mat",
+  "tokens_p50": 1338,
+  "tokens_p99": 1453,
+  "tokens_max": 1467
+ },
+ "E0_sanity": {
+  "cases": [
+   {
+    "id": "val-0000",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"contact_dermatitis\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The user reports a rash on the arm, and the condition notes describe contact dermatitis as a rash caused by something touching the skin.\",\n      \"score_support\": \"The presence of a rash on the body site aligns with this possibility.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a low probability (0.09) to this, but the image shows some skin changes that could potentially be benign lesions.\",\n      \"score_support\": \"The image shows various skin changes, making this a possibility, although the primary complaint suggests an inflammatory process.\"\n    },\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The user's description and the image features do not strongly suggest typical acne features like blackheads, whiteheads, or pus spots.\",\n      \"score_support\": \"No specific features of acne were mentioned or clearly visible.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual information alone is insufficient to definitively distinguish between various skin conditions.\",\n      \"The user reports symptoms (itch, pain) but the exact nature of the cause (irritant vs. allergy) is unknown.\"\n    ]\n  },\n  \"explanation\": \"The user presents with a rash on the arm for 1-4 weeks, accompanied by itching and pain, which aligns with the descrip",
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "contact_dermatitis",
+     "benign_lesion",
+     "acne"
+    ]
+   },
+   {
+    "id": "val-0001",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored 'tinea' with a probability of 0.42, and the condition notes describe tinea as a fungal skin infection with features like a ring-shaped patch and itching.\"\n    },\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model scored 'other' with a probability of 0.19, and the condition notes suggest the photo might not clearly match known conditions.\"\n    },\n    {\n      \"key\": \"vitiligo\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored 'vitiligo' with a probability of 0.12, but the features described in the notes (smooth, fully white patches) do not strongly align with the visual evidence.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image provided is a close-up of skin, but the specific features needed for a definitive diagnosis (like a clear ring shape or scaly edge) are not perfectly clear.\",\n      \"The image model scores suggest a possibility of tinea, but visual confirmation is limited.\"\n    ]\n  },\n  \"explanation\": \"The image shows a skin lesion that aligns with features sometimes seen in fungal infections like tinea, as suggested by the image model's prediction. The user reports itching and that the condition is spreading. The condition notes for tinea mention ring-shaped patches and itching, which are relevant features. However, a definitive diagnosis ",
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "tinea",
+     "other",
+     "vitiligo"
+    ]
+   },
+   {
+    "id": "val-0002",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this as 1.0 probability, and the condition notes suggest common harmless growths like moles or seborrhoeic keratoses are benign.\"\n    },\n    {\n      \"key\": \"suspicious_lesion\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this as 0.0 probability. The current visual presentation does not strongly suggest the typical features of a suspicious lesion described in the notes.\"\n    },\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image does not show typical features of acne such as blackheads, whiteheads, or red bumps/pus spots.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"low\",\n    \"reasons\": [\n      \"The lesion appears dark and somewhat irregular, which requires clinical assessment to definitively rule out any possibility.\"\n    ]\n  },\n  \"explanation\": \"The image displays a dark, somewhat irregular patch on the skin. Based on the image model's assessment, the lesion is most likely classified as a benign lesion. The condition notes advise watching for changes in size, shape, or color as key warning signs for any spot. Since the user reports no changes, pain, itching, or bleeding, the current appearance aligns more closely with a stable, benign growth.\",\n  \"what_would_help\": [\n    \"Monitoring the lesion for any changes in size, shape, or color.\",\n    \"Keeping track of any new spots appe",
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "benign_lesion",
+     "suspicious_lesion",
+     "acne"
+    ]
+   },
+   {
+    "id": "val-0003",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"scabies\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a score of 0.3 to scabies, and the condition notes mention intense itching, which is a key feature of scabies.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a score of 0.21 to benign lesion, as the lesion appears somewhat defined, although the context of itching makes this less likely.\"\n    },\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a score of 0.16 to tinea, as fungal infections can present as skin lesions.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image is a close-up, and definitive diagnosis cannot be made without a physical examination.\",\n      \"The symptoms provided (pain=1, itch=0) are somewhat contradictory for a typical scabies presentation, which is usually intensely itchy.\"\n    ]\n  },\n  \"explanation\": \"The image displays a skin lesion that is somewhat raised and appears somewhat textured. The image model suggested scabies as a possibility. However, the user reports no reported itchiness, which contrasts with the typical presentation of scabies described in the condition notes. Other possibilities like benign lesions or tinea cannot be ruled out based on this visual alone.\",\n  \"what_would_help\": [\n    \"A detailed history of symptoms, including the severity and timin",
+    "valid": true,
+    "errors": [],
+    "cat_agree": false,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "scabies",
+     "benign_lesion",
+     "tinea"
+    ]
+   }
+  ],
+  "s_per_case_batched": 33.8
+ },
+ "L2": {
+  "first_loss": 2.876311111450195,
+  "final_loss": 0.021463407576084136,
+  "losses": [
+   2.876311111450195,
+   2.4859291076660157,
+   1.2557919502258301,
+   1.383037281036377,
+   0.7758626937866211,
+   0.7247464179992675,
+   0.5126267910003662,
+   0.34315664768218995,
+   0.34601383209228515,
+   0.2170250654220581,
+   0.1146978497505188,
+   0.14016413688659668,
+   0.10770595073699951,
+   0.05071679949760437,
+   0.04919957518577576,
+   0.08315634727478027,
+   0.054846173524856566,
+   0.02297587990760803,
+   0.037392324209213255,
+   0.021463407576084136
+  ],
+  "exact": 3,
+  "json_equal": 2,
+  "n": 16,
+  "pass": false,
+  "train_s": 293.3,
+  "s_per_step_bs1": 2.93,
+  "peak_mem_gb": 12.22,
+  "outs": [
+   {
+    "id": "T1-00179",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 102,
+    "len_out": 1178,
+    "len_target": 1260,
+    "out_at_diff": "likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; it often shows intense itching, ",
+    "target_at_diff": "likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows intense itching, worse "
+   },
+   {
+    "id": "T2-00329",
+    "task": "T2",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 242,
+    "len_out": 1118,
+    "len_target": 1100,
+    "out_at_diff": "a_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; it can look similar, with often starting in childhood, and i",
+    "target_at_diff": "a_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; often starts in childhood would fit, and its place on the fa"
+   },
+   {
+    "id": "T2-00288",
+    "task": "T2",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 351,
+    "len_out": 1261,
+    "len_target": 1422,
+    "out_at_diff": " border, and no itching fits.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less we",
+    "target_at_diff": " border, and no itching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Worth considering; blackheads and whitehead"
+   },
+   {
+    "id": "T4-00403",
+    "task": "T4",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 32,
+    "len_out": 1234,
+    "len_target": 1464,
+    "out_at_diff": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe i",
+    "target_at_diff": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (mo"
+   },
+   {
+    "id": "T1-00058",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 748,
+    "len_out": 1075,
+    "len_target": 1027,
+    "out_at_diff": " because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examin",
+    "target_at_diff": " because pigment cells stop working.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Support "
+   },
+   {
+    "id": "T4-00418",
+    "task": "T4",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 32,
+    "len_out": 1150,
+    "len_target": 1451,
+    "out_at_diff": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe i",
+    "target_at_diff": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo patter"
+   },
+   {
+    "id": "T1-00132",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 76,
+    "len_out": 1228,
+    "len_target": 1211,
+    "out_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the foot) match",
+    "target_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (moderate itching); typical sign: often st"
+   },
+   {
+    "id": "T3-00330",
+    "task": "T3",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 76,
+    "len_out": 1372,
+    "len_target": 1459,
+    "out_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; ",
+    "target_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); t"
+   },
+   {
+    "id": "T1-00194",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 464,
+    "len_out": 1127,
+    "len_target": 1130,
+    "out_at_diff": "less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"From what",
+    "target_at_diff": "less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanati"
+   },
+   {
+    "id": "T9-00429",
+    "task": "T9",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 70,
+    "len_out": 1348,
+    "len_target": 1345,
+    "out_at_diff": "_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; ",
+    "target_at_diff": "_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); t"
+   },
+   {
+    "id": "T1-00173",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 643,
+    "len_out": 972,
+    "len_target": 944,
+    "out_at_diff": "es because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's exam",
+    "target_at_diff": "es because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_ca"
+   },
+   {
+    "id": "T1-00130",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 915,
+    "len_out": 1161,
+    "len_target": 1151,
+    "out_at_diff": "way\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short",
+    "target_at_diff": "way\",\"A doctor's examination in person\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Keep nails"
+   },
+   {
+    "id": "T7-00568",
+    "task": "T7",
+    "exact": true,
+    "json_equal": false,
+    "first_diff": 328,
+    "len_out": 328,
+    "len_target": 328,
+    "out_at_diff": "show a doctor if it really seems to be growing or darkening.",
+    "target_at_diff": "show a doctor if it really seems to be growing or darkening."
+   },
+   {
+    "id": "T8-00582",
+    "task": "T8",
+    "exact": true,
+    "json_equal": true,
+    "first_diff": 449,
+    "len_out": 449,
+    "len_target": 449,
+    "out_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+    "target_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}"
+   },
+   {
+    "id": "T7-00548",
+    "task": "T7",
+    "exact": false,
+    "json_equal": false,
+    "first_diff": 67,
+    "len_out": 277,
+    "len_target": 303,
+    "out_at_diff": "d with 12 Aug, the measured area is about 27 percent smaller. Its colour contrast with the surrounding skin increased by",
+    "target_at_diff": "d with 12 Aug, the measured area is about 27 percent smaller, using the coin for scale. Its colour contrast with the sur"
+   },
+   {
+    "id": "T6-00530",
+    "task": "T6",
+    "exact": true,
+    "json_equal": true,
+    "first_diff": 470,
+    "len_out": 470,
+    "len_target": 470,
+    "out_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+    "target_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}"
+   }
+  ]
+ },
+ "projection": {
+  "full_steps": 380,
+  "est_full_train_h": 2.48
+ }
+}

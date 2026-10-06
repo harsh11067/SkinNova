@@ -1,0 +1,31 @@
+{
+ "size": 384,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "temperature": 0.8764549493789673,
+ "classes": [
+  "eczema_atopic",
+  "contact_dermatitis",
+  "tinea",
+  "scabies",
+  "acne",
+  "psoriasis",
+  "vitiligo",
+  "benign_lesion",
+  "suspicious_lesion",
+  "other"
+ ],
+ "layout": "NHWC",
+ "normalize_long_side": 512,
+ "model_sha256": "9178b73dc88c0cf98a07b79d9c90595e5256ffe536c416f8bef4ccbbd79e3d6b",
+ "dataset_rev": "a138e2d1b593",
+ "arch": "efficientnet_b0.ra_in1k"
+}

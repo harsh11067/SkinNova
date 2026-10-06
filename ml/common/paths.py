@@ -44,3 +44,17 @@ def report_meta(dataset_rev: str = "", model_sha: str = "") -> dict:
     import datetime as _dt
     return {"git_sha": git_sha(), "dataset_rev": dataset_rev, "model_sha": model_sha,
             "created_at": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds")}
+
+
+def dataset_rev() -> str:
+    """Content hash of the split files' (img, label) pairs — stamped into every downstream report.
+    Lives here (pandas only) so the isolated export venv can compute it too."""
+    import hashlib
+
+    import pandas as pd
+    h = hashlib.sha256()
+    for s in ["train", "val", "test", "external_test"]:
+        p = SPLITS / f"{s}.csv"
+        if p.exists():
+            h.update(pd.read_csv(p, usecols=["img", "label"]).to_csv(index=False).encode())
+    return h.hexdigest()[:12]

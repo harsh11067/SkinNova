@@ -1,0 +1,25 @@
+{
+ "git_sha": "a529400",
+ "dataset_rev": "a138e2d1b593",
+ "model_sha": "9178b73dc88c0cf9",
+ "created_at": "2026-10-06T07:47:05+00:00",
+ "ckpt_sha": "9e81509ebc9b0bc3",
+ "tflite_sha256": "9178b73dc88c0cf98a07b79d9c90595e5256ffe536c416f8bef4ccbbd79e3d6b",
+ "tflite_bytes": 16214876,
+ "precision": "fp32",
+ "n": 200,
+ "max_abs_dprob": 3.24249267578125e-05,
+ "top1_agreement": 1.0,
+ "input": [
+  1,
+  384,
+  384,
+  3
+ ],
+ "input_dtype": "<class 'numpy.float32'>",
+ "output": [
+  1,
+  10
+ ],
+ "C3_pass": true
+}

@@ -87,7 +87,8 @@ def main():
     model, ck = load_model(a.ckpt)
     T = ck.get("temperature", 1.0)
     sha = hashlib.sha256(open(a.ckpt, "rb").read()).hexdigest()[:16]
-    rep = {**report_meta(model_sha=sha), "arch": ck["arch"], "classes": ck["classes"], "temperature": T, "splits": {}}
+    from ml.common.paths import dataset_rev
+    rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=sha), "arch": ck["arch"], "classes": ck["classes"], "temperature": T, "splits": {}}
     for s in a.splits:
         L, Y, df = logits_for(model, s, ck["classes"])
         rep["splits"][s] = metrics(L, Y, ck["classes"], T, df)

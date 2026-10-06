@@ -1,0 +1,1870 @@
+{
+ "mode": "smoke",
+ "gpu": "Tesla T4",
+ "dataset_meta": {
+  "git_sha": "3814939",
+  "dataset_rev": "",
+  "model_sha": "",
+  "created_at": "2026-10-05T19:37:41+00:00",
+  "n": {
+   "sft_train": 550,
+   "sft_val": 50,
+   "llm_val": 50,
+   "llm_test": 50
+  },
+  "task_mix": {
+   "T7": 32,
+   "T1": 246,
+   "T2": 54,
+   "T4": 45,
+   "T3": 47,
+   "T8": 26,
+   "T9": 18,
+   "T6": 65,
+   "T5": 17
+  },
+  "task_mix_target": {
+   "T1": 0.45,
+   "T2": 0.1,
+   "T3": 0.08,
+   "T4": 0.08,
+   "T5": 0.03,
+   "T6": 0.12,
+   "T7": 0.06,
+   "T8": 0.05,
+   "T9": 0.03
+  },
+  "class_mix_T1": {
+   "scabies": 25,
+   "vitiligo": 22,
+   "eczema_atopic": 26,
+   "suspicious_lesion": 27,
+   "tinea": 22,
+   "other": 23,
+   "benign_lesion": 32,
+   "acne": 24,
+   "psoriasis": 22,
+   "contact_dermatitis": 23
+  },
+  "real_q_share": 0.22439024390243903,
+  "images": 542,
+  "prompt_files_sha": "93931b3de6b6",
+  "generator": "deterministic templates (seed 3407)",
+  "smoke": true
+ },
+ "load_in_4bit": false,
+ "load_s": 91.8,
+ "trainable_params": 36925440,
+ "L1": {
+  "template_ok": true,
+  "template_parity_checked": 60,
+  "masking_ok": true,
+  "visible_head": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) mat",
+  "tokens_p50": 1327,
+  "tokens_p99": 1442,
+  "tokens_max": 1456
+ },
+ "E0_sanity": {
+  "cases": [
+   {
+    "id": "val-0000",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"contact_dermatitis\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The user reports a rash on the arm, and the condition notes describe contact dermatitis as a rash caused by something touching the skin.\",\n      \"score_support\": \"The presence of a rash on the body site aligns with this possibility.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a low probability to this, but the presence of various skin changes could potentially include benign lesions.\",\n      \"score_support\": \"The image model gave a low score (0.09) but the visual appearance is non-specific.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual information alone is not sufficient to definitively distinguish between various skin conditions.\",\n      \"The user reports symptoms (itch, pain) but the exact nature of the rash is unclear.\"\n    ]\n  },\n  \"explanation\": \"The user presents with a rash on the arm that has been present for 1-4 weeks, accompanied by itching and pain. The condition notes suggest contact dermatitis as a possibility given the nature of the symptoms. However, without a clearer view or further history, other possibilities cannot be ruled out.\",\n  \"what_would_help\": [\n    \"A clearer, high-resolution image of the rash.\",\n    \"Details about any specific products, chemicals, or environmental exposures in the last few weeks.\",\n    \"Informatio",
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "contact_dermatitis",
+     "benign_lesion"
+    ]
+   },
+   {
+    "id": "val-0001",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored 'tinea' with a probability of 0.42, and the condition notes describe tinea as a fungal skin infection with features like a ring-shaped patch and itching.\"\n    },\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model scored 'other' with a probability of 0.19, and the condition notes suggest the photo might not clearly match known conditions.\"\n    },\n    {\n      \"key\": \"vitiligo\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored 'vitiligo' with a probability of 0.12, but the features described in the notes (smooth, fully white patches) do not strongly align with the visual evidence.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image provided is a close-up of skin, but the specific features needed for a definitive diagnosis (like a clear ring shape or scaly edge) are not perfectly clear.\",\n      \"The image model scores suggest a possibility of tinea, but visual confirmation is limited.\"\n    ]\n  },\n  \"explanation\": \"The image shows a skin lesion that aligns with features sometimes seen in fungal infections like tinea, as suggested by the image model's prediction. The user reports itching and that the condition is spreading. The condition notes for tinea mention ring-shaped patches and itching, which are relevant features. However, a definitive diagnosis ",
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "tinea",
+     "other",
+     "vitiligo"
+    ]
+   },
+   {
+    "id": "val-0002",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this as 1.0 probability, and the condition notes suggest common harmless growths like moles or seborrhoeic keratoses are benign.\"\n    },\n    {\n      \"key\": \"suspicious_lesion\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this as 0.0 probability. The current visual presentation does not strongly suggest the typical features listed for suspicious lesions (like asymmetry or evolving changes).\"\n    },\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image does not show typical features of acne such as blackheads, whiteheads, or red bumps/pus spots.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The lesion is dark and somewhat irregular, which requires clinical assessment to definitively rule out any concerns, even though the model leans toward benign.\"\n    ]\n  },\n  \"explanation\": \"The image displays a dark, somewhat irregular patch on the skin. The image model strongly suggests this is a benign lesion. The condition notes advise watching for changes in size, shape, or color as key warning signs for any spot. Since the user reports no changes, pain, itching, or bleeding, the current appearance aligns more closely with a stable, benign growth.\",\n  \"what_would_help\": [\n    \"Monitoring the lesion for any changes in size, shape, or color.\",\n    \"Keeping tra",
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "benign_lesion",
+     "suspicious_lesion",
+     "acne"
+    ]
+   },
+   {
+    "id": "val-0003",
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"scabies\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a score of 0.3 to scabies, and the condition notes mention intense itching, which is a key feature of scabies.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a score of 0.21 to benign lesion, as the lesion appears somewhat defined, although the context of itching makes this less likely.\"\n    },\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a score of 0.16 to tinea, as fungal infections can present as skin lesions.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual appearance of the lesion is not definitive enough to rule out other possibilities.\",\n      \"The user reports pain (1) and the condition notes suggest specific features for each potential diagnosis that are not fully confirmed by the image alone.\"\n    ]\n  },\n  \"explanation\": \"The image displays a skin lesion that is somewhat raised and appears to have some texture. The user reports pain and notes a duration of 1.4 weeks. The image model suggested scabies as a possibility, which aligns with the reported symptoms of itching often associated with scabies. However, without further clinical information, a definitive diagnosis cannot be made.\",\n  \"what_would_help\": [\n    \"A detailed description of the exact sensation (itching vs.",
+    "valid": true,
+    "errors": [],
+    "cat_agree": false,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "scabies",
+     "benign_lesion",
+     "tinea"
+    ]
+   }
+  ],
+  "s_per_case_batched": 29.6
+ },
+ "L2": {
+  "first_loss": 2.914153289794922,
+  "final_loss": 0.029809728264808655,
+  "losses": [
+   2.914153289794922,
+   2.4700679779052734,
+   1.265285110473633,
+   1.406068992614746,
+   0.7669408321380615,
+   0.7390054702758789,
+   0.5359612464904785,
+   0.36670308113098143,
+   0.35435121059417723,
+   0.24354970455169678,
+   0.131845223903656,
+   0.13685264587402343,
+   0.11281979084014893,
+   0.05649963617324829,
+   0.05389145612716675,
+   0.07971451878547668,
+   0.048261252045631406,
+   0.02594253420829773,
+   0.044790256023406985,
+   0.029809728264808655
+  ],
+  "exact": 5,
+  "json_equal": 3,
+  "n": 16,
+  "decisions_equal": 11,
+  "train_s": 297.3,
+  "s_per_step_bs1": 2.97,
+  "peak_mem_gb": 12.28,
+  "outs": [
+   {
+    "id": "T1-00179",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": false,
+    "first_diff": 497,
+    "len_out": 1357,
+    "len_target": 1260,
+    "out_at_diff": "hing fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a differ",
+    "target_at_diff": "hing fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanati",
+    "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows intense itching, worse at night.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Worth considering; clearer centre would fit, and severe itching fits.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with small blisters in strong reactions, and severe itching fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Scabies. A very itchy rash caused by tiny mites that burrow in the skin. The image model leaned towards Scabies, but your answers fit other conditions as well, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Avoid close skin contact until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+   },
+   {
+    "id": "T2-00329",
+    "task": "T2",
+    "exact": true,
+    "json_equal": true,
+    "decisions_equal": true,
+    "first_diff": 1100,
+    "len_out": 1100,
+    "len_target": 1100,
+    "out_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+    "target_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+    "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows red bumps and pus spots.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; often starts in childhood would fit, and its place on the face fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"You said it has been there for more than six months, with no itching and moderate pain. This looks most like Acne. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Change pillowcases often.\",\"Choose oil-free, non-comedogenic products.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+   },
+   {
+    "id": "T2-00288",
+    "task": "T2",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": false,
+    "first_diff": 368,
+    "len_out": 1388,
+    "len_target": 1422,
+    "out_at_diff": "tching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Possible: blackheads and whiteheads would fit, and its place",
+    "target_at_diff": "tching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Worth considering; blackheads and whiteheads would fit, and ",
+    "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is changing colour) match; it often shows growing or changing.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with round or oval with a smooth border, and no itching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Possible: blackheads and whiteheads would fit, and its place on the face fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: more than six months, no itching, on the face. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. The image model leaned towards common benign growth (mole, seborrheic keratosis), but your answers fit spot that needs a doctor's look better, so treat this as uncertain. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":true}"
+   },
+   {
+    "id": "T4-00403",
+    "task": "T4",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 442,
+    "len_out": 1401,
+    "len_target": 1464,
+    "out_at_diff": "_likely\",\"why\":\"Less likely: eczema edges are usually blurry, and fungal rings have a clearer centre.\"}],\"uncertainty\":{",
+    "target_at_diff": "_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"l",
+    "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the arm) match; it often shows often starts in childhood.\"},{\"key\":\"scabies\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show other people at home itching too, and moderate itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry, and fungal rings have a clearer centre.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the arm. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards scabies, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+   },
+   {
+    "id": "T1-00058",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 748,
+    "len_out": 1075,
+    "len_target": 1027,
+    "out_at_diff": " because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examin",
+    "target_at_diff": " because pigment cells stop working.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Support ",
+    "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, present for one to six months) match; it often shows patches more visible on brown and dark skin.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: some fungal infections cause lighter, slightly scaly patches; vitiligo patches are smooth and fully white.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"Based on your answers, it has been present for one to six months on the arm, with no itching. Vitiligo / pigment loss fits best so far. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Protect white patches from sunburn with clothing and shade.\",\"Support groups can help.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+   },
+   {
+    "id": "T4-00418",
+    "task": "T4",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": false,
+    "first_diff": 32,
+    "len_out": 1346,
+    "len_target": 1451,
+    "out_at_diff": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe i",
+    "target_at_diff": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo patter",
+    "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is a child under 12) match; it often shows other people at home itching too.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Worth considering; it can look similar, with clearer centre, and severe itching fits.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"You said it has been there for more than six months, with severe itching and no pain. The closest match is Scabies. A very itchy rash caused by tiny mites that burrow in the skin. The image model leaned towards fungal infection (tinea), but your answers fit Scabies better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Avoid close skin contact until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+   },
+   {
+    "id": "T1-00132",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": false,
+    "first_diff": 76,
+    "len_out": 1265,
+    "len_target": 1211,
+    "out_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the foot) match",
+    "target_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (moderate itching); typical sign: often st",
+    "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the foot) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; the photo may be blurry or dark.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with clearer centre, and moderate itching fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the foot. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+   },
+   {
+    "id": "T3-00330",
+    "task": "T3",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 76,
+    "len_out": 1418,
+    "len_target": 1459,
+    "out_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; ",
+    "target_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); t",
+    "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; it often starts in childhood.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; rash shaped like the area of contact would fit, and severe itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards contact dermatitis, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Keep nails short and avoid known triggers.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+   },
+   {
+    "id": "T1-00194",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 464,
+    "len_out": 1109,
+    "len_target": 1130,
+    "out_at_diff": "less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"From what",
+    "target_at_diff": "less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanati",
+    "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is growing, bleeding or crusting) match; it often shows several colours.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"From what you told us: one to six months, mild itching, on the arm. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned that the spot is growing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+   },
+   {
+    "id": "T9-00429",
+    "task": "T9",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": false,
+    "first_diff": 515,
+    "len_out": 3237,
+    "len_target": 1345,
+    "out_at_diff": "}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category th",
+    "target_at_diff": "}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"Your answer",
+    "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); typical sign: small bumps or thin lines (burrows).\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on brown skin may look purple, grey or dark brown would fit, and severe itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with itching, and severe itching fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Scabies / itching from tiny mites that burrow in the skin. The image model leaned towards psoriasis, but your answers fit Scabies / severe itching / other / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching"
+   },
+   {
+    "id": "T1-00173",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 643,
+    "len_out": 972,
+    "len_target": 944,
+    "out_at_diff": "es because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's exam",
+    "target_at_diff": "es because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_ca",
+    "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is spreading) match; it often shows patches more visible on brown and dark skin.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"From what you told us: more than six months, no itching, on the leg. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Protect white patches from sunburn with clothing and shade.\",\"Support groups can help.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+   },
+   {
+    "id": "T1-00130",
+    "task": "T1",
+    "exact": false,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 108,
+    "len_out": 1211,
+    "len_target": 1151,
+    "out_at_diff": "likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the leg) match; it often shows on brown skin may ",
+    "target_at_diff": "likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows on brown skin may look ",
+    "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the leg) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with on brown skin may look purple, grey or dark brown, and severe itching fits.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"You mentioned severe itching and no pain, for more than six months. This looks most like Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+   },
+   {
+    "id": "T7-00568",
+    "task": "T7",
+    "exact": true,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 328,
+    "len_out": 328,
+    "len_target": 328,
+    "out_at_diff": "show a doctor if it really seems to be growing or darkening.",
+    "target_at_diff": "show a doctor if it really seems to be growing or darkening.",
+    "out": "Compared with 21 Sep, the measured area is about 64 percent larger. Its colour contrast with the surrounding skin increased by 10.6 units. This measurement is uncertain because there was no coin in both photos. Retake the photo with a coin to measure it properly, and show a doctor if it really seems to be growing or darkening."
+   },
+   {
+    "id": "T8-00582",
+    "task": "T8",
+    "exact": true,
+    "json_equal": true,
+    "decisions_equal": true,
+    "first_diff": 449,
+    "len_out": 449,
+    "len_target": 449,
+    "out_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+    "target_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+    "out": "{\"explanation\":\"\u0906\u092a\u0928\u0947 \u092c\u0924\u093e\u092f\u093e \u0915\u093f \u092f\u0939 \u091b\u0939 \u092e\u0939\u0940\u0928\u0947 \u0938\u0947 \u091c\u093c\u094d\u092f\u093e\u0926\u093e \u0938\u0947 \u0939\u0948, \u0914\u0930 \u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964 \u0905\u092d\u0940 \u0924\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0909\u092d\u093e\u0930 \u0938\u092c\u0938\u0947 \u091c\u093c\u094d\u092f\u093e\u0926\u093e \u092e\u0947\u0932 \u0916\u093e\u0924\u093e \u0939\u0948\u0964 \u092f\u0947 \u0906\u092e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0909\u092d\u093e\u0930 \u0939\u0948\u0902, \u091c\u0948\u0938\u0947 \u0924\u093f\u0932\u0964\",\"what_would_help\":[\"\u0921\u0949\u0915\u094d\u091f\u0930 \u0926\u094d\u0935\u093e\u0930\u093e \u0906\u092e\u0928\u0947-\u0938\u093e\u092e\u0928\u0947 \u091c\u093e\u0901\u091a\",\"\u0926\u093f\u0928 \u0915\u0940 \u0930\u094b\u0936\u0928\u0940 \u092e\u0947\u0902 15\u201320 \u0938\u0947\u092e\u0940 \u0926\u0942\u0930 \u0938\u0947 \u0932\u0940 \u0917\u0908 \u0938\u093e\u092b\u093c \u092b\u093c\u094b\u091f\u094b\"],\"self_care_info\":[\"\u092e\u0939\u0940\u0928\u0947 \u092e\u0947\u0902 \u090f\u0915 \u092c\u093e\u0930 \u0905\u092a\u0928\u0940 \u0924\u094d\u0935\u091a\u093e \u091c\u093e\u0901\u091a\u0947\u0902\u0964\",\"\u0924\u094d\u0935\u091a\u093e \u0915\u094b \u0924\u0947\u091c\u093c \u0927\u0942\u092a \u0938\u0947 \u092c\u091a\u093e\u090f\u0901\u0964\"],\"category_why\":{\"benign_lesion\":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}"
+   },
+   {
+    "id": "T7-00548",
+    "task": "T7",
+    "exact": true,
+    "json_equal": false,
+    "decisions_equal": true,
+    "first_diff": 303,
+    "len_out": 303,
+    "len_target": 303,
+    "out_at_diff": "thing here suggests a worrying change, but keep tracking it.",
+    "target_at_diff": "thing here suggests a worrying change, but keep tracking it.",
+    "out": "Compared with 12 Aug, the measured area is about 27 percent smaller, using the coin for scale. Its colour contrast with the surrounding skin increased by 2.0 units. This measurement is uncertain because the spot has not been calibrated yet. Nothing here suggests a worrying change, but keep tracking it."
+   },
+   {
+    "id": "T6-00530",
+    "task": "T6",
+    "exact": true,
+    "json_equal": true,
+    "decisions_equal": true,
+    "first_diff": 470,
+    "len_out": 470,
+    "len_target": 470,
+    "out_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+    "target_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+    "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":{\"value\":\"gt_6m\",\"evidence\":\"\u092c\u091a\u092a\u0928 \u0938\u0947\"},\"itch\":{\"value\":0,\"evidence\":\"\u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u094b\u0924\u0940\"},\"pain\":{\"value\":3,\"evidence\":\"\u092c\u0939\u0941\u0924 \u0926\u0930\u094d\u0926 \u0939\u094b\u0924\u093e \u0939\u0948\"},\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"\u0915\u092d\u0940-\u0915\u092d\u0940 \u0916\u0942\u0928 \u0906\u0924\u093e \u0939\u0948\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"\u0928\u092f\u093e \u0938\u093e\u092c\u0941\u0928 \u0932\u0917\u093e\u0928\u0947 \u0915\u0947 \u092c\u093e\u0926 \u0936\u0941\u0930\u0942 \u0939\u0941\u0906\"},\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}"
+   }
+  ],
+  "pass": false,
+  "pass_at_steps": null
+ },
+ "projection": {
+  "full_steps": 380,
+  "est_full_train_h": 2.51
+ },
+ "L2_teacher_forced": [
+  {
+   "id": "T1-00179",
+   "task": "T1",
+   "collator": {
+    "n_input_tokens": 1372,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 291,
+    "nll_mean": 0.0485,
+    "nll_sum": 14.11,
+    "argmax_mismatches": 3,
+    "first_mismatches": [
+     {
+      "context": "uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"",
+      "target": "Several",
+      "argmax": "The",
+      "p_target": 0.088
+     },
+     {
+      "context": " can look similar in a photo\"]},\"explanation\":\"",
+      "target": "You",
+      "argmax": "From",
+      "p_target": 0.261
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Checking",
+      "argmax": "A",
+      "p_target": 0.139
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1372,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 292,
+    "nll_mean": 0.0803,
+    "nll_sum": 23.46,
+    "argmax_mismatches": 4,
+    "first_mismatches": [
+     {
+      "context": "uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"",
+      "target": "Several",
+      "argmax": "The",
+      "p_target": 0.087
+     },
+     {
+      "context": " can look similar in a photo\"]},\"explanation\":\"",
+      "target": "You",
+      "argmax": "From",
+      "p_target": 0.246
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Checking",
+      "argmax": "A",
+      "p_target": 0.142
+     },
+     {
+      "context": "_with_image_model\":false}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T2-00329",
+   "task": "T2",
+   "collator": {
+    "n_input_tokens": 1352,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 265,
+    "nll_mean": 0.0238,
+    "nll_sum": 6.31,
+    "argmax_mismatches": 0,
+    "first_mismatches": []
+   },
+   "inference": {
+    "n_input_tokens": 1352,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 266,
+    "nll_mean": 0.0623,
+    "nll_sum": 16.56,
+    "argmax_mismatches": 1,
+    "first_mismatches": [
+     {
+      "context": "_with_image_model\":false}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T2-00288",
+   "task": "T2",
+   "collator": {
+    "n_input_tokens": 1425,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 335,
+    "nll_mean": 0.0411,
+    "nll_sum": 13.78,
+    "argmax_mismatches": 3,
+    "first_mismatches": [
+     {
+      "context": "_lesion\",\"likelihood\":\"possible\",\"why\":\"",
+      "target": "Possible",
+      "argmax": "Worth",
+      "p_target": 0.366
+     },
+     {
+      "context": "\":\"acne\",\"likelihood\":\"possible\",\"why\":\"",
+      "target": "Worth",
+      "argmax": "Possible",
+      "p_target": 0.247
+     },
+     {
+      "context": " face fits.\"}],\"uncertainty\":{\"level\":\"",
+      "target": "high",
+      "argmax": "moderate",
+      "p_target": 0.408
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1443,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 336,
+    "nll_mean": 0.0732,
+    "nll_sum": 24.61,
+    "argmax_mismatches": 4,
+    "first_mismatches": [
+     {
+      "context": "\":\"acne\",\"likelihood\":\"possible\",\"why\":\"",
+      "target": "Worth",
+      "argmax": "Possible",
+      "p_target": 0.231
+     },
+     {
+      "context": " face fits.\"}],\"uncertainty\":{\"level\":\"",
+      "target": "high",
+      "argmax": "moderate",
+      "p_target": 0.366
+     },
+     {
+      "context": "level\":\"high\",\"reasons\":[\"The image model",
+      "target": "'",
+      "argmax": " is",
+      "p_target": 0.473
+     },
+     {
+      "context": "_with_image_model\":true}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T4-00403",
+   "task": "T4",
+   "collator": {
+    "n_input_tokens": 1418,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 340,
+    "nll_mean": 0.0472,
+    "nll_sum": 16.04,
+    "argmax_mismatches": 5,
+    "first_mismatches": [
+     {
+      "context": "why\":\"Less likely: eczema edges are usually blurry",
+      "target": ";",
+      "argmax": ",",
+      "p_target": 0.421
+     },
+     {
+      "context": " eczema edges are usually blurry; fungal rings have a",
+      "target": " sharp",
+      "argmax": " sharper",
+      "p_target": 0.374
+     },
+     {
+      "context": " image model's scores are spread across several categories",
+      "target": "\",\"",
+      "argmax": "\"]},",
+      "p_target": 0.452
+     },
+     {
+      "context": " model's scores are spread across several categories\",\"",
+      "target": "The",
+      "argmax": "Your",
+      "p_target": 0.415
+     },
+     {
+      "context": " examination in person\"],\"self_care_info\":[\"",
+      "target": "Short",
+      "argmax": "Mo",
+      "p_target": 0.34
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1418,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 341,
+    "nll_mean": 0.076,
+    "nll_sum": 25.92,
+    "argmax_mismatches": 6,
+    "first_mismatches": [
+     {
+      "context": "why\":\"Less likely: eczema edges are usually blurry",
+      "target": ";",
+      "argmax": ",",
+      "p_target": 0.417
+     },
+     {
+      "context": " eczema edges are usually blurry; fungal rings have a",
+      "target": " sharp",
+      "argmax": " sharper",
+      "p_target": 0.375
+     },
+     {
+      "context": " image model's scores are spread across several categories",
+      "target": "\",\"",
+      "argmax": "\"]},",
+      "p_target": 0.452
+     },
+     {
+      "context": " model's scores are spread across several categories\",\"",
+      "target": "The",
+      "argmax": "Your",
+      "p_target": 0.423
+     },
+     {
+      "context": " examination in person\"],\"self_care_info\":[\"",
+      "target": "Short",
+      "argmax": "Mo",
+      "p_target": 0.34
+     }
+    ]
+   }
+  },
+  {
+   "id": "T1-00058",
+   "task": "T1",
+   "collator": {
+    "n_input_tokens": 1264,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 246,
+    "nll_mean": 0.0291,
+    "nll_sum": 7.16,
+    "argmax_mismatches": 2,
+    "first_mismatches": [
+     {
+      "context": " working.\",\"what_would_help\":[\"A",
+      "target": " doctor",
+      "argmax": " clearer",
+      "p_target": 0.288
+     },
+     {
+      "context": " examination in person\"],\"self_care_info\":[\"",
+      "target": "Support",
+      "argmax": "Protect",
+      "p_target": 0.409
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1278,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 247,
+    "nll_mean": 0.073,
+    "nll_sum": 18.04,
+    "argmax_mismatches": 3,
+    "first_mismatches": [
+     {
+      "context": " working.\",\"what_would_help\":[\"A",
+      "target": " doctor",
+      "argmax": " clearer",
+      "p_target": 0.257
+     },
+     {
+      "context": " examination in person\"],\"self_care_info\":[\"",
+      "target": "Support",
+      "argmax": "Protect",
+      "p_target": 0.404
+     },
+     {
+      "context": "_with_image_model\":false}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T4-00418",
+   "task": "T4",
+   "collator": {
+    "n_input_tokens": 1431,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 338,
+    "nll_mean": 0.1143,
+    "nll_sum": 38.63,
+    "argmax_mismatches": 13,
+    "first_mismatches": [
+     {
+      "context": "{\"possible_categories\":[{\"key\":\"",
+      "target": "other",
+      "argmax": "sc",
+      "p_target": 0.421
+     },
+     {
+      "context": "key\":\"other\",\"likelihood\":\"higher\",\"why\":\"",
+      "target": "Matches",
+      "argmax": "Your",
+      "p_target": 0.066
+     },
+     {
+      "context": "\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches",
+      "target": " the",
+      "argmax": " your",
+      "p_target": 0.196
+     },
+     {
+      "context": "other\",\"likelihood\":\"higher\",\"why\":\"Matches the",
+      "target": " photo",
+      "argmax": " image",
+      "p_target": 0.342
+     },
+     {
+      "context": "why\":\"Matches the photo pattern; typical sign:",
+      "target": " mixed",
+      "argmax": " often",
+      "p_target": 0.147
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1431,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 339,
+    "nll_mean": 0.1425,
+    "nll_sum": 48.32,
+    "argmax_mismatches": 14,
+    "first_mismatches": [
+     {
+      "context": "{\"possible_categories\":[{\"key\":\"",
+      "target": "other",
+      "argmax": "sc",
+      "p_target": 0.41
+     },
+     {
+      "context": "key\":\"other\",\"likelihood\":\"higher\",\"why\":\"",
+      "target": "Matches",
+      "argmax": "Your",
+      "p_target": 0.066
+     },
+     {
+      "context": "\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches",
+      "target": " the",
+      "argmax": " your",
+      "p_target": 0.199
+     },
+     {
+      "context": "other\",\"likelihood\":\"higher\",\"why\":\"Matches the",
+      "target": " photo",
+      "argmax": " image",
+      "p_target": 0.336
+     },
+     {
+      "context": "why\":\"Matches the photo pattern; typical sign:",
+      "target": " mixed",
+      "argmax": " often",
+      "p_target": 0.146
+     }
+    ]
+   }
+  },
+  {
+   "id": "T1-00132",
+   "task": "T1",
+   "collator": {
+    "n_input_tokens": 1344,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 292,
+    "nll_mean": 0.027,
+    "nll_sum": 7.89,
+    "argmax_mismatches": 3,
+    "first_mismatches": [
+     {
+      "context": "_atopic\",\"likelihood\":\"higher\",\"why\":\"",
+      "target": "Fits",
+      "argmax": "Your",
+      "p_target": 0.365
+     },
+     {
+      "context": " itching fits.\"}],\"uncertainty\":{\"level\":\"",
+      "target": "high",
+      "argmax": "moderate",
+      "p_target": 0.437
+     },
+     {
+      "context": " image model's scores are spread across several categories",
+      "target": "\"]},",
+      "argmax": "\",\"",
+      "p_target": 0.411
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1344,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 293,
+    "nll_mean": 0.0597,
+    "nll_sum": 17.48,
+    "argmax_mismatches": 4,
+    "first_mismatches": [
+     {
+      "context": "_atopic\",\"likelihood\":\"higher\",\"why\":\"",
+      "target": "Fits",
+      "argmax": "Your",
+      "p_target": 0.362
+     },
+     {
+      "context": " itching fits.\"}],\"uncertainty\":{\"level\":\"",
+      "target": "high",
+      "argmax": "moderate",
+      "p_target": 0.441
+     },
+     {
+      "context": " image model's scores are spread across several categories",
+      "target": "\"]},",
+      "argmax": "\",\"",
+      "p_target": 0.41
+     },
+     {
+      "context": "_with_image_model\":false}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T3-00330",
+   "task": "T3",
+   "collator": {
+    "n_input_tokens": 1456,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 341,
+    "nll_mean": 0.0224,
+    "nll_sum": 7.63,
+    "argmax_mismatches": 2,
+    "first_mismatches": [
+     {
+      "context": "_atopic\",\"likelihood\":\"higher\",\"why\":\"",
+      "target": "Fits",
+      "argmax": "Your",
+      "p_target": 0.443
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Not",
+      "argmax": "A",
+      "p_target": 0.364
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1443,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 342,
+    "nll_mean": 0.0518,
+    "nll_sum": 17.7,
+    "argmax_mismatches": 3,
+    "first_mismatches": [
+     {
+      "context": "_atopic\",\"likelihood\":\"higher\",\"why\":\"",
+      "target": "Fits",
+      "argmax": "Your",
+      "p_target": 0.424
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Not",
+      "argmax": "A",
+      "p_target": 0.35
+     },
+     {
+      "context": "_with_image_model\":true}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T1-00194",
+   "task": "T1",
+   "collator": {
+    "n_input_tokens": 1380,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 270,
+    "nll_mean": 0.0449,
+    "nll_sum": 12.13,
+    "argmax_mismatches": 4,
+    "first_mismatches": [
+     {
+      "context": "uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"",
+      "target": "Several",
+      "argmax": "The",
+      "p_target": 0.029
+     },
+     {
+      "context": " in person. Because you mentioned that the spot is",
+      "target": " changing",
+      "argmax": " growing",
+      "p_target": 0.425
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Not",
+      "argmax": "A",
+      "p_target": 0.425
+     },
+     {
+      "context": "\":[\"Photograph it with a coin for size.\",\"",
+      "target": "Protect",
+      "argmax": "Do",
+      "p_target": 0.38
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1380,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 271,
+    "nll_mean": 0.0811,
+    "nll_sum": 21.97,
+    "argmax_mismatches": 5,
+    "first_mismatches": [
+     {
+      "context": "uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"",
+      "target": "Several",
+      "argmax": "The",
+      "p_target": 0.029
+     },
+     {
+      "context": " in person. Because you mentioned that the spot is",
+      "target": " changing",
+      "argmax": " growing",
+      "p_target": 0.426
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Not",
+      "argmax": "A",
+      "p_target": 0.421
+     },
+     {
+      "context": "\":[\"Photograph it with a coin for size.\",\"",
+      "target": "Protect",
+      "argmax": "Do",
+      "p_target": 0.38
+     },
+     {
+      "context": "_with_image_model\":false}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T9-00429",
+   "task": "T9",
+   "collator": {
+    "n_input_tokens": 1412,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 311,
+    "nll_mean": 0.0591,
+    "nll_sum": 18.38,
+    "argmax_mismatches": 5,
+    "first_mismatches": [
+     {
+      "context": "level\":\"high\",\"reasons\":[\"The image model",
+      "target": "'",
+      "argmax": " is",
+      "p_target": 0.252
+     },
+     {
+      "context": " image model's top choice\"]},\"explanation\":\"",
+      "target": "You",
+      "argmax": "From",
+      "p_target": 0.354
+     },
+     {
+      "context": " model's top choice\"]},\"explanation\":\"You",
+      "target": " mentioned",
+      "argmax": " said",
+      "p_target": 0.303
+     },
+     {
+      "context": " scabies better, so treat this as uncertain.",
+      "target": "\",\"",
+      "argmax": " Because",
+      "p_target": 0.336
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Checking",
+      "argmax": "A",
+      "p_target": 0.186
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1412,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 312,
+    "nll_mean": 0.0914,
+    "nll_sum": 28.53,
+    "argmax_mismatches": 6,
+    "first_mismatches": [
+     {
+      "context": "level\":\"high\",\"reasons\":[\"The image model",
+      "target": "'",
+      "argmax": " is",
+      "p_target": 0.255
+     },
+     {
+      "context": " image model's top choice\"]},\"explanation\":\"",
+      "target": "You",
+      "argmax": "From",
+      "p_target": 0.354
+     },
+     {
+      "context": " model's top choice\"]},\"explanation\":\"You",
+      "target": " mentioned",
+      "argmax": " said",
+      "p_target": 0.297
+     },
+     {
+      "context": " scabies better, so treat this as uncertain.",
+      "target": "\",\"",
+      "argmax": " Because",
+      "p_target": 0.343
+     },
+     {
+      "context": ", 15\u201320 cm away\",\"",
+      "target": "Checking",
+      "argmax": "A",
+      "p_target": 0.188
+     }
+    ]
+   }
+  },
+  {
+   "id": "T1-00173",
+   "task": "T1",
+   "collator": {
+    "n_input_tokens": 1295,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 229,
+    "nll_mean": 0.0171,
+    "nll_sum": 3.91,
+    "argmax_mismatches": 1,
+    "first_mismatches": [
+     {
+      "context": " stop working.\",\"what_would_help\":[\"",
+      "target": "Not",
+      "argmax": "A",
+      "p_target": 0.464
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1309,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 230,
+    "nll_mean": 0.059,
+    "nll_sum": 13.57,
+    "argmax_mismatches": 2,
+    "first_mismatches": [
+     {
+      "context": " stop working.\",\"what_would_help\":[\"",
+      "target": "Not",
+      "argmax": "A",
+      "p_target": 0.416
+     },
+     {
+      "context": "_with_image_model\":false}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T1-00130",
+   "task": "T1",
+   "collator": {
+    "n_input_tokens": 1343,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 277,
+    "nll_mean": 0.034,
+    "nll_sum": 9.4,
+    "argmax_mismatches": 2,
+    "first_mismatches": [
+     {
+      "context": "level\":\"moderate\",\"reasons\":[\"The image model",
+      "target": "'",
+      "argmax": " is",
+      "p_target": 0.433
+     },
+     {
+      "context": " examination in person\"],\"self_care_info\":[\"",
+      "target": "Short",
+      "argmax": "Mo",
+      "p_target": 0.317
+     }
+    ]
+   },
+   "inference": {
+    "n_input_tokens": 1330,
+    "pixel_values": [
+     1,
+     2520,
+     768
+    ],
+    "n_target": 278,
+    "nll_mean": 0.071,
+    "nll_sum": 19.73,
+    "argmax_mismatches": 6,
+    "first_mismatches": [
+     {
+      "context": "higher\",\"why\":\"Your answers (severe itching,",
+      "target": " it",
+      "argmax": " its",
+      "p_target": 0.412
+     },
+     {
+      "context": "level\":\"moderate\",\"reasons\":[\"The image model",
+      "target": "'",
+      "argmax": " is",
+      "p_target": 0.392
+     },
+     {
+      "context": " image model's scores are spread across several categories",
+      "target": "\"]},",
+      "argmax": "\",\"",
+      "p_target": 0.486
+     },
+     {
+      "context": " scores are spread across several categories\"]},\"explanation\":\"",
+      "target": "You",
+      "argmax": "From",
+      "p_target": 0.416
+     },
+     {
+      "context": " examination in person\"],\"self_care_info\":[\"",
+      "target": "Short",
+      "argmax": "Mo",
+      "p_target": 0.322
+     }
+    ]
+   }
+  },
+  {
+   "id": "T7-00568",
+   "task": "T7",
+   "collator": {
+    "n_input_tokens": 410,
+    "pixel_values": null,
+    "n_target": 74,
+    "nll_mean": 0.0101,
+    "nll_sum": 0.75,
+    "argmax_mismatches": 0,
+    "first_mismatches": []
+   },
+   "inference": {
+    "n_input_tokens": 410,
+    "pixel_values": null,
+    "n_target": 75,
+    "nll_mean": 0.1628,
+    "nll_sum": 12.21,
+    "argmax_mismatches": 1,
+    "first_mismatches": [
+     {
+      "context": " it really seems to be growing or darkening.<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T8-00582",
+   "task": "T8",
+   "collator": {
+    "n_input_tokens": 347,
+    "pixel_values": null,
+    "n_target": 139,
+    "nll_mean": 0.0022,
+    "nll_sum": 0.31,
+    "argmax_mismatches": 0,
+    "first_mismatches": []
+   },
+   "inference": {
+    "n_input_tokens": 347,
+    "pixel_values": null,
+    "n_target": 140,
+    "nll_mean": 0.0694,
+    "nll_sum": 9.72,
+    "argmax_mismatches": 1,
+    "first_mismatches": [
+     {
+      "context": " \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T7-00548",
+   "task": "T7",
+   "collator": {
+    "n_input_tokens": 384,
+    "pixel_values": null,
+    "n_target": 65,
+    "nll_mean": 0.0164,
+    "nll_sum": 1.07,
+    "argmax_mismatches": 0,
+    "first_mismatches": []
+   },
+   "inference": {
+    "n_input_tokens": 384,
+    "pixel_values": null,
+    "n_target": 66,
+    "nll_mean": 0.1431,
+    "nll_sum": 9.44,
+    "argmax_mismatches": 1,
+    "first_mismatches": [
+     {
+      "context": " a worrying change, but keep tracking it.<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "T6-00530",
+   "task": "T6",
+   "collator": {
+    "n_input_tokens": 495,
+    "pixel_values": null,
+    "n_target": 146,
+    "nll_mean": 0.0048,
+    "nll_sum": 0.7,
+    "argmax_mismatches": 0,
+    "first_mismatches": []
+   },
+   "inference": {
+    "n_input_tokens": 495,
+    "pixel_values": null,
+    "n_target": 147,
+    "nll_mean": 0.0443,
+    "nll_sum": 6.51,
+    "argmax_mismatches": 1,
+    "first_mismatches": [
+     {
+      "context": "\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}<turn|>",
+      "target": "\n",
+      "argmax": "<turn|>",
+      "p_target": 0.003
+     }
+    ]
+   }
+  }
+ ],
+ "L2_path_parity": 11,
+ "L2_batch_consistency": {
+  "same": 4,
+  "n": 4,
+  "single": [
+   "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows intense itching, worse at night.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Worth considering; clearer centre would fit, and severe itching fits.\"},{\"key\":\"",
+   "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows red bumps and pus spots.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; often starts in childhood would fit, and its place on the ",
+   "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is changing colour) match; it often shows growing or changing.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with round or oval with a smooth border, ",
+   "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the arm) match; it often shows often starts in childhood.\"},{\"key\":\"scabies\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show other people a"
+  ]
+ },
+ "L2_rounds": [
+  {
+   "steps": 100,
+   "losses": [
+    2.914153289794922,
+    2.4700679779052734,
+    1.265285110473633,
+    1.406068992614746,
+    0.7669408321380615,
+    0.7390054702758789,
+    0.5359612464904785,
+    0.36670308113098143,
+    0.35435121059417723,
+    0.24354970455169678,
+    0.131845223903656,
+    0.13685264587402343,
+    0.11281979084014893,
+    0.05649963617324829,
+    0.05389145612716675,
+    0.07971451878547668,
+    0.048261252045631406,
+    0.02594253420829773,
+    0.044790256023406985,
+    0.029809728264808655
+   ],
+   "final_loss": 0.029809728264808655,
+   "exact": 5,
+   "json_equal": 3,
+   "decisions_equal": 11,
+   "train_s": 297.3,
+   "outs": [
+    {
+     "id": "T1-00179",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 497,
+     "len_out": 1357,
+     "len_target": 1260,
+     "out_at_diff": "hing fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a differ",
+     "target_at_diff": "hing fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanati",
+     "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows intense itching, worse at night.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Worth considering; clearer centre would fit, and severe itching fits.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with small blisters in strong reactions, and severe itching fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Scabies. A very itchy rash caused by tiny mites that burrow in the skin. The image model leaned towards Scabies, but your answers fit other conditions as well, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Avoid close skin contact until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T2-00329",
+     "task": "T2",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 1100,
+     "len_out": 1100,
+     "len_target": 1100,
+     "out_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "target_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows red bumps and pus spots.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; often starts in childhood would fit, and its place on the face fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"You said it has been there for more than six months, with no itching and moderate pain. This looks most like Acne. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Change pillowcases often.\",\"Choose oil-free, non-comedogenic products.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T2-00288",
+     "task": "T2",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 368,
+     "len_out": 1388,
+     "len_target": 1422,
+     "out_at_diff": "tching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Possible: blackheads and whiteheads would fit, and its place",
+     "target_at_diff": "tching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Worth considering; blackheads and whiteheads would fit, and ",
+     "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is changing colour) match; it often shows growing or changing.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with round or oval with a smooth border, and no itching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Possible: blackheads and whiteheads would fit, and its place on the face fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: more than six months, no itching, on the face. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. The image model leaned towards common benign growth (mole, seborrheic keratosis), but your answers fit spot that needs a doctor's look better, so treat this as uncertain. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T4-00403",
+     "task": "T4",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 442,
+     "len_out": 1401,
+     "len_target": 1464,
+     "out_at_diff": "_likely\",\"why\":\"Less likely: eczema edges are usually blurry, and fungal rings have a clearer centre.\"}],\"uncertainty\":{",
+     "target_at_diff": "_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"l",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the arm) match; it often shows often starts in childhood.\"},{\"key\":\"scabies\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show other people at home itching too, and moderate itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry, and fungal rings have a clearer centre.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the arm. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards scabies, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00058",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 748,
+     "len_out": 1075,
+     "len_target": 1027,
+     "out_at_diff": " because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examin",
+     "target_at_diff": " because pigment cells stop working.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Support ",
+     "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, present for one to six months) match; it often shows patches more visible on brown and dark skin.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: some fungal infections cause lighter, slightly scaly patches; vitiligo patches are smooth and fully white.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"Based on your answers, it has been present for one to six months on the arm, with no itching. Vitiligo / pigment loss fits best so far. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Protect white patches from sunburn with clothing and shade.\",\"Support groups can help.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T4-00418",
+     "task": "T4",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 32,
+     "len_out": 1346,
+     "len_target": 1451,
+     "out_at_diff": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe i",
+     "target_at_diff": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo patter",
+     "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is a child under 12) match; it often shows other people at home itching too.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Worth considering; it can look similar, with clearer centre, and severe itching fits.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"You said it has been there for more than six months, with severe itching and no pain. The closest match is Scabies. A very itchy rash caused by tiny mites that burrow in the skin. The image model leaned towards fungal infection (tinea), but your answers fit Scabies better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Avoid close skin contact until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00132",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 76,
+     "len_out": 1265,
+     "len_target": 1211,
+     "out_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the foot) match",
+     "target_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (moderate itching); typical sign: often st",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the foot) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; the photo may be blurry or dark.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with clearer centre, and moderate itching fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the foot. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T3-00330",
+     "task": "T3",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 76,
+     "len_out": 1418,
+     "len_target": 1459,
+     "out_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; ",
+     "target_at_diff": "ories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); t",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; it often starts in childhood.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; rash shaped like the area of contact would fit, and severe itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards contact dermatitis, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Keep nails short and avoid known triggers.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00194",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 464,
+     "len_out": 1109,
+     "len_target": 1130,
+     "out_at_diff": "less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"From what",
+     "target_at_diff": "less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanati",
+     "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is growing, bleeding or crusting) match; it often shows several colours.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"From what you told us: one to six months, mild itching, on the arm. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned that the spot is growing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T9-00429",
+     "task": "T9",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 515,
+     "len_out": 3237,
+     "len_target": 1345,
+     "out_at_diff": "}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category th",
+     "target_at_diff": "}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"Your answer",
+     "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); typical sign: small bumps or thin lines (burrows).\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on brown skin may look purple, grey or dark brown would fit, and severe itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with itching, and severe itching fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Scabies / itching from tiny mites that burrow in the skin. The image model leaned towards psoriasis, but your answers fit Scabies / severe itching / other / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching / not itching"
+    },
+    {
+     "id": "T1-00173",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 643,
+     "len_out": 972,
+     "len_target": 944,
+     "out_at_diff": "es because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's exam",
+     "target_at_diff": "es because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_ca",
+     "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is spreading) match; it often shows patches more visible on brown and dark skin.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"From what you told us: more than six months, no itching, on the leg. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Protect white patches from sunburn with clothing and shade.\",\"Support groups can help.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T1-00130",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 108,
+     "len_out": 1211,
+     "len_target": 1151,
+     "out_at_diff": "likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the leg) match; it often shows on brown skin may ",
+     "target_at_diff": "likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows on brown skin may look ",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the leg) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with on brown skin may look purple, grey or dark brown, and severe itching fits.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"You mentioned severe itching and no pain, for more than six months. This looks most like Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T7-00568",
+     "task": "T7",
+     "exact": true,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 328,
+     "len_out": 328,
+     "len_target": 328,
+     "out_at_diff": "show a doctor if it really seems to be growing or darkening.",
+     "target_at_diff": "show a doctor if it really seems to be growing or darkening.",
+     "out": "Compared with 21 Sep, the measured area is about 64 percent larger. Its colour contrast with the surrounding skin increased by 10.6 units. This measurement is uncertain because there was no coin in both photos. Retake the photo with a coin to measure it properly, and show a doctor if it really seems to be growing or darkening."
+    },
+    {
+     "id": "T8-00582",
+     "task": "T8",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 449,
+     "len_out": 449,
+     "len_target": 449,
+     "out_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+     "target_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+     "out": "{\"explanation\":\"\u0906\u092a\u0928\u0947 \u092c\u0924\u093e\u092f\u093e \u0915\u093f \u092f\u0939 \u091b\u0939 \u092e\u0939\u0940\u0928\u0947 \u0938\u0947 \u091c\u093c\u094d\u092f\u093e\u0926\u093e \u0938\u0947 \u0939\u0948, \u0914\u0930 \u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964 \u0905\u092d\u0940 \u0924\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0909\u092d\u093e\u0930 \u0938\u092c\u0938\u0947 \u091c\u093c\u094d\u092f\u093e\u0926\u093e \u092e\u0947\u0932 \u0916\u093e\u0924\u093e \u0939\u0948\u0964 \u092f\u0947 \u0906\u092e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0909\u092d\u093e\u0930 \u0939\u0948\u0902, \u091c\u0948\u0938\u0947 \u0924\u093f\u0932\u0964\",\"what_would_help\":[\"\u0921\u0949\u0915\u094d\u091f\u0930 \u0926\u094d\u0935\u093e\u0930\u093e \u0906\u092e\u0928\u0947-\u0938\u093e\u092e\u0928\u0947 \u091c\u093e\u0901\u091a\",\"\u0926\u093f\u0928 \u0915\u0940 \u0930\u094b\u0936\u0928\u0940 \u092e\u0947\u0902 15\u201320 \u0938\u0947\u092e\u0940 \u0926\u0942\u0930 \u0938\u0947 \u0932\u0940 \u0917\u0908 \u0938\u093e\u092b\u093c \u092b\u093c\u094b\u091f\u094b\"],\"self_care_info\":[\"\u092e\u0939\u0940\u0928\u0947 \u092e\u0947\u0902 \u090f\u0915 \u092c\u093e\u0930 \u0905\u092a\u0928\u0940 \u0924\u094d\u0935\u091a\u093e \u091c\u093e\u0901\u091a\u0947\u0902\u0964\",\"\u0924\u094d\u0935\u091a\u093e \u0915\u094b \u0924\u0947\u091c\u093c \u0927\u0942\u092a \u0938\u0947 \u092c\u091a\u093e\u090f\u0901\u0964\"],\"category_why\":{\"benign_lesion\":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}"
+    },
+    {
+     "id": "T7-00548",
+     "task": "T7",
+     "exact": true,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 303,
+     "len_out": 303,
+     "len_target": 303,
+     "out_at_diff": "thing here suggests a worrying change, but keep tracking it.",
+     "target_at_diff": "thing here suggests a worrying change, but keep tracking it.",
+     "out": "Compared with 12 Aug, the measured area is about 27 percent smaller, using the coin for scale. Its colour contrast with the surrounding skin increased by 2.0 units. This measurement is uncertain because the spot has not been calibrated yet. Nothing here suggests a worrying change, but keep tracking it."
+    },
+    {
+     "id": "T6-00530",
+     "task": "T6",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 470,
+     "len_out": 470,
+     "len_target": 470,
+     "out_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+     "target_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+     "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":{\"value\":\"gt_6m\",\"evidence\":\"\u092c\u091a\u092a\u0928 \u0938\u0947\"},\"itch\":{\"value\":0,\"evidence\":\"\u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u094b\u0924\u0940\"},\"pain\":{\"value\":3,\"evidence\":\"\u092c\u0939\u0941\u0924 \u0926\u0930\u094d\u0926 \u0939\u094b\u0924\u093e \u0939\u0948\"},\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"\u0915\u092d\u0940-\u0915\u092d\u0940 \u0916\u0942\u0928 \u0906\u0924\u093e \u0939\u0948\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"\u0928\u092f\u093e \u0938\u093e\u092c\u0941\u0928 \u0932\u0917\u093e\u0928\u0947 \u0915\u0947 \u092c\u093e\u0926 \u0936\u0941\u0930\u0942 \u0939\u0941\u0906\"},\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}"
+    }
+   ]
+  },
+  {
+   "steps": 200,
+   "losses": [
+    0.14915163516998292,
+    0.12238914966583252,
+    0.1579885959625244,
+    0.10671857595443726,
+    0.10077139139175414,
+    0.06837688684463501,
+    0.06024758815765381,
+    0.0606533408164978,
+    0.0645788311958313,
+    0.03963291645050049,
+    0.0215112566947937,
+    0.030369636416435242,
+    0.026932862401008607,
+    0.013061699271202088,
+    0.013390488922595978,
+    0.014395621418952943,
+    0.010455122590065003,
+    0.005740911886096001,
+    0.011399045586585999,
+    0.00503421500325203
+   ],
+   "final_loss": 0.00503421500325203,
+   "exact": 10,
+   "json_equal": 8,
+   "decisions_equal": 13,
+   "train_s": 245.4,
+   "outs": [
+    {
+     "id": "T1-00179",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 32,
+     "len_out": 1457,
+     "len_target": 1260,
+     "out_at_diff": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (mo",
+     "target_at_diff": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe i",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, it is spreading) match; it often shows often starts in childhood.\"},{\"key\":\"scabies\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show other people at home itching too, and moderate itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\",\"The image model and your answers point in different directions\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the hand. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards scabies, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T2-00329",
+     "task": "T2",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 482,
+     "len_out": 1174,
+     "len_target": 1100,
+     "out_at_diff": "el\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model",
+     "target_at_diff": "el\":\"moderate\",\"reasons\":[\"The image model is not confident\"]},\"explanation\":\"You said it has been there for more than s",
+     "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows red bumps and pus spots.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; often starts in childhood would fit, and its place on the face fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"You said it has been there for more than six months, with no itching and moderate pain. This looks most like Acne. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Change pillowcases often.\",\"Choose oil-free, non-comedogenic products.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T2-00288",
+     "task": "T2",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 1422,
+     "len_out": 1422,
+     "len_target": 1422,
+     "out_at_diff": "t within a few days.\"},\"disagreement_with_image_model\":true}",
+     "target_at_diff": "t within a few days.\"},\"disagreement_with_image_model\":true}",
+     "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is changing colour) match; it often shows growing or changing.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with round or oval with a smooth border, and no itching fits.\"},{\"key\":\"acne\",\"likelihood\":\"possible\",\"why\":\"Worth considering; blackheads and whiteheads would fit, and its place on the face fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: more than six months, no itching, on the face. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. The image model leaned towards common benign growth (mole, seborrheic keratosis), but your answers fit spot that needs a doctor's look better, so treat this as uncertain. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T4-00403",
+     "task": "T4",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 1464,
+     "len_out": 1464,
+     "len_target": 1464,
+     "out_at_diff": "er if it gets worse.\"},\"disagreement_with_image_model\":true}",
+     "target_at_diff": "er if it gets worse.\"},\"disagreement_with_image_model\":true}",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the arm) match; it often shows often starts in childhood.\"},{\"key\":\"scabies\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show other people at home itching too, and moderate itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\",\"The image model and your answers point in different directions\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the arm. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards scabies, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00058",
+     "task": "T1",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 1027,
+     "len_out": 1027,
+     "len_target": 1027,
+     "out_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "target_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, present for one to six months) match; it often shows patches more visible on brown and dark skin.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: some fungal infections cause lighter, slightly scaly patches; vitiligo patches are smooth and fully white.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"Based on your answers, it has been present for one to six months on the arm, with no itching. Vitiligo / pigment loss fits best so far. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Support groups can help.\",\"Be gentle with the skin; injury can trigger new patches.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T4-00418",
+     "task": "T4",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 450,
+     "len_out": 1447,
+     "len_target": 1451,
+     "out_at_diff": "rrows), and severe itching fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across",
+     "target_at_diff": "rrows), and severe itching fits.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread ac",
+     "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show itching, and severe itching fits.\"},{\"key\":\"scabies\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with small bumps or thin lines (burrows), and severe itching fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"The image model and your answers point in different directions\"]},\"explanation\":\"Based on your answers, it has been present for more than six months on the hand, with severe itching. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. The image model leaned towards fungal infection (tinea/ringworm), but your answers fit other / not sure better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Keep the area clean and avoid new products until checked.\",\"Retake the photo in daylight, 15\u201320 cm away.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00132",
+     "task": "T1",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": false,
+     "first_diff": 530,
+     "len_out": 1284,
+     "len_target": 1211,
+     "out_at_diff": "e image model's scores are spread across several categories\",\"Your answers fit a different category than the image model",
+     "target_at_diff": "e image model's scores are spread across several categories\"]},\"explanation\":\"From what you told us: one to four weeks, ",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (moderate itching); typical sign: often starts in childhood.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show photo blurry, dark or too far away.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with clearer centre, and moderate itching fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, moderate itching, on the foot. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T3-00330",
+     "task": "T3",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 405,
+     "len_out": 1396,
+     "len_target": 1459,
+     "out_at_diff": "{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"modera",
+     "target_at_diff": "{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); typical sign: rough or thickened skin from scratching.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; rash shaped like the area of contact would fit, and severe itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model is not confident\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model leaned towards contact dermatitis, but your answers fit eczema / atopic dermatitis better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Keep nails short and avoid known triggers.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00194",
+     "task": "T1",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 1130,
+     "len_out": 1130,
+     "len_target": 1130,
+     "out_at_diff": " within a few days.\"},\"disagreement_with_image_model\":false}",
+     "target_at_diff": " within a few days.\"},\"disagreement_with_image_model\":false}",
+     "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is growing, bleeding or crusting) match; it often shows several colours.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanation\":\"From what you told us: one to six months, mild itching, on the arm. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T9-00429",
+     "task": "T9",
+     "exact": false,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 654,
+     "len_out": 1398,
+     "len_target": 1345,
+     "out_at_diff": "ategory than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on",
+     "target_at_diff": "ategory than the image model's top choice\"]},\"explanation\":\"You mentioned severe itching and no pain, for one to four we",
+     "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, its place on the hand); typical sign: small bumps or thin lines (burrows).\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on brown skin may look purple, grey or dark brown would fit, and severe itching fits.\"},{\"key\":\"tinea\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with itching, and severe itching fits.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"From what you told us: one to four weeks, severe itching, on the hand. The closest match is Scabies. A very itchy rash caused by tiny mites that burrow in the skin. The image model leaned towards psoriasis, but your answers fit scabies better, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Avoid close skin contact until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+    },
+    {
+     "id": "T1-00173",
+     "task": "T1",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 944,
+     "len_out": 944,
+     "len_target": 944,
+     "out_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "target_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is spreading) match; it often shows patches more visible on brown and dark skin.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"From what you told us: more than six months, no itching, on the leg. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Protect white patches from sunburn with clothing and shade.\",\"Support groups can help.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T1-00130",
+     "task": "T1",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 1151,
+     "len_out": 1151,
+     "len_target": 1151,
+     "out_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "target_at_diff": "r if it gets worse.\"},\"disagreement_with_image_model\":false}",
+     "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with on brown skin may look purple, grey or dark brown, and severe itching fits.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"You mentioned severe itching and no pain, for more than six months. This looks most like Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Keep nails short and avoid known triggers.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+    },
+    {
+     "id": "T7-00568",
+     "task": "T7",
+     "exact": true,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 328,
+     "len_out": 328,
+     "len_target": 328,
+     "out_at_diff": "show a doctor if it really seems to be growing or darkening.",
+     "target_at_diff": "show a doctor if it really seems to be growing or darkening.",
+     "out": "Compared with 21 Sep, the measured area is about 64 percent larger. Its colour contrast with the surrounding skin increased by 10.6 units. This measurement is uncertain because there was no coin in both photos. Retake the photo with a coin to measure it properly, and show a doctor if it really seems to be growing or darkening."
+    },
+    {
+     "id": "T8-00582",
+     "task": "T8",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 449,
+     "len_out": 449,
+     "len_target": 449,
+     "out_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+     "target_at_diff": ":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}",
+     "out": "{\"explanation\":\"\u0906\u092a\u0928\u0947 \u092c\u0924\u093e\u092f\u093e \u0915\u093f \u092f\u0939 \u091b\u0939 \u092e\u0939\u0940\u0928\u0947 \u0938\u0947 \u091c\u093c\u094d\u092f\u093e\u0926\u093e \u0938\u0947 \u0939\u0948, \u0914\u0930 \u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964 \u0905\u092d\u0940 \u0924\u0915 \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0909\u092d\u093e\u0930 \u0938\u092c\u0938\u0947 \u091c\u093c\u094d\u092f\u093e\u0926\u093e \u092e\u0947\u0932 \u0916\u093e\u0924\u093e \u0939\u0948\u0964 \u092f\u0947 \u0906\u092e \u0939\u093e\u0928\u093f\u0930\u0939\u093f\u0924 \u0909\u092d\u093e\u0930 \u0939\u0948\u0902, \u091c\u0948\u0938\u0947 \u0924\u093f\u0932\u0964\",\"what_would_help\":[\"\u0921\u0949\u0915\u094d\u091f\u0930 \u0926\u094d\u0935\u093e\u0930\u093e \u0906\u092e\u0928\u0947-\u0938\u093e\u092e\u0928\u0947 \u091c\u093e\u0901\u091a\",\"\u0926\u093f\u0928 \u0915\u0940 \u0930\u094b\u0936\u0928\u0940 \u092e\u0947\u0902 15\u201320 \u0938\u0947\u092e\u0940 \u0926\u0942\u0930 \u0938\u0947 \u0932\u0940 \u0917\u0908 \u0938\u093e\u092b\u093c \u092b\u093c\u094b\u091f\u094b\"],\"self_care_info\":[\"\u092e\u0939\u0940\u0928\u0947 \u092e\u0947\u0902 \u090f\u0915 \u092c\u093e\u0930 \u0905\u092a\u0928\u0940 \u0924\u094d\u0935\u091a\u093e \u091c\u093e\u0901\u091a\u0947\u0902\u0964\",\"\u0924\u094d\u0935\u091a\u093e \u0915\u094b \u0924\u0947\u091c\u093c \u0927\u0942\u092a \u0938\u0947 \u092c\u091a\u093e\u090f\u0901\u0964\"],\"category_why\":{\"benign_lesion\":\"\u0906\u092a\u0915\u0947 \u091c\u0935\u093e\u092c (\u0915\u094b\u0908 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902, \u0917\u0930\u094d\u0926\u0928 \u092a\u0930) \u0907\u0938\u0938\u0947 \u092e\u0947\u0932 \u0916\u093e\u0924\u0947 \u0939\u0948\u0902\u0964\"}}"
+    },
+    {
+     "id": "T7-00548",
+     "task": "T7",
+     "exact": true,
+     "json_equal": false,
+     "decisions_equal": true,
+     "first_diff": 303,
+     "len_out": 303,
+     "len_target": 303,
+     "out_at_diff": "thing here suggests a worrying change, but keep tracking it.",
+     "target_at_diff": "thing here suggests a worrying change, but keep tracking it.",
+     "out": "Compared with 12 Aug, the measured area is about 27 percent smaller, using the coin for scale. Its colour contrast with the surrounding skin increased by 2.0 units. This measurement is uncertain because the spot has not been calibrated yet. Nothing here suggests a worrying change, but keep tracking it."
+    },
+    {
+     "id": "T6-00530",
+     "task": "T6",
+     "exact": true,
+     "json_equal": true,
+     "decisions_equal": true,
+     "first_diff": 470,
+     "len_out": 470,
+     "len_target": 470,
+     "out_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+     "target_at_diff": "\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}",
+     "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":{\"value\":\"gt_6m\",\"evidence\":\"\u092c\u091a\u092a\u0928 \u0938\u0947\"},\"itch\":{\"value\":0,\"evidence\":\"\u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u094b\u0924\u0940\"},\"pain\":{\"value\":3,\"evidence\":\"\u092c\u0939\u0941\u0924 \u0926\u0930\u094d\u0926 \u0939\u094b\u0924\u093e \u0939\u0948\"},\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"\u0915\u092d\u0940-\u0915\u092d\u0940 \u0916\u0942\u0928 \u0906\u0924\u093e \u0939\u0948\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"\u0928\u092f\u093e \u0938\u093e\u092c\u0941\u0928 \u0932\u0917\u093e\u0928\u0947 \u0915\u0947 \u092c\u093e\u0926 \u0936\u0941\u0930\u0942 \u0939\u0941\u0906\"},\"age_band\":null},\"unparsed_notes\":\"\u091b\u094b\u091f\u0947 \u0926\u093e\u0928\u0947 (small bumps)\"}"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,509 @@
+{
+ "mode": "stock",
+ "steps": [
+  {
+   "rc": 0,
+   "s": 765,
+   "files": [
+    "/tmp/exp/model.litertlm"
+   ],
+   "mem_total_mb": 32099,
+   "mem_min_available_mb": 4399,
+   "released": [
+    "[skinnova] released 2.17 B parameters after the text export",
+    "[skinnova] released 2.77 B parameters after the per-layer embedder export"
+   ],
+   "stdout_tail": "xport > Export vision encoder models > \nLiteRT-Torch Convert > Merge MLIR Modules (+00:00)\n(11:46) [START] LiteRT GenAI Export > Export vision encoder models > \nLiteRT-Torch Convert > Run LiteRT Converter Passes\n(11:46) [ DONE] LiteRT GenAI Export > Export vision encoder models > \nLiteRT-Torch Convert > Run LiteRT Converter Passes (+00:00)\n(11:46) [ DONE] LiteRT GenAI Export > Export vision encoder models > \nLiteRT-Torch Convert (+00:21)\n(11:46) [START] LiteRT GenAI Export > Export vision encoder models > Write Model\nto /tmp/exp/tmpu9aom8d2/vision_adapter.tflite\n(11:46) [ DONE] LiteRT GenAI Export > Export vision encoder models > Write Model\nto /tmp/exp/tmpu9aom8d2/vision_adapter.tflite (+00:00)\n(11:46) [START] LiteRT GenAI Export > Export vision encoder models > Quantize \nmodel\nModel name: /tmp/exp/tmpu9aom8d2/vision_adapter.tflite\nOriginal model size: 4.51 MiB\nQuantized model size: 1.15 MiB\nQuantization Ratio: 0.26 (3.9x smaller)\nTotal time: 14.21 ms\n(11:46) [ DONE] LiteRT GenAI Export > Export vision encoder models > Quantize \nmodel (+00:00)\n(11:46) [ DONE] LiteRT GenAI Export > Export vision encoder models (+02:06)\n(11:47) [START] LiteRT GenAI Export > Export tokenizer\n(11:49) [ DONE] LiteRT GenAI Export > Export tokenizer (+00:01)\n(11:49) [START] LiteRT GenAI Export > Package model\n(12:09) [ DONE] LiteRT GenAI Export > Package model (+00:20)\n(12:11) [ DONE] LiteRT GenAI Export (+12:11)\nCleaning up temporary files.\nExport complete. Model saved to: /tmp/exp/model.litertlm\n",
+   "stderr_tail": "]\nGenerating Quantization Parameters::  41%|\u2588\u2588\u2588\u2588\u258f     | 2240/5420 [00:53<02:21, 22.48it/s]\nGenerating Quantization Parameters::  41%|\u2588\u2588\u2588\u2588\u258f     | 2247/5420 [00:55<03:24, 15.50it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2253/5420 [00:55<04:11, 12.57it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2261/5420 [00:56<03:17, 16.00it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2280/5420 [00:56<02:32, 20.63it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2285/5420 [00:58<04:25, 11.80it/s]\nGenerating Quantization Parameters::  42%|\u2588\u2588\u2588\u2588\u258f     | 2297/5420 [00:58<03:04, 16.89it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2316/5420 [00:58<02:28, 20.85it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2321/5420 [01:00<04:09, 12.43it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2333/5420 [01:00<02:56, 17.50it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2352/5420 [01:00<02:27, 20.83it/s]\nGenerating Quantization Parameters::  43%|\u2588\u2588\u2588\u2588\u258e     | 2357/5420 [01:02<04:07, 12.40it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258e     | 2369/5420 [01:02<03:02, 16.69it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2384/5420 [01:02<02:06, 23.95it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2391/5420 [01:03<03:12, 15.73it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2396/5420 [01:04<04:10, 12.06it/s]\nGenerating Quantization Parameters::  44%|\u2588\u2588\u2588\u2588\u258d     | 2403/5420 [01:15<23:15,  2.16it/s]\nGenerating Quantization Parameters:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 5420/5420 [01:16<00:00, 71.27it/s]\n\nApplying Transformations to tensors::   0%|          | 0/7214 [00:00<?, ?it/s]\nApplying Transformations to tensors:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 7214/7214 [00:00<00:00, 106095.55it/s]\nModule size is greater than 2GB\nModule size is greater than 2GB\n\nGenerating Quantization Parameters::   0%|          | 0/2654 [00:00<?, ?it/s]\nGenerating Quantization Parameters::   4%|\u258d         | 119/2654 [00:00<00:02, 1123.27it/s]\nGenerating Quantization Parameters::  11%|\u2588\u258f        | 301/2654 [00:00<00:01, 1479.90it/s]\nGenerating Quantization Parameters::  18%|\u2588\u258a        | 483/2654 [00:00<00:01, 1546.41it/s]\nGenerating Quantization Parameters::  25%|\u2588\u2588\u258c       | 665/2654 [00:00<00:01, 1595.20it/s]\nGenerating Quantization Parameters::  32%|\u2588\u2588\u2588\u258f      | 847/2654 [00:00<00:01, 1611.89it/s]\nGenerating Quantization Parameters::  39%|\u2588\u2588\u2588\u2589      | 1029/2654 [00:00<00:01, 1617.06it/s]\nGenerating Quantization Parameters::  46%|\u2588\u2588\u2588\u2588\u258c     | 1211/2654 [00:00<00:00, 1625.08it/s]\nGenerating Quantization Parameters::  52%|\u2588\u2588\u2588\u2588\u2588\u258f    | 1393/2654 [00:00<00:00, 1630.93it/s]\nGenerating Quantization Parameters::  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a   | 1811/2654 [00:00<00:00, 2373.71it/s]\nGenerating Quantization Parameters:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2654/2654 [00:01<00:00, 2574.32it/s]\n\nApplying Transformations to tensors::   0%|          | 0/3603 [00:00<?, ?it/s]\nApplying Transformations to tensors:: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 3603/3603 [00:00<00:00, 147100.52it/s]\n"
+  }
+ ],
+ "source": "/tmp/gemma4_e2b",
+ "litertlm": {
+  "path": "/kaggle/working/export/skinnova-e2b-stock.litertlm",
+  "bytes": 3862170848,
+  "sha256": "0f107304db40cca0a3341c25f72b6754764f0f6978b4c705a72d6e3789cea88a"
+ },
+ "capabilities": {
+  "text": true,
+  "vision": true,
+  "audio": false
+ },
+ "exported": {
+  "load_s": 3.2,
+  "capabilities": {
+   "text": true,
+   "vision": true,
+   "audio": false
+  },
+  "text_probe": "OK",
+  "analysis": {
+   "valid": 0.4,
+   "cat_agree": 0.7,
+   "top_agree": 0.5,
+   "tier_ok": 0.8,
+   "guard_violation": 0.0,
+   "hedge_ok": 1.0,
+   "cites_answer": 0.5
+  },
+  "rows": [
+   {
+    "id": "val-0000",
+    "task": "T1",
+    "s": 151.1,
+    "valid": false,
+    "errors": [
+     "no_json_object"
+    ],
+    "cat_agree": false,
+    "top_agree": false,
+    "tier_ok": false,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored acne at 0.95, and the condition notes describe acne as 'Blocked hair follicles with oil and inflammation causing spots.'\",\n      \"explanation\": \"The visual presentation of small red bumps/spots on the face aligns well with the typical features of acne described in the notes. The user's reported duration of 1-4 weeks is consistent with an ongoing skin condition.\",\n      \"what_would_help\": [\n        \"Gentle cleansing\",\n        \"Avoiding picking or touching the spots\"\n      ],\n      \"self_care_info\": [\n        \"Wash your face gently twice a day with a mild cleanser.\",\n        \"Avoid harsh scrubbing or picking at blemishes.\"\n      ]\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored eczema at 0.01, and the user reported no itch.\",\n      \"explanation\": \"There is no reported itching, which is a typical feature of eczema. The lesions appear more like inflammatory spots rather than dry, intensely itchy patches.\",\n      \"what_would_help\": [\n        \"Moisturizing if skin feels dry\"\n      ],\n      \"self_care_info\": [\n        \"Maintain skin hydration if it feels dry.\"\n      ]\n    },\n    {\n      \"key\": \"psoriasis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored psoriasis at 0.01, and the lesions do not show the characteristic thick, scaly plaques.\",\n      \"explanation\": \"The lesions in the image do not exhibit the raised, thick, or distinctly scaly plaques characteristic of psoriasis. The visual evidence does not strongly support this diagnosis.\",\n      \"what_would_help\": [\n        \"Consult a professional for a definitive diagnosis.\"\n      ],\n      \"self_care_info\": [\n        \"Avoid excessive scratching.\"\n      ]\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"low\",\n    \"reasons\": [\n      \"The visual presentation is suggestive of acne, but a definitive diagnosis requires a clinical examination.\"\n    ]\n  },\n  \"explanation\": \"Based on the visual evidence of inflammatory spots on the face and the image model's high confidence in 'acne,' this category is the most likely. The user's history of 1-4 weeks and the appearance of the spots align with the description of acne. Other conditions like eczema or psoriasis are less likely given the lack of associated symptoms like intense itching or thick scaling.\",\n  \"what_would_help\": [\n    \"Consistent gentle skincare routine.\",\n    \"Avoiding irritation.\"\n  ],\n  \"self_care_info\": [\n    \"Wash your face gently twice a day with a mild cleanser.\",\n    \"Avoid harsh scrubbing or picking at blemishes.\"\n  ],\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"This is a low-risk presentation. Continue with",
+    "gray_cats": [
+     "acne",
+     "eczema_atopic",
+     "psoriasis"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0001",
+    "task": "T1",
+    "s": 105.8,
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": false,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "benign_lesion",
+     "vitiligo"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored 'benign_lesion' with 0.0, but the visual appearance of the raised, somewhat clustered lesions is consistent with a benign growth, as described in the condition notes.\"\n    },\n    {\n      \"key\": \"vitiligo\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model gave a very low probability (0.01), and the lesions in the photo do not clearly present as the milky-white patches with clear edges typical of vitiligo.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image quality makes definitive identification difficult.\",\n      \"The image model's top prediction ('other') suggests the features are not clearly categorized.\"\n    ]\n  },\n  \"explanation\": \"The image displays raised, clustered lesions on the arm. The image model suggests 'other' as the most likely category. The condition notes suggest considering a benign lesion, such as a mole or seborrhoeic keratosis, as these are common, harmless growths. However, a definitive diagnosis cannot be made from this image alone.\",\n  \"what_would_help\": [\n    \"A clinical examination by a healthcare professional.\",\n    \"A clearer, higher-resolution image of the lesions.\",\n    \"Information regarding the history of the lesions (onset, changes over time).\"\n  ],\n  \"self_care_info\": \"Monitor the lesions for any changes in size, shape, color, or if they start to itch, bleed, or crust. Avoid picking or scratching the area.\",\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"Since the condition is classified as MODERATE risk, it is recommended to consult with a healthcare professional for an accurate diagnosis and personalized advice.\"\n  },\n  \"disagreement_with_image_model\": true\n}\n```",
+    "gray_cats": [
+     "vitiligo",
+     "benign_lesion"
+    ],
+    "gray_changed": false
+   },
+   {
+    "id": "val-0002",
+    "task": "T1",
+    "s": 116.1,
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "other",
+     "eczema_atopic",
+     "tinea"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model returned a high probability (0.94) for 'other', and the condition notes state that the photo does not clearly match known conditions.\",\n      \"score\": 0.94\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model gave a low probability (0.02), and the typical features described (very itchy dry patches) are not clearly evident in the provided image.\",\n      \"score\": 0.02\n    },\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model gave a very low probability (0.01), and the typical features (ring-shaped patch with a raised scaly edge) are not clearly visible.\",\n      \"score\": 0.01\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image quality is low, making definitive feature identification difficult.\",\n      \"The condition notes explicitly state the photo does not clearly match known conditions.\"\n    ]\n  },\n  \"explanation\": \"The image provided is unclear, which leads to uncertainty in classification. The image model suggested 'other' as the most likely category. The condition notes advise seeing a doctor if symptoms are painful, spreading, or not improving, as the photo itself is not diagnostic.\",\n  \"what_would_help\": [\n    \"A clearer, higher-resolution image of the affected area.\",\n    \"A detailed description of any associated symptoms (itching, pain, duration).\"\n  ],\n  \"self_care_info\": \"Since the image is unclear and no specific condition is confirmed, general skin care practices are recommended. Keep the area clean and moisturized with a gentle, fragrance-free product. Avoid scratching to prevent further irritation.\",\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"This is a low-risk assessment based on the provided information. If you are worried, if the area becomes painful, spreads, or does not improve, please consult a healthcare professional.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "eczema_atopic",
+     "tinea"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0003",
+    "task": "T1",
+    "s": 106.6,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "eczema_atopic",
+     "other",
+     "suspicious_lesion"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this condition at 0.44, and the condition notes describe typical features like dry, itchy patches.\"\n    },\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model scored this at 0.34, and the condition notes suggest the photo might not clearly match known conditions.\"\n    },\n    {\n      \"key\": \"suspicious_lesion\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this very low at 0.07, and the visual features do not strongly suggest the warning signs listed.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual information alone is not sufficient for a definitive diagnosis.\",\n      \"The user reports itching but the duration and severity are not fully detailed.\"\n    ]\n  },\n  \"explanation\": \"The image shows skin on the hand with some texture, which aligns with the description of eczema atopic, characterized by dry, itchy patches. The user reports an itch (score of 2) and a duration of 1 week and 6 months. However, without a direct clinical examination, a definitive diagnosis cannot be made.\",\n  \"what_would_help\": [\n    \"A detailed description of the symptoms (severity, progression of itch, presence of weeping or crusting).\",\n    \"A visual examination by a healthcare professional for an accurate diagnosis.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area moisturized with a gentle, fragrance-free moisturizer.\",\n    \"Avoid scratching to prevent further irritation and potential infection.\",\n    \"Wear loose-fitting, soft clothing.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"Since the condition is rated MODERATE, it is recommended to consult with a healthcare professional for an accurate diagnosis and personalized treatment plan.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "eczema_atopic",
+     "other"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0004",
+    "task": "T1",
+    "s": 122.6,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "tinea",
+     "eczema_atopic",
+     "scabies"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored 'tinea' with 0.8, and the condition notes describe tinea (ringworm) with features like a ring-shaped patch with a raised scaly edge, which aligns with the visible findings.\",\n      \"why\": \"image_model_scores_support\"\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"possible\",\n      \"why\": \"Eczema is a possibility as it causes itchy, dry patches, but the image model scored it very low (0.09), and the condition notes distinguish tinea by its sharper edge.\",\n      \"why\": \"condition_notes_support\"\n    },\n    {\n      \"key\": \"scabies\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"Scabies is less likely as the primary features shown do not strongly suggest intense itching or burrows, and the image model scored it very low (0.03).\",\n      \"why\": \"image_model_scores_support\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The exact diagnosis cannot be confirmed without a physical examination.\",\n      \"The user's description of symptoms is limited.\"\n    ]\n  },\n  \"explanation\": \"The image displays a scaly patch on the finger, which is consistent with the description of tinea (ringworm) mentioned in the condition notes. The image model strongly suggested tinea. Other conditions like eczema or scabies are less likely based on the visual evidence and model scores.\",\n  \"what_would_help\": [\n    \"A physical examination by a healthcare professional for accurate diagnosis.\",\n    \"Monitoring if the area spreads or changes in appearance.\",\n    \"Keeping the area clean and dry as advised for fungal infections.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the affected area clean and dry.\",\n    \"Avoid scratching, as this can spread infection or cause secondary issues.\",\n    \"Wear loose-fitting, breathable clothing.\"\n  ],\n  \"triage\": {\n    \"tier\": \"HIGH\",\n    \"advice\": \"Given the high likelihood of a fungal infection, it is recommended to see a doctor for a proper diagnosis and treatment plan, especially since the condition notes advise seeing a doctor if it keeps spreading despite care.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "tinea",
+     "eczema_atopic",
+     "scabies"
+    ],
+    "gray_changed": false
+   },
+   {
+    "id": "val-0005",
+    "task": "T1",
+    "s": 104.6,
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "acne",
+     "scabies",
+     "other"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored acne with 0.95 probability, and the condition notes describe acne as blocked hair follicles with oil and inflammation causing spots, which aligns with the visible features.\",\n      \"why_citation\": \"image_model_scores_support\"\n    },\n    {\n      \"key\": \"scabies\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored scabies with 0.01 probability, and the user reports no significant itching, which is a key feature of scabies.\",\n      \"why_citation\": \"image_model_scores_support\"\n    },\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model assigned a low probability to 'other' (0.01), and the condition notes suggest that if features are unclear, it falls under 'other'.\",\n      \"why_citation\": \"image_model_scores_support\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"low\"\n  },\n  \"explanation\": \"The image displays red bumps and spots on the face. The image model strongly suggested acne, and the condition notes for acne describe features consistent with inflammatory spots from blocked follicles. However, without further information, a definitive diagnosis cannot be made.\",\n  \"what_would_help\": [\n    \"Monitoring if the spots are painful, spreading, or if new marks appear.\",\n    \"Noticing if the rash is worse at night (which might suggest scabies).\",\n    \"Tracking any changes over time.\"\n  ],\n  \"self_care_info\": \"For general skin concerns like acne, gentle cleansing and avoiding harsh products are often recommended. Consult a healthcare provider for personalized advice.\",\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"This is a low-triage concern. If you are concerned about the spots, or if they become painful, spreading, or do not improve, it is recommended to see a doctor for a proper evaluation.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0006",
+    "task": "T1",
+    "s": 114.2,
+    "valid": false,
+    "errors": [
+     "bad_self_care_info"
+    ],
+    "cat_agree": true,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "suspicious_lesion",
+     "tinea",
+     "benign_lesion"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"suspicious_lesion\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this category highest (0.82), suggesting features that warrant attention, which aligns with the condition notes describing features like 'uneven shape or border'.\",\n      \"reason\": \"The image shows a mark on the skin that the model flagged as suspicious.\"\n    },\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The condition notes mention tinea (ringworm) as a possibility, characterized by itching and spreading. The user reports an itch (score of 3).\",\n      \"reason\": \"The presence of itching is a feature associated with tinea infections.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model gave a low probability (0.04), but benign lesions are common. The lesion could be a stable, harmless growth.\",\n      \"reason\": \"Benign lesions are common and stable, which is a possibility, although the visual features might suggest otherwise.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual features are not detailed enough for a definitive assessment.\",\n      \"The lesion could be benign, a fungal infection, or something else.\"\n    ]\n  },\n  \"explanation\": \"The image displays a mark on the arm. The image model strongly suggested a 'suspicious_lesion'. Condition notes advise seeing a doctor if a lesion has an uneven shape, changes, or bleeds. The user reports some itching. Given the uncertainty, professional evaluation is recommended.\",\n  \"what_would_help\": [\n    \"A direct examination by a healthcare professional.\",\n    \"Monitoring the lesion for changes in size, shape, color, or symptoms like itching or bleeding.\"\n  ],\n  \"self_care_info\": \"Monitor the area. Do not scratch or try to remove the mark. Keep the area clean and dry.\",\n  \"triage\": {\n    \"tier\": \"HIGH\",\n    \"advice\": \"Since the image model flagged a suspicious lesion and the rule tier is HIGH, it is strongly recommended that you book a skin check with a doctor soon for a professional evaluation.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0007",
+    "task": "T1",
+    "s": 121.6,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "tinea",
+     "eczema_atopic",
+     "contact_dermatitis"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored tinea at 0.64, and the condition notes describe tinea as a fungal skin infection with features like itching and spreading.\"\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model scored eczema_atopic at 0.32, and the user reports itching, which is a feature of eczema.\"\n    },\n    {\n      \"key\": \"contact_dermatitis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored contact_dermatitis very low (0.01), and the user did not report a new product or exposure.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image provided is a close-up of a leg/skin area, and definitive diagnosis requires a physical examination.\",\n      \"The user's reported symptoms (itch=2, pain=1) are non-specific.\"\n    ]\n  },\n  \"explanation\": \"The image shows skin that appears somewhat erythematous (reddened) and possibly scaly, which aligns with the features described for tinea. However, without a visual confirmation of a classic ring shape or raised, scaly edge, a definitive diagnosis is not possible. Eczema is also a possibility given the reported itching. Contact dermatitis is less likely as there is no reported recent exposure.\",\n  \"what_would_help\": [\n    \"A healthcare professional can examine the skin to determine the exact cause.\",\n    \"Note if the rash has a ring shape or a raised, scaly border.\",\n    \"Monitor if the rash spreads or changes in appearance.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area clean and dry.\",\n    \"Avoid scratching, as this can lead to secondary infection.\",\n    \"Use mild, fragrance-free moisturizers if the skin is dry.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"This is a moderate concern. It is recommended to see a doctor for an accurate diagnosis and appropriate treatment plan, especially since the condition could be fungal or inflammatory.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0008",
+    "task": "T1",
+    "s": 110.5,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "eczema_atopic",
+     "psoriasis",
+     "benign_lesion"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this condition with 0.97 probability, and the condition notes describe features like dry, itchy, inflamed skin.\"\n    },\n    {\n      \"key\": \"psoriasis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this condition with 0.0 probability, and the visual appearance does not strongly suggest the typical thick, silvery scale of psoriasis plaques.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this condition with 0.0 probability, and the lesion appears inflamed and possibly irritated rather than a stable, even-colored growth.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual presentation is consistent with inflammatory skin conditions, but without further clinical information, definitive classification is difficult.\"\n    ]\n  },\n  \"explanation\": \"The image displays an inflamed, reddish patch with some texture, which aligns with the general description of eczema atopic. The user reports itchiness, and the condition notes for eczema atopic mention very itchy, dry patches. However, the visual evidence alone is not sufficient to rule out other possibilities.\",\n  \"what_would_help\": [\n    \"A physical examination by a healthcare professional.\",\n    \"Information on the history of the rash (when it started, how it changes).\",\n    \"Details on the severity of the itching and any associated symptoms.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area clean and moisturized with a gentle, fragrance-free moisturizer.\",\n    \"Avoid scratching, as this can worsen inflammation and potentially lead to infection.\",\n    \"Wear loose-fitting, soft clothing.\"\n  ],\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"This is a low-triage situation based on the provided information. If the itching persists, worsens, or if you notice weeping, crusting, or pus, please consult a doctor.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0010",
+    "task": "T1",
+    "s": 145.4,
+    "valid": false,
+    "errors": [
+     "no_json_object"
+    ],
+    "cat_agree": false,
+    "top_agree": false,
+    "tier_ok": false,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this condition with 0.94 probability, and the visual presentation of the skin suggests features consistent with eczema, such as dryness and inflammation.\",\n      \"reason\": \"The visual appearance of the skin in the image is consistent with features described for eczema atopic dermatitis, such as inflamed and somewhat rough skin.\",\n      \"what_would_help\": [\n        \"Moisturizing the skin regularly\",\n        \"Avoiding known irritants\"\n      ],\n      \"self_care_info\": [\n        \"Keep skin moisturized frequently.\",\n        \"Avoid scratching to prevent further irritation.\"\n      ]\n    },\n    {\n      \"key\": \"psoriasis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this condition with only 0.01 probability, and the visual features do not strongly suggest the thick, silvery scale typical of psoriasis.\",\n      \"reason\": \"The skin in the image does not clearly show the thick, silvery scale or sharp borders typically associated with psoriasis plaques.\",\n      \"what_would_help\": [\n        \"Consult a healthcare provider for a definitive diagnosis.\"\n      ],\n      \"self_care_info\": [\n        \"Avoid excessive scratching.\"\n      ]\n    },\n    {\n      \"key\": \"contact_dermatitis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored this condition with only 0.01 probability, and there is no visible indication of a localized reaction to a specific contact.\",\n      \"reason\": \"There is no visible evidence suggesting a rash shaped like an area of contact, burning, or stinging.\",\n      \"what_would_help\": [\n        \"Identify and avoid any new products or exposures.\"\n      ],\n      \"self_care_info\": [\n        \"Avoid known irritants or allergens.\"\n      ]\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual information alone is not sufficient for a definitive diagnosis.\",\n      \"The user provided limited information regarding the onset or specific triggers.\"\n    ]\n  },\n  \"explanation\": \"The image displays skin that appears inflamed and somewhat rough, which aligns with the features of eczema atopic dermatitis. The condition notes suggest that eczema involves dry, itchy, inflamed skin that flares up. However, a definitive diagnosis cannot be made without a physical examination. The image model strongly favored eczema atopic dermatitis.\",\n  \"what_would_help\": [\n    \"A thorough in-person examination by a healthcare professional.\",\n    \"Tracking when the symptoms occur and what activities or exposures precede them.\"\n  ],\n  \"self_care_info\": [\n    \"Keep skin moisturized frequently.\",\n    \"Avoid scratching to prevent further irritation.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"Given the moderate risk assessment, it is recommended to consult a doctor for an accurate diagnosis and personalized treatment plan.\"\n"
+   }
+  ],
+  "image_ablation_changed": 0.6,
+  "s_per_case_median": 116.1
+ },
+ "official_stock": {
+  "load_s": 20.3,
+  "capabilities": {
+   "text": true,
+   "vision": true,
+   "audio": true
+  },
+  "text_probe": "OK",
+  "analysis": {
+   "valid": 0.9,
+   "cat_agree": 0.9,
+   "top_agree": 0.7,
+   "tier_ok": 0.9,
+   "guard_violation": 0.0,
+   "hedge_ok": 0.9,
+   "cites_answer": 0.4
+  },
+  "rows": [
+   {
+    "id": "val-0000",
+    "task": "T1",
+    "s": 63.9,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "acne",
+     "eczema_atopic",
+     "psoriasis"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image shows multiple small, red bumps on the face, which are consistent with the typical features of acne described in the condition notes.\"\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"possible\",\n      \"why\": \"Inflammation is present, which can overlap with eczema, but the presentation is more suggestive of acne based on the notes.\"\n    },\n    {\n      \"key\": \"psoriasis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The lesions shown do not strongly resemble the typical raised, scaly plaques associated with psoriasis.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"low\",\n    \"reasons\": [\n      \"The visual evidence is consistent with acne, but a definitive diagnosis requires a medical examination.\"\n    ]\n  },\n  \"explanation\": \"The image displays several small, red bumps on the face, which aligns with the typical features of acne described in the condition notes (red bumps and pus spots). The image-model scores also heavily favor acne (0.95). However, without a physical examination, it is not possible to rule out other skin conditions.\",\n  \"what_would_help\": [\n    \"Gentle cleansing and moisturizing routines.\",\n    \"Avoiding picking or squeezing the spots.\",\n    \"Consulting a healthcare professional for an accurate diagnosis and personalized treatment plan.\"\n  ],\n  \"self_care_info\": [\n    \"Wash your face gently twice a day with a mild, non-comedogenic cleanser.\",\n    \"Apply a non-comedogenic moisturizer if your skin feels dry.\",\n    \"Avoid harsh scrubs or products that might clog your pores.\"\n  ],\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"Since the condition is mild and appears to be common, gentle skincare is recommended. However, please see a doctor if you experience painful deep lumps, significant scarring, or if the spots do not improve after several weeks of gentle care.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "acne",
+     "psoriasis"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0001",
+    "task": "T1",
+    "s": 64.8,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "benign_lesion",
+     "other"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image shows raised, somewhat irregular skin lesions, which could be consistent with benign growths like seborrhoeic keratoses, although a definitive diagnosis is not possible from a photo.\",\n      \"why_support\": [\n        \"The lesions appear somewhat raised and irregular, which is a feature that can be seen in benign lesions.\"\n      ]\n    },\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image does not clearly match the conditions SkinNova knows, or it may not be a skin photo. That is not a sign of anything serious by itself.\",\n      \"why_support\": [\n        \"The condition notes state that the photo does not clearly match known conditions and is not a sign of anything serious by itself.\"\n      ]\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image quality makes precise identification difficult.\",\n      \"The features are mixed and unclear, making it hard to distinguish between benign lesions and other possibilities.\"\n    ]\n  },\n  \"explanation\": \"The image displays multiple raised, somewhat irregular skin lesions on the arm. Based on the provided notes, the photo does not clearly match specific conditions SkinNova knows, and it is not inherently a sign of anything serious. While some features could be consistent with benign lesions, the lack of clear, distinct features makes a precise identification impossible without a clinical examination.\",\n  \"what_would_help\": [\n    \"A physical examination by a healthcare professional is necessary for an accurate diagnosis.\",\n    \"Providing a clearer, higher-resolution image might assist in initial assessment.\",\n    \"Noticing any changes in the lesions, such as new spots, changes in size, color, itching, or bleeding, is important.\"\n  ],\n  \"self_care_info\": [\n    \"Avoid picking, scratching, or trying to squeeze the lesions.\",\n    \"Keep the area clean and dry.\",\n    \"Do not apply any creams or treatments unless specifically advised by a doctor.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"Because the features are mixed and unclear, it is important to consult a doctor for a proper evaluation and diagnosis. See a doctor if you are worried, if the lesions are painful, spreading, not improving, or if you feel unwell or have a fever.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "other",
+     "vitiligo",
+     "benign_lesion"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0002",
+    "task": "T1",
+    "s": 70.0,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "other",
+     "eczema_atopic",
+     "tinea"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored 'other' at 0.94, suggesting the features do not clearly match the known conditions.\"\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model scored 'eczema_atopic' at 0.02, indicating a low likelihood based on the model's analysis.\"\n    },\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored 'tinea' at 0.01, indicating a very low likelihood based on the model's analysis.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The condition notes state that the photo does not clearly match known conditions or may not be a skin photo, which introduces uncertainty.\",\n      \"The image model scores are very low for the known conditions, suggesting the visual evidence is not strongly indicative of them.\"\n    ]\n  },\n  \"explanation\": \"The provided image is blurry and does not clearly show distinct skin features that align strongly with the typical characteristics of eczema, tinea, or psoriasis. The condition notes suggest that the photo may not clearly match known conditions, and the features are mixed or unclear. Therefore, a definitive diagnosis cannot be made from this image alone.\",\n  \"what_would_help\": [\n    \"A clearer, well-lit photograph of the affected area.\",\n    \"A detailed description of the symptoms (e.g., exact location, texture, severity of itching, presence of scales or rings).\",\n    \"Information on any recent changes in skin condition or exposure to new products.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area clean and dry.\",\n    \"Avoid scratching to prevent further irritation.\",\n    \"Moisturize the skin gently with a fragrance-free moisturizer if irritation is present.\"\n  ],\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"Since the image is unclear and the condition notes advise seeing a doctor if the condition is painful, spreading, not improving, or if you feel unwell, it is recommended to consult a healthcare professional for an accurate diagnosis and appropriate treatment plan.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "eczema_atopic",
+     "tinea"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0003",
+    "task": "T1",
+    "s": 55.3,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "eczema_atopic",
+     "other"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image shows areas of skin that appear inflamed and possibly dry, which aligns with the description of eczema.\"\n    },\n    {\n      \"key\": \"other\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model suggests an 'other' possibility, indicating the features do not perfectly match known conditions.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image model scores suggest a mix of possibilities, and the user's description is limited.\",\n      \"The features are not clearly distinct enough to rule out other conditions.\"\n    ]\n  },\n  \"explanation\": \"The image displays skin on the hand with some signs of inflammation and texture changes. The image model suggests a higher likelihood for eczema atopic, which is characterized by dry, itchy, inflamed skin. However, without a physical examination, it is difficult to definitively diagnose the condition. The presence of some features warrants further evaluation.\",\n  \"what_would_help\": [\n    \"A physical examination by a healthcare professional.\",\n    \"A detailed history of symptoms, including when they started, what makes them better or worse, and any recent exposures.\",\n    \"A skin check by a doctor.\"\n  ],\n  \"self_care_info\": [\n    \"Moisturize the skin regularly with gentle, fragrance-free moisturizers.\",\n    \"Avoid scratching to prevent further irritation and infection.\",\n    \"Keep the affected area clean and dry after washing.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"Given the moderate likelihood and the need for a professional assessment, it is recommended that you consult a doctor or dermatologist for an accurate diagnosis and appropriate treatment plan.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "eczema_atopic",
+     "other",
+     "suspicious_lesion"
+    ],
+    "gray_changed": true
+   },
+   {
+    "id": "val-0004",
+    "task": "T1",
+    "s": 59.6,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "tinea",
+     "eczema_atopic",
+     "scabies"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image shows a patch with scaling and crusting on a finger, which is consistent with the description of tinea (ringworm).\"\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"possible\",\n      \"why\": \"Itching and inflammation are present, which can be features of eczema, although the borders in the image might suggest a fungal cause.\"\n    },\n    {\n      \"key\": \"scabies\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The presentation does not strongly suggest the characteristic small bumps or intense nocturnal itching associated with scabies.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual features overlap between fungal infections (tinea) and inflammatory skin conditions (eczema).\",\n      \"Without a physical examination or further clinical history, definitive diagnosis is not possible.\"\n    ]\n  },\n  \"explanation\": \"The image displays a skin lesion on a finger characterized by scaling and some crusting. The image model scored 'tinea' highly, which is a fungal infection often presenting with ring-shaped patches and scaling. The user reports itching and crusting, which aligns with the features described for tinea. However, the presentation could also be related to eczema, which is an inflammatory condition. Given the possibility of a fungal infection, further evaluation is recommended.\",\n  \"what_would_help\": [\n    \"A physical examination by a healthcare professional to determine the exact nature of the skin condition.\",\n    \"A proper diagnosis to guide appropriate treatment.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area clean and dry.\",\n    \"Avoid scratching to prevent further irritation and infection.\",\n    \"Wear loose-fitting, breathable clothing.\"\n  ],\n  \"triage\": {\n    \"tier\": \"HIGH\",\n    \"advice\": \"Since the condition is persistent (1.4 weeks) and involves crusting, it is important to see a doctor for an accurate diagnosis and appropriate treatment plan.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```",
+    "gray_cats": [
+     "tinea",
+     "eczema_atopic",
+     "scabies"
+    ],
+    "gray_changed": false
+   },
+   {
+    "id": "val-0005",
+    "task": "T1",
+    "s": 51.9,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "acne",
+     "scabies"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"acne\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image shows numerous red bumps and spots on the face, which is consistent with the typical features of acne mentioned in the condition notes.\"\n    },\n    {\n      \"key\": \"scabies\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"While the user reported some pain, the visual presentation is more suggestive of inflammatory skin conditions like acne rather than the classic intense itching or burrowing associated with scabies.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"low\",\n    \"reasons\": [\n      \"The image model strongly suggested acne (p=0.95), and the visual features align with common acne presentations.\"\n    ]\n  },\n  \"explanation\": \"The image displays multiple red bumps and spots on the face, which aligns with the typical features of acne described in the condition notes. Acne is a very common condition, especially in teenagers and adults, characterized by blocked hair follicles and inflammation. Since the image model scored acne highly, this is the most likely consideration based on the visual evidence.\",\n  \"what_would_help\": [\n    \"Gentle, non-comedogenic skincare products.\",\n    \"Avoiding picking or squeezing the spots.\",\n    \"Maintaining good hygiene.\"\n  ],\n  \"self_care_info\": [\n    \"Wash your face gently twice a day with a mild cleanser.\",\n    \"Use oil-free, non-comedogenic products.\",\n    \"Avoid harsh scrubs or products that might clog pores.\"\n  ],\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"For persistent or concerning skin issues, it is best to consult with a healthcare professional for an accurate diagnosis and personalized treatment plan.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0006",
+    "task": "T1",
+    "s": 74.5,
+    "valid": false,
+    "errors": [
+     "no_json_object"
+    ],
+    "cat_agree": false,
+    "top_agree": false,
+    "tier_ok": false,
+    "guard_violation": false,
+    "hedge_ok": false,
+    "cites_answer": false,
+    "cats": [],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"suspicious_lesion\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored this as the most suspicious feature (0.82), aligning with the condition notes suggesting a spot needing a check.\",\n      \"why_support\": \"The lesion shows unevenness and some discoloration, which aligns with features doctors look for in suspicious lesions.\",\n      \"why_argue\": \"The image model's high score is based on visual features, but without a physical examination, a definitive diagnosis is impossible.\"\n    },\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"possible\",\n      \"why\": \"Tinea (ringworm) is a possibility as it is a common skin infection, and the lesion has some features that could be related to fungal infections.\",\n      \"why_support\": \"The lesion has some areas of discoloration and texture that could be consistent with a fungal infection, especially given the context of skin issues.\",\n      \"why_argue\": \"The image model gave a low probability (0.09), suggesting the features are not strongly indicative of tinea.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"possible\",\n      \"why\": \"Benign lesions are common, and many skin spots can be benign, which is a possibility.\",\n      \"why_support\": \"Many skin spots can be benign, and the lesion could represent a stable, harmless growth.\",\n      \"why_argue\": \"The image model gave a very low probability (0.04), suggesting the features are not typical of a stable, even benign spot.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image is a photograph, and a definitive diagnosis requires a physical examination by a healthcare professional.\",\n      \"The features present are non-specific and could be caused by various conditions (fungal, benign, or other).\"\n    ]\n  },\n  \"explanation\": \"The image displays a skin lesion with uneven coloration and texture, which prompts a need for professional evaluation. The image model flagged this as a suspicious lesion, suggesting features that warrant a closer look. While it could potentially be a benign growth or a fungal infection like tinea, the features are not clearly diagnostic on their own. Because the lesion shows features that doctors want to check in person, a professional assessment is necessary to determine the exact cause and appropriate management.\",\n  \"what_would_help\": [\n    \"A physical examination by a dermatologist or healthcare provider.\",\n    \"Detailed history of the lesion (when it appeared, if it has changed, if it itches, or if it bleeds).\",\n    \"Information about any recent changes in skin condition or exposure.\"\n  ],\n  \"self_care_info\": [\n    \"Avoid scratching the area, as this can worsen irritation or spread infection.\",\n    \"Keep the area clean and dry.\",\n    \"Do not attempt to diagnose or treat this lesion yourself.\"\n  ],\n  \"triage\": {\n    \"tier\": \"HIGH\",\n    \"advice\": \"You should book a skin check soon"
+   },
+   {
+    "id": "val-0007",
+    "task": "T1",
+    "s": 67.2,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": false,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": false,
+    "cats": [
+     "tinea",
+     "eczema_atopic",
+     "contact_dermatitis"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"tinea\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image model scored tinea at 0.64, which is the highest score among the top three models, and the condition notes describe typical features of tinea, such as itching and a rash.\"\n    },\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The image model scored eczema atopic at 0.32, and the condition notes describe features of eczema, such as dry, itchy patches.\"\n    },\n    {\n      \"key\": \"contact_dermatitis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The image model scored contact dermatitis very low at 0.01, and there is no specific information in the user's free text suggesting a recent exposure.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The image model scores for tinea and eczema are not definitive, and the user's description is limited.\",\n      \"The visual features alone are not sufficient to distinguish clearly between fungal infections (tinea) and inflammatory skin conditions (eczema).\"\n    ]\n  },\n  \"explanation\": \"The image shows a skin condition with some redness and scaling, which aligns with the possibilities of tinea (a fungal infection) or eczema (an inflammatory condition). The image model leans toward tinea. The condition notes provide distinguishing features, such as the sharp, scaly edge often seen in tinea versus the blurry edges of eczema. However, without a physical examination, it is difficult to confirm the exact diagnosis.\",\n  \"what_would_help\": [\n    \"A physical examination by a healthcare professional is necessary for an accurate diagnosis.\",\n    \"Knowing when the rash started, if it spreads, and if there are any other symptoms (like fever or changes in the area) would be helpful.\",\n    \"Avoiding scratching to prevent secondary infection or worsening the condition.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area clean and dry.\",\n    \"Avoid scratching, as this can lead to infection.\",\n    \"Wear loose-fitting, breathable clothing.\",\n    \"Consult a healthcare provider for a proper diagnosis and treatment plan.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"This is a moderate concern. Since the condition could be a fungal infection or an inflammatory skin condition, it is important to see a doctor for an accurate diagnosis and appropriate treatment.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0008",
+    "task": "T1",
+    "s": 63.1,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "eczema_atopic",
+     "psoriasis",
+     "benign_lesion"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image shows an inflamed, reddish, and somewhat crusted patch, which is consistent with features seen in eczema.\"\n    },\n    {\n      \"key\": \"psoriasis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The lesion does not clearly exhibit the characteristic thick, silvery scale and sharp borders typical of psoriasis.\"\n    },\n    {\n      \"key\": \"benign_lesion\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"The lesion appears inflamed and crusted rather than being a stable, even-colored, round growth.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The visual appearance is suggestive of inflammatory skin conditions, but a definitive diagnosis requires a medical examination.\"\n    ]\n  },\n  \"explanation\": \"The image displays an inflamed, reddish patch on the skin with some crusting. This appearance is consistent with conditions like eczema, which involves dry, itchy, inflamed skin. While psoriasis is another possibility, the features shown do not strongly align with its typical presentation. Given the inflammation and itchiness reported by the user, eczema is a plausible consideration.\",\n  \"what_would_help\": [\n    \"Consult a healthcare professional for an accurate diagnosis and personalized treatment plan.\",\n    \"Monitor the lesion for changes in size, color, or symptoms like increased itching or weeping.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the area clean and dry.\",\n    \"Avoid scratching to prevent further irritation and infection.\",\n    \"Moisturize the skin gently with a fragrance-free moisturizer if recommended by a professional.\"\n  ],\n  \"triage\": {\n    \"tier\": \"LOW\",\n    \"advice\": \"Since the lesion is inflamed and you are unsure about the cause, it is important to consult a doctor for a proper diagnosis and to determine the best course of action.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   },
+   {
+    "id": "val-0010",
+    "task": "T1",
+    "s": 67.5,
+    "valid": true,
+    "errors": [],
+    "cat_agree": true,
+    "top_agree": true,
+    "tier_ok": true,
+    "guard_violation": false,
+    "hedge_ok": true,
+    "cites_answer": true,
+    "cats": [
+     "eczema_atopic",
+     "psoriasis",
+     "contact_dermatitis"
+    ],
+    "out": "```json\n{\n  \"possible_categories\": [\n    {\n      \"key\": \"eczema_atopic\",\n      \"likelihood\": \"higher\",\n      \"why\": \"The image shows significant inflammation, redness, and scaling/thickening on the hand, which aligns with the typical features of eczema atopic.\"\n    },\n    {\n      \"key\": \"psoriasis\",\n      \"likelihood\": \"possible\",\n      \"why\": \"The skin has some raised, thickened appearance, which can be seen in psoriasis, although the specific scale pattern is not clearly defined.\"\n    },\n    {\n      \"key\": \"contact_dermatitis\",\n      \"likelihood\": \"less_likely\",\n      \"why\": \"While possible, the widespread and chronic appearance suggests a more systemic or chronic condition like eczema or psoriasis rather than a localized contact reaction.\"\n    }\n  ],\n  \"uncertainty\": {\n    \"level\": \"moderate\",\n    \"reasons\": [\n      \"The exact nature of the skin condition cannot be definitively determined from a photograph alone.\",\n      \"Distinguishing between eczema and psoriasis can be challenging without a clinical examination.\"\n    ]\n  },\n  \"explanation\": \"The image displays a hand with pronounced redness, inflammation, and thickened, somewhat rough skin texture. The image model scores favor eczema atopic, which is characterized by dry, itchy, inflamed skin. The condition notes describe eczema atopic as having a long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares, which is consistent with the visual presentation.\",\n  \"what_would_help\": [\n    \"Consult a dermatologist for an accurate diagnosis and treatment plan.\",\n    \"Avoid scratching the area to prevent further irritation and infection.\",\n    \"Maintain gentle, moisturizing skin care routines as advised by a healthcare professional.\"\n  ],\n  \"self_care_info\": [\n    \"Keep the skin moisturized frequently with bland, fragrance-free emollients.\",\n    \"Avoid harsh soaps, detergents, and irritants that might trigger a flare-up.\",\n    \"Try to keep the affected area clean and dry.\"\n  ],\n  \"triage\": {\n    \"tier\": \"MODERATE\",\n    \"advice\": \"Given the severity and appearance of the skin condition, it is important to consult a healthcare professional for a proper diagnosis and personalized treatment recommendations.\"\n  },\n  \"disagreement_with_image_model\": false\n}\n```"
+   }
+  ],
+  "image_ablation_changed": 0.8,
+  "s_per_case_median": 64.8,
+  "audio_probe": "error: ImportError: To support decoding audio data, please install 'torchcodec'."
+ }
+}
