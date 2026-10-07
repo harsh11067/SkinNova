@@ -7,10 +7,12 @@
     <string name="load_sub">AI-powered skin information\nthat lives on your device.</string>
     <string name="load_get_started">Get Started</string>
     <string name="load_footer">GEMMA 4 E2B · LITERT-LM · NO INTERNET NEEDED</string>
-    <string name="load_w_scan">SCAN</string>
-    <string name="load_w_learn">LEARN</string>
-    <string name="load_w_track">TRACK</string>
-    <string name="load_w_care">CARE</string>
+    <string name="load_w_observe">OBSERVE</string>
+    <string name="load_w_analyze">ANALYZE</string>
+    <string name="load_w_understand">UNDERSTAND</string>
+    <string name="load_w_act">ACT</string>
+    <string name="load_checking">Checking on-device model…</string>
+    <string name="load_no_model">No AI model yet — you can add it in the next steps (Basic mode works without it).</string>
     <string name="onb_1_title">What SkinNova does</string>
     <string name="onb_1_body">Take a photo of a skin concern and answer a few questions. SkinNova shows up to three possible categories, how sure it is, and when to see a doctor.</string>
     <string name="onb_2_title">Private and offline</string>

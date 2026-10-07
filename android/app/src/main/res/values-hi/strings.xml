@@ -167,10 +167,12 @@
     <!-- added 2026-10-06; native-speaker review: d2y §4 -->
     <string name="app_name">SkinNova</string>
     <string name="load_footer">GEMMA 4 E2B · LITERT-LM · इंटरनेट की ज़रूरत नहीं</string>
-    <string name="load_w_scan">स्कैन</string>
-    <string name="load_w_learn">सीखें</string>
-    <string name="load_w_track">ट्रैक</string>
-    <string name="load_w_care">देखभाल</string>
+    <string name="load_w_observe">देखें</string>
+    <string name="load_w_analyze">जाँचें</string>
+    <string name="load_w_understand">समझें</string>
+    <string name="load_w_act">कदम उठाएँ</string>
+    <string name="load_checking">फ़ोन पर मॉडल जाँचा जा रहा है…</string>
+    <string name="load_no_model">अभी AI मॉडल नहीं है — अगले चरणों में जोड़ सकते हैं (बेसिक मोड इसके बिना भी चलता है)।</string>
     <string name="setup_title">एक बार की सेटिंग</string>
     <string name="setup_body">SkinNova का AI व्याख्या मॉडल (%1$s) आपके फ़ोन पर ही रहता है। इसे एक बार इम्पोर्ट करें; फिर कभी इंटरनेट की ज़रूरत नहीं</string>
     <string name="setup_import">मॉडल फ़ाइल इम्पोर्ट करें</string>

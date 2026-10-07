@@ -8,16 +8,19 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,12 +39,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skinnova.app.BuildConfig
@@ -56,66 +68,84 @@ import com.skinnova.app.ui.components.PrimaryButton
 import com.skinnova.app.ui.components.SnCard
 import com.skinnova.app.ui.theme.LocalSn
 import com.skinnova.app.ui.theme.Pixelify
+import com.skinnova.app.ui.theme.PlexMono
 import com.skinnova.app.ui.theme.SnType
 import kotlinx.coroutines.launch
 
-/** 00 Loading (design): pixel scene, tagline, word list, 24-segment bar while the app checks the model; then Get Started. */
+/**
+ * 00 Loading — design index.html "00 Loading" (a 360×788 CSS-px frame). The scene is the design's own procedural canvas
+ * rendered at 3× (px_loading_full, 1080×2364: 1:1 on a 1080-px-wide phone) and every element sits at its design
+ * coordinate × k, k = the art's cover scale — so text, logo and controls land on the art exactly as designed.
+ * Real work underneath: verify any adb-pushed model once (sha256 is cached afterwards), then show Get Started.
+ */
 @Composable
 fun LoadingScreen(c: AppContainer, onDone: () -> Unit) {
     var progress by remember { mutableFloatStateOf(0f) }
-    var msg by remember { mutableStateOf("Checking on-device model…") }
+    var verified by remember { mutableStateOf<Boolean?>(null) }
     var ready by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        // Real work: verify any adb-pushed model once (sha256 is cached afterwards), then show the button.
         val m = c.models.scanAndVerify { progress = it * 0.95f }
-        msg = if (m != null) "Model verified" else "Ready"
+        verified = m != null
         progress = 1f; ready = true
     }
-    val words = listOf(R.string.load_w_scan, R.string.load_w_learn, R.string.load_w_track, R.string.load_w_care)
-    Box(Modifier.fillMaxSize().background(Color(0xFF060A17))) {
-        PixelImage(R.drawable.px_loading, Modifier.fillMaxSize(), ContentScale.Crop)
-        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(0.55f to Color.Transparent, 1f to Color(0xF5060A17))))
-        Column(Modifier.statusBarsPadding().padding(start = 30.dp, top = 60.dp)) {
-            PixelImage(R.drawable.landing_title, Modifier.width(231.dp).height(47.dp), ContentScale.Fit)
-            Spacer(Modifier.height(24.dp))
-            Text(stringResource(R.string.load_tagline), color = Color(0xFFF3ECE4), style = SnType.title)
-            Spacer(Modifier.height(8.dp))
-            Text(stringResource(R.string.load_sub), color = Color(0xFFD8D2EA), style = SnType.body)
-        }
-        Column(Modifier.align(Alignment.BottomStart).navigationBarsPadding().padding(start = 28.dp, end = 28.dp, bottom = 40.dp)) {
-            words.forEachIndexed { i, w ->
-                val lit = progress >= (i + 1) / 4f - 0.01f
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(6.dp).clip(RoundedCornerShape(2.dp)).background(if (lit) Color(0xFFF2C9A1) else Color(0xFF3A3570)))
-                    Spacer(Modifier.width(10.dp))
-                    Text(stringResource(w), color = if (lit) Color(0xFFF3ECE4) else Color(0xFF6D69A0), fontSize = 11.sp, letterSpacing = 2.4.sp, style = SnType.micro)
-                }
-                Spacer(Modifier.height(4.dp))
+    val words = listOf(R.string.load_w_observe, R.string.load_w_analyze, R.string.load_w_understand, R.string.load_w_act)
+    BoxWithConstraints(Modifier.fillMaxSize().background(Color(0xFF060A17))) {
+        val k = maxOf(maxWidth / 360.dp, maxHeight / 788.dp)        // design px → dp (art cover scale)
+        fun d(px: Float): Dp = (px * k).dp
+        val density = LocalDensity.current
+        fun t(px: Float): TextUnit = with(density) { d(px).toSp() }    // text scales with the art, like the design
+        Box(Modifier.align(Alignment.Center).requiredSize(d(360f), d(788f))) {
+            PixelImage(R.drawable.px_loading_full, Modifier.fillMaxSize(), ContentScale.FillBounds)
+            Box(Modifier.align(Alignment.BottomStart).fillMaxWidth().height(d(260f))
+                .background(Brush.verticalGradient(0f to Color(0x00060A17), 0.45f to Color(0xB3060A17), 1f to Color(0xF5060A17))))
+            // shared logo on this screen: translate(14px,100px) scale(1.06) — gem 48 · gap 10 · title 231×47
+            Row(Modifier.offset(d(14f), d(100f)), verticalAlignment = Alignment.CenterVertically) {
+                PixelImage(R.drawable.px_gem, Modifier.size(d(48f * 1.06f)), ContentScale.Fit)
+                Spacer(Modifier.width(d(10f * 1.06f)))
+                PixelImage(R.drawable.landing_title, Modifier.size(d(231f * 1.06f), d(47f * 1.06f)), ContentScale.Fit)
             }
-            Spacer(Modifier.height(24.dp))
-            if (!ready) {
-                Row(Modifier.fillMaxWidth()) {
-                    Text(msg, color = Color(0xFFD8D2EA), style = SnType.caption, modifier = Modifier.weight(1f))
-                    Text("${(progress * 100).toInt()}%", color = Color(0xFFF2C9A1), style = SnType.caption)
-                }
-                Spacer(Modifier.height(10.dp))
-                Row(Modifier.fillMaxWidth().border(1.dp, Color(0xFF57539A), RoundedCornerShape(10.dp)).padding(5.dp),
-                    horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-                    repeat(24) { i ->
-                        val on = progress * 24 > i
-                        Box(Modifier.weight(1f).height(8.dp).clip(RoundedCornerShape(2.dp)).background(if (on) Color(0xFFEAB88C) else Color(0xFF1C1A3A)))
+            Text(stringResource(R.string.load_tagline), Modifier.offset(d(30f), d(180f)), color = Color(0xFFF3ECE4), fontFamily = PlexMono,
+                fontSize = t(14f), style = TextStyle(shadow = Shadow(Color.Black, Offset(0f, 2f), 6f)))
+            Text(stringResource(R.string.load_sub), Modifier.offset(d(30f), d(206f)), color = Color(0xFFD8D2EA), fontFamily = PlexMono,
+                fontSize = t(12f), lineHeight = t(19f))
+            Column(Modifier.align(Alignment.BottomStart).padding(start = d(28f), bottom = d(150f)), verticalArrangement = Arrangement.spacedBy(d(4f))) {
+                words.forEachIndexed { i, w ->
+                    val lit = progress >= (i + 1) / 4f - 0.01f
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(d(6f)).clip(RoundedCornerShape(d(2f))).background(if (lit) Color(0xFFF2C9A1) else Color(0xFF3A3570)))
+                        Spacer(Modifier.width(d(10f)))
+                        Text(stringResource(w), color = if (lit) Color(0xFFF3ECE4) else Color(0xFF6D69A0), fontFamily = PlexMono,
+                            fontSize = t(11f), letterSpacing = t(2.4f))
                     }
                 }
-            } else {
-                Box(Modifier.fillMaxWidth().height(54.dp).clip(RoundedCornerShape(18.dp)).background(Color(0xD10A0D1B))
-                    .border(1.5.dp, Color(0xFFEAB88C), RoundedCornerShape(18.dp)).clickable(role = Role.Button, onClick = onDone),
-                    contentAlignment = Alignment.Center) {
-                    Text(stringResource(R.string.load_get_started) + "  →", color = Color(0xFFF4DCC2), fontFamily = Pixelify, fontSize = 17.sp)
-                }
             }
-            Spacer(Modifier.height(12.dp))
-            Text(stringResource(R.string.load_footer), color = Color(0xFFA9A5C6), fontSize = 9.5.sp, letterSpacing = 1.6.sp,
-                modifier = Modifier.align(Alignment.CenterHorizontally), style = SnType.micro)
+            if (!ready) {
+                Column(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(start = d(28f), end = d(28f), bottom = d(58f))) {
+                    Row(Modifier.fillMaxWidth().padding(bottom = d(10f))) {
+                        Text(stringResource(R.string.load_checking), color = Color(0xFFD8D2EA), fontFamily = PlexMono, fontSize = t(10.5f), modifier = Modifier.weight(1f))
+                        Text("${(progress * 100).toInt()}%", color = Color(0xFFF2C9A1), fontFamily = PlexMono, fontSize = t(10.5f))
+                    }
+                    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(d(10f))).background(Color(0x99060A17))
+                        .border(1.dp, Color(0xFF57539A), RoundedCornerShape(d(10f))).padding(d(5f)), horizontalArrangement = Arrangement.spacedBy(d(3f))) {
+                        repeat(24) { i ->
+                            Box(Modifier.weight(1f).height(d(8f)).clip(RoundedCornerShape(d(2f))).background(if (progress * 24 > i) Color(0xFFEAB88C) else Color(0xFF1C1A3A)))
+                        }
+                    }
+                    Text(stringResource(R.string.load_footer), color = Color(0xFFA9A5C6), fontFamily = PlexMono, fontSize = t(9.5f), letterSpacing = t(1.6f),
+                        textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = d(12f)))
+                }
+            } else {
+                Row(Modifier.align(Alignment.BottomStart).padding(start = d(28f), end = d(28f), bottom = d(62f)).fillMaxWidth().height(d(54f))
+                    .clip(RoundedCornerShape(d(18f))).background(Color(0xD10A0D1B)).border(1.5.dp, Color(0xFFEAB88C), RoundedCornerShape(d(18f)))
+                    .clickable(role = Role.Button, onClick = onDone).semantics { contentDescription = "Get Started" },
+                    horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.load_get_started), color = Color(0xFFF4DCC2), fontFamily = Pixelify, fontSize = t(17f), letterSpacing = t(0.6f))
+                    Spacer(Modifier.width(d(12f)))
+                    Text("→", color = Color(0xFFF2C9A1), fontSize = t(19f))
+                }
+                if (verified == false) Text(stringResource(R.string.load_no_model), color = Color(0xFFD8D2EA), fontFamily = PlexMono, fontSize = t(10.5f),
+                    textAlign = TextAlign.Center, modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = d(30f)))
+            }
         }
     }
 }
