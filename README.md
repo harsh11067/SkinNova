@@ -70,10 +70,12 @@ flowchart LR
     TL[📈 Timeline photos] --> M[Align · segment · coin scale] --> TR
 ```
 
-- **Image model** — EfficientNet-B0 at 384 px, temperature-calibrated, exported to TFLite (16 MB, bundled).
+- **Image model** — EfficientNet-B0 at 384 px, temperature-calibrated, exported to TFLite (16 MB, bundled), with a
+  second output that recognises whether the photo shows skin at all.
 - **Language model** — Gemma 4 E2B, LoRA (r = 16) trained on Kaggle T4 with Unsloth on 3.8 k task records (analysis,
   disagreement, red flags, voice extraction, timeline narration, Hindi translation, injection resistance), merged and
-  exported to a 3.9 GB `.litertlm` with litert-torch.
+  exported to a 3.9 GB `.litertlm` with litert-torch. On the phone it reasons over the image model's calibrated scores
+  and the user's answers — identical results to sending the photo, **46 % faster** ([`docs/decisions.md`](docs/decisions.md)).
 - **Safety** — rules, tier floors and validators are plain Kotlin with Python twins and shared JSON fixtures; the model
   can raise urgency but never lower it.
 - Details: [`docs/architecture.md`](docs/architecture.md) · data contracts: [`docs/contracts.md`](docs/contracts.md).
@@ -125,7 +127,7 @@ tests/     shared JSON fixtures used by both pytest and JUnit
 
 ## Roadmap
 
-- **Faster explanations** on mid-range phones (streamed results; text-only prompting under evaluation).
+- **Instant results** on mid-range phones: categories and triage on screen immediately, the explanation streaming in.
 - More **brown-skin phone photos** (with consent) to lift outside-photo accuracy further.
 - Field study with voice recordings and two-phone airplane-mode runs.
 

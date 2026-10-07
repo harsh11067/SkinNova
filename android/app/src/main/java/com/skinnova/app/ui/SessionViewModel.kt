@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.skinnova.app.SkinNovaApp
 import com.skinnova.app.data.AnalysisEntity
 import com.skinnova.app.ml.AnalysisState
+import com.skinnova.app.ml.EngineHolder
 import com.skinnova.app.ml.IntakeResult
 import com.skinnova.app.ml.IntakeValidator
 import com.skinnova.app.ml.LlmTask
@@ -114,8 +115,9 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 if (!c.cv.available) { _state.value = AnalysisState.Failed("Image model not found in this build"); return@launch }
                 val cv = _cv.value.ifEmpty { withContext(Dispatchers.Default) { c.cv.classify(rgb) } }
                 _cv.value = cv
-                val img = withContext(Dispatchers.IO) { writeLlmImage(rgb) }
-                val res = c.pipeline().run(answers, cv, qualityForced, img.path, c.settings.lang.value) { _state.value = it }
+                // the photo reaches the LLM only as the image model's scores (EngineHolder.SEND_PHOTO_TO_LLM)
+                val img = if (EngineHolder.SEND_PHOTO_TO_LLM) withContext(Dispatchers.IO) { writeLlmImage(rgb) }.path else null
+                val res = c.pipeline().run(answers, cv, qualityForced, img, c.settings.lang.value) { _state.value = it }
                 _result.value = res
                 if (c.settings.history.value) save(res)
                 _state.value = AnalysisState.Done(res)

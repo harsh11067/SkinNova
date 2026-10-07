@@ -80,9 +80,9 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
         val b = if (gpu) Backend.GPU() else Backend.CPU()
         return Engine(EngineConfig(
             modelPath = path, backend = b,
-            // vision encoder always on CPU: on a Mali GPU it ran as one 13–17 s job, the UI could not draw a frame for that
-            // long and Android flagged the app "not responding" (vivo V2059 / Helio G95, 2026-10-07). The decoder stays on GPU.
-            visionBackend = if (supportsVision) Backend.CPU() else null,
+            // no vision encoder: the photo is not sent (SEND_PHOTO_TO_LLM). When it was, it ran on the CPU — on a Mali GPU
+            // it was one 13–17 s job that froze the UI ("not responding", vivo V2059 / Helio G95, 2026-10-07).
+            visionBackend = if (SEND_PHOTO_TO_LLM && supportsVision) Backend.CPU() else null,
             audioBackend = if (supportsAudio) Backend.CPU() else null,
             maxNumTokens = 4096, cacheDir = ctx.cacheDir.path,
         )).apply { initialize() }
@@ -93,7 +93,13 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
     /** Debug/test seam: force the CPU path (test A9). */
     fun forceBackend(name: String) { prefs.edit().putString("backend", name).apply(); backendName = name; release() }
 
-    companion object { const val TAG = "EngineHolder" }
+    companion object {
+        const val TAG = "EngineHolder"
+        /** decisions.md 2026-10-07 (pre-registered): the fine-tuned model's answers are identical without the photo on
+         *  the frozen llm_val (category agreement 0.91 = 0.91, JSON valid 1.0 = 1.0) and 46 % faster — the image model
+         *  carries the visual evidence, the LLM works from its scores and the answers. */
+        const val SEND_PHOTO_TO_LLM = false
+    }
 }
 
 /**
@@ -130,7 +136,7 @@ class GemmaEngine(private val holder: EngineHolder, private val models: ModelMan
             ))
             try {
                 val parts = buildList<Content> {
-                    if (imagePath != null && holder.supportsVision) add(Content.ImageFile(imagePath))
+                    if (imagePath != null && holder.supportsVision && EngineHolder.SEND_PHOTO_TO_LLM) add(Content.ImageFile(imagePath))
                     if (audio != null) add(Content.AudioBytes(audio))
                     add(Content.Text(user))
                 }
