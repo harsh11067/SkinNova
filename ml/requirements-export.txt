@@ -1,0 +1,14 @@
+# Model export + on-PC runtime evaluation (.venv-export, CPU torch). LiteRT-LM 0.17.1 = the Android runtime version.
+# (Gemma LoRA training runs on Kaggle: ml/llm/notebooks/make_kaggle.py pins its own versions.)
+litert-lm-api==0.17.1
+litert-torch==0.9.4
+ai-edge-litert==2.2.0
+torch==2.11.0
+transformers==5.18.0
+numpy==2.5.2
+pillow==12.3.0
+pandas==3.0.6
+pydantic==2.13.5
+scikit-learn==1.9.1
+safetensors==0.8.0
+huggingface-hub==1.33.0

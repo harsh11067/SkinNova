@@ -1,53 +1,142 @@
-# SkinNova: On-Device Dermatology Information Assistant
+<div align="center">
 
-> **Not a medical device.** SkinNova gives preliminary, educational information and tells you when to see a doctor. It does not diagnose and does not suggest prescription treatment.
+<img src="docs/assets/landing.png" alt="SkinNova" width="260" align="right">
 
-SkinNova is an Android app that analyzes a skin photo with your symptoms and explains possible condition categories, how uncertain it is, and how soon to see a dermatologist. **Everything runs on the phone.** No internet, no account, no paid API.
+# SkinNova
+
+### Offline, private, on-device skin information — in English and Hindi
+
+A fine-tuned **Gemma 4 E2B** and a skin-image classifier running **entirely on an Android phone**: photo + symptoms in,
+ranked possible conditions, a plain-language explanation, triage advice and a doctor-ready summary out.
+No internet. No account. Nothing leaves the device.
+
+![Android](https://img.shields.io/badge/Android-arm64-3DDC84?logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-Jetpack%20Compose-7F52FF?logo=kotlin&logoColor=white)
+![Gemma](https://img.shields.io/badge/Gemma%204%20E2B-LoRA%20fine--tuned-4285F4?logo=google&logoColor=white)
+![LiteRT-LM](https://img.shields.io/badge/LiteRT--LM-on--device-FF6F00)
+![PyTorch](https://img.shields.io/badge/PyTorch-EfficientNet--B0-EE4C2C?logo=pytorch&logoColor=white)
+![Offline](https://img.shields.io/badge/works-in%20airplane%20mode-111827)
+
+</div>
+
+<br clear="right">
+
+## Highlights
+
+| | Achievement | Evidence |
+|---|---|---|
+| 🔒 | **100 % on-device.** The `offline` build ships with *no internet permission at all* (verified on the built APK) | [`reports/apk_check.json`](reports/apk_check.json) |
+| 🧠 | **Fine-tuned Gemma 4 E2B beats stock Gemma** on the same frozen test cases: valid structured output **76.7 % → 99.3 %** (100 % after one self-repair), right condition in the top 3 **66 % → 93 %**, suspicious lesions surfaced **27 % → 100 %** | [`reports/llm_arms.json`](reports/llm_arms.json) |
+| 🛡️ | **Safety that cannot be talked out of a referral:** 0 of 32 high-risk cases under-triaged, **30/30 prompt-injection attacks** neutralised, **60/60** red-flag rules, suspicious-lesion recall **91.9 %** | [`reports/safety.json`](reports/safety.json) |
+| 📷 | **Skin-image classifier:** **78 % top-1 / 95 % top-3** on 4,342 held-out photos across 10 categories; on outside phone photos of brown skin top-3 rose **29 % → 66 %** after adding Google's SCIN data | [`reports/cv_metrics_v2.json`](reports/cv_metrics_v2.json) |
+| 🎯 | **Every conversion verified:** PyTorch → TFLite max Δp **8.4e-5**; fine-tuned model → phone format within **2.5 points** of the original | [`reports/cv_parity.json`](reports/cv_parity.json), [`reports/parity_l6_skinnova_v2.json`](reports/parity_l6_skinnova_v2.json) |
+| 📈 | **SkinTimeline** tracks a spot over weeks: **97 %** photo alignment, **5.6 %** median size error with a coin for scale, colour change measured to **~1 ΔE** under changing light | [`reports/timeline_eval_v8.json`](reports/timeline_eval_v8.json) |
+| 🗣️ | **Bhasha voice intake:** speak symptoms in Hindi or English; **94 %** of fields extracted correctly on held-out test transcripts, and a field is kept only if its quote is in what you said *and* about the right topic | [`reports/llm_litertlm_select_v2.json`](reports/llm_litertlm_select_v2.json) |
+
+All numbers are produced by scripts in [`ml/eval/`](ml/eval) and summarised in **[`reports/final_report.md`](reports/final_report.md)**.
 
 ## What it does
-| Feature | How |
-|---|---|
-| 📷 Photo check + classification | quality gate → on-device CNN (`.tflite`, LiteRT) → calibrated top-3 categories |
-| 🧠 Personalized explanation | Gemma 4 E2B (+ LoRA) via **LiteRT-LM** reads the photo, model scores, your answers and curated condition notes → validated JSON |
-| 🛡️ Safety you can audit | deterministic red-flag rules in Kotlin; the AI can raise but never lower the urgency |
-| 🗣️ **Bhasha Voice Intake** (USP) | describe symptoms by voice in Hindi/English (more languages beta); Gemma's on-device audio encoder transcribes them, fields are extracted only from what you actually said, and you confirm every field; answers read aloud |
-| 📈 **SkinTimeline** (USP) | re-photograph a spot with a ghost overlay; measures size/colour/shape change (coin for scale), escalates on real change, exports a Doctor Visit Summary PDF made on the phone |
 
-## Architecture (short)
+1. **Capture** — guided photo with live quality checks (focus, light, skin coverage).
+2. **Questions** — one card at a time, or answer by **voice** in Hindi/English; every voice-filled field is shown for confirmation.
+3. **Analyze on-device** — the image model scores 10 condition categories; deterministic safety rules set a triage floor;
+   the fine-tuned Gemma writes ranked possible categories with reasons, uncertainty, what would help and self-care information.
+4. **Result** — red-flag banner (if any) → triage card (LOW / MODERATE / HIGH / URGENT, icon + text) → possible categories
+   with likelihood → uncertainty → explanation → next steps. Read-aloud and Hindi toggle.
+5. **Track & share** — save to an encrypted on-device history, re-photograph a spot with a ghost overlay, and export a
+   **Doctor Visit Summary PDF** generated on the phone.
+
+<p align="center">
+  <img src="docs/assets/panel_insights.png" alt="Insights" width="250">
+  <img src="docs/assets/panel_library.png" alt="Library" width="250">
+  <img src="docs/assets/panel_journey.png" alt="Journey" width="250">
+</p>
+
+## Architecture
+
+```mermaid
+flowchart LR
+    P[📷 Photo] --> Q[Quality gate]
+    Q --> CV[Skin classifier<br/>EfficientNet-B0 · TFLite]
+    V[🗣️ Voice] --> T[Gemma transcribe] --> X[Field extraction<br/>evidence + topic checks]
+    A[📝 Answers] --> R
+    X --> R
+    CV --> R[Red-flag rules<br/>deterministic]
+    R --> G[Gemma 4 E2B + LoRA<br/>LiteRT-LM on-device]
+    G --> VAL[Validator · repair · fallback]
+    VAL --> TR[Tier resolver<br/>can only raise urgency]
+    TR --> RES[Result · Hindi · PDF]
+    TL[📈 Timeline photos] --> M[Align · segment · coin scale] --> TR
 ```
-Photo ─► QualityGate ─► CNN (.tflite) ─┐
-Voice ─► Gemma transcribe ─► extract ──┼─► RedFlagRules ─► Gemma 4 E2B (LiteRT-LM) ─► Validator ─► TierResolver ─► Result
-Timeline ─► align/segment/metrics ─────┘                                                        └─► Doctor PDF
+
+- **Image model** — EfficientNet-B0 at 384 px, temperature-calibrated, exported to TFLite (16 MB, bundled).
+- **Language model** — Gemma 4 E2B, LoRA (r = 16) trained on Kaggle T4 with Unsloth on 3.8 k task records (analysis,
+  disagreement, red flags, voice extraction, timeline narration, Hindi translation, injection resistance), merged and
+  exported to a 3.9 GB `.litertlm` with litert-torch.
+- **Safety** — rules, tier floors and validators are plain Kotlin with Python twins and shared JSON fixtures; the model
+  can raise urgency but never lower it.
+- Details: [`docs/architecture.md`](docs/architecture.md) · data contracts: [`docs/contracts.md`](docs/contracts.md).
+
+## Engineering practices
+
+- **Pre-registered decisions** — every model choice (CV v2, LoRA v2, the timeline segmentation) was decided by a rule
+  written down *before* seeing the result, on validation data only ([`docs/decisions.md`](docs/decisions.md)).
+- **Frozen evaluation sets** and leakage control — perceptual-hash de-duplication before patient-grouped splits.
+- **Parity at every conversion** — PyTorch ↔ TFLite ↔ Kotlin preprocessing, HF ↔ `.litertlm`, Python ↔ Kotlin timeline.
+- **One source of truth** for prompts, condition cards and safety terms, shared by training and the app (tested).
+- **Reproducible numbers** — each report carries the git commit, dataset revision and model hash.
+
+## Getting started
+
+### Team: run the app on a phone
+1. Install the APK (Android Studio → *Run*, or `scripts/device_tests.sh` builds and installs it).
+2. Get the model **`skinnova-e2b-v2.litertlm`** (3.9 GB, sha256 `046020…2ed`) from the private Hugging Face repo
+   **[kumarharsh11067/skinnova-gemma4-e2b-litertlm](https://huggingface.co/kumarharsh11067/skinnova-gemma4-e2b-litertlm)** (ask the owner for access):
+   ```bash
+   hf download kumarharsh11067/skinnova-gemma4-e2b-litertlm skinnova-e2b-v2.litertlm --local-dir models/litertlm/skinnova
+   ```
+3. Put it on the phone: `scripts/push_model.sh models/litertlm/skinnova/skinnova-e2b-v2.litertlm` (USB debugging), or
+   copy it into `Android/data/com.skinnova.app/files/models/` and tap **Check the app's model folder again**, or use
+   **Import model file**. The app verifies the sha256 and works fully offline from then on.
+
+### Developers
+```bash
+git clone git@github.com:harsh11067/SkinNova.git && cd SkinNova
+cp .env.example .env                     # HF_TOKEN, KAGGLE_*  (never commit .env)
+uv venv .venv && uv pip install --python .venv -r ml/requirements.txt          # training · data · evaluation
+uv venv .venv-export && uv pip install --python .venv-export -r ml/requirements-export.txt   # export · LiteRT-LM eval
+.venv/bin/python -m pytest -q ml/tests   # 154 tests: rules, validators, prompts, timeline, intake
+cd android && ./gradlew :app:testOfflineDebugUnitTest :app:assembleOfflineDebug
 ```
-Details: [`docs/architecture.md`](docs/architecture.md). Data contracts: [`docs/contracts.md`](docs/contracts.md).
+Setup guide: [`docs/diy.md`](docs/diy.md) · test plan: [`docs/test.md`](docs/test.md) · run log: [`PROGRESS.md`](PROGRESS.md).
 
 ## Repository
+
 ```
-CLAUDE.md          brief for the coding agent
-docs/              plan · architecture · contracts · resources · test · diy · decisions
-design/            Claude Design exports (screens, html, tokens.json) + brief
-android/           Kotlin + Jetpack Compose app (flavors: offline / online)
-ml/                data pipeline, CV training, Gemma LoRA, timeline & voice eval, evaluation
-reports/           every metric in this project comes from a script that writes here
+android/   Kotlin + Jetpack Compose app (flavors: offline / online), JVM + on-device tests
+ml/        data pipeline · CV training · Gemma LoRA (Kaggle notebooks) · timeline · voice · evaluation
+docs/      plan · architecture · contracts · test plan · decisions log
+design/    design brief, tokens, HTML prototype
+reports/   every metric in this project, written by a script
+scripts/   device install / test / benchmark, model push, chained training pipelines
+tests/     shared JSON fixtures used by both pytest and JUnit
 ```
 
-## Quick start
-**Developers:** read [`docs/diy.md`](docs/diy.md) (§2–§5): Android Studio setup, phone connection, WSL, tokens (`.env.example`).
-```bash
-cp .env.example .env            # fill HF_TOKEN, KAGGLE_API_TOKEN, …
-source .venv/bin/activate && pytest -q
-cmd.exe /c "cd /d C:\dev\skinnova\android && gradlew.bat installOfflineDebug"
-```
-**Testers:** install `SkinNova-vX-offline.apk`, then *Import model file* → `skinnova-e2b-v1.litertlm` (~2.6 GB, one time). Works in airplane mode. Steps: `docs/diy.md §11`.
+## Roadmap
 
-## Why the model isn't in the APK
-LiteRT-LM loads the model from a file path. Bundling a 2.6 GB model would double storage use on first run and make the APK impractical to share. The engine is inside the APK; the model file is imported once.
+- **Faster explanations** on mid-range phones (streamed results; text-only prompting under evaluation).
+- **Skin-photo detector** to turn away non-skin images before analysis.
+- More **brown-skin phone photos** (with consent) to lift outside-photo accuracy further.
+- Field study with voice recordings and two-phone airplane-mode runs.
 
-## Evaluation
-Four arms (base Gemma, fine-tuned Gemma, CNN only, combined), parity checks across every conversion (PyTorch→TFLite, LoRA→merged→`.litertlm`→phone), safety suites, and USP evaluations. See [`docs/test.md`](docs/test.md). Results: `reports/final_report.md`.
+## Responsible use & licences
 
-## Status
-- [ ] Phase 0 de-risk · [ ] Data · [ ] CNN · [ ] LoRA · [ ] App core · [ ] USPs · [ ] Release
+SkinNova provides preliminary, educational information and clear advice on when to see a doctor; it is not a
+medical device and not a substitute for a professional diagnosis.
 
-## Credits & licenses
-Gemma 4 (Google, Apache-2.0) · LiteRT / LiteRT-LM (Google, Apache-2.0) · skintaglabs SigLIP classifier (MIT, used as a baseline) · datasets: see `docs/resources.md §3` for each license and attribution · condition notes summarized from AAD, NHS, DermNet (cited in-app).
+- **Gemma 4** — [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · **LiteRT / LiteRT-LM** — Apache-2.0
+- **Data** — PAD-UFES-20 (CC BY 4.0), SCIN by Google Research & Stanford (CC BY 4.0), SkinDisNet (CC BY-NC 4.0),
+  DermNet NZ images via a Kaggle mirror (non-commercial, educational), mgmitesh (CC BY 4.0); details in
+  [`reports/data_card.md`](reports/data_card.md). Because of the non-commercial sources, the trained models are for
+  non-commercial, educational use.
+- Condition notes summarised from AAD, NHS and DermNet (cited in the app).

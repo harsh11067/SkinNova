@@ -34,6 +34,7 @@ def main():
     ap.add_argument("--model", required=True); ap.add_argument("--tag", required=True)
     ap.add_argument("--set", default="llm_val"); ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--constrained", action="store_true"); ap.add_argument("--gray", action="store_true", help="image ablation")
+    ap.add_argument("--no-image", action="store_true", help="text only: the photo is not sent (app speed option, decisions.md)")
     ap.add_argument("--threads", type=int, default=0, help="CPU threads for LiteRT-LM (0 = runtime default)")
     ap.add_argument("--greedy", action="store_true", help="top_k=1, temperature 0 (model-vs-model comparisons); default = app sampling")
     ap.add_argument("--data-dir", default=str(LLM_DATA), help="records + images; data/llm_eval = frozen sets (LoRA v1/v2 selection)")
@@ -58,6 +59,8 @@ def main():
         parts = []
         for c in user:
             if c["type"] == "image":
+                if a.no_image:
+                    continue
                 parts.append(L.Content.ImageFile(gray or str((data / r["image"]).resolve())))
             else:
                 parts.append(L.Content.Text(c["text"]))
@@ -86,7 +89,7 @@ def main():
         xrows.append({"id": r["id"], "s": round(dt, 2), **score_extract(r["meta"], text), "out": text[:600]})
     rep = {**report_meta(model_sha=file_sha(Path(a.model))[:16]), "tag": a.tag, "set": a.set, "data_dir": a.data_dir, "backend": "CPU", "runtime": "litert-lm-api 0.17.1",
            "decoding": "greedy" if a.greedy else "app sampling (top_k 40, top_p 0.95, T 0.2, seed 3407)",
-           "load_s": round(load_s, 1), "gray_image": bool(a.gray), "n_analysis": len(rows), "n_extract": len(xrows),
+           "load_s": round(load_s, 1), "gray_image": bool(a.gray), "no_image": bool(a.no_image), "n_analysis": len(rows), "n_extract": len(xrows),
            "analysis": summarize(rows, ANALYSIS_KEYS), "extract": summarize_extract(xrows),
            "s_per_analysis_median": sorted(r["s"] for r in rows)[len(rows) // 2] if rows else None, "rows": rows, "extract_rows": xrows}
     out = REPORTS / f"llm_litertlm_{a.tag}{'_gray' if a.gray else ''}.json"
