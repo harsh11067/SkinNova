@@ -27,13 +27,16 @@ One-line status: `scripts/status.sh`.
 - TL3 fixtures (`tests/fixtures/metrics_cases.json` + androidTest `assets/tl3/`) and `TimelineParityTest` (on-device).
 - Voice intake topic check (Python + Kotlin, shared fixture 24 cases): off-topic evidence quotes dropped (commit 30979fc).
 - LoRA v1 selection run on frozen llm_val: category agreement 0.90, JSON valid 1.0 (`reports/llm_litertlm_select_v1.json`).
+- LoRA v2 SHIPS (frozen llm_val 0.91 vs 0.90; pre-registered rule) — manifest `file` = skinnova-e2b-v2.litertlm.
+- Design audit (2026-10-07): light-theme tier colours → WCAG AA 4.6:1, 4 touch targets → 48 dp, answer chips as in the
+  design (Hindi fixed), setup shows the real model size, About states measured limits. "other" prior shift rejected on val.
 - Android: compile (app + androidTest), JVM tests 16/16, lint 0 errors (2026-10-07 02:34). Gradle while an LLM eval runs:
   `./gradlew -q --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -Dfile.encoding=UTF-8" …` (fits beside the 4 GB engine).
 
 ## In progress
 | what | where | log |
 |---|---|---|
-| LoRA v2 (still ignores the photo) → export v15 → L6 PASS (agreement drop 2.5 pts) → v1/v2 selection on frozen llm_val (100, greedy; ties → v1; v1 = 0.90) | `scripts/after_lora_v2.sh` | logs/after_lora_v2.log |
+| CV v3 experiment (Shades-of-Gray; pre-registered val-only rule, decisions.md 2026-10-07) → calibrate → val probs → `ml/cv/adopt_v3.py` | `scripts/run_v3.sh` | logs/run_v3.log |
 | arms D C B on the selected model (frozen set) + D C on the CV v2 re-render → safety → final report (~6 h, resumes per case) | `scripts/run_arms.sh` | logs/run_arms.log |
 
 ## Next (in order)
