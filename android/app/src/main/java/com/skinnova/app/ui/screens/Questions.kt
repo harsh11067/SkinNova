@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -254,7 +255,8 @@ fun VoiceSheet(vm: SessionViewModel, onClose: () -> Unit) {
                     }
                     Spacer(Modifier.height(10.dp))
                     Text(stringResource(R.string.cancel), style = SnType.bodyL, color = sn.mut,
-                        modifier = Modifier.align(Alignment.CenterHorizontally).clickable(role = Role.Button) { vm.stopRecording(); onClose() }.padding(12.dp))
+                        modifier = Modifier.align(Alignment.CenterHorizontally).clickable(role = Role.Button) { vm.stopRecording(); onClose() }
+                            .heightIn(min = 48.dp).padding(horizontal = 16.dp).wrapContentHeight())
                 }
             }
         }

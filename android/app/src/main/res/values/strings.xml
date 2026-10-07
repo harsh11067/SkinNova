@@ -106,6 +106,8 @@
     <string name="q_duration_sub">An estimate is fine.</string>
     <string name="q_itch">Is it itchy?</string>
     <string name="q_pain">Is it painful or tender?</string>
+    <string name="chip_itch">Itch</string>
+    <string name="chip_pain">Pain</string>
     <string name="q_scale_sub">Pick the closest level.</string>
     <string name="q_changing">Has it changed recently?</string>
     <string name="q_changing_sub">Pick the closest.</string>

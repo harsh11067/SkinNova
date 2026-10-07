@@ -268,6 +268,6 @@ private fun answerChips(r: FinalResult): List<String> {
         "leg" to R.string.site_leg, "foot" to R.string.site_foot, "groin" to R.string.site_groin, "nails" to R.string.site_nails)[a.bodySite] ?: R.string.site_other
     val dur = mapOf("lt_1w" to R.string.dur_lt_1w, "1_4w" to R.string.dur_1_4w, "1_6m" to R.string.dur_1_6m, "gt_6m" to R.string.dur_gt_6m)[a.duration]!!
     val lv = listOf(R.string.lvl_0, R.string.lvl_1, R.string.lvl_2, R.string.lvl_3)
-    return listOf(stringResource(site), stringResource(dur), stringResource(R.string.q_itch).trimEnd('?') + ": " + stringResource(lv[a.itch]),
-        stringResource(R.string.q_pain).split(" ").take(3).joinToString(" ").trimEnd('?') + ": " + stringResource(lv[a.pain]))
+    return listOf(stringResource(site), stringResource(dur), stringResource(R.string.chip_itch) + ": " + stringResource(lv[a.itch]),
+        stringResource(R.string.chip_pain) + ": " + stringResource(lv[a.pain]))
 }

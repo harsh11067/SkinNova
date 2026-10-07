@@ -248,7 +248,7 @@ fun ScanScreen(vm: SessionViewModel, onBack: () -> Unit, onPhotoAccepted: () -> 
         }
         Spacer(Modifier.height(18.dp))
         if (!reviewing) {
-            Row(Modifier.align(Alignment.CenterHorizontally).width(200.dp).height(44.dp).clip(RoundedCornerShape(20.dp)).background(sn.surf)
+            Row(Modifier.align(Alignment.CenterHorizontally).width(200.dp).height(56.dp).clip(RoundedCornerShape(20.dp)).background(sn.surf)
                 .border(1.dp, sn.line2, RoundedCornerShape(20.dp)).padding(4.dp)) {
                 listOf(false to R.string.scan_mode_photo, true to R.string.scan_mode_gallery).forEach { (g, l) ->
                     Box(Modifier.weight(1f).fillMaxSize().clip(RoundedCornerShape(16.dp)).background(if (gallery == g) sn.surf2 else Color.Transparent)

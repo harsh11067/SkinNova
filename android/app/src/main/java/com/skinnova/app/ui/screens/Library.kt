@@ -81,7 +81,7 @@ fun InsightsScreen(vm: SessionViewModel, key: String, onBack: () -> Unit) {
         Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(sn.surf).border(1.dp, sn.line2, RoundedCornerShape(20.dp)).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf(R.string.ins_tab_about, R.string.ins_tab_care, R.string.ins_tab_doctor).forEachIndexed { i, l ->
-                Box(Modifier.weight(1f).heightIn(min = 44.dp).clip(RoundedCornerShape(16.dp)).background(if (tab == i) sn.surf2 else Color.Transparent)
+                Box(Modifier.weight(1f).heightIn(min = 48.dp).clip(RoundedCornerShape(16.dp)).background(if (tab == i) sn.surf2 else Color.Transparent)
                     .border(1.dp, if (tab == i) sn.acc else Color.Transparent, RoundedCornerShape(16.dp)).clickable(role = Role.Tab) { tab = i },
                     contentAlignment = Alignment.Center) { Text(stringResource(l), style = SnType.body, color = if (tab == i) sn.accT else sn.ink) }
             }
@@ -337,7 +337,7 @@ fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -
         text = {
             Column {
                 Text(stringResource(R.string.prof_clear_confirm))
-                Row(Modifier.padding(top = 12.dp).clickable(role = Role.Checkbox) { alsoModel = !alsoModel }, verticalAlignment = Alignment.CenterVertically) {
+                Row(Modifier.padding(top = 12.dp).heightIn(min = 48.dp).clickable(role = Role.Checkbox) { alsoModel = !alsoModel }, verticalAlignment = Alignment.CenterVertically) {
                     Toggle(alsoModel); Spacer(Modifier.width(10.dp)); Text(stringResource(R.string.prof_clear_model))
                 }
             }

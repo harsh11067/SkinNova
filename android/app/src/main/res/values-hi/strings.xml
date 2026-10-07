@@ -53,6 +53,8 @@
     <string name="q_duration">यह कब से है?</string>
     <string name="q_itch">क्या खुजली होती है?</string>
     <string name="q_pain">क्या दर्द या छूने पर दुखता है?</string>
+    <string name="chip_itch">खुजली</string>
+    <string name="chip_pain">दर्द</string>
     <string name="q_changing">क्या हाल में यह बदला है?</string>
     <string name="q_bleeding">क्या इससे खून, पानी या पपड़ी आती है?</string>
     <string name="q_fever">क्या बुखार है या तबीयत ठीक नहीं लग रही?</string>

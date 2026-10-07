@@ -52,8 +52,9 @@ val LightSn = SnColors(
     isDark = false, bg = c(0xFFE0D6EC), bgBrush = Brush.verticalGradient(listOf(c(0xFFD6CBE9), c(0xFFE2D8EE), c(0xFFECDCD8))),
     surf = c(0x8FEEE5F9), surf2 = c(0x8CCDC0E6), ink = c(0xFF1C1640), mut = c(0xFF4A4376), title = c(0xFF2A1F5A),
     line = c(0xFF9A8ECB), line2 = c(0x528C7EC4), acc = c(0xFFA4572A), accT = c(0xFF7F3D17), accSoft = c(0x47A4572A),
-    glow = c(0x4DD68C60), pur = c(0xFF5A43B5), track = c(0x336E5EB0), btn = c(0xCCFCECE0), onAcc = c(0xFFFFF8F2), nav = c(0xC7E8E0F4),
-    low = c(0xFF1F7A4A), moderate = c(0xFF8A5A00), high = c(0xFFA4461A), urgent = c(0xFFB3261E),
+    glow = c(0x4DD68C60), pur = c(0xFF4E3A9D), track = c(0x336E5EB0), btn = c(0xCCFCECE0), onAcc = c(0xFFFFF8F2), nav = c(0xC7E8E0F4),
+    // tier colours are also text (triage title, tags): darkened to ≥ 4.6:1 on every light background incl. the red-flag tint
+    low = c(0xFF165534), moderate = c(0xFF674300), high = c(0xFF7D3614), urgent = c(0xFF911F18),
 )
 
 val PlexMono = FontFamily(
