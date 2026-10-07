@@ -40,10 +40,12 @@ One-line status: `scripts/status.sh`.
 - CV v3 (Shades-of-Gray) NOT adopted by its pre-registered val rule (SCIN-val top-3 0.814 < 0.826). v2 stays.
 - APKs: offline 91.9 MB arm64, no INTERNET (S11 static PASS); online has INTERNET for the one-time download.
 
+- TL1 v8 (900 val pairs, same method): coin-pair area median 5.6 % (S9 PASS), p90 31 % (FAIL, disclosed; timeline rules
+  only raise tiers). 6 of 7 timeline gates pass.
+
 ## In progress
-| what | where | log |
-|---|---|---|
-| TL1 v8 = v7b method on 900 val pairs (stable coin-pair p90) | `scripts/after_arms.sh` | logs/after_arms.log |
+Nothing on the PC: every chain finished (`scripts/resume.sh` reports all done). Cleanup 2026-10-07 freed ~3 GB
+(regenerable XNNPack caches of v1, duplicate Kaggle downloads, finished training resume states).
 
 ## Next — needs Harsh (d2y.md)
 1. Phone (d2y §3): `scripts/device_tests.sh` (A1–A10, C5, TL3), `scripts/push_model.sh` (skinnova-e2b-v2.litertlm),
