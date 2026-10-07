@@ -175,7 +175,8 @@
     <string name="an_step_rules">Safety checks</string>
     <string name="an_step_llm">Writing explanation</string>
     <string name="an_step_translate">Translating</string>
-    <string name="an_loading_model">Loading the AI model (first time takes a little longer)…</string>
+    <string name="an_loading_model">Loading the AI model — on some phones this takes up to 2 minutes…</string>
+    <string name="an_reading">Reading the photo and your answers… this can take 1–3 minutes on some phones.</string>
     <string name="an_cancel">Cancel</string>
 
     <!-- Result -->

@@ -105,7 +105,8 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
         Spacer(Modifier.height(14.dp))
         when (val s = st) {
             AnalysisState.LoadingModel -> Text(stringResource(R.string.an_loading_model), style = SnType.caption, color = sn.mut)
-            is AnalysisState.Generating -> Text(s.partialText.takeLast(240), style = SnType.micro, color = sn.mut, maxLines = 5)
+            is AnalysisState.Generating -> if (s.partialText.isEmpty()) Text(stringResource(R.string.an_reading), style = SnType.caption, color = sn.mut)
+                else Text(s.partialText.takeLast(240), style = SnType.micro, color = sn.mut, maxLines = 5)
             is AnalysisState.Failed -> Text(s.message, style = SnType.caption, color = sn.urgent)
             else -> {}
         }

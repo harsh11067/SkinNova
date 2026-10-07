@@ -149,7 +149,7 @@ fun OnboardingScreen(c: AppContainer, onDone: () -> Unit) {
         Spacer(Modifier.height(10.dp))
         Text(stringResource(pages[page].second), style = SnType.bodyL, color = sn.mut)
         Spacer(Modifier.weight(1f))
-        if (page < 2) PrimaryButton(stringResource(R.string.onb_next)) { page++ }
+        if (page < 2) PrimaryButton(stringResource(R.string.onb_next)) { if (page < 2) page++ }   // re-check: double tap in one frame
         else PrimaryButton(stringResource(R.string.onb_understand)) { c.settings.setOnboarded(true); onDone() }
     }
 }

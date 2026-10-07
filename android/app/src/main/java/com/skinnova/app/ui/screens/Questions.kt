@@ -112,6 +112,7 @@ fun QuestionsScreen(vm: SessionViewModel, onBack: () -> Unit, onAnalyze: () -> U
     val photo by vm.photo.collectAsState()
     var i by remember { mutableIntStateOf(0) }
     var voiceOpen by remember { mutableStateOf(false) }
+    var submitted by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { vm.warmUp() }
     val step = STEPS[i]
     val value = draft.get(step.key)
@@ -190,7 +191,9 @@ fun QuestionsScreen(vm: SessionViewModel, onBack: () -> Unit, onAnalyze: () -> U
         val last = i == STEPS.lastIndex
         PrimaryButton(stringResource(if (last) R.string.q_analyze else if (step.optional && value == null) R.string.q_skip else R.string.q_next),
             enabled = if (last) draft.complete() else answered) {
-            if (last) onAnalyze() else i++
+            // decide from the CURRENT step: two taps inside one janky frame both saw a stale `last` and pushed i past the end
+            // (on-device crash 2026-10-07, STEPS[12]); a double tap on the last step must start one analysis, not two
+            if (i < STEPS.lastIndex) i++ else if (!submitted) { submitted = true; onAnalyze() }
         }
     }
     if (voiceOpen) VoiceSheet(vm) { voiceOpen = false; vm.resetVoice()

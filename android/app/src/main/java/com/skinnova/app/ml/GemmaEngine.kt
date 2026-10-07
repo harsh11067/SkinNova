@@ -110,12 +110,14 @@ enum class LlmTask(val temperature: Double, val maxTokens: Int) {
 
 class GemmaEngine(private val holder: EngineHolder, private val models: ModelManager) : Llm {
     override val available get() = models.activeModelPath() != null
-    /** Per-call limit (incl. a cold engine load); past it the pipeline falls back to Basic mode. Bench raises it to time S8. */
+    /** Generation limit — the engine load / wait is NOT counted (a mid-range phone needs ~2 min just to load: on-device
+     *  2026-10-07, Helio G95 GPU 115 s). Past it the pipeline falls back to Basic mode. Bench raises it to time S8. */
     var timeoutMs = 180_000L
 
     override suspend fun generate(task: LlmTask, system: String, user: String, imagePath: String?, audio: ByteArray?,
-                                  onToken: (String) -> Unit): String = withTimeout(timeoutMs) {
-        holder.use { engine ->
+                                  onToken: (String) -> Unit): String = holder.use { engine ->
+        onToken("")   // engine ready, generation starting (the UI leaves "safety checks"; the first real token can be ~1 min away)
+        withTimeout(timeoutMs) {
             val conv = engine.createConversation(ConversationConfig(
                 systemInstruction = Contents.of(system),
                 samplerConfig = SamplerConfig(topK = 40, topP = 0.95, temperature = task.temperature, seed = 3407),

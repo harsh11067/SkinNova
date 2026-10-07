@@ -233,7 +233,8 @@
     <string name="an_step_rules">सुरक्षा जाँच</string>
     <string name="an_step_llm">व्याख्या लिखी जा रही है</string>
     <string name="an_step_translate">अनुवाद</string>
-    <string name="an_loading_model">AI मॉडल लोड हो रहा है (पहली बार थोड़ा ज़्यादा समय लगता है)…</string>
+    <string name="an_loading_model">AI मॉडल लोड हो रहा है — कुछ फ़ोन पर इसमें 2 मिनट तक लगते हैं…</string>
+    <string name="an_reading">फ़ोटो और आपके जवाब पढ़े जा रहे हैं… कुछ फ़ोन पर इसमें 1–3 मिनट लगते हैं।</string>
     <string name="res_disagree">फ़ोटो और आपके जवाब अलग-अलग दिशा में इशारा करते हैं, इसलिए यह कम निश्चित है।</string>
     <string name="res_read_aloud">पढ़कर सुनाएँ</string>
     <string name="res_lang_en">EN</string>
