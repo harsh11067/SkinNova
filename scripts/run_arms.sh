@@ -13,10 +13,12 @@ M=$D/skinnova-e2b-$SHIP.litertlm
 echo "[$(date +%T)] shipping model $SHIP: $M"
 F='^(INFO|WARNING|W0000|I0000|E0000)'
 $PYX -m ml.eval.eval_arms --skinnova "$M" --arms D C B --n 150 --threads 12 2>&1 | grep -vE "$F" | tail -30
+[ "${PIPESTATUS[0]}" = 0 ] || { echo "[$(date +%T)] ARMS_FROZEN_FAILED"; exit 1; }   # a crash must not look finished
 echo "[$(date +%T)] ARMS_FROZEN_DONE"
 [ -f data/llm_eval_cv_v2/llm_test.jsonl ] || $PY -m ml.eval.rescore_cv --suffix _v2
 $PYX -m ml.eval.eval_arms --skinnova "$M" --arms D C --n 150 --threads 12 --test-dir data/llm_eval_cv_v2 --tag _cv_v2 \
     2>&1 | grep -vE "$F" | tail -30
+[ "${PIPESTATUS[0]}" = 0 ] || { echo "[$(date +%T)] ARMS_CV_V2_FAILED"; exit 1; }
 echo "[$(date +%T)] ARMS_CV_V2_DONE"
 $PY -m ml.eval.safety_report --probs-tag _v2 2>&1 | tail -5
 $PY -m ml.eval.final_report > /dev/null && echo "final report → reports/final_report.md"

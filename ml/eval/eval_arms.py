@@ -14,7 +14,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
+import shutil
 import re
 import time
 from collections import defaultdict
@@ -157,6 +159,26 @@ def summarize(rows: list[dict]) -> dict:
             "s_per_case_median": sorted(r["s"] for r in rows)[len(rows) // 2]}
 
 
+def read_rows(f: Path) -> list[dict]:
+    """Rows of a resumable arm file. A hard power-off can leave a torn / zero-filled last line: drop such lines (backup
+    kept) so the case is simply redone, instead of crashing the resume."""
+    if not f.exists():
+        return []
+    rows, bad = [], 0
+    for l in f.read_bytes().split(b"\n"):
+        if not l.strip(b"\x00 \r"):
+            bad += bool(l); continue
+        try:
+            rows.append(json.loads(l))
+        except json.JSONDecodeError:
+            bad += 1
+    if bad:
+        shutil.copyfile(f, f.with_suffix(f".jsonl.torn{int(time.time())}.bak"))
+        f.write_text("".join(json.dumps(r) + "\n" for r in rows))
+        print(f"{f.name}: dropped {bad} torn line(s); those cases will be redone", flush=True)
+    return rows
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--skinnova"); ap.add_argument("--stock"); ap.add_argument("--arms", nargs="+", default=["D", "C", "A", "B"])
@@ -174,7 +196,7 @@ def main():
     runners: dict[str, Runner] = {}
     for arm in a.arms:
         f = OUT / f"{arm}.jsonl"
-        done = {json.loads(l)["id"] for l in open(f)} if f.exists() else set()
+        done = {r["id"] for r in read_rows(f)}
         todo = t1 + (t9 if arm == "D" else [])
         if arm in "ABD" and any(r["id"] not in done for r in todo):
             path = a.stock if arm == "A" else a.skinnova
@@ -190,14 +212,14 @@ def main():
                 row = run_llm_arm(runner, r, with_cv=(arm == "D"), repair=(arm == "D"))
             row["task"] = r["task"]
             with open(f, "a") as fh:
-                fh.write(json.dumps(row) + "\n")
+                fh.write(json.dumps(row) + "\n"); fh.flush(); os.fsync(fh.fileno())   # a power cut tore a row (2026-10-07)
             print(arm, r["id"], "top3", row["top3"], "valid", row["valid"], row["mode"], "final", row["final_tier"], f"{row['s']}s", flush=True)
     rep = {**report_meta(), "skinnova": a.skinnova, "stock": a.stock, "test_dir": str(TEST_DIR), "tag": a.tag, "n_t1": len(t1), "n_t9": len(t9), "arms": {}}
     for arm in ["A", "B", "C", "D"]:
         f = OUT / f"{arm}.jsonl"
         if not f.exists():
             continue
-        rows = [json.loads(l) for l in open(f)]
+        rows = read_rows(f)
         rep["arms"][arm] = summarize([r for r in rows if r["task"] == "T1"])
         if arm == "D":
             inj = [r for r in rows if r["task"] == "T9"]
