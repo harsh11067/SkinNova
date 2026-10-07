@@ -174,6 +174,8 @@
     <string name="setup_title">एक बार की सेटिंग</string>
     <string name="setup_body">SkinNova का AI व्याख्या मॉडल (%1$s) आपके फ़ोन पर ही रहता है। इसे एक बार इम्पोर्ट करें; फिर कभी इंटरनेट की ज़रूरत नहीं</string>
     <string name="setup_import">मॉडल फ़ाइल इम्पोर्ट करें</string>
+    <string name="setup_rescan">ऐप का मॉडल फ़ोल्डर फिर से जाँचें</string>
+    <string name="setup_err_folder">ऐप के मॉडल फ़ोल्डर की फ़ाइल SkinNova मॉडल नहीं है, या कॉपी अधूरी है।</string>
     <string name="setup_download">Wi-Fi पर डाउनलोड करें</string>
     <string name="setup_skip">बेसिक मोड में जारी रखें</string>
     <string name="setup_skip_hint">बेसिक मोड इमेज मॉडल, बीमारियों की जानकारी और सुरक्षा नियमों का उपयोग करता है, लिखित व्याख्या के बिना।</string>

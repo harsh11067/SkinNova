@@ -25,6 +25,8 @@
     <string name="setup_title">One-time setup</string>
     <string name="setup_body">SkinNova\'s AI explanation model (%1$s) lives on your phone. Import it once; it never needs the internet again.</string>
     <string name="setup_import">Import model file</string>
+    <string name="setup_rescan">Check the app\'s model folder again</string>
+    <string name="setup_err_folder">A file in the app\'s model folder is not the SkinNova model, or the copy is incomplete.</string>
     <string name="setup_download">Download on Wi-Fi</string>
     <string name="setup_skip">Continue in Basic mode</string>
     <string name="setup_skip_hint">Basic mode uses the image model, condition notes and safety rules, without written explanations.</string>

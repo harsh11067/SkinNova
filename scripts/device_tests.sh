@@ -13,7 +13,11 @@ TAPK=android/app/build/outputs/apk/androidTest/offline/debug/app-offline-debug-a
 mkdir -p reports/device
 LOG=reports/device/instrument_$(date +%Y%m%d_%H%M%S).txt
 ARGS=(); [ -n "${1:-}" ] && ARGS=(-e class "$1")
+# capture the whole run's logcat on the PC: phone log buffers are small (a crash on 2026-10-07 left no trace on a vivo)
+"$ADB" logcat -c >/dev/null 2>&1 || true
+"$ADB" logcat -v threadtime > "${LOG%.txt}.logcat.txt" 2>&1 & LCPID=$!
 "$ADB" shell am instrument -w -r "${ARGS[@]}" "$PKG.test/androidx.test.runner.AndroidJUnitRunner" | tr -d '\r' > "$LOG"
+kill $LCPID 2>/dev/null || true
 python3 - "$LOG" <<'PY'
 import re, sys
 t = open(sys.argv[1]).read()

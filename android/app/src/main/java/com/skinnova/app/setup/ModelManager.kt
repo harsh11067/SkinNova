@@ -60,6 +60,9 @@ class ModelManager(private val ctx: Context, private val fs: FileOps = FileOps.R
 
     fun activeModel(): AcceptedModel? = candidates().firstNotNullOfOrNull { verifiedCached(it) }
 
+    /** A .litertlm is present in the app's models folder (verified or not) — e.g. copied with adb or USB file transfer. */
+    fun hasModelFile(): Boolean = candidates().isNotEmpty()
+
     private fun candidates(): List<File> = buildList {
         add(File(internalDir, fileName))
         externalDir?.let { d -> d.listFiles { f -> f.name.endsWith(".litertlm") }?.sortedBy { it.name }?.let { addAll(it) } }

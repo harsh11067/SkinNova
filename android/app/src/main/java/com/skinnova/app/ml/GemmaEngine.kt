@@ -40,6 +40,8 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
     val llmDispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(1)
     var backendName: String = prefs.getString("backend", "GPU")!!; private set
     var initCount = 0; private set
+    /** Wall time of the last engine load (incl. first-run XNNPack/GPU cache builds) — bench / S8 reporting. */
+    var lastInitMs = 0L; private set
     var supportsVision = true; private set
     var supportsAudio = true; private set
 
@@ -62,14 +64,15 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
         } catch (t: Throwable) { Log.w(TAG, "capabilities: ${t.message}") }
         val forceCpu = prefs.getBoolean("lastLoadCrashed", false) || backendName == "CPU"
         prefs.edit().putBoolean("lastLoadCrashed", true).commit()   // cleared only if init returns
+        val t0 = System.nanoTime()
         val e = if (!forceCpu) {
             try { build(path, gpu = true).also { backendName = "GPU" } } catch (t: Throwable) {
                 Log.w(TAG, "GPU init failed, falling back to CPU", t); build(path, gpu = false).also { backendName = "CPU" }
             }
         } else build(path, gpu = false).also { backendName = "CPU" }
         prefs.edit().putBoolean("lastLoadCrashed", false).putString("backend", backendName).apply()
-        initCount++
-        Log.i(TAG, "Engine init #$initCount backend=$backendName vision=$supportsVision audio=$supportsAudio")
+        initCount++; lastInitMs = (System.nanoTime() - t0) / 1_000_000
+        Log.i(TAG, "Engine init #$initCount backend=$backendName vision=$supportsVision audio=$supportsAudio in ${lastInitMs} ms")
         return e
     }
 
@@ -107,9 +110,11 @@ enum class LlmTask(val temperature: Double, val maxTokens: Int) {
 
 class GemmaEngine(private val holder: EngineHolder, private val models: ModelManager) : Llm {
     override val available get() = models.activeModelPath() != null
+    /** Per-call limit (incl. a cold engine load); past it the pipeline falls back to Basic mode. Bench raises it to time S8. */
+    var timeoutMs = 180_000L
 
     override suspend fun generate(task: LlmTask, system: String, user: String, imagePath: String?, audio: ByteArray?,
-                                  onToken: (String) -> Unit): String = withTimeout(180_000) {
+                                  onToken: (String) -> Unit): String = withTimeout(timeoutMs) {
         holder.use { engine ->
             val conv = engine.createConversation(ConversationConfig(
                 systemInstruction = Contents.of(system),

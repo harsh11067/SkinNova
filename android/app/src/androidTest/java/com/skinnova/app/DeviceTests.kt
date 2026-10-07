@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.skinnova.app.ml.AnalysisPipeline
+import com.skinnova.app.ml.GemmaEngine
 import com.skinnova.app.ml.Llm
 import com.skinnova.app.ml.LlmTask
 import com.skinnova.app.ml.QualityGate
@@ -91,14 +92,22 @@ class DeviceTests {
         val cv = c.cv.classify(bmp.toRgb())
         val ans = QuestionnaireAnswers("arm", "1_4w", 2, 0, "spreading", false, false, true, false, "18_39")
         val initsBefore = c.engineHolder.initCount
-        val t0 = System.nanoTime()
-        var ttft = -1L
-        val r = c.pipeline().run(ans, cv, false, img.path, "en") { s -> if (ttft < 0 && s is com.skinnova.app.ml.AnalysisState.Generating) ttft = System.nanoTime() }
-        val total = (System.nanoTime() - t0) / 1e9
+        val llm = c.llm as GemmaEngine
+        llm.timeoutMs = 600_000L   // measure the real time; the app itself gives up at 180 s (→ Basic mode)
         val out = File(ctx.getExternalFilesDir("bench"), "outputs.jsonl")
-        out.appendText("""{"model":"${model!!.id}","backend":"${c.engineHolder.backendName}","mode":"${r.mode}","fallback":"${r.fallbackReason}","total_s":$total,"ttft_s":${if (ttft > 0) (ttft - t0) / 1e9 else -1},"tier":"${r.finalTier}","engine_inits":${c.engineHolder.initCount}}""" + "\n")
+        val warm = try {
+            // run 1 = cold (engine load + first-run caches), run 2 = warm (the app preloads the engine at start: what users see)
+            (1..2).map { run ->
+                val t0 = System.nanoTime(); var ttft = -1L
+                val r = c.pipeline().run(ans, cv, false, img.path, "en") { s -> if (ttft < 0 && s is com.skinnova.app.ml.AnalysisState.Generating) ttft = System.nanoTime() }
+                val total = (System.nanoTime() - t0) / 1e9
+                out.appendText("""{"model":"${model!!.id}","run":"${if (run == 1) "cold" else "warm"}","backend":"${c.engineHolder.backendName}","mode":"${r.mode}","fallback":"${r.fallbackReason}","total_s":$total,"ttft_s":${if (ttft > 0) (ttft - t0) / 1e9 else -1},"engine_init_s":${c.engineHolder.lastInitMs / 1000.0},"tier":"${r.finalTier}","engine_inits":${c.engineHolder.initCount}}""" + "\n")
+                total
+            }.last()
+        } finally { llm.timeoutMs = 180_000L }
         assertTrue("one engine per process (no re-init per analysis)", c.engineHolder.initCount - initsBefore <= 1)
-        assertTrue("S8 CPU budget 120 s", total <= 120.0)
+        val budget = if (c.engineHolder.backendName == "GPU") 60.0 else 120.0
+        assertTrue("S8 ${c.engineHolder.backendName} budget $budget s, warm run took $warm s", warm <= budget)
     }
 
     /** A9: GPU-failure path — with the CPU backend forced, a full (LLM) result is still produced. */
@@ -112,7 +121,7 @@ class DeviceTests {
         try {
             val r = c.pipeline().run(ans, c.cv.classify(bmp.toRgb()), false, img.path, "en") {}
             assertEquals("CPU", c.engineHolder.backendName)
-            assertEquals(Mode.full, r.mode)
+            assertEquals("fallback reason: ${r.fallbackReason}", Mode.full, r.mode)
         } finally {
             c.engineHolder.forceBackend("GPU")
         }

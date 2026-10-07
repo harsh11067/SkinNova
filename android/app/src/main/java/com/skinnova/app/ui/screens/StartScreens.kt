@@ -164,6 +164,18 @@ fun SetupScreen(c: AppContainer, onDone: () -> Unit) {
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) scope.launch { c.models.import(uri) { st = it } }
     }
+    // A model copied into Android/data/…/files/models (adb, USB file transfer) is not reachable from the system picker:
+    // hash it here (the splash only scans at app start), on entry and on demand. ≥ 0 while hashing.
+    var scan by remember { mutableFloatStateOf(-1f) }
+    var folderMismatch by remember { mutableStateOf(false) }
+    suspend fun scanFolder() {
+        if (st is ImportState.Ready || scan >= 0f) return
+        scan = 0f
+        val m = c.models.scanAndVerify { scan = it }
+        scan = -1f
+        if (m != null) st = ImportState.Ready(m) else folderMismatch = c.models.hasModelFile()
+    }
+    LaunchedEffect(Unit) { scanFolder() }
     val need = Formatter.formatShortFileSize(ctx, c.models.requiredBytes)
     Column(Modifier.fillMaxSize().background(sn.bgBrush).statusBarsPadding().navigationBarsPadding().padding(18.dp).verticalScroll(rememberScrollState())) {
         Spacer(Modifier.height(24.dp))
@@ -175,6 +187,12 @@ fun SetupScreen(c: AppContainer, onDone: () -> Unit) {
             Column {
                 Text(stringResource(R.string.setup_storage, need, Formatter.formatShortFileSize(ctx, c.models.freeBytes())), style = SnType.body, color = sn.mut)
                 Spacer(Modifier.height(14.dp))
+                if (scan >= 0f) {
+                    Text(stringResource(R.string.setup_verifying), style = SnType.label, color = sn.ink)
+                    Spacer(Modifier.height(8.dp)); com.skinnova.app.ui.components.Bar(scan, sn.acc)
+                } else if (folderMismatch && st is ImportState.Idle) {
+                    Text(stringResource(R.string.setup_err_folder), style = SnType.label, color = sn.urgent)
+                }
                 when (val s = st) {
                     is ImportState.Idle -> {}
                     is ImportState.Copying -> {
@@ -194,9 +212,11 @@ fun SetupScreen(c: AppContainer, onDone: () -> Unit) {
         Spacer(Modifier.height(16.dp))
         if (st is ImportState.Ready) PrimaryButton(stringResource(R.string.q_next)) { c.settings.setSetupSeen(true); onDone() }
         else {
-            PrimaryButton(stringResource(R.string.setup_import), enabled = st !is ImportState.Copying && st !is ImportState.Verifying) {
+            PrimaryButton(stringResource(R.string.setup_import), enabled = st !is ImportState.Copying && st !is ImportState.Verifying && scan < 0f) {
                 picker.launch(arrayOf("application/octet-stream", "*/*"))
             }
+            Spacer(Modifier.height(10.dp))
+            OutlineButton(stringResource(R.string.setup_rescan), Modifier.fillMaxWidth()) { scope.launch { scanFolder() } }
             if (ModelDownload.available) {
                 Spacer(Modifier.height(10.dp))
                 OutlineButton(stringResource(R.string.setup_download), Modifier.fillMaxWidth()) {
