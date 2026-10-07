@@ -1,8 +1,8 @@
 {
- "git_sha": "544351e",
+ "git_sha": "1d80027",
  "dataset_rev": "a2a7226bedaa",
  "model_sha": "",
- "created_at": "2026-10-06T14:13:42+00:00",
+ "created_at": "2026-10-07T14:08:21+00:00",
  "probs_tag": "_v2",
  "suspicious_threshold": 0.15,
  "S2_suspicious_recall": {
@@ -29,6 +29,11 @@
  "S3_redflag_cases": {
   "n": 60,
   "correct": 60,
+  "pass": true
+ },
+ "S4_under_triage_high_urgent": {
+  "value": 0,
+  "n_reference": 32,
   "pass": true
  }
 }

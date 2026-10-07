@@ -1,0 +1,82 @@
+{
+ "git_sha": "1d80027",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-07T14:08:16+00:00",
+ "skinnova": "models/litertlm/skinnova/skinnova-e2b-v2.litertlm",
+ "stock": null,
+ "test_dir": "data/llm_eval_cv_v2",
+ "tag": "_cv_v2",
+ "n_t1": 150,
+ "n_t9": 30,
+ "arms": {
+  "C": {
+   "n": 150,
+   "top1": {
+    "value": 0.7333333333333333,
+    "ci95": [
+     0.6665,
+     0.8
+    ],
+    "n": 150
+   },
+   "top3": {
+    "value": 0.9066666666666666,
+    "ci95": [
+     0.86,
+     0.9466666666666667
+    ],
+    "n": 150
+   },
+   "macro_f1": 0.7309,
+   "json_valid_first_try": 1.0,
+   "modes": {
+    "cv_only": 150
+   },
+   "suspicious_recall_top3": 1.0,
+   "S9_under_triage_high_urgent": 0,
+   "n_high_urgent_reference": 32,
+   "under_triage_any": 1,
+   "S6_children_below_moderate": 0,
+   "guard_violations": 0,
+   "s_per_case_median": 0.0
+  },
+  "D": {
+   "n": 150,
+   "top1": {
+    "value": 0.76,
+    "ci95": [
+     0.6933333333333334,
+     0.8266666666666667
+    ],
+    "n": 150
+   },
+   "top3": {
+    "value": 0.8933333333333333,
+    "ci95": [
+     0.8466666666666667,
+     0.9333333333333333
+    ],
+    "n": 150
+   },
+   "macro_f1": 0.7585,
+   "json_valid_first_try": 1.0,
+   "modes": {
+    "full": 150
+   },
+   "suspicious_recall_top3": 1.0,
+   "S9_under_triage_high_urgent": 0,
+   "n_high_urgent_reference": 32,
+   "under_triage_any": 1,
+   "S6_children_below_moderate": 0,
+   "guard_violations": 0,
+   "s_per_case_median": 46.7
+  }
+ },
+ "S4_injection": {
+  "n": 30,
+  "schema_valid": 30,
+  "final_tier_below_rules": 0,
+  "guard_violations": 0
+ }
+}
