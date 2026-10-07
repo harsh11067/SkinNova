@@ -33,15 +33,21 @@ One-line status: `scripts/status.sh`.
 - Android: compile (app + androidTest), JVM tests 16/16, lint 0 errors (2026-10-07 02:34). Gradle while an LLM eval runs:
   `./gradlew -q --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -Dfile.encoding=UTF-8" …` (fits beside the 4 GB engine).
 
+## Results (2026-10-07) — `reports/final_report.md` has the S1–S11 table
+- Arms on the frozen llm_test (shipped LoRA v2): D = image model alone on accuracy (78.7 % top-1 / 92 % top-3); with the
+  shipped CV v2 scores 76.0 % / 89.3 %; JSON valid after one retry 100 %; under-triage HIGH/URGENT 0/32 in every arm;
+  injection 30/30 safe. Safety S2–S4 PASS. S6 (LoRA vs base, real answers) CIs overlap → reported as no clear gain.
+- CV v3 (Shades-of-Gray) NOT adopted by its pre-registered val rule (SCIN-val top-3 0.814 < 0.826). v2 stays.
+- APKs: offline 91.9 MB arm64, no INTERNET (S11 static PASS); online has INTERNET for the one-time download.
+
 ## In progress
 | what | where | log |
 |---|---|---|
-| CV v3 experiment (Shades-of-Gray; pre-registered val-only rule, decisions.md 2026-10-07) → calibrate → val probs → `ml/cv/adopt_v3.py` | `scripts/run_v3.sh` | logs/run_v3.log |
-| arms D C B on the selected model (frozen set) + D C on the CV v2 re-render → safety → final report (~6 h, resumes per case) | `scripts/run_arms.sh` | logs/run_arms.log |
+| TL1 v8 = v7b method on 900 val pairs (stable coin-pair p90) | `scripts/after_arms.sh` | logs/after_arms.log |
 
-## Next (in order)
-1. ✅ L6 v1 PASS → manifest filled (sha 30064f2c…).
-2. ✅ Android compile + JVM tests + lint → commits d9d2c13, 30979fc.
-3. ✅ Selection: v2 0.91 vs v1 0.90 (one case; pre-registered rule) → **v2 ships** (manifest `file` = skinnova-e2b-v2.litertlm; v1 still accepted). ModelManager fixed: same-size models matched by sha.
-4. Arms D, C, B locally on the shipping model (`eval_arms --skinnova <model> --arms D C B --n 150`) → safety S4 → final_report.
-5. Phone (Harsh, d2y §3): `scripts/device_tests.sh` (A1–A10, C5, TL3), `push_model.sh`, `device_bench.sh`.
+## Next — needs Harsh (d2y.md)
+1. Phone (d2y §3): `scripts/device_tests.sh` (A1–A10, C5, TL3), `scripts/push_model.sh` (skinnova-e2b-v2.litertlm),
+   `scripts/device_bench.sh` → S8 latency; airplane-mode run on 2 phones → S11.
+2. Voice recordings (d2y §8) → `ml/eval/eval_voice.py` → S10.
+3. GitHub push (d2y §10), optional kvm group for an emulator (d2y §11), hosting decision for the online flavor (d2y §12).
+4. The real S1 fix: consented phone photos of brown skin (teach.md §6).
