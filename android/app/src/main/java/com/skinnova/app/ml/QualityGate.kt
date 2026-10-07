@@ -9,7 +9,7 @@ data class Quality(
     val blurVar: Double, val meanLuma: Double, val clippedDark: Double, val clippedBright: Double,
     val skinRatio: Double, val minSide: Int, val issues: List<Issue>,
 ) {
-    enum class Issue { BLURRY, DARK, BRIGHT, SMALL, NO_SKIN }
+    enum class Issue { BLURRY, DARK, BRIGHT, SMALL, NO_SKIN, NOT_SKIN }   // NOT_SKIN: image model's skin-photo gate
     val ok get() = issues.isEmpty()
 }
 

@@ -95,6 +95,7 @@
     <string name="qg_bright">The photo is too bright.</string>
     <string name="qg_small">The photo is too small.</string>
     <string name="qg_noskin">We could not find much skin in the photo.</string>
+    <string name="qg_notskin">This doesn\'t look like a photo of skin. SkinNova reads close-up photos of a skin spot — please retake.</string>
     <string name="qg_retake">Retake</string>
     <string name="qg_use_anyway">Use anyway</string>
 

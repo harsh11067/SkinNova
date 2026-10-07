@@ -31,6 +31,7 @@ No internet. No account. Nothing leaves the device.
 | 📷 | **Skin-image classifier:** **78 % top-1 / 95 % top-3** on 4,342 held-out photos across 10 categories; on outside phone photos of brown skin top-3 rose **29 % → 66 %** after adding Google's SCIN data | [`reports/cv_metrics_v2.json`](reports/cv_metrics_v2.json) |
 | 🎯 | **Every conversion verified:** PyTorch → TFLite max Δp **8.4e-5**; fine-tuned model → phone format within **2.5 points** of the original | [`reports/cv_parity.json`](reports/cv_parity.json), [`reports/parity_l6_skinnova_v2.json`](reports/parity_l6_skinnova_v2.json) |
 | 📈 | **SkinTimeline** tracks a spot over weeks: **97 %** photo alignment, **5.6 %** median size error with a coin for scale, colour change measured to **~1 ΔE** under changing light | [`reports/timeline_eval_v8.json`](reports/timeline_eval_v8.json) |
+| 🚫 | **Skin-photo gate:** a second output of the image model catches **99.2 %** of non-skin photos (objects, animals, scenes) and asks for a retake, while passing **99.2 %** of real skin photos | [`reports/skin_gate.json`](reports/skin_gate.json) |
 | 🗣️ | **Bhasha voice intake:** speak symptoms in Hindi or English; **94 %** of fields extracted correctly on held-out test transcripts, and a field is kept only if its quote is in what you said *and* about the right topic | [`reports/llm_litertlm_select_v2.json`](reports/llm_litertlm_select_v2.json) |
 
 All numbers are produced by scripts in [`ml/eval/`](ml/eval) and summarised in **[`reports/final_report.md`](reports/final_report.md)**.
@@ -125,7 +126,6 @@ tests/     shared JSON fixtures used by both pytest and JUnit
 ## Roadmap
 
 - **Faster explanations** on mid-range phones (streamed results; text-only prompting under evaluation).
-- **Skin-photo detector** to turn away non-skin images before analysis.
 - More **brown-skin phone photos** (with consent) to lift outside-photo accuracy further.
 - Field study with voice recordings and two-phone airplane-mode runs.
 
@@ -136,7 +136,8 @@ medical device and not a substitute for a professional diagnosis.
 
 - **Gemma 4** — [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · **LiteRT / LiteRT-LM** — Apache-2.0
 - **Data** — PAD-UFES-20 (CC BY 4.0), SCIN by Google Research & Stanford (CC BY 4.0), SkinDisNet (CC BY-NC 4.0),
-  DermNet NZ images via a Kaggle mirror (non-commercial, educational), mgmitesh (CC BY 4.0); details in
+  DermNet NZ images via a Kaggle mirror (non-commercial, educational), mgmitesh (CC BY 4.0), Imagenette (ImageNet
+  subset, non-commercial research — skin-photo gate negatives only); details in
   [`reports/data_card.md`](reports/data_card.md). Because of the non-commercial sources, the trained models are for
   non-commercial, educational use.
 - Condition notes summarised from AAD, NHS and DermNet (cited in the app).

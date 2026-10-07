@@ -44,7 +44,8 @@ class DeviceTests {
         for (e in exp) {
             val o = e.jsonObject
             val bmp = testCtx.assets.open("cv_fixtures/" + o["file"]!!.jsonPrimitive.content).use { BitmapFactory.decodeStream(it) }
-            val got = c.cv.classify(bmp.toRgb()).associate { it.key to it.p }
+            val out = c.cv.classifyWithSkin(bmp.toRgb()); val got = out.scores.associate { it.key to it.p }
+            o["skin"]?.jsonPrimitive?.double?.let { want -> maxd = maxOf(maxd, abs((out.pSkin ?: -1.0) - want)) }   // skin gate parity too
             val want = o["probs"]!!.jsonObject.mapValues { it.value.jsonPrimitive.double }
             if (got.maxBy { it.value }.key == want.maxBy { it.value }.key) top1++
             want.forEach { (k, v) -> maxd = maxOf(maxd, abs((got[k] ?: 0.0) - v)) }

@@ -74,8 +74,14 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     // ---------- photo ----------
     fun setPhoto(bmp: Bitmap) {
         val b = downscale(bmp, 1024)
-        _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _draft.value = Draft()
-        viewModelScope.launch(Dispatchers.Default) { _quality.value = QualityGate.check(b.toRgb()) }
+        _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _draft.value = Draft(); _cv.value = emptyList()
+        viewModelScope.launch(Dispatchers.Default) {
+            val rgb = b.toRgb(); val q = QualityGate.check(rgb)
+            // image model now (not at analysis time): its skin-photo gate warns before the questions; scores are reused
+            val cvOut = if (c.cv.available) runCatching { c.cv.classifyWithSkin(rgb) }.getOrNull() else null
+            _cv.value = cvOut?.scores ?: emptyList()
+            _quality.value = if (cvOut != null && !c.cv.looksLikeSkin(cvOut.pSkin)) q.copy(issues = q.issues + Quality.Issue.NOT_SKIN) else q
+        }
     }
 
     fun setPhotoFromUri(uri: Uri) = viewModelScope.launch(Dispatchers.IO) {
@@ -106,7 +112,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 if (_quality.value == null) _quality.value = withContext(Dispatchers.Default) { QualityGate.check(rgb) }
                 _state.value = AnalysisState.Classifying
                 if (!c.cv.available) { _state.value = AnalysisState.Failed("Image model not found in this build"); return@launch }
-                val cv = withContext(Dispatchers.Default) { c.cv.classify(rgb) }
+                val cv = _cv.value.ifEmpty { withContext(Dispatchers.Default) { c.cv.classify(rgb) } }
                 _cv.value = cv
                 val img = withContext(Dispatchers.IO) { writeLlmImage(rgb) }
                 val res = c.pipeline().run(answers, cv, qualityForced, img.path, c.settings.lang.value) { _state.value = it }

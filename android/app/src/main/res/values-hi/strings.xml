@@ -204,6 +204,7 @@
     <string name="scan_allow_camera">कैमरा की अनुमति दें</string>
     <string name="qg_small">फ़ोटो बहुत छोटी है।</string>
     <string name="qg_noskin">फ़ोटो में ज़्यादा त्वचा नहीं मिली।</string>
+    <string name="qg_notskin">यह त्वचा की फ़ोटो नहीं लगती। SkinNova त्वचा के किसी हिस्से की नज़दीक से ली गई फ़ोटो पढ़ता है — कृपया दोबारा लें।</string>
     <string name="q_speak">बोलकर बताएँ · Speak</string>
     <string name="q_site_sub">मुख्य जगह चुनें।</string>
     <string name="q_duration_sub">अंदाज़ा भी ठीक है।</string>

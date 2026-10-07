@@ -318,13 +318,14 @@ fun hintText(q: Quality): Pair<String, Boolean> = when {
     Quality.Issue.DARK in q.issues -> stringResource(R.string.scan_hint_dark) to false
     Quality.Issue.BRIGHT in q.issues -> stringResource(R.string.scan_hint_bright) to false
     Quality.Issue.BLURRY in q.issues -> stringResource(R.string.scan_hint_blur) to false
+    Quality.Issue.NOT_SKIN in q.issues -> stringResource(R.string.qg_notskin) to false
     Quality.Issue.NO_SKIN in q.issues -> stringResource(R.string.scan_hint_close) to false
     else -> stringResource(R.string.scan_hint_ok) to true
 }
 
 fun issueRes(i: Quality.Issue) = when (i) {
     Quality.Issue.BLURRY -> R.string.qg_blurry; Quality.Issue.DARK -> R.string.qg_dark; Quality.Issue.BRIGHT -> R.string.qg_bright
-    Quality.Issue.SMALL -> R.string.qg_small; Quality.Issue.NO_SKIN -> R.string.qg_noskin
+    Quality.Issue.SMALL -> R.string.qg_small; Quality.Issue.NO_SKIN -> R.string.qg_noskin; Quality.Issue.NOT_SKIN -> R.string.qg_notskin
 }
 
 fun Bitmap.rotate(deg: Int): Bitmap = if (deg == 0) this else Bitmap.createBitmap(this, 0, 0, width, height, Matrix().apply { postRotate(deg.toFloat()) }, true)

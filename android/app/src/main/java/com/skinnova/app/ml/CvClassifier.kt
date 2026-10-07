@@ -18,8 +18,15 @@ import kotlin.math.exp
 data class CvPreprocess(
     val size: Int, val mean: List<Float>, val std: List<Float>, val temperature: Double,
     val classes: List<String>, val layout: String = "NHWC", val normalize_long_side: Int = 512,
-    val model_sha256: String = "", val dataset_rev: String = "",
+    val model_sha256: String = "", val dataset_rev: String = "", val skin_gate: SkinGate? = null,
 )
+
+/** ml/cv/skin_gate.py: p(skin photo) = sigmoid(skin_logit); below [threshold] the photo is probably not skin. */
+@Serializable
+data class SkinGate(val output: String = "skin_logit", val threshold: Double, val report: String = "")
+
+/** Calibrated scores + p(skin photo) (null with a single-output model). */
+data class CvOut(val scores: List<CvScore>, val pSkin: Double?)
 
 /**
  * LiteRT .tflite classifier (architecture §2). Preprocessing ≡ ml/cv/dataset.py eval_transform via ImageOps (PIL port).
@@ -55,18 +62,32 @@ class CvClassifier(private val ctx: Context, private val allKeys: List<String>) 
         }
     }
 
+    /** (logits, skin logit or null). Outputs are told apart by shape — TFLite does not guarantee their order. */
     @Synchronized
-    fun logits(src: Rgb): FloatArray {
+    fun run(src: Rgb): Pair<FloatArray, Float?> {
         val p = pre!!
         val x = preprocess(src)
         val inBuf = ByteBuffer.allocateDirect(x.size * 4).order(ByteOrder.nativeOrder())
         inBuf.asFloatBuffer().put(x)
-        val out = Array(1) { FloatArray(p.classes.size) }
-        interpreter.run(inBuf, out)
-        return out[0]
+        val n = interpreter.outputTensorCount
+        val logits = Array(1) { FloatArray(p.classes.size) }; val skin = Array(1) { FloatArray(1) }
+        val outs = HashMap<Int, Any>()
+        for (i in 0 until n) outs[i] = if (interpreter.getOutputTensor(i).shape().last() == 1) skin else logits
+        interpreter.runForMultipleInputsOutputs(arrayOf(inBuf), outs)
+        return logits[0] to (if (n > 1) skin[0][0] else null)
     }
 
+    fun logits(src: Rgb): FloatArray = run(src).first
+
     fun classify(src: Rgb): List<CvScore> = calibrate(logits(src))
+
+    fun classifyWithSkin(src: Rgb): CvOut {
+        val (lg, sk) = run(src)
+        return CvOut(calibrate(lg), sk?.let { 1.0 / (1.0 + exp(-it.toDouble())) })
+    }
+
+    /** False only when the model is fairly sure this is not a photo of skin (soft gate: the user may continue). */
+    fun looksLikeSkin(pSkin: Double?): Boolean = pSkin == null || pSkin >= (pre?.skin_gate?.threshold ?: 0.0)
 
     fun calibrate(logits: FloatArray): List<CvScore> {
         val p = pre!!

@@ -25,7 +25,12 @@
  ],
  "layout": "NHWC",
  "normalize_long_side": 512,
- "model_sha256": "60317a383369c1b3ba67519a97f29079d5d4d54a5db43c4fadeb02cc9c32579d",
+ "model_sha256": "bd2ff023f409319e7c242f412248451c6a40a1d566462e8bc4a8ff5d629d7c37",
  "dataset_rev": "a2a7226bedaa",
- "arch": "efficientnet_b0.ra_in1k"
+ "arch": "efficientnet_b0.ra_in1k",
+ "skin_gate": {
+  "output": "skin_logit",
+  "threshold": 0.10999999940395355,
+  "report": "reports/skin_gate.json"
+ }
 }

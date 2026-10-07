@@ -1,11 +1,11 @@
 {
- "git_sha": "544351e",
+ "git_sha": "9ccf21e",
  "dataset_rev": "a2a7226bedaa",
- "model_sha": "60317a383369c1b3",
- "created_at": "2026-10-06T14:14:29+00:00",
+ "model_sha": "bd2ff023f409319e",
+ "created_at": "2026-10-07T18:11:43+00:00",
  "ckpt_sha": "b3e2c3e9739a9ca0",
- "tflite_sha256": "60317a383369c1b3ba67519a97f29079d5d4d54a5db43c4fadeb02cc9c32579d",
- "tflite_bytes": 16214876,
+ "tflite_sha256": "bd2ff023f409319e7c242f412248451c6a40a1d566462e8bc4a8ff5d629d7c37",
+ "tflite_bytes": 16192608,
  "precision": "fp32",
  "n": 200,
  "max_abs_dprob": 8.413195610046387e-05,
@@ -17,9 +17,10 @@
   3
  ],
  "input_dtype": "<class 'numpy.float32'>",
- "output": [
-  1,
-  10
+ "outputs": [
+  "logits",
+  "skin_logit"
  ],
+ "max_abs_dskin_prob": 2.3573637008666992e-05,
  "C3_pass": true
 }
