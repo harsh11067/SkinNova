@@ -323,7 +323,8 @@ fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -
                 Text(stringResource(R.string.about_sources_body), style = SnType.caption, color = sn.mut)
                 Text(stringResource(R.string.about_limits), style = SnType.label, color = sn.ink)
                 Text(stringResource(R.string.about_limits_body), style = SnType.caption, color = sn.mut)
-                Text(stringResource(R.string.about_version, BuildConfig.VERSION_NAME, c.prompts.version, model?.sha256?.take(12) ?: "—"), style = SnType.micro, color = sn.mut)
+                Text(stringResource(R.string.about_version, BuildConfig.VERSION_NAME, c.prompts.version, model?.label ?: "—", model?.sha256?.take(12) ?: "—"),
+                    style = SnType.micro, color = sn.mut)
             }
         }
         Spacer(Modifier.height(16.dp))

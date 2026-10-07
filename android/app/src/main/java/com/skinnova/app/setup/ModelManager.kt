@@ -47,12 +47,15 @@ class ModelManager(private val ctx: Context, private val fs: FileOps = FileOps.R
     val internalDir: File get() = File(ctx.filesDir, "models").apply { mkdirs() }
     val externalDir: File? get() = ctx.getExternalFilesDir("models")?.apply { mkdirs() }
 
+    /** Size of the model the app asks for (first accepted entry: scripts/update_manifest.py --ship puts it there). */
+    val modelBytes: Long get() = accepted.firstOrNull()?.bytes ?: 0L
+
     /** Largest expected file + 500 MB headroom (architecture §10). */
     val requiredBytes: Long get() = (accepted.maxOfOrNull { it.bytes } ?: 2_600_000_000L) + 500_000_000L
 
     fun freeBytes(): Long = StatFs(ctx.filesDir.path).availableBytes
 
-    /** Verified model path, or null. Verification result is cached by (path, size, mtime) so we hash 2.6 GB only once. */
+    /** Verified model path, or null. Verification result is cached by (path, size, mtime) so a multi-GB file is hashed only once. */
     fun activeModelPath(): String? = candidates().firstOrNull { verifiedCached(it) != null }?.path
 
     fun activeModel(): AcceptedModel? = candidates().firstNotNullOfOrNull { verifiedCached(it) }

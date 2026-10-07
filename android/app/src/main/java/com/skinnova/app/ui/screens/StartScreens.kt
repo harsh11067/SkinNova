@@ -169,7 +169,7 @@ fun SetupScreen(c: AppContainer, onDone: () -> Unit) {
         Spacer(Modifier.height(24.dp))
         Text(stringResource(R.string.setup_title), style = SnType.headline, color = sn.ink)
         Spacer(Modifier.height(10.dp))
-        Text(stringResource(R.string.setup_body, "2.6 GB"), style = SnType.bodyL, color = sn.mut)
+        Text(stringResource(R.string.setup_body, Formatter.formatShortFileSize(ctx, c.models.modelBytes)), style = SnType.bodyL, color = sn.mut)
         Spacer(Modifier.height(18.dp))
         SnCard {
             Column {
