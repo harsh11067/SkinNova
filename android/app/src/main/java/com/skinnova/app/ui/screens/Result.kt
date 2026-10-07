@@ -77,8 +77,9 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
     }
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().padding(horizontal = 26.dp, vertical = 40.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Box(Modifier.size(220.dp), contentAlignment = Alignment.Center) {
-            SpinRing(220.dp, sn.line, 18000, dotted = false)
-            Box(Modifier.size(184.dp), contentAlignment = Alignment.Center) { SpinRing(184.dp, sn.acc, 9000, reverse = true) }
+            val llmBusy = st is AnalysisState.LoadingModel || st is AnalysisState.Generating || st is AnalysisState.Validating
+            SpinRing(220.dp, sn.line, 18000, dotted = false, spinning = !llmBusy)
+            Box(Modifier.size(184.dp), contentAlignment = Alignment.Center) { SpinRing(184.dp, sn.acc, 9000, reverse = true, spinning = !llmBusy) }
             photo?.let { Image(it.asImageBitmap(), null, Modifier.size(144.dp).clip(CircleShape), contentScale = ContentScale.Crop) }
         }
         Spacer(Modifier.height(30.dp))

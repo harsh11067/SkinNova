@@ -80,7 +80,9 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
         val b = if (gpu) Backend.GPU() else Backend.CPU()
         return Engine(EngineConfig(
             modelPath = path, backend = b,
-            visionBackend = if (supportsVision) (if (gpu) Backend.GPU() else Backend.CPU()) else null,
+            // vision encoder always on CPU: on a Mali GPU it ran as one 13–17 s job, the UI could not draw a frame for that
+            // long and Android flagged the app "not responding" (vivo V2059 / Helio G95, 2026-10-07). The decoder stays on GPU.
+            visionBackend = if (supportsVision) Backend.CPU() else null,
             audioBackend = if (supportsAudio) Backend.CPU() else null,
             maxNumTokens = 4096, cacheDir = ctx.cacheDir.path,
         )).apply { initialize() }
@@ -117,6 +119,8 @@ class GemmaEngine(private val holder: EngineHolder, private val models: ModelMan
     override suspend fun generate(task: LlmTask, system: String, user: String, imagePath: String?, audio: ByteArray?,
                                   onToken: (String) -> Unit): String = holder.use { engine ->
         onToken("")   // engine ready, generation starting (the UI leaves "safety checks"; the first real token can be ~1 min away)
+        val t0 = System.nanoTime(); var firstToken = 0L; var lastUi = 0L
+        Log.i(EngineHolder.TAG, "generate ${task.name} start backend=${holder.backendName} image=${imagePath != null && holder.supportsVision}")
         withTimeout(timeoutMs) {
             val conv = engine.createConversation(ConversationConfig(
                 systemInstruction = Contents.of(system),
@@ -134,11 +138,18 @@ class GemmaEngine(private val holder: EngineHolder, private val models: ModelMan
                 suspendCancellableCoroutine { cont ->
                     cont.invokeOnCancellation { runCatching { conv.cancelProcess() } }
                     conv.sendMessageAsync(Contents.of(parts), object : MessageCallback {
-                        override fun onMessage(message: Message) { val t = message.toString(); sb.append(t); onToken(sb.toString()) }
+                        override fun onMessage(message: Message) {
+                            sb.append(message.toString()); val now = System.nanoTime()
+                            if (firstToken == 0L) { firstToken = now; Log.i(EngineHolder.TAG, "generate ${task.name} first token after ${(now - t0) / 1_000_000} ms") }
+                            // ≤ ~3 UI updates/s: one recomposition per token competed with the GPU for frames
+                            if (now - lastUi > 300_000_000L) { lastUi = now; onToken(sb.toString()) }
+                        }
                         override fun onDone() { if (cont.isActive) cont.resume(Unit) }
                         override fun onError(throwable: Throwable) { if (cont.isActive) cont.resumeWithException(throwable) }
                     }, emptyMap())
                 }
+                Log.i(EngineHolder.TAG, "generate ${task.name} done in ${(System.nanoTime() - t0) / 1_000_000} ms, ${sb.length} chars")
+                onToken(sb.toString())
                 sb.toString()
             } finally {
                 conv.close()

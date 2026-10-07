@@ -182,9 +182,12 @@ fun RedFlagBanner(messages: List<String>) {
 
 /** Design's spinning dotted ring (Analyzing / shutter). */
 @Composable
-fun SpinRing(size: Dp, color: Color, periodMs: Int, reverse: Boolean = false, dotted: Boolean = true) {
-    val t = rememberInfiniteTransition(label = "spin")
-    val a by t.animateFloat(0f, if (reverse) -360f else 360f, infiniteRepeatable(tween(periodMs, easing = LinearEasing), RepeatMode.Restart), label = "a")
+fun SpinRing(size: Dp, color: Color, periodMs: Int, reverse: Boolean = false, dotted: Boolean = true, spinning: Boolean = true) {
+    // spinning = false while the LLM runs on the GPU: a 60 fps animation competed with it for every frame
+    val a = if (spinning) {
+        val t = rememberInfiniteTransition(label = "spin")
+        t.animateFloat(0f, if (reverse) -360f else 360f, infiniteRepeatable(tween(periodMs, easing = LinearEasing), RepeatMode.Restart), label = "a").value
+    } else 0f
     Canvas(Modifier.size(size).rotate(a)) {
         drawCircle(color, style = Stroke(width = 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(if (dotted) floatArrayOf(2f, 6f) else floatArrayOf(10f, 8f))))
     }
