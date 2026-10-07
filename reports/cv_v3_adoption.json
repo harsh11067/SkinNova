@@ -1,0 +1,38 @@
+{
+ "git_sha": "e521f17",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-07T14:23:27+00:00",
+ "rule": {
+  "scin_val_top3_min": 0.826,
+  "val_macro_f1_min": 0.679,
+  "suspicious_recall_p15_min": 0.907
+ },
+ "v2": {
+  "n": 4363,
+  "n_scin": 609,
+  "val_top1": 0.7774467109786843,
+  "val_top3": 0.9431583772633509,
+  "val_macro_f1": 0.6837533302069009,
+  "scin_val_top1": 0.48440065681444994,
+  "scin_val_top3": 0.80623973727422,
+  "suspicious_recall_p15": 0.9172482552342971
+ },
+ "v3": {
+  "n": 4363,
+  "n_scin": 609,
+  "val_top1": 0.774467109786844,
+  "val_top3": 0.9465963786385515,
+  "val_macro_f1": 0.6800203858822064,
+  "scin_val_top1": 0.4876847290640394,
+  "scin_val_top3": 0.8144499178981938,
+  "suspicious_recall_p15": 0.93419740777667
+ },
+ "checks": {
+  "scin_val_top3": false,
+  "val_macro_f1": true,
+  "suspicious_recall_p15": true
+ },
+ "decision": "KEEP_V2",
+ "note": "val only; test/external are evaluated once and only if adopted"
+}
