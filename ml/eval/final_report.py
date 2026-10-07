@@ -205,7 +205,7 @@ def main():
           "- The language model does not read the photo itself (gray-image ablation ≤ 1/16 changed); category accuracy comes from "
           "the image model, and the LLM adds explanation, answer citation, rule-safe triage, Hindi and injection resistance.",
           "- In-distribution test photos are mostly clinical close-ups, and most frozen LLM test records carry synthetic answers.",
-          "- SkinTimeline sizes are reliable mainly with a coin; the p90 size error gate fails (see §4).",
+          "- SkinTimeline sizes are reliable mainly with a coin, and even then ~1 in 10 readings is off by > 30 % (p90 gate fails, §4); timeline rules only raise tiers.",
           "- Hindi mode: uncertainty reasons stay in English (the translation task does not cover them).",
           "- The online flavor downloads Google's stock model until the SkinNova model is hosted (d2y §12).",
           "", "## 8. Not yet measured", ""] + [f"- {t}" for t in todo] + ["- S8 phone latency, S10 voice, S11 airplane mode on 2 phones (Harsh)"]
