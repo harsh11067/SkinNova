@@ -24,7 +24,7 @@ def main():
     model, ck = load_model(a.ckpt)
     T = ck.get("temperature", 1.0)
     for s in a.splits:
-        L, Y, df = logits_for(model, s, ck["classes"], per_class=a.per_class, cpu=a.cpu)
+        L, Y, df = logits_for(model, s, ck["classes"], per_class=a.per_class, cpu=a.cpu, cc=ck.get("color_constancy"))
         s = s + a.suffix
         P = (L / T).softmax(1).numpy().astype(np.float32)
         np.savez(PROCESSED / f"cv_probs_{s}.npz", img=df.img.values.astype(str), labels=df.label.values.astype(str),

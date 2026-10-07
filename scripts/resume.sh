@@ -13,4 +13,5 @@ launch() {   # launch <script> <log> <done-marker>
 }
 launch scripts/after_lora_v2.sh logs/after_lora_v2.log AFTER_LORA_V2_DONE
 launch scripts/run_arms.sh logs/run_arms.log RUN_ARMS_DONE
+launch scripts/run_v3.sh logs/run_v3.log RUN_V3_DONE
 scripts/status.sh

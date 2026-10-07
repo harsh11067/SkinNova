@@ -37,7 +37,8 @@ def load_model(path):
 
 
 @torch.no_grad()
-def logits_for(model, split, classes, bs=64, per_class: int = 0, cpu: bool = False, exclude_source_labels=()):
+def logits_for(model, split, classes, bs=64, per_class: int = 0, cpu: bool = False, exclude_source_labels=(), cc: str | None = None):
+    """cc: the checkpoint's colour constancy (ck.get("color_constancy")) — eval preprocessing must match training."""
     df = pd.read_csv(SPLITS / f"{split}.csv")
     keep = df.label.isin(classes)
     if exclude_source_labels and "source_label" in df:
@@ -49,7 +50,7 @@ def logits_for(model, split, classes, bs=64, per_class: int = 0, cpu: bool = Fal
     model = model.to(dev)
     if cpu:
         torch.set_num_threads(4)
-    dl = DataLoader(SkinDS(df, classes, eval_transform()), 16 if cpu else bs, num_workers=0 if cpu else 4,
+    dl = DataLoader(SkinDS(df, classes, eval_transform(cc)), 16 if cpu else bs, num_workers=0 if cpu else 4,
                     multiprocessing_context=None if cpu else "forkserver")
     L, Y = [], []
     for x, y in dl:
@@ -105,7 +106,7 @@ def main():
     rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=sha), "arch": ck["arch"], "classes": ck["classes"], "temperature": T,
            "excluded_source_labels": a.exclude_source_label, "splits": {}}
     for s in a.splits:
-        L, Y, df = logits_for(model, s, ck["classes"], exclude_source_labels=a.exclude_source_label)
+        L, Y, df = logits_for(model, s, ck["classes"], exclude_source_labels=a.exclude_source_label, cc=ck.get("color_constancy"))
         rep["splits"][s] = metrics(L, Y, ck["classes"], T, df)
         m = rep["splits"][s]
         print(f"{s}: n={m['n']} top1={m['top1']['value']:.3f} top3={m['top3']['value']:.3f} "

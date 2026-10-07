@@ -1,5 +1,6 @@
 """CV dataset + transforms. Eval preprocessing is mirrored in android CvClassifier.kt (assets/cv/preprocess.json):
-center-crop to square (shorter side) → resize 384×384 bilinear → RGB float /255 → (x-mean)/std, NHWC on device.
+center-crop to square (shorter side) → resize 384×384 bilinear → RGB float /255 → [Shades-of-Gray, if the checkpoint says
+"color_constancy": "sog6"] → (x-mean)/std, NHWC on device.
 """
 from __future__ import annotations
 
@@ -41,19 +42,41 @@ class PhoneDegrade:
         return im
 
 
-def eval_transform():
+class ShadesOfGray:
+    """Shades-of-Gray colour constancy (Finlayson & Trezzi 2004, p = 6): each channel's illuminant is the Minkowski p-mean of
+    the image; dividing by it (scaled so a neutral illuminant leaves the image unchanged) removes lighting / camera colour
+    casts. On the [0,1] CHW tensor after resizing, in float64 — CvClassifier.kt does the same maths."""
+
+    def __init__(self, p: int = 6):
+        self.p = p
+
+    def __call__(self, x: torch.Tensor) -> torch.Tensor:
+        d = x.double()
+        e = d.pow(self.p).mean(dim=(1, 2)).pow(1.0 / self.p)
+        e = e / e.norm().clamp_min(1e-12)
+        return (d / (e * 3 ** 0.5).clamp_min(1e-6)[:, None, None]).clamp(0, 1).float()
+
+
+def _cc(cc: str | None) -> list:
+    if cc in (None, "none"):
+        return []
+    assert cc == "sog6", cc
+    return [ShadesOfGray(6)]
+
+
+def eval_transform(cc: str | None = None):
     return T.Compose([T.Lambda(center_square), T.Resize((SIZE, SIZE), interpolation=T.InterpolationMode.BILINEAR),
-                      T.ToTensor(), T.Normalize(MEAN, STD)])
+                      T.ToTensor(), *_cc(cc), T.Normalize(MEAN, STD)])
 
 
-def train_transform():
+def train_transform(cc: str | None = None):
     return T.Compose([
         T.RandomResizedCrop(SIZE, scale=(0.45, 1.0), ratio=(0.75, 1.33)),
         T.RandomHorizontalFlip(), T.RandomVerticalFlip(),
         T.RandomApply([T.RandomRotation(25)], p=0.5),
         T.ColorJitter(0.3, 0.3, 0.2, 0.03),   # lighting / white balance; hue kept small so skin tone isn't remapped
         PhoneDegrade(),
-        T.ToTensor(), T.Normalize(MEAN, STD),
+        T.ToTensor(), *_cc(cc), T.Normalize(MEAN, STD),
     ])
 
 

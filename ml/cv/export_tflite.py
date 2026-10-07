@@ -56,6 +56,7 @@ def main():
     from ai_edge_litert.interpreter import Interpreter
     ck_path = MODELS / "cv" / "ckpt" / "best.pt"
     model, ck = load_model(ck_path)
+    assert not ck.get("color_constancy"), "CvClassifier.kt has no Shades-of-Gray yet: port it (+ C4 fixtures) before exporting this checkpoint"
     model = model.float().eval()
     T = float(ck.get("temperature", 1.0))
     wrapped = NHWC(model).eval()

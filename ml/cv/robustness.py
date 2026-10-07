@@ -65,8 +65,8 @@ CORRUPTIONS = {"clean": _clean, "blur_sigma2": _blur2, "jpeg_q40": _jpeg40, "bri
 
 
 class _DS(Dataset):
-    def __init__(self, paths, y, name):
-        self.paths, self.y, self.name, self.tf = paths, y, name, eval_transform()
+    def __init__(self, paths, y, name, cc=None):
+        self.paths, self.y, self.name, self.tf = paths, y, name, eval_transform(cc)
 
     def __len__(self):
         return len(self.paths)
@@ -91,7 +91,7 @@ def main():
     out = {}
     for name in CORRUPTIONS:
         P = []
-        for x, _ in DataLoader(_DS(paths, y.tolist(), name), 64, num_workers=4, multiprocessing_context="forkserver"):
+        for x, _ in DataLoader(_DS(paths, y.tolist(), name, ck.get("color_constancy")), 64, num_workers=4, multiprocessing_context="forkserver"):
             P.append((model(x.to(dev)).float() / T).softmax(1).cpu())
         P = torch.cat(P).numpy()
         top1 = float((P.argmax(1) == y).mean()); top3 = float((np.argsort(-P, 1)[:, :3] == y[:, None]).any(1).mean())

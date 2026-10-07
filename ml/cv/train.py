@@ -58,6 +58,7 @@ def main():
     ap.add_argument("--overfit64", action="store_true")
     ap.add_argument("--random-labels", action="store_true")
     ap.add_argument("--tag", default="")
+    ap.add_argument("--color-constancy", default="none", choices=["none", "sog6"], help="v3 experiment (decisions.md 2026-10-07)")
     ap.add_argument("--resume", action="store_true", help="continue from models/cv/ckpt/last<tag>.pt (restart-safe)")
     a = ap.parse_args()
     set_seed(a.seed)
@@ -69,9 +70,10 @@ def main():
     if a.overfit64:
         tr = tr.groupby("label", group_keys=False).apply(lambda g: g.sample(min(len(g), 6), random_state=a.seed)).head(64)
         va = tr
-    tf_train = eval_transform() if a.overfit64 else train_transform()
+    cc = None if a.color_constancy == "none" else a.color_constancy
+    tf_train = eval_transform(cc) if a.overfit64 else train_transform(cc)
     ds_tr = SkinDS(tr, classes, tf_train, random_labels=a.random_labels, seed=a.seed)
-    ds_va = SkinDS(va, classes, eval_transform())
+    ds_va = SkinDS(va, classes, eval_transform(cc))
     counts = np.bincount(ds_tr.y, minlength=len(classes)).astype(float)
     w = 1.0 / np.maximum(counts, 1)
     sampler = None if a.overfit64 else WeightedRandomSampler([w[y] for y in ds_tr.y], num_samples=len(ds_tr), replacement=True)
@@ -121,7 +123,7 @@ def main():
         if mode == "full" and f1 > best:
             best = f1
             torch.save({"arch": a.arch, "classes": classes, "state_dict": model.state_dict(), "epoch": ep + 1,
-                        "val_macro_f1": f1}, out_dir / f"best{a.tag}.pt")
+                        "val_macro_f1": f1, "color_constancy": cc}, out_dir / f"best{a.tag}.pt")
         tmp = last.with_suffix(".tmp")
         torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(), "scaler": scaler.state_dict(),
                     "best": best, "hist": hist, "epoch": ep + 1}, tmp)

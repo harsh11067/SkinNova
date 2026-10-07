@@ -49,7 +49,7 @@ def main():
     a = ap.parse_args()
     ck_path = MODELS / "cv" / "ckpt" / f"best{a.tag}.pt"
     model, ck = load_model(ck_path)
-    L, Y, _ = logits_for(model, "val", ck["classes"])
+    L, Y, _ = logits_for(model, "val", ck["classes"], cc=ck.get("color_constancy"))
     T = fit_temperature(L, Y)
     before, after = ece(L.softmax(1), Y), ece((L / T).softmax(1), Y)
     nll = torch.nn.CrossEntropyLoss()
