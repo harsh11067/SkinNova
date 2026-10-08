@@ -65,6 +65,12 @@ One-line status: `scripts/status.sh`.
 - On-device: all suites pass (FirstRun when run alone — vivo puts the user's Settings task on top in a combined run);
   S8 warm analysis 84 s (> 60 s budget, disclosed); Ask SkinNova 21–24 s per answer on GPU.
 
+## Done 2026-10-08 (3rd pass; commits 43c2974…, release v0.2.0)
+- Crash (gallery + permission prompts) = fragment 1.2.5 → 1.8.5; PIN locks right away; notification every time;
+  shadows off on dark (median frame 20 → 14 ms); crisp dot-matrix landing + twinkle; Profile → Start screen; pixel
+  rivets/markers. All trialled on the phone (gallery, PIN, notification, analysis). Device suite: 8 pass + 9 skipped to
+  protect the tester's data; first-run passes and restores settings. GitHub Release v0.2.0 + docs/SETUP_GUIDE.md.
+
 ## In progress
 Nothing on the PC: every chain finished (`scripts/resume.sh` reports all done). Cleanup 2026-10-07 freed ~3 GB
 (regenerable XNNPack caches of v1, duplicate Kaggle downloads, finished training resume states).
