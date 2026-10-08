@@ -58,6 +58,7 @@ fun ReliefCard(vm: SessionViewModel, r: FinalResult, tier: Tier, tts: Boolean, l
     }
     val spoken = buildString {
         append(title).append(". ")
+        plan.contagious?.let { append(it.get(lang)).append(" ") }
         if (plan.home.isNotEmpty()) append(hHome).append(". ").append(plan.home.joinToString(" ") { it.get(lang) }).append(" ")
         if (plan.food.isNotEmpty()) append(hFood).append(". ").append(plan.food.joinToString(" ") { it.get(lang) }).append(" ")
         append(hPharm).append(". ")
@@ -69,6 +70,7 @@ fun ReliefCard(vm: SessionViewModel, r: FinalResult, tier: Tier, tts: Boolean, l
                 Text(title, style = SnType.title, color = sn.ink, modifier = Modifier.weight(1f))
                 if (tts) SpeakButton({ spoken }, lang)
             }
+            plan.contagious?.let { Section(stringResource(R.string.rl_contagious), listOf(it.get(lang))) }
             Section(hHome, plan.home.map { it.get(lang) })
             Section(hFood, plan.food.map { it.get(lang) })
             Text(hPharm, style = SnType.label, color = sn.accT, modifier = Modifier.padding(top = 4.dp))

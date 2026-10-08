@@ -1,2 +1,6 @@
 {"model":"skinnova-e2b-v2","run":"cold","backend":"GPU","mode":"full","fallback":"null","total_s":246.082586246,"ttft_s":173.34056378,"engine_init_s":119.772,"tier":"MODERATE","engine_inits":1}
 {"model":"skinnova-e2b-v2","run":"cold","backend":"GPU","mode":"full","fallback":"null","total_s":241.03808186,"ttft_s":165.899010471,"engine_init_s":114.804,"tier":"MODERATE","engine_inits":1}
+{"model":"skinnova-e2b-v2","run":"cold","backend":"GPU","mode":"full","fallback":"null","total_s":201.947086781,"ttft_s":116.880712084,"engine_init_s":116.839,"tier":"MODERATE","engine_inits":2}
+{"model":"skinnova-e2b-v2","run":"warm","backend":"GPU","mode":"full","fallback":"null","total_s":83.882452851,"ttft_s":0.024843615,"engine_init_s":116.839,"tier":"MODERATE","engine_inits":2}
+{"model":"skinnova-e2b-v2","run":"cold","backend":"GPU","mode":"full","fallback":"null","total_s":197.44604455,"ttft_s":112.388588315,"engine_init_s":112.304,"tier":"MODERATE","engine_inits":1}
+{"model":"skinnova-e2b-v2","run":"warm","backend":"GPU","mode":"full","fallback":"null","total_s":83.555189621,"ttft_s":0.068318154,"engine_init_s":112.304,"tier":"MODERATE","engine_inits":1}

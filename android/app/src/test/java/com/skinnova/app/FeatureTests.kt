@@ -100,7 +100,8 @@ class ReliefTest {
         val all = db.cards.values.flatMap { c -> c.home.map { it.en to it.hi } + c.food.map { it.en to it.hi } + c.pharmacy.map { it.en to it.hi } } +
             listOf(db.general.itch, db.general.pain).flatMap { g -> g.home.map { it.en to it.hi } + g.pharmacy.map { it.en to it.hi } }
         all.forEach { (en, hi) -> assertTrue(en.isNotBlank() && hi.isNotBlank()); assertTrue("Hindi text expected: $hi", hi.any { it in 'ऀ'..'ॿ' }) }
-        db.cards.forEach { (k, c) -> assertTrue("sources for $k", c.sources.isNotEmpty()) }
+        db.cards.forEach { (k, c) -> assertTrue("sources for $k", c.sources.isNotEmpty()); assertNotNull("contagious line for $k", c.contagious) }
+        assertTrue(db.cards["tinea"]!!.contagious!!.en.startsWith("Contagious")); assertTrue(db.cards["eczema_atopic"]!!.contagious!!.en.startsWith("Not contagious"))
     }
 
     @Test fun onlyPharmacyMedicinesNamed() {
@@ -194,5 +195,9 @@ class ChatSafetyTest {
         assertEquals("It is more likely spot that needs a doctor's look, so please follow the advice level.",
             com.skinnova.app.safety.ChatSafety.tidy("It is more likely spot that needs a doctor's look, so please follow the advice level. Retake the photo with a coin for size. "))
         assertEquals("Eczema fits best so far. It is not contagious.", com.skinnova.app.safety.ChatSafety.tidy("Eczema fits best so far. It is not contagious."))
+        // photo advice only when asked about the photo (phone tour answer, 2026-10-08)
+        val a = "It is not contagious. Retake the photo if you change your mind."
+        assertEquals("It is not contagious.", com.skinnova.app.safety.ChatSafety.tidy(a, "Is it contagious?"))
+        assertEquals(a, com.skinnova.app.safety.ChatSafety.tidy(a, "Should I take a new photo?"))
     }
 }

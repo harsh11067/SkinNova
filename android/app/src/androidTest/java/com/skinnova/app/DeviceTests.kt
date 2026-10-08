@@ -117,22 +117,39 @@ class DeviceTests {
         assumeTrue("no verified .litertlm on the device", model != null)
         val bmp = testCtx.assets.open("cv_fixtures/00.jpg").use { BitmapFactory.decodeStream(it) }
         val ans = QuestionnaireAnswers("arm", "1_4w", 2, 0, "no", false, false, false, false, "18_39")
-        val r = c.pipeline().run(ans, c.cv.classify(bmp.toRgb()), false, null, "en") {}
+        // result from the real CV + rules with a canned (validator-valid) analysis: the test measures the chat, and stays short
+        // (a full analysis first kept the 3 GB process busy for 6 min and vivo's power manager force-stopped it)
+        val canned = """{"possible_categories":[{"key":"eczema_atopic","likelihood":"higher","why":"Supported by moderate itching on the arm."},{"key":"contact_dermatitis","likelihood":"possible","why":"Possible: a new product can look similar."}],"uncertainty":{"level":"moderate","reasons":[]},"explanation":"It has been there for one to four weeks on the arm with moderate itching. Eczema fits best so far.","what_would_help":["A doctor's examination in person"],"self_care_info":["Moisturise often with a plain, fragrance-free cream."],"triage":{"tier":"LOW","advice":"Watch it and use gentle care."},"disagreement_with_image_model":false}"""
+        val r = com.skinnova.app.ml.AnalysisPipeline(c.labels, c.prompts, c.parser, c.guards, FakeLlm(canned)).run(ans, c.cv.classify(bmp.toRgb()), false, null, "en") {}
         val out = File(ctx.getExternalFilesDir("bench"), "chat.jsonl")
+        // -e backend CPU|GPU: compare decode speed per backend on this phone (default: the app's choice)
+        val want = InstrumentationRegistry.getArguments().getString("backend")
+        if (want != null && want != c.engineHolder.backendName) c.engineHolder.forceBackend(want)
+        val ti = System.nanoTime(); c.engineHolder.use { }   // engine load is not part of an answer's time
+        val initS = (System.nanoTime() - ti) / 1e9
+        try {
         for ((q, lang) in listOf("Is it contagious?" to "en", "What should I avoid?" to "en", "क्या यह छूत की बीमारी है?" to "hi")) {
             val top = r.output.possibleCategories.first().key
             val card = c.relief.cards[top] ?: c.relief.cards["other"]
             val p = c.prompts.chat(r, emptyList(), q, lang, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList())
-            val t0 = System.nanoTime()
-            val raw = c.llm.generate(com.skinnova.app.ml.LlmTask.CHAT, p.system, p.user)
+            val t0 = System.nanoTime(); var first = -1.0
+            val raw = c.llm.generate(com.skinnova.app.ml.LlmTask.CHAT, p.system, p.user) { t -> if (first < 0 && t.isNotEmpty()) first = (System.nanoTime() - t0) / 1e9 }
             val s = (System.nanoTime() - t0) / 1e9
             val shown = com.skinnova.app.safety.ChatSafety.tidy(raw.trim())
             val why = com.skinnova.app.safety.ChatSafety.withheld(shown, c.guards)
             out.appendText(SnJson.encodeToString(kotlinx.serialization.json.JsonObject.serializer(), kotlinx.serialization.json.buildJsonObject {
                 put("q", kotlinx.serialization.json.JsonPrimitive(q)); put("s", kotlinx.serialization.json.JsonPrimitive(s))
                 put("backend", kotlinx.serialization.json.JsonPrimitive(c.engineHolder.backendName)); put("withheld", kotlinx.serialization.json.JsonPrimitive(why ?: ""))
+                put("first_token_s", kotlinx.serialization.json.JsonPrimitive(first)); put("chars", kotlinx.serialization.json.JsonPrimitive(raw.length))
+                put("engine_load_s", kotlinx.serialization.json.JsonPrimitive(initS))
                 put("answer", kotlinx.serialization.json.JsonPrimitive(shown)) }) + "\n")
             assertTrue("chat answer took $s s", s <= 120.0)
+        }
+        } finally {
+            if (want == "CPU") {   // back to the app's backend; drop the ~2.3 GB CPU cache the GPU path never reads
+                c.engineHolder.forceBackend("GPU")
+                com.skinnova.app.ml.EngineHolder.engineCacheDir(ctx).listFiles()?.filter { it.name.endsWith(".xnnpack_cache") }?.forEach { it.delete() }
+            }
         }
     }
 

@@ -60,6 +60,9 @@ sealed interface VoiceState {
 /** True while the app lock covers the screens: dialogs must not open above the lock screen. */
 val LocalAppLocked = androidx.compose.runtime.staticCompositionLocalOf { false }
 
+/** Early look while the model writes: image-model top 3 + the safety rules' advice level (final level can only go up). */
+data class EarlyLook(val top3: List<com.skinnova.app.model.CvScore>, val tier: com.skinnova.app.model.Tier, val ruleMessages: List<String>)
+
 /** One Ask SkinNova exchange. [answer] null while the model is writing. */
 data class ChatTurn(val question: String, val answer: String? = null, val danger: Boolean = false, val withheld: Boolean = false,
                     val partial: String = "")
@@ -76,6 +79,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     private val _cv = MutableStateFlow<List<CvScore>>(emptyList()); val cv: StateFlow<List<CvScore>> = _cv
     private val _voice = MutableStateFlow<VoiceState>(VoiceState.Idle); val voice: StateFlow<VoiceState> = _voice
     private val _chat = MutableStateFlow<List<ChatTurn>>(emptyList()); val chat: StateFlow<List<ChatTurn>> = _chat
+    private val _early = MutableStateFlow<EarlyLook?>(null); val early: StateFlow<EarlyLook?> = _early
     var savedId: String? = null; private set
     private var job: Job? = null
     private val audio = com.skinnova.app.ml.AudioCapture()
@@ -85,7 +89,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
         val b = downscale(bmp, 1024)
         // profile pre-fills age band + skin tone (shown on the questions, the user can still change them)
         val prof = c.profiles.profile.value
-        _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _cv.value = emptyList(); _chat.value = emptyList()
+        _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _cv.value = emptyList(); _chat.value = emptyList(); _early.value = null
         _draft.value = Draft(ageBand = prof.ageBand, skinTone = prof.skinTone)
         viewModelScope.launch(Dispatchers.Default) {
             val rgb = b.toRgb(); val q = QualityGate.check(rgb)
@@ -129,6 +133,10 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 if (!c.cv.available) { _state.value = AnalysisState.Failed("Image model not found in this build"); return@launch }
                 val cv = _cv.value.ifEmpty { withContext(Dispatchers.Default) { c.cv.classify(rgb) } }
                 _cv.value = cv
+                // early look (same deterministic rules the pipeline runs; the LLM can only raise the level)
+                val rules = com.skinnova.app.safety.RedFlagRules.evaluate(answers, cv, c.labels, qualityForced)
+                _early.value = EarlyLook(com.skinnova.app.safety.RedFlagRules.top3(cv),
+                    com.skinnova.app.model.Tier.max(rules.tier, com.skinnova.app.safety.TierResolver.classFloor(cv, c.labels)), rules.messages)
                 // the photo reaches the LLM only as the image model's scores (EngineHolder.SEND_PHOTO_TO_LLM)
                 val img = if (EngineHolder.SEND_PHOTO_TO_LLM) withContext(Dispatchers.IO) { writeLlmImage(rgb) }.path else null
                 val res = c.pipeline().run(answers, cv, qualityForced, img, c.settings.lang.value) { _state.value = it }
@@ -154,7 +162,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     fun clearSession() {
         job?.cancel(); chatJob?.cancel()
         _photo.value = null; _result.value = null; _cv.value = emptyList(); _chat.value = emptyList(); _draft.value = Draft()
-        _quality.value = null; _state.value = AnalysisState.Idle; savedId = null
+        _quality.value = null; _state.value = AnalysisState.Idle; savedId = null; _early.value = null
     }
 
     fun save(r: FinalResult? = _result.value) {
@@ -191,10 +199,11 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 val card = c.relief.cards[top] ?: c.relief.cards["other"]
                 // answer in the question's language (a Hindi question gets a Hindi answer, whatever the app language)
                 val lang = if (q.any { it in '\u0900'..'\u097F' }) "hi" else c.settings.lang.value
-                val p = c.prompts.chat(r, earlier, q, lang, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList())
+                val p = c.prompts.chat(r, earlier, q, lang, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList(),
+                    card?.contagious?.en)
                 c.llm.generate(LlmTask.CHAT, p.system, p.user) { part -> setLast { it.copy(partial = part) } }.trim()
             } catch (e: kotlinx.coroutines.CancellationException) { throw e } catch (e: Throwable) { "" }
-            val shown = com.skinnova.app.safety.ChatSafety.tidy(ans)
+            val shown = com.skinnova.app.safety.ChatSafety.tidy(ans, q)
             val why = com.skinnova.app.safety.ChatSafety.withheld(shown, c.guards)
             setLast { it.copy(answer = if (why == null) shown else "", withheld = why != null, partial = "") }
         }

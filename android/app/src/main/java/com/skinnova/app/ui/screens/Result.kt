@@ -76,12 +76,15 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
         AnalysisState.CheckingPhoto -> 0; AnalysisState.Classifying -> 1; AnalysisState.Rules -> 2
         AnalysisState.LoadingModel, is AnalysisState.Generating, AnalysisState.Validating -> 3; AnalysisState.Translating -> 4; else -> 0
     }
-    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().padding(horizontal = 26.dp, vertical = 40.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(Modifier.size(220.dp), contentAlignment = Alignment.Center) {
+    val early0 by vm.early.collectAsState()
+    val ring = if (early0 != null) 150.dp else 220.dp   // smaller once the early look needs the space
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(horizontal = 26.dp, vertical = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(Modifier.size(ring), contentAlignment = Alignment.Center) {
             val llmBusy = st is AnalysisState.LoadingModel || st is AnalysisState.Generating || st is AnalysisState.Validating
-            SpinRing(220.dp, sn.line, 18000, dotted = false, spinning = !llmBusy)
-            Box(Modifier.size(184.dp), contentAlignment = Alignment.Center) { SpinRing(184.dp, sn.acc, 9000, reverse = true, spinning = !llmBusy) }
-            photo?.let { Image(it.asImageBitmap(), null, Modifier.size(144.dp).clip(CircleShape), contentScale = ContentScale.Crop) }
+            SpinRing(ring, sn.line, 18000, dotted = false, spinning = !llmBusy)
+            Box(Modifier.size(ring * 0.84f), contentAlignment = Alignment.Center) { SpinRing(ring * 0.84f, sn.acc, 9000, reverse = true, spinning = !llmBusy) }
+            photo?.let { Image(it.asImageBitmap(), null, Modifier.size(ring * 0.65f).clip(CircleShape), contentScale = ContentScale.Crop) }
         }
         Spacer(Modifier.height(30.dp))
         Text(stringResource(R.string.an_title), style = SnType.headline, color = sn.ink)
@@ -105,6 +108,8 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
             }
         }
         Spacer(Modifier.height(14.dp))
+        val early by vm.early.collectAsState()
+        early?.let { EarlyLookCard(it) }
         when (val s = st) {
             AnalysisState.LoadingModel -> Text(stringResource(R.string.an_loading_model), style = SnType.caption, color = sn.mut)
             is AnalysisState.Generating -> if (s.partialText.isEmpty()) Text(stringResource(R.string.an_reading), style = SnType.caption, color = sn.mut)
@@ -112,7 +117,7 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
             is AnalysisState.Failed -> Text(s.message, style = SnType.caption, color = sn.urgent)
             else -> {}
         }
-        Spacer(Modifier.weight(1f))
+        Spacer(Modifier.height(16.dp))
         KeepRunningTip()
         OutlineButton(stringResource(R.string.an_cancel), Modifier.fillMaxWidth()) { vm.cancel(); onCancel() }
     }
@@ -349,4 +354,33 @@ fun KeepRunningTip() {
         }
     }
     Spacer(Modifier.height(10.dp))
+}
+
+/** Analyzing screen: what is already known while the model writes (deterministic, from strings.xml + the image model). */
+@Composable
+private fun EarlyLookCard(e: com.skinnova.app.ui.EarlyLook) {
+    val sn = LocalSn.current
+    Column(Modifier.fillMaxWidth()) {
+        val msgs = e.ruleMessages.mapNotNull { k -> ruleMessageRes(k)?.let { if (k.startsWith("rf_t")) stringResource(it, "") else stringResource(it) } }
+        if (msgs.isNotEmpty()) { RedFlagBanner(msgs); Spacer(Modifier.height(10.dp)) }
+        SnCard(framed = false) {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(stringResource(R.string.an_early_title), style = SnType.title, color = sn.ink)
+                Text(stringResource(R.string.an_early_sub), style = SnType.micro, color = sn.mut)
+                e.top3.filter { it.p >= 0.05 }.forEachIndexed { i, s ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(stringResource(categoryNameRes(s.key)), style = SnType.label, color = sn.ink, modifier = Modifier.weight(1f))
+                        LikelihoodPill(com.skinnova.app.ml.Fallback.likelihood(i, s.p))
+                    }
+                }
+                Spacer(Modifier.height(4.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.an_early_level), style = SnType.caption, color = sn.mut, modifier = Modifier.weight(1f))
+                    Text(stringResource(when (e.tier) { Tier.LOW -> R.string.tier_LOW; Tier.MODERATE -> R.string.tier_MODERATE
+                        Tier.HIGH -> R.string.tier_HIGH; Tier.URGENT -> R.string.tier_URGENT }), style = SnType.label, color = sn.tier(e.tier))
+                }
+            }
+        }
+        Spacer(Modifier.height(10.dp))
+    }
 }

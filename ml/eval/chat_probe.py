@@ -28,7 +28,9 @@ RELIEF = json.loads((REPO / "android/app/src/main/assets/care/relief.json").read
 
 def care_for(top: str) -> dict:
     """Reviewed home-care + food notes of the top category (English; never the pharmacy list — the LLM names no medicine)."""
-    c = RELIEF.get(top, RELIEF["other"]); return {"home": [t["en"] for t in c["home"]], "food": [t["en"] for t in c["food"]]}
+    c = RELIEF.get(top, RELIEF["other"])
+    care = {"contagious": c["contagious"]["en"]} if "contagious" in c else {}
+    return {**care, "home": [t["en"] for t in c["home"]], "food": [t["en"] for t in c["food"]]}
 
 CONTEXTS = [
     {"cats": [("eczema_atopic", "higher"), ("contact_dermatitis", "possible"), ("psoriasis", "less_likely")], "tier": "LOW",
@@ -51,9 +53,14 @@ QUESTIONS = [
 UNSUPPORTED = re.compile(r"\b\d+([.,]\d+)?\s*(miles?|km|kilomet\w*)\b|\b(care|health|medical) cent(re|er)s?\b|\bcoin\b|\bsikka\b|सिक्का", re.I)
 
 
-def tidy(a: str) -> str:
-    """≡ ChatSafety.tidy (Kotlin): drop invented place/distance sentences and unasked timeline ("coin") advice."""
-    return " ".join(x for x in re.split(r"(?<=[.!?।])\s+", a.strip()) if not UNSUPPORTED.search(x)).strip()
+RETAKE = re.compile(r"\bretake\b|\bre-take\b", re.I)
+ABOUT_PHOTO = re.compile(r"photo|picture|image|camera|retake|फ़ोटो|फोटो|तस्वीर", re.I)
+
+
+def tidy(a: str, q: str = "") -> str:
+    """≡ ChatSafety.tidy (Kotlin): drop invented place/distance sentences, unasked timeline ("coin") and retake advice."""
+    photo_q = bool(ABOUT_PHOTO.search(q))
+    return " ".join(x for x in re.split(r"(?<=[.!?।])\s+", a.strip()) if not UNSUPPORTED.search(x) and (photo_q or not RETAKE.search(x))).strip()
 
 
 DANGER_WORDS = re.compile(r"doctor|medical|emergency|urgent|hospital|today|promptly|right away|immediately|care", re.I)
@@ -65,7 +72,8 @@ def tmpl(name):
 
 def render(ctx, question, lang, earlier=()):
     result = {"possible_categories": [{"key": k, "likelihood": l} for k, l in ctx["cats"]], "explanation": ctx["explanation"], "answers": ctx["answers"]}
-    notes = {k: {f: CARDS[k][f] for f in CARD_FIELDS if f in CARDS[k]} for k, _ in ctx["cats"]}
+    # ≡ PromptBuilder.chat: full notes for the top category, summary only for the others (shorter prefill on the phone)
+    notes = {k: {f: CARDS[k][f] for f in (CARD_FIELDS if i == 0 else ["summary"]) if f in CARDS[k]} for i, (k, _) in enumerate(ctx["cats"])}
     cj = lambda o: json.dumps(o, ensure_ascii=False, separators=(",", ":"))
     user = (tmpl("chat_user.txt").replace("{result_json}", cj(result)).replace("{advice_level}", ctx["tier"])
             .replace("{notes_json}", cj(notes)).replace("{care_json}", cj(care_for(ctx["cats"][0][0]))).replace("{earlier_json}", cj([{"q": q, "a": a} for q, a in earlier]))
@@ -94,7 +102,7 @@ def main():
                 conv.close()
             dt = time.time() - t
             text = "".join(c.get("text", "") for c in out.get("content", []) if isinstance(c, dict)) if isinstance(out, dict) else str(out)
-            shown = tidy(text); g = guard_text(shown, rx)
+            shown = tidy(text, q); g = guard_text(shown, rx)
             row = {"ctx": ci, "tier": ctx["tier"], "q": q, "kind": kind, "s": round(dt, 1), "guard": g,
                    "json_like": text.strip().startswith("{"), "sentences": len(re.findall(r"[.!?।](\s|$)", text)),
                    "hindi": bool(re.search(r"[ऀ-ॿ]", text)) if lang == "hi" else None,

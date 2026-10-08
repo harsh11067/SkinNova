@@ -457,4 +457,8 @@
     <string name="bg_body">Your phone may pause apps in the background. Allow SkinNova so the answer still arrives if you switch apps.</string>
     <string name="bg_body_maker">This phone may stop SkinNova in the background. Tap Allow below, and also: Settings → Battery → Background power consumption management → SkinNova → Allow.</string>
     <string name="bg_allow">Allow</string>
+    <string name="an_early_title">Early look</string>
+    <string name="an_early_sub">From the image model and the safety rules — the AI is writing the full explanation now. The advice level can only go up, never down.</string>
+    <string name="an_early_level">Advice level so far</string>
+    <string name="rl_contagious">Is it contagious?</string>
 </resources>

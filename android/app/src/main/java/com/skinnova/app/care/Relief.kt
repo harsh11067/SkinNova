@@ -28,7 +28,7 @@ data class ReliefItem(
 
 @Serializable
 data class CareCard(val home: List<Txt> = emptyList(), val food: List<Txt> = emptyList(), val pharmacy: List<ReliefItem> = emptyList(),
-                    val sources: List<String> = emptyList())
+                    val sources: List<String> = emptyList(), val contagious: Txt? = null)
 
 @Serializable
 data class Symptom(val home: List<Txt> = emptyList(), val pharmacy: List<ReliefItem> = emptyList())
@@ -48,7 +48,7 @@ enum class Blocked { DOCTOR_FIRST, CHILD }
 enum class Caution { PHARMACIST, PREGNANT, ALLERGIES, INFECTION_RISK, CONFIRM_FIRST }
 
 data class ReliefPlan(val home: List<Txt>, val food: List<Txt>, val pharmacy: List<ReliefItem>, val blocked: Blocked?,
-                      val cautions: List<Caution>, val sources: List<String>)
+                      val cautions: List<Caution>, val sources: List<String>, val contagious: Txt? = null)
 
 /**
  * Deterministic (JVM-tested): which home care, food notes and pharmacy items a result may show.
@@ -70,7 +70,7 @@ object ReliefPlanner {
         val sources = (card.sources + if (a.itch >= 1 || a.pain >= 1) db.general.sources else emptyList()).distinct()
         val child = a.ageBand == "lt_12"
         if (doctorFirst || child)
-            return ReliefPlan(home, card.food, emptyList(), if (doctorFirst) Blocked.DOCTOR_FIRST else Blocked.CHILD, emptyList(), sources)
+            return ReliefPlan(home, card.food, emptyList(), if (doctorFirst) Blocked.DOCTOR_FIRST else Blocked.CHILD, emptyList(), sources, card.contagious)
 
         val confident = topLikelihood == "higher" && topP >= CONFIDENT_P
         val candidates = card.pharmacy.filter { !it.specific || confident } +
@@ -87,7 +87,7 @@ object ReliefPlanner {
             if (profile.allergies.isNotBlank() && items.isNotEmpty()) add(Caution.ALLERGIES)
             if ((("diabetes" in profile.conditions) || ("weak_immunity" in profile.conditions)) && topKey in INFECTIONS) add(Caution.INFECTION_RISK)
         }
-        return ReliefPlan(home, card.food, items, null, cautions, sources)
+        return ReliefPlan(home, card.food, items, null, cautions, sources, card.contagious)
     }
 
     private val INFECTIONS = setOf("tinea", "scabies", "other")

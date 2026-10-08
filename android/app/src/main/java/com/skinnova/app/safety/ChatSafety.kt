@@ -30,7 +30,14 @@ object ChatSafety {
         """\b\d+([.,]\d+)?\s*(miles?|km|kilomet\w*)\b|\b(care|health|medical) cent(re|er)s?\b|\bcoin\b|\bsikka\b|सिक्का""", RegexOption.IGNORE_CASE)
     private val SENTENCE = Regex("""(?<=[.!?।])\s+""")
 
-    fun tidy(answer: String): String = SENTENCE.split(answer.trim()).filterNot { UNSUPPORTED.containsMatchIn(it) }.joinToString(" ").trim()
+    /** Photo advice ("Retake the photo …") only when the question is about the photo. */
+    private val RETAKE = Regex("""\bretake\b|\bre-take\b""", RegexOption.IGNORE_CASE)
+    private val ABOUT_PHOTO = Regex("""photo|picture|image|camera|retake|फ़ोटो|फोटो|तस्वीर""", RegexOption.IGNORE_CASE)
+
+    fun tidy(answer: String, question: String = ""): String {
+        val photoQ = ABOUT_PHOTO.containsMatchIn(question)
+        return SENTENCE.split(answer.trim()).filterNot { UNSUPPORTED.containsMatchIn(it) || (!photoQ && RETAKE.containsMatchIn(it)) }.joinToString(" ").trim()
+    }
 
     /** null = the answer may be shown; otherwise why it was withheld. */
     fun withheld(answer: String, guards: ContentGuards): String? = when {

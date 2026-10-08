@@ -94,7 +94,7 @@ class MainActivity : androidx.fragment.app.FragmentActivity() {
             LaunchedEffect(lang) { if (lang != initialLang) recreate() }
             SkinNovaTheme(dark) {
                 val sn = LocalSn.current
-                Box(Modifier.fillMaxSize().background(sn.bgBrush)) { App(vm, tvm) }
+                App(vm, tvm)
             }
         }
     }
@@ -129,7 +129,7 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
     val focus = androidx.compose.ui.platform.LocalFocusManager.current
     val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
     LaunchedEffect(locked) { if (locked) { focus.clearFocus(force = true); keyboard?.hide(); com.skinnova.app.i18n.Tts.stop() } }
-    Box(Modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize().background(LocalSn.current.bgBrush)) {
       // Route guard: while locked no route is reachable — the lock screen covers the whole NavHost, takes every touch,
       // and the routes underneath are removed from the accessibility tree (FLAG_SECURE hides them from screenshots).
       // LocalAppLocked: screens' dialogs (own windows, above the lock screen) are not shown while locked
