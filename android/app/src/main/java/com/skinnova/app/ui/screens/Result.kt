@@ -24,7 +24,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -44,7 +45,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skinnova.app.R
-import com.skinnova.app.i18n.Tts
 import com.skinnova.app.ml.AnalysisState
 import com.skinnova.app.model.FinalResult
 import com.skinnova.app.model.Mode
@@ -53,6 +53,7 @@ import com.skinnova.app.ui.SessionViewModel
 import com.skinnova.app.ui.components.Bar
 import com.skinnova.app.ui.components.Disclaimer
 import com.skinnova.app.ui.components.OutlineButton
+import com.skinnova.app.ui.components.SpeakButton
 import com.skinnova.app.ui.components.RedFlagBanner
 import com.skinnova.app.ui.components.SmallTag
 import com.skinnova.app.ui.components.SnCard
@@ -120,15 +121,20 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
 @Composable
 fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit, onLearn: (String) -> Unit, onTrack: () -> Unit) {
     val sn = LocalSn.current
-    val ctx = LocalContext.current
     val res by vm.result.collectAsState()
     val photo by vm.photo.collectAsState()
     val history by vm.c.settings.history.collectAsState()
     val tts by vm.c.settings.tts.collectAsState()
     val r: FinalResult = res ?: return
     var showHi by remember { mutableStateOf(r.localized != null && r.lang == "hi") }
-    var saved by remember { mutableStateOf(vm.savedId != null) }
+    var saved by remember(r.createdAt) { mutableStateOf(vm.savedId != null) }
+    var askSave by remember { mutableStateOf(false) }
     val loc = if (showHi) r.localized else null
+    val lang = if (showHi) "hi" else "en"
+    val topOther = r.output.possibleCategories.firstOrNull()?.key == "other"
+    val uncertain = topOther || r.output.uncertainty.level == "high" || (r.cvTop3.firstOrNull()?.p ?: 0.0) < 0.5
+    val appCtx = androidx.compose.ui.platform.LocalContext.current.applicationContext
+    androidx.compose.runtime.LaunchedEffect(r.createdAt) { com.skinnova.app.notify.Notifier.cancelReady(appCtx) }   // seen → clear "ready"
     val tier = Tier.parse(r.finalTier) ?: Tier.MODERATE
     val p = r.cvTop3.associate { it.key to it.p }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(horizontal = 18.dp, vertical = 8.dp)) {
@@ -158,6 +164,17 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
             }
             Spacer(Modifier.height(12.dp))
         }
+        // 2b no clear match: "other" leads → say what that means and show the closest known conditions (never a dead end)
+        if (topOther) {
+            Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(sn.surf2).padding(14.dp)) {
+                Column {
+                    Text(stringResource(R.string.res_nomatch_title), style = SnType.label, color = sn.ink)
+                    Spacer(Modifier.height(4.dp))
+                    Text(stringResource(R.string.res_nomatch_body), style = SnType.caption, color = sn.mut)
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+        }
         // 3 possible categories (likelihood words; bar = calibrated image-model score, no big numbers)
         SnCard {
             Column {
@@ -165,7 +182,12 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
                 Spacer(Modifier.height(4.dp))
                 Text(stringResource(R.string.res_possible_sub), style = SnType.caption, color = sn.mut)
                 Spacer(Modifier.height(14.dp))
-                r.output.possibleCategories.forEachIndexed { k, c ->
+                // "other" first and fewer than 3 rows → add the image model's next closest known conditions (as less likely)
+                val shown = r.output.possibleCategories.map { it.key }.toSet()
+                val extra = if (!topOther) emptyList() else r.cvTop3.filter { it.key !in shown && it.key != "other" }
+                    .take(3 - r.output.possibleCategories.size.coerceAtMost(3))
+                    .map { com.skinnova.app.model.Category(it.key, "less_likely", stringResource(R.string.res_nomatch_why)) }
+                (r.output.possibleCategories + extra).forEachIndexed { k, c ->
                     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).clickable(role = Role.Button) { onLearn(c.key) }.padding(vertical = 8.dp, horizontal = 4.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(22.dp).clip(CircleShape).border(1.dp, sn.line, CircleShape), contentAlignment = Alignment.Center) {
@@ -210,26 +232,37 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
                         Box(Modifier.size(48.dp).semantics { contentDescription = switchLabel }.clickable(role = Role.Button) { showHi = !showHi },
                             contentAlignment = Alignment.Center) { Text("⇄", color = sn.accT) }
                     }
-                    val readAloud = stringResource(R.string.res_read_aloud)
-                    if (tts) Box(Modifier.size(48.dp).semantics { contentDescription = readAloud }.clickable(role = Role.Button) {
-                        Tts.speak(ctx, loc?.explanation ?: r.output.explanation, if (showHi) "hi" else "en")
-                    }, contentAlignment = Alignment.Center) { Text("🔊", fontSize = 16.sp) }
+                    if (tts) SpeakButton({ loc?.explanation ?: r.output.explanation }, lang)
                 }
                 Spacer(Modifier.height(8.dp))
                 Text(loc?.explanation ?: r.output.explanation, style = SnType.bodyL, color = sn.ink)
             }
         }
         Spacer(Modifier.height(12.dp))
-        BulletCard(stringResource(R.string.res_help), loc?.whatWouldHelp ?: r.output.whatWouldHelp)
+        BulletCard(stringResource(R.string.res_help), loc?.whatWouldHelp ?: r.output.whatWouldHelp, tts, lang)
         Spacer(Modifier.height(12.dp))
-        BulletCard(stringResource(R.string.res_care), loc?.selfCareInfo ?: r.output.selfCareInfo)
+        BulletCard(stringResource(R.string.res_care), loc?.selfCareInfo ?: r.output.selfCareInfo, tts, lang)
+        Spacer(Modifier.height(12.dp))
+        // 6b home care, food and pharmacy relief: curated + cited (assets/care/relief.json), never LLM text
+        ReliefCard(vm, r, tier, tts, lang)
+        Spacer(Modifier.height(12.dp))
+        // 6c Ask SkinNova: follow-up questions, answered on the phone by Gemma (guarded)
+        AskCard(vm, tts, lang)
         Spacer(Modifier.height(12.dp))
         Disclaimer()
         Spacer(Modifier.height(16.dp))
+        if (uncertain) {   // the honest way to a surer answer: a better photo (a 2nd photo of the same spot added < 2 pts top-3 on val)
+            Text(stringResource(R.string.res_retake_tip), style = SnType.caption, color = sn.mut)
+            Spacer(Modifier.height(10.dp))
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             OutlineButton(stringResource(R.string.res_learn), Modifier.weight(1f)) { onLearn(r.output.possibleCategories.first().key) }
-            OutlineButton(stringResource(if (saved) R.string.res_saved else if (history) R.string.res_save else R.string.res_save_off), Modifier.weight(1f)) {
-                if (history && !saved) { vm.save(); saved = true }
+            OutlineButton(stringResource(if (saved) R.string.res_saved else R.string.res_save), Modifier.weight(1f)) {
+                when {
+                    saved -> {}
+                    history -> { vm.save(); saved = true }
+                    else -> askSave = true   // history is opt-in: one tap explains it, turns it on and saves
+                }
             }
         }
         Spacer(Modifier.height(10.dp))
@@ -239,6 +272,11 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
         }
         Spacer(Modifier.height(24.dp))
     }
+    if (askSave) AlertDialog(onDismissRequest = { askSave = false },
+        title = { Text(stringResource(R.string.res_save_title)) },
+        text = { Text(stringResource(R.string.res_save_body)) },
+        confirmButton = { TextButton({ askSave = false; vm.c.settings.setHistory(true); vm.save(); saved = true }) { Text(stringResource(R.string.res_save_ok)) } },
+        dismissButton = { TextButton({ askSave = false }) { Text(stringResource(R.string.cancel)) } })
 }
 
 @Composable
@@ -251,12 +289,15 @@ private fun LikelihoodPill(l: String) {
 }
 
 @Composable
-private fun BulletCard(title: String, items: List<String>) {
+internal fun BulletCard(title: String, items: List<String>, tts: Boolean, lang: String) {
     if (items.isEmpty()) return
     val sn = LocalSn.current
     SnCard(framed = false) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(title, style = SnType.title, color = sn.ink)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(title, style = SnType.title, color = sn.ink, modifier = Modifier.weight(1f))
+                if (tts) SpeakButton({ title + ". " + items.joinToString(". ") }, lang)
+            }
             items.forEach { Row { Text("•  ", color = sn.accT, style = SnType.body); Text(it, style = SnType.body, color = sn.mut) } }
         }
     }

@@ -1,0 +1,2 @@
+{"model":"skinnova-e2b-v2","run":"cold","backend":"GPU","mode":"full","fallback":"null","total_s":246.082586246,"ttft_s":173.34056378,"engine_init_s":119.772,"tier":"MODERATE","engine_inits":1}
+{"model":"skinnova-e2b-v2","run":"cold","backend":"GPU","mode":"full","fallback":"null","total_s":241.03808186,"ttft_s":165.899010471,"engine_init_s":114.804,"tier":"MODERATE","engine_inits":1}

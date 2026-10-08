@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -56,6 +58,7 @@ import com.skinnova.app.ui.components.SnCard
 import com.skinnova.app.ui.components.Toggle
 import com.skinnova.app.ui.components.TopBar
 import com.skinnova.app.ui.components.categoryArt
+import com.skinnova.app.ui.components.categoryPhotos
 import com.skinnova.app.ui.components.categoryNameRes
 import com.skinnova.app.ui.theme.LocalSn
 import com.skinnova.app.ui.theme.SnType
@@ -74,8 +77,10 @@ private fun JsonObject.str(k: String) = (this[k] as? JsonPrimitive)?.content ?: 
 @Composable
 fun InsightsScreen(vm: SessionViewModel, key: String, onBack: () -> Unit) {
     val sn = LocalSn.current
-    val card = vm.c.prompts.cards[key] as? JsonObject ?: return
+    val card = vm.c.prompts.cards[key] as? JsonObject ?: JsonObject(emptyMap())   // never a blank screen
     var tab by remember { mutableIntStateOf(0) }
+    val tts by vm.c.settings.tts.collectAsState()
+    val photos = categoryPhotos(key)
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(horizontal = 18.dp, vertical = 8.dp)) {
         TopBar(stringResource(R.string.ins_title), onBack)
         Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(sn.surf).border(1.dp, sn.line2, RoundedCornerShape(20.dp)).padding(4.dp),
@@ -89,10 +94,23 @@ fun InsightsScreen(vm: SessionViewModel, key: String, onBack: () -> Unit) {
         Spacer(Modifier.height(14.dp))
         SnCard {
             Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                if (photos.isEmpty()) Row(verticalAlignment = Alignment.CenterVertically) {
                     PixelImage(categoryArt(key), Modifier.size(64.dp).clip(RoundedCornerShape(18.dp)).border(1.5.dp, sn.acc, RoundedCornerShape(18.dp)))
                     Spacer(Modifier.width(14.dp))
                     Text(stringResource(categoryNameRes(key)), style = SnType.title, color = sn.ink)
+                } else {
+                    Text(stringResource(categoryNameRes(key)), style = SnType.title, color = sn.ink)
+                    Spacer(Modifier.height(10.dp))
+                    // real example photos on different skin tones (SCIN / PAD-UFES-20, CC BY 4.0)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        photos.forEach { res ->
+                            Image(painterResource(res), null, Modifier.weight(1f).aspectRatio(1f).clip(RoundedCornerShape(16.dp))
+                                .border(1.dp, sn.line, RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
+                        }
+                        repeat(3 - photos.size) { Spacer(Modifier.weight(1f)) }
+                    }
+                    Spacer(Modifier.height(6.dp))
+                    Text(stringResource(R.string.lib_photo_credit), style = SnType.micro, color = sn.mut)
                 }
                 Spacer(Modifier.height(10.dp))
                 Text(card.str("summary"), style = SnType.body, color = sn.mut)
@@ -106,7 +124,10 @@ fun InsightsScreen(vm: SessionViewModel, key: String, onBack: () -> Unit) {
         }
         SnCard(framed = false) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(title, style = SnType.title, color = sn.ink)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(title, style = SnType.title, color = sn.ink, modifier = Modifier.weight(1f))
+                    if (tts) com.skinnova.app.ui.components.SpeakButton({ title + ". " + items.joinToString(". ") }, "en")
+                }
                 items.forEach { t ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(Modifier.size(24.dp).clip(RoundedCornerShape(9.dp)).border(1.dp, sn.line, RoundedCornerShape(9.dp)), contentAlignment = Alignment.Center) {
@@ -152,7 +173,9 @@ fun LibraryScreen(vm: SessionViewModel, onOpen: (String) -> Unit) {
             val card = vm.c.prompts.cards[k] as? JsonObject
             SnCard(onClick = { onOpen(k) }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    PixelImage(categoryArt(k), Modifier.size(58.dp).clip(RoundedCornerShape(16.dp)))
+                    val ph = categoryPhotos(k).firstOrNull()
+                    if (ph != null) Image(painterResource(ph), null, Modifier.size(58.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
+                    else PixelImage(categoryArt(k), Modifier.size(58.dp).clip(RoundedCornerShape(16.dp)))
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text(stringResource(categoryNameRes(k)), style = SnType.label, color = sn.ink)
@@ -246,7 +269,7 @@ private fun HistoryRow(vm: SessionViewModel, e: AnalysisEntity, onClick: () -> U
 
 /** 10 Profile: appearance, language, on-device model, privacy & data, about. */
 @Composable
-fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -> Unit) {
+fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -> Unit, onEdit: () -> Unit = {}, onSetPin: () -> Unit = {}) {
     val sn = LocalSn.current
     val c = vm.c
     val scope = rememberCoroutineScope()
@@ -262,16 +285,30 @@ fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -
     val model = remember { c.models.activeModel() }
     val cvInfo: CvPreprocess? = remember { c.cv.pre }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().padding(start = 18.dp, end = 18.dp, top = 18.dp, bottom = 110.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        val prof by c.profiles.profile.collectAsState()
+        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).clickable(role = Role.Button, onClick = onEdit), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(60.dp).clip(RoundedCornerShape(22.dp)).background(sn.surf2).border(1.5.dp, sn.acc, RoundedCornerShape(22.dp)), contentAlignment = Alignment.Center) {
-                Text("G", fontFamily = com.skinnova.app.ui.theme.Pixelify, fontSize = 26.sp, color = sn.accT)
+                Text(prof.initial, fontFamily = com.skinnova.app.ui.theme.Pixelify, fontSize = 26.sp, color = sn.accT)
             }
             Spacer(Modifier.width(14.dp))
-            Column {
-                Text(stringResource(R.string.prof_guest), style = SnType.titleL, color = sn.ink)
+            Column(Modifier.weight(1f)) {
+                Text(prof.name.ifBlank { stringResource(R.string.prof_guest) }, style = SnType.titleL, color = sn.ink)
                 Text(stringResource(R.string.prof_summary, count, spots.size), style = SnType.caption, color = sn.mut)
             }
+            Text(stringResource(R.string.prof_edit), style = SnType.caption, color = sn.accT)
         }
+        if (!prof.complete) {
+            Spacer(Modifier.height(12.dp))
+            SnCard(onClick = onEdit) {
+                Column {
+                    Text(stringResource(R.string.prof_complete), style = SnType.label, color = sn.ink)
+                    Spacer(Modifier.height(4.dp))
+                    Text(stringResource(R.string.prof_complete_sub), style = SnType.caption, color = sn.mut)
+                }
+            }
+        }
+        Overline(stringResource(R.string.sec_title))
+        com.skinnova.app.ui.screens.SecuritySection(c.lock, onSetPin)
         Overline(stringResource(R.string.prof_appearance))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             Chip(stringResource(R.string.prof_dark), dark, { c.settings.setDark(true) }, Modifier.weight(1f))
@@ -351,6 +388,7 @@ suspend fun deleteEverything(vm: SessionViewModel, alsoModel: Boolean) {
     kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
         val d = c.db.dao(); d.clearMetrics(); d.clearCaptures(); d.clearSpots(); d.clearAnalyses()
         c.images.deleteAll()
+        c.profiles.delete()
         c.ctx.cacheDir.listFiles()?.forEach { it.deleteRecursively() }
         androidx.work.WorkManager.getInstance(c.ctx).cancelAllWorkByTag("spot_reminder")
         if (alsoModel) { c.engineHolder.release(); c.models.deleteModels() }

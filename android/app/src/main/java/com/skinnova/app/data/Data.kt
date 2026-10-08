@@ -140,6 +140,7 @@ class Settings(ctx: Context) {
     private val _onboarded = state(p.getBoolean("onboarded", false)); val onboarded: StateFlow<Boolean> = _onboarded
     private val _setupSeen = state(p.getBoolean("setupSeen", false)); val setupSeen: StateFlow<Boolean> = _setupSeen
     private val _coinMm = state(p.getFloat("coinMm", 20.0f).toDouble()); val coinMm: StateFlow<Double> = _coinMm
+    private val _notifAsked = state(p.getBoolean("notifAsked", false)); val notifAsked: StateFlow<Boolean> = _notifAsked
 
     fun setDark(v: Boolean) { p.edit().putBoolean("dark", v).apply(); _dark.value = v }
     fun setLang(v: String) { p.edit().putString("lang", v).apply(); _lang.value = v }
@@ -147,5 +148,6 @@ class Settings(ctx: Context) {
     fun setTts(v: Boolean) { p.edit().putBoolean("tts", v).apply(); _tts.value = v }
     fun setOnboarded(v: Boolean) { p.edit().putBoolean("onboarded", v).apply(); _onboarded.value = v }
     fun setSetupSeen(v: Boolean) { p.edit().putBoolean("setupSeen", v).apply(); _setupSeen.value = v }
+    fun setNotifAsked(v: Boolean) { p.edit().putBoolean("notifAsked", v).apply(); _notifAsked.value = v }
     fun setCoinMm(v: Double) { p.edit().putFloat("coinMm", v.toFloat()).apply(); _coinMm.value = v }
 }

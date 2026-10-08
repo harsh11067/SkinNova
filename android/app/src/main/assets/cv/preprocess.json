@@ -25,12 +25,18 @@
  ],
  "layout": "NHWC",
  "normalize_long_side": 512,
- "model_sha256": "bd2ff023f409319e7c242f412248451c6a40a1d566462e8bc4a8ff5d629d7c37",
+ "model_sha256": "e7e5ea277fa7685c641b627845dac0020ff2e62cb65d4242ab851d134f55b682",
  "dataset_rev": "a2a7226bedaa",
  "arch": "efficientnet_b0.ra_in1k",
  "skin_gate": {
   "output": "skin_logit",
-  "threshold": 0.10999999940395355,
-  "report": "reports/skin_gate.json"
- }
+  "threshold": 0.019999999552965164,
+  "report": "reports/skin_gate_v2.json"
+ },
+ "tta": [
+  "id",
+  "h",
+  "v",
+  "r180"
+ ]
 }

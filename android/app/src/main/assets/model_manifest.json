@@ -65,7 +65,7 @@
     ],
     "temperature": 0.9798760414123535,
     "labels_version": "v1",
-    "sha256": "bd2ff023f409319e7c242f412248451c6a40a1d566462e8bc4a8ff5d629d7c37",
+    "sha256": "e7e5ea277fa7685c641b627845dac0020ff2e62cb65d4242ab851d134f55b682",
     "classes": [
       "eczema_atopic",
       "contact_dermatitis",

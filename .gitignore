@@ -23,3 +23,8 @@ logs/
 ml/llm/notebooks/build/
 reports/kaggle/**/unsloth_compiled_cache/
 reports/kaggle/**/*.log
+
+# raw device logs (may hold device ids) and library review sheets (local paths)
+reports/device/*.txt
+reports/device/screens/
+reports/library/

@@ -22,9 +22,12 @@ class AppContainer(val ctx: Context) {
     private fun asset(path: String) = ctx.assets.open(path).bufferedReader().use { it.readText() }
 
     val settings = Settings(ctx)
+    val lock = com.skinnova.app.security.AppLock(com.skinnova.app.security.PrefsLockStore(ctx))
+    val profiles by lazy { com.skinnova.app.data.ProfileStore(ctx) }
     val labels: Labels = SnJson.decodeFromString(Labels.serializer(), asset("labels.json"))
     val guards = ContentGuards(ContentGuards.parseTerms(asset("safety/rx_terms.txt")))
     val intakeTopics = IntakeValidator.parseTopics(asset("safety/intake_topics.json"))
+    val relief by lazy { com.skinnova.app.care.ReliefDb.parse(asset("care/relief.json")) }
     val prompts = PromptBuilder(::asset)
     val parser = OutputParser(labels.keys, guards)
     val models = ModelManager(ctx)

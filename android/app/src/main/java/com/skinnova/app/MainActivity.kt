@@ -3,7 +3,6 @@ package com.skinnova.app
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -32,6 +31,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import kotlinx.coroutines.launch
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -49,6 +50,9 @@ import com.skinnova.app.ui.screens.LibraryScreen
 import com.skinnova.app.ui.screens.LoadingScreen
 import com.skinnova.app.ui.screens.OnboardingScreen
 import com.skinnova.app.ui.screens.ProfileScreen
+import com.skinnova.app.ui.screens.ProfileEditScreen
+import com.skinnova.app.ui.screens.SetPinScreen
+import com.skinnova.app.ui.screens.LockScreen
 import com.skinnova.app.ui.screens.QuestionsScreen
 import com.skinnova.app.ui.screens.RecaptureScreen
 import com.skinnova.app.ui.screens.ResultScreen
@@ -61,7 +65,8 @@ import com.skinnova.app.ui.theme.SkinNovaTheme
 import com.skinnova.app.ui.theme.SnType
 import java.util.Locale
 
-class MainActivity : ComponentActivity() {
+/** FragmentActivity (not plain ComponentActivity): BiometricPrompt needs it for fingerprint unlock. */
+class MainActivity : androidx.fragment.app.FragmentActivity() {
     private val vm: SessionViewModel by viewModels()
     private val tvm: TimelineViewModel by viewModels()
 
@@ -78,6 +83,12 @@ class MainActivity : ComponentActivity() {
         val c = (application as SkinNovaApp).container
         setContent {
             val dark by c.settings.dark.collectAsState()
+            val lockOn by c.lock.on.collectAsState()
+            // with an app lock, keep health data out of screenshots and the recent-apps thumbnail
+            LaunchedEffect(lockOn) {
+                if (lockOn) window.setFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE, android.view.WindowManager.LayoutParams.FLAG_SECURE)
+                else window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE)
+            }
             val lang by c.settings.lang.collectAsState()
             val initialLang = androidx.compose.runtime.remember { lang }
             LaunchedEffect(lang) { if (lang != initialLang) recreate() }
@@ -94,11 +105,12 @@ object Routes {
     const val SCAN = "scan"; const val QUESTIONS = "questions"; const val ANALYZING = "analyzing"; const val RESULT = "result"
     const val INSIGHTS = "insights/{key}"; const val LIBRARY = "library"; const val HISTORY = "history"; const val PROFILE = "profile"
     const val TRACK = "track"; const val TIMELINE = "timeline/{spotId}"; const val RECAPTURE = "recapture/{spotId}"
+    const val PROFILE_EDIT = "profile/edit"; const val SET_PIN = "security/pin"
     val TABS = setOf(HOME, HISTORY, LIBRARY, PROFILE)
 }
 
 @Composable
-fun App(vm: SessionViewModel, tvm: TimelineViewModel) {
+fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Routes.LOADING) {   // startRoute: on-device nav tests
     val nav = rememberNavController()
     val c = vm.c
     val entry by nav.currentBackStackEntryAsState()
@@ -111,8 +123,13 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel) {
         }
         nav.navigate(next) { popUpTo(Routes.LOADING) { inclusive = true } }
     }
+    val locked by c.lock.locked.collectAsState()
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
     Box(Modifier.fillMaxSize()) {
-        NavHost(nav, startDestination = Routes.LOADING) {
+      // Route guard: while locked no route is reachable — the lock screen covers the whole NavHost, takes every touch,
+      // and the routes underneath are removed from the accessibility tree (FLAG_SECURE hides them from screenshots).
+      Box(Modifier.fillMaxSize().then(if (locked) Modifier.clearAndSetSemantics { } else Modifier)) {
+        NavHost(nav, startDestination = startRoute) {
             composable(Routes.LOADING) { LoadingScreen(c) { afterStart() } }
             composable(Routes.ONBOARD) { OnboardingScreen(c) {
                 nav.navigate(if (c.models.activeModelPath() == null && !c.settings.setupSeen.value) Routes.SETUP else Routes.HOME) { popUpTo(0) }
@@ -137,13 +154,24 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel) {
                 HistoryScreen(vm, onOpen = { vm.openSaved(it); nav.navigate(Routes.RESULT) }, onSpot = { nav.navigate("timeline/$it") }, onScan = { nav.navigate(Routes.SCAN) })
             }
             composable(Routes.PROFILE) { ProfileScreen(vm, onReplayIntro = { c.settings.setOnboarded(false); nav.navigate(Routes.ONBOARD) { popUpTo(0) } },
-                onSetup = { nav.navigate(Routes.SETUP) }) }
+                onSetup = { nav.navigate(Routes.SETUP) }, onEdit = { nav.navigate(Routes.PROFILE_EDIT) }, onSetPin = { nav.navigate(Routes.SET_PIN) }) }
+            composable(Routes.PROFILE_EDIT) { ProfileEditScreen(vm) { nav.popBackStack() } }
+            composable(Routes.SET_PIN) { SetPinScreen(onDone = { c.lock.setPin(it); nav.popBackStack() }, onBack = { nav.popBackStack() }) }
             composable(Routes.TRACK) { TrackSpotScreen(vm, tvm, onBack = { nav.popBackStack() }, onCreated = { nav.navigate("timeline/$it") { popUpTo(Routes.HOME) } }) }
             composable(Routes.TIMELINE) { e -> TimelineScreen(vm, tvm, e.arguments?.getString("spotId")!!, onBack = { nav.popBackStack() },
                 onRecapture = { nav.navigate("recapture/$it") }) }
             composable(Routes.RECAPTURE) { e -> RecaptureScreen(vm, tvm, e.arguments?.getString("spotId")!!, onDone = { nav.popBackStack() }) }
         }
         if (route in Routes.TABS) BottomNav(route!!) { nav.tab(it) }
+      }
+        if (locked) LockScreen(c.lock, onForgot = {
+            // no PIN recovery exists offline: the way back in is a reset of the personal data (the AI model stays)
+            scope.launch {
+                com.skinnova.app.ui.screens.deleteEverything(vm, alsoModel = false)
+                c.lock.disable()
+                nav.navigate(Routes.HOME) { popUpTo(0) }
+            }
+        })
     }
 }
 

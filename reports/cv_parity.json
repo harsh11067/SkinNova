@@ -1,10 +1,10 @@
 {
- "git_sha": "9ccf21e",
+ "git_sha": "b5589cb",
  "dataset_rev": "a2a7226bedaa",
- "model_sha": "bd2ff023f409319e",
- "created_at": "2026-10-07T18:11:43+00:00",
+ "model_sha": "e7e5ea277fa7685c",
+ "created_at": "2026-10-08T00:45:05+00:00",
  "ckpt_sha": "b3e2c3e9739a9ca0",
- "tflite_sha256": "bd2ff023f409319e7c242f412248451c6a40a1d566462e8bc4a8ff5d629d7c37",
+ "tflite_sha256": "e7e5ea277fa7685c641b627845dac0020ff2e62cb65d4242ab851d134f55b682",
  "tflite_bytes": 16192608,
  "precision": "fp32",
  "n": 200,
@@ -21,6 +21,14 @@
   "logits",
   "skin_logit"
  ],
- "max_abs_dskin_prob": 2.3573637008666992e-05,
+ "max_abs_dskin_prob": 2.3543834686279297e-05,
+ "tta_views": [
+  "id",
+  "h",
+  "v",
+  "r180"
+ ],
+ "max_abs_dprob_tta": 8.445978164672852e-05,
+ "skin_gate": "skin_gate_v2.npz",
  "C3_pass": true
 }

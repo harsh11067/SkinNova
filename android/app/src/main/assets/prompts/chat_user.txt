@@ -1,0 +1,8 @@
+# v2
+RESULT: {result_json}
+ADVICE_LEVEL: {advice_level}
+NOTES: {notes_json}
+CARE: {care_json}
+EARLIER: {earlier_json}
+LANGUAGE: {language}
+QUESTION: <<<{question}>>>

@@ -60,19 +60,33 @@ def preprocess(path) -> np.ndarray:
     return ((x - np.array(MEAN, np.float32)) / np.array(STD, np.float32))[None]
 
 
+VIEWS = {"id": lambda x: x, "h": lambda x: x[:, :, ::-1, :], "v": lambda x: x[:, ::-1, :, :], "r180": lambda x: x[:, ::-1, ::-1, :]}
+
+
+def tta_probs(fn, x, views, T) -> np.ndarray:
+    """Mean calibrated probabilities over TTA views (NHWC ≡ torch flip(-1)/flip(-2) on NCHW; CvClassifier.view)."""
+    return np.mean([fn(np.ascontiguousarray(VIEWS[v](x))) for v in views], 0)
+
+
 def sha(p) -> str:
     return hashlib.sha256(open(p, "rb").read()).hexdigest()
 
 
 def main():
+    import argparse
     import litert_torch
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--gate", default="skin_gate.npz", help="models/cv/<file>: v2 adopted 2026-10-08 (reports/skin_gate_v2.json)")
+    ap.add_argument("--tta", default="id", help="comma list of views, e.g. id,h,v,r180 (reports/cv_tta.json)")
+    a = ap.parse_args(); views = a.tta.split(","); assert all(v in VIEWS for v in views)
+    gate_report = "reports/" + a.gate.replace(".npz", ".json")
     from ai_edge_litert.interpreter import Interpreter
     ck_path = MODELS / "cv" / "ckpt" / "best.pt"
     model, ck = load_model(ck_path)
     assert not ck.get("color_constancy"), "CvClassifier.kt has no Shades-of-Gray yet: port it (+ C4 fixtures) before exporting this checkpoint"
     model = model.float().eval()
     T = float(ck.get("temperature", 1.0))
-    g = np.load(MODELS / "cv" / "skin_gate.npz"); gate_t = float(g["threshold"])
+    g = np.load(MODELS / "cv" / a.gate); gate_t = float(g["threshold"])
     wrapped = NHWC(model, g["w"], float(g["b"])).eval()
     with torch.no_grad():   # the two-output wrapper must reproduce the classifier exactly
         x0 = torch.randn(1, SIZE, SIZE, 3); assert torch.allclose(wrapped(x0)[0], model(x0.permute(0, 3, 1, 2)), atol=1e-5)
@@ -86,10 +100,18 @@ def main():
     va = va[va.label.isin(ck["classes"])].sample(200, random_state=3407)
     interp = Interpreter(model_path=str(tfl)); interp.allocate_tensors()
     inp = interp.get_input_details()[0]; i_lg, i_sk = tfl_outputs(interp)
-    maxd, maxd_skin, agree, rows = 0.0, 0.0, 0, []
+    maxd, maxd_skin, agree, rows, maxd_tta = 0.0, 0.0, 0, [], 0.0
+    def pt_probs(x):
+        with torch.no_grad():
+            return torch.softmax(wrapped(torch.from_numpy(x))[0] / T, 1).numpy()[0]
+    def tfl_probs(x):
+        interp.set_tensor(inp["index"], x); interp.invoke()
+        return torch.softmax(torch.from_numpy(interp.get_tensor(i_lg)) / T, 1).numpy()[0]
     with torch.no_grad():
         for p in va.img:
             x = preprocess(p)
+            if len(views) > 1:
+                maxd_tta = max(maxd_tta, float(np.abs(tta_probs(pt_probs, x, views, T) - tta_probs(tfl_probs, x, views, T)).max()))
             lg, sk = wrapped(torch.from_numpy(x))
             pt = torch.softmax(lg / T, 1).numpy()[0]; ps = float(torch.sigmoid(sk)[0, 0])
             interp.set_tensor(inp["index"], x); interp.invoke()
@@ -102,10 +124,11 @@ def main():
     from ml.common.paths import dataset_rev
     rep = {**report_meta(dataset_rev=dataset_rev(), model_sha=tfl_sha[:16]), "ckpt_sha": sha(ck_path)[:16], "tflite_sha256": tfl_sha, "tflite_bytes": tfl.stat().st_size,
            "precision": "fp32", "n": len(va), "max_abs_dprob": maxd, "top1_agreement": agree / len(va),
-           "input": inp["shape"].tolist(), "input_dtype": str(inp["dtype"]), "outputs": ["logits", "skin_logit"], "max_abs_dskin_prob": maxd_skin}
-    rep["C3_pass"] = bool(maxd <= 0.01 and rep["top1_agreement"] >= 0.995 and maxd_skin <= 0.01)
+           "input": inp["shape"].tolist(), "input_dtype": str(inp["dtype"]), "outputs": ["logits", "skin_logit"], "max_abs_dskin_prob": maxd_skin,
+           "tta_views": views, "max_abs_dprob_tta": maxd_tta, "skin_gate": a.gate}
+    rep["C3_pass"] = bool(maxd <= 0.01 and rep["top1_agreement"] >= 0.995 and maxd_skin <= 0.01 and maxd_tta <= 0.01)
     (REPORTS / "cv_parity.json").write_text(json.dumps(rep, indent=1))
-    print(json.dumps({k: rep[k] for k in ["max_abs_dprob", "max_abs_dskin_prob", "top1_agreement", "C3_pass", "tflite_bytes"]}))
+    print(json.dumps({k: rep[k] for k in ["max_abs_dprob", "max_abs_dskin_prob", "max_abs_dprob_tta", "top1_agreement", "C3_pass", "tflite_bytes"]}))
     assert rep["C3_pass"], "C3 parity failed — do not ship this .tflite"
 
     # ---- ship to the app
@@ -114,7 +137,7 @@ def main():
     from ml.common.paths import dataset_rev
     pre = {"size": SIZE, "mean": list(MEAN), "std": list(STD), "temperature": T, "classes": ck["classes"], "layout": "NHWC",
            "normalize_long_side": 512, "model_sha256": tfl_sha, "dataset_rev": dataset_rev(), "arch": ck["arch"],
-           "skin_gate": {"output": "skin_logit", "threshold": gate_t, "report": "reports/skin_gate.json"}}
+           "skin_gate": {"output": "skin_logit", "threshold": gate_t, "report": gate_report}, "tta": views}
     (cv_assets / "preprocess.json").write_text(json.dumps(pre, indent=1))
     mf = ANDROID_ASSETS / "model_manifest.json"; m = json.loads(mf.read_text())
     m["cv"].update({"file": "cv/skin_cls.tflite", "input": [1, SIZE, SIZE, 3], "temperature": T, "sha256": tfl_sha, "classes": ck["classes"]})
@@ -134,11 +157,14 @@ def main():
     c5 = REPO / "android/app/src/androidTest/assets/cv_fixtures"; shutil.rmtree(c5, ignore_errors=True); c5.mkdir(parents=True)
     exp = []
     for i, p in enumerate(va.img.iloc[:20]):
-        shutil.copyfile(REPO / p, c5 / f"{i:02d}.jpg")
+        shutil.copyfile(REPO / p, c5 / f"{i:02d}.jpg")   # JPEG: used as a camera-like photo by the flow tests
+        # PNG = the exact pixels PIL decoded: C5 then measures model + preprocessing + TTA on the phone, not the
+        # difference between Android's and PIL's JPEG decoders (that alone moved p by up to 0.04 on 2026-10-07)
+        Image.open(REPO / p).convert("RGB").save(c5 / f"{i:02d}.png")
         x = preprocess(p); interp.set_tensor(inp["index"], x); interp.invoke()
-        pr = torch.softmax(torch.from_numpy(interp.get_tensor(i_lg)) / T, 1).numpy()[0]
-        skin = float(1 / (1 + np.exp(-interp.get_tensor(i_sk)[0, 0])))
-        exp.append({"file": f"{i:02d}.jpg", "probs": dict(zip(ck["classes"], map(float, pr))), "skin": skin})
+        skin = float(1 / (1 + np.exp(-interp.get_tensor(i_sk)[0, 0])))   # gate: "id" view only (as the app)
+        pr = tta_probs(tfl_probs, x, views, T)                            # probabilities: TTA mean (as the app)
+        exp.append({"file": f"{i:02d}.png", "probs": dict(zip(ck["classes"], map(float, pr))), "skin": skin, "tta": views})
     (c5 / "expected.json").write_text(json.dumps(exp, indent=1))
     print("shipped", cv_assets / "skin_cls.tflite", tfl.stat().st_size // 1024, "KB")
 

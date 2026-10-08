@@ -82,6 +82,36 @@ class PromptBuilder(private val readAsset: (String) -> String) {
         template("repair.txt").second.replace("{errors}", errors.joinToString("; ")).replace("{schema_compact}", SCHEMA_COMPACT)
             .replace("{previous}", previous.replace("<<<", "").replace(">>>", ""))
 
+    /** Ask SkinNova follow-up (prompts/chat_*.txt; probe: ml/eval/chat_probe.py renders the same way). */
+    fun chat(r: com.skinnova.app.model.FinalResult, earlier: List<Pair<String, String>>, question: String, lang: String,
+             careHome: List<String> = emptyList(), careFood: List<String> = emptyList()): Prompt {
+        val (vs, system) = template("chat_system.txt")
+        val (_, userT) = template("chat_user.txt")
+        val a = r.answers
+        val result = buildJsonObject {
+            put("possible_categories", buildJsonArray { r.output.possibleCategories.forEach { c -> add(buildJsonObject { put("key", c.key); put("likelihood", c.likelihood) }) } })
+            put("explanation", r.output.explanation)
+            put("answers", buildJsonObject { put("body_site", a.bodySite); put("duration", a.duration); put("itch", a.itch); put("pain", a.pain)
+                put("changing", a.changing); put("age_band", a.ageBand) })
+        }
+        val notes = buildJsonObject {
+            r.output.possibleCategories.forEach { c ->
+                val card = cards[c.key] as? JsonObject ?: return@forEach
+                put(c.key, buildJsonObject { CARD_FIELDS.forEach { f -> card[f]?.let { put(f, it) } } })
+            }
+        }
+        val prior = buildJsonArray { earlier.takeLast(2).forEach { (q, ans) -> add(buildJsonObject { put("q", q); put("a", ans) }) } }
+        // reviewed home-care + food notes of the top category (assets/care/relief.json, English) — never the pharmacy list
+        val care = buildJsonObject {
+            put("home", buildJsonArray { careHome.forEach { add(JsonPrimitive(it)) } }); put("food", buildJsonArray { careFood.forEach { add(JsonPrimitive(it)) } })
+        }
+        val user = userT.replace("{result_json}", cj(result)).replace("{advice_level}", r.finalTier).replace("{notes_json}", cj(notes))
+            .replace("{care_json}", cj(care))
+            .replace("{earlier_json}", cj(prior)).replace("{language}", if (lang == "hi") "Hindi" else "English")
+            .replace("{question}", question.replace("<<<", "").replace(">>>", "").take(300))
+        return Prompt(system, user, vs)
+    }
+
     fun transcribe(langHint: String) = template("transcribe.txt").second.replace("{lang_hint}", langHint)
     fun extractSystem() = template("extract_system.txt").second
     fun narrateSystem() = template("narrate_system.txt").second

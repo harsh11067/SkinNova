@@ -242,3 +242,34 @@ fun categoryArt(key: String): Int = when (key) {
     "benign_lesion", "suspicious_lesion" -> R.drawable.px_j0
     else -> R.drawable.px_j1
 }
+
+fun siteNameRes(key: String?): Int = mapOf("face" to R.string.site_face, "scalp" to R.string.site_scalp, "neck" to R.string.site_neck,
+    "chest" to R.string.site_chest, "back" to R.string.site_back, "abdomen" to R.string.site_abdomen, "arm" to R.string.site_arm,
+    "hand" to R.string.site_hand, "leg" to R.string.site_leg, "foot" to R.string.site_foot, "groin" to R.string.site_groin,
+    "nails" to R.string.site_nails)[key] ?: R.string.site_other
+
+/** 48 dp read-aloud button (system TTS, i18n/Tts.kt); hidden when "Read results aloud" is off in Profile. */
+@Composable
+fun SpeakButton(text: () -> String, lang: String) {
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val label = stringResource(R.string.res_read_aloud)
+    Box(Modifier.size(48.dp).semantics { contentDescription = label }.clickable(role = Role.Button) {
+        com.skinnova.app.i18n.Tts.speak(ctx, text(), lang)
+    }, contentAlignment = Alignment.Center) { Text("🔊", fontSize = 16.sp) }
+}
+
+/** Real example photos for the Skin Library (ml/data/library_examples.py; SCIN + PAD-UFES-20, CC BY 4.0 — credits in
+ *  assets/library/credits.json). Several skin tones per condition; empty for "other". */
+fun categoryPhotos(key: String): List<Int> = when (key) {
+    "eczema_atopic" -> listOf(R.drawable.lib_eczema_atopic_0, R.drawable.lib_eczema_atopic_1, R.drawable.lib_eczema_atopic_2)
+    "contact_dermatitis" -> listOf(R.drawable.lib_contact_dermatitis_0, R.drawable.lib_contact_dermatitis_1, R.drawable.lib_contact_dermatitis_2)
+    "acne" -> listOf(R.drawable.lib_acne_0, R.drawable.lib_acne_1, R.drawable.lib_acne_2)
+    "tinea" -> listOf(R.drawable.lib_tinea_0, R.drawable.lib_tinea_1, R.drawable.lib_tinea_2)
+    "psoriasis" -> listOf(R.drawable.lib_psoriasis_0, R.drawable.lib_psoriasis_1, R.drawable.lib_psoriasis_2)
+    "scabies" -> listOf(R.drawable.lib_scabies_0, R.drawable.lib_scabies_1, R.drawable.lib_scabies_2)
+    "seborrheic_dermatitis" -> listOf(R.drawable.lib_seborrheic_dermatitis_0, R.drawable.lib_seborrheic_dermatitis_1)
+    "benign_lesion" -> listOf(R.drawable.lib_benign_lesion_0, R.drawable.lib_benign_lesion_1, R.drawable.lib_benign_lesion_2)
+    "suspicious_lesion" -> listOf(R.drawable.lib_suspicious_lesion_0, R.drawable.lib_suspicious_lesion_1, R.drawable.lib_suspicious_lesion_2)
+    "vitiligo" -> listOf(R.drawable.lib_vitiligo_0)
+    else -> emptyList()
+}

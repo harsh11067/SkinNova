@@ -11,6 +11,11 @@ class SkinNovaApp : Application() {
     override fun onCreate() {
         super.onCreate()
         container = AppContainer(this)
+        // app lock: re-lock after the app has been out of sight for the chosen delay (security/AppLock.kt)
+        androidx.lifecycle.ProcessLifecycleOwner.get().lifecycle.addObserver(object : androidx.lifecycle.DefaultLifecycleObserver {
+            override fun onStop(owner: androidx.lifecycle.LifecycleOwner) = container.lock.onHidden()
+            override fun onStart(owner: androidx.lifecycle.LifecycleOwner) = container.lock.onVisible()
+        })
     }
 
     /** Free the ~1–2 GB engine when the app is in the background and memory is tight (architecture §4). */
@@ -18,6 +23,6 @@ class SkinNovaApp : Application() {
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         @Suppress("DEPRECATION")
-        if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) container.engineHolder.release()
+        if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) container.engineHolder.releaseIfIdle()
     }
 }

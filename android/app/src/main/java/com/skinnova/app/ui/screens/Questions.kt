@@ -114,6 +114,16 @@ fun QuestionsScreen(vm: SessionViewModel, onBack: () -> Unit, onAnalyze: () -> U
     var voiceOpen by remember { mutableStateOf(false) }
     var submitted by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { vm.warmUp() }
+    // "result ready" notification (notify/Analysis.kt) needs POST_NOTIFICATIONS on Android 13+: asked once, at the moment it matters
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val notifPerm = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { onAnalyze() }
+    fun submit() {
+        val need = android.os.Build.VERSION.SDK_INT >= 33 && androidx.core.content.ContextCompat.checkSelfPermission(ctx,
+            android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        if (need && !vm.c.settings.notifAsked.value) { vm.c.settings.setNotifAsked(true); notifPerm.launch(android.Manifest.permission.POST_NOTIFICATIONS) }
+        else onAnalyze()
+    }
     val step = STEPS[i]
     val value = draft.get(step.key)
     val answered = step.optional || value != null
@@ -193,7 +203,7 @@ fun QuestionsScreen(vm: SessionViewModel, onBack: () -> Unit, onAnalyze: () -> U
             enabled = if (last) draft.complete() else answered) {
             // decide from the CURRENT step: two taps inside one janky frame both saw a stale `last` and pushed i past the end
             // (on-device crash 2026-10-07, STEPS[12]); a double tap on the last step must start one analysis, not two
-            if (i < STEPS.lastIndex) i++ else if (!submitted) { submitted = true; onAnalyze() }
+            if (i < STEPS.lastIndex) i++ else if (!submitted) { submitted = true; submit() }
         }
     }
     if (voiceOpen) VoiceSheet(vm) { voiceOpen = false; vm.resetVoice()

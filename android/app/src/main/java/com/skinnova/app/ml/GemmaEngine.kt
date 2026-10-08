@@ -90,6 +90,9 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
 
     fun release() { engine?.close(); engine = null; enginePath = null }
 
+    /** Memory-pressure release: never while a generation holds the engine (closing it mid-run crashed the native side). */
+    fun releaseIfIdle() { if (mutex.tryLock()) try { release() } finally { mutex.unlock() } }
+
     /** Debug/test seam: force the CPU path (test A9). */
     fun forceBackend(name: String) { prefs.edit().putString("backend", name).apply(); backendName = name; release() }
 
@@ -113,7 +116,7 @@ interface Llm {
 }
 
 enum class LlmTask(val temperature: Double, val maxTokens: Int) {
-    ANALYZE(0.2, 700), REPAIR(0.2, 700), TRANSCRIBE(0.0, 400), EXTRACT(0.2, 300), NARRATE(0.4, 200), TRANSLATE(0.4, 600)
+    ANALYZE(0.2, 700), REPAIR(0.2, 700), TRANSCRIBE(0.0, 400), EXTRACT(0.2, 300), NARRATE(0.4, 200), TRANSLATE(0.4, 600), CHAT(0.3, 300)
 }
 
 class GemmaEngine(private val holder: EngineHolder, private val models: ModelManager) : Llm {

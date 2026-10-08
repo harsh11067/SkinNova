@@ -1,0 +1,54 @@
+{
+ "git_sha": "b5589cb",
+ "dataset_rev": "",
+ "model_sha": "efficientnet_b0.ra_in1k",
+ "created_at": "2026-10-08T00:21:14+00:00",
+ "version": "v2",
+ "per_source_val_caught": {
+  "imagenette_val": 0.9877707006369427,
+  "coco_val": 0.9732770745428974,
+  "dtd_val": 0.9193066347878064
+ },
+ "v1_vs_v2": {
+  "pooled_val_negatives": 6309,
+  "v1_threshold": 0.10999999940395355,
+  "v1_caught": 0.8762085909018862,
+  "v2_caught": 0.9679822475828181,
+  "rule": "adopt v2 iff v2_caught >= v1_caught + 0.02",
+  "adopt_v2": true,
+  "v1_skin_false_reject_val": 0.007701564380264741
+ },
+ "rule": {
+  "val_false_reject_max": 0.01,
+  "scin_false_reject_max": 0.02
+ },
+ "threshold": 0.02,
+ "n": {
+  "tr_skin": 6000,
+  "tr_neg": 14792,
+  "va_skin": 4155,
+  "va_neg": 6309,
+  "va_unk": 208,
+  "ext": 136
+ },
+ "val": {
+  "skin_false_reject": 0.008664259927797834,
+  "scin_false_reject": 0.019704433497536946,
+  "nonskin_caught": 0.9679822475828181
+ },
+ "train": {
+  "skin_false_reject": 0.0,
+  "nonskin_caught": 0.9747836668469443
+ },
+ "reported_only": {
+  "external_brown_skin_phone_accepted": 0.9338235294117647,
+  "unknown_normal_val_flagged": 0.7644230769230769
+ },
+ "per_source_val_false_reject": {
+  "mgmitesh": 0.0029222676797194622,
+  "pacificrm": 0.012134189864382585,
+  "pad_ufes20": 0.003367003367003367,
+  "scin": 0.019704433497536946,
+  "skindisnet": 0.0072992700729927005
+ }
+}

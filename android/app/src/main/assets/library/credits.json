@@ -1,0 +1,241 @@
+{
+ "note": "Example photos: SCIN (Google Research & Stanford Medicine) and PAD-UFES-20 (Pacheco et al., 2020), both CC BY 4.0. Centre-cropped and resized.",
+ "photos": {
+  "eczema_atopic": [
+   {
+    "res": "lib_eczema_atopic_0",
+    "source": "SCIN",
+    "id": "4150814201378985637/3",
+    "label": "Eczema",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_eczema_atopic_1",
+    "source": "SCIN",
+    "id": "-130215202506383973/3",
+    "label": "Eczema",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_eczema_atopic_2",
+    "source": "SCIN",
+    "id": "-5256429932634187395/2",
+    "label": "Eczema",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "contact_dermatitis": [
+   {
+    "res": "lib_contact_dermatitis_0",
+    "source": "SCIN",
+    "id": "6978248153770900528/3",
+    "label": "Allergic Contact Dermatitis",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_contact_dermatitis_1",
+    "source": "SCIN",
+    "id": "-7845597106701115003/3",
+    "label": "Allergic Contact Dermatitis",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_contact_dermatitis_2",
+    "source": "SCIN",
+    "id": "-8910512778266938389/1",
+    "label": "Irritant Contact Dermatitis",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "acne": [
+   {
+    "res": "lib_acne_0",
+    "source": "SCIN",
+    "id": "-3736850922923665026/1",
+    "label": "Acne",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_acne_1",
+    "source": "SCIN",
+    "id": "-7275764427572709680/1",
+    "label": "Acne",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_acne_2",
+    "source": "SCIN",
+    "id": "339612674991011131/1",
+    "label": "Acne",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "tinea": [
+   {
+    "res": "lib_tinea_0",
+    "source": "SCIN",
+    "id": "2862514195730627482/1",
+    "label": "Tinea",
+    "tone": "unknown",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_tinea_1",
+    "source": "SCIN",
+    "id": "1713789049192481311/1",
+    "label": "Tinea",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_tinea_2",
+    "source": "SCIN",
+    "id": "-7165184304522588996/3",
+    "label": "Tinea",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "psoriasis": [
+   {
+    "res": "lib_psoriasis_0",
+    "source": "SCIN",
+    "id": "-4696067359335613302/2",
+    "label": "Psoriasis",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_psoriasis_1",
+    "source": "SCIN",
+    "id": "-568386322973258434/2",
+    "label": "Psoriasis",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_psoriasis_2",
+    "source": "SCIN",
+    "id": "-6567195502359681708/1",
+    "label": "Psoriasis",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "scabies": [
+   {
+    "res": "lib_scabies_0",
+    "source": "SCIN",
+    "id": "-6485947403303154678/2",
+    "label": "Scabies",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_scabies_1",
+    "source": "SCIN",
+    "id": "-4374212557647415088/2",
+    "label": "Scabies",
+    "tone": "unknown",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_scabies_2",
+    "source": "SCIN",
+    "id": "7220922374529634547/2",
+    "label": "Scabies",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "seborrheic_dermatitis": [
+   {
+    "res": "lib_seborrheic_dermatitis_0",
+    "source": "SCIN",
+    "id": "2147765736386887457/1",
+    "label": "Seborrheic Dermatitis",
+    "tone": "unknown",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_seborrheic_dermatitis_1",
+    "source": "SCIN",
+    "id": "1872413092507744029/1",
+    "label": "Seborrheic Dermatitis",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "benign_lesion": [
+   {
+    "res": "lib_benign_lesion_0",
+    "source": "PAD-UFES-20",
+    "id": "PAT_616_1169_3.png",
+    "label": "SEK",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_benign_lesion_1",
+    "source": "PAD-UFES-20",
+    "id": "PAT_893_1697_613.png",
+    "label": "SEK",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_benign_lesion_2",
+    "source": "PAD-UFES-20",
+    "id": "PAT_650_3858_329.png",
+    "label": "SEK",
+    "tone": "fitz_1_2",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "suspicious_lesion": [
+   {
+    "res": "lib_suspicious_lesion_0",
+    "source": "PAD-UFES-20",
+    "id": "PAT_746_1407_708.png",
+    "label": "MEL",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_suspicious_lesion_1",
+    "source": "PAD-UFES-20",
+    "id": "PAT_590_1121_504.png",
+    "label": "SCC",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   },
+   {
+    "res": "lib_suspicious_lesion_2",
+    "source": "PAD-UFES-20",
+    "id": "PAT_736_1392_562.png",
+    "label": "BCC",
+    "tone": "fitz_3_4",
+    "license": "CC BY 4.0"
+   }
+  ],
+  "vitiligo": [
+   {
+    "res": "lib_vitiligo_0",
+    "source": "SCIN",
+    "id": "438143701832911692/1",
+    "label": "Vitiligo",
+    "tone": "fitz_5_6",
+    "license": "CC BY 4.0"
+   }
+  ]
+ }
+}

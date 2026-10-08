@@ -97,7 +97,9 @@ fun TrackSpotScreen(vm: SessionViewModel, tvm: TimelineViewModel, onBack: () -> 
     val photo by vm.photo.collectAsState()
     val cv by vm.cv.collectAsState()
     val res by vm.result.collectAsState()
-    var name by remember { mutableStateOf("") }
+    // pre-filled ("Arm spot") so "Start tracking" works in one tap; the user can rename it
+    val defaultName = stringResource(R.string.tl_default_name, stringResource(com.skinnova.app.ui.components.siteNameRes(res?.answers?.bodySite)))
+    var name by remember { mutableStateOf(defaultName) }
     var days by remember { mutableIntStateOf(14) }
     var seed by remember { mutableStateOf(Offset(0.5f, 0.5f)) }
     var mask by remember { mutableStateOf<Bitmap?>(null) }

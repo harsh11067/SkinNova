@@ -1,0 +1,172 @@
+{
+ "version": "v1",
+ "review": {"status": "draft — from NHS / AAD / British Association of Dermatologists patient pages; needs Harsh's sentence-by-sentence check before release", "reviewed_by": "", "date": "2026-10-08"},
+ "notes": "Rendered by the app (ui/screens/Relief.kt), never by the LLM: the LLM still may not name medicines (safety/rx_terms.txt). No doses — 'follow the pack' and a pharmacist check. Condition-specific items show only when the top category is a clear lead (likelihood 'higher', image score >= 0.5) and the advice level is LOW or MODERATE; 'avoid_if' blocks an item when that category is among the listed possibilities (steroid creams make fungal rashes worse).",
+ "general": {
+  "itch": {
+   "home": [
+    {"en": "Cool the itch: a cool, damp cloth for 10–15 minutes, or a lukewarm (not hot) shower.", "hi": "खुजली ठंडी करें: 10–15 मिनट ठंडा, गीला कपड़ा रखें, या गुनगुने (गर्म नहीं) पानी से नहाएँ।"},
+    {"en": "Pat, don't scratch — keep nails short; cotton gloves at night help.", "hi": "खुजाएँ नहीं, हल्के से थपथपाएँ — नाखून छोटे रखें; रात में सूती दस्ताने मदद करते हैं।"}
+   ],
+   "pharmacy": [
+    {"id": "antihistamine", "en": "Non-drowsy antihistamine tablet (cetirizine or loratadine) — eases itch; follow the pack.", "hi": "बिना नींद वाली एंटीहिस्टामिन गोली (cetirizine या loratadine) — खुजली कम करती है; पैक के अनुसार लें।", "kind": "tablet", "adult": true, "pregnancy": "ask"},
+    {"id": "calamine", "en": "Calamine lotion — soothes itchy skin.", "hi": "Calamine लोशन — खुजली वाली त्वचा को आराम देता है।", "kind": "lotion"}
+   ]
+  },
+  "pain": {
+   "pharmacy": [
+    {"id": "paracetamol", "en": "Paracetamol — for pain or soreness; follow the pack dose.", "hi": "Paracetamol — दर्द या जलन के लिए; पैक पर लिखी खुराक लें।", "kind": "tablet", "adult": true, "pregnancy": "ask"},
+    {"id": "ibuprofen", "en": "Ibuprofen — an option for adults; not with a stomach ulcer, asthma, heart, kidney or liver disease, or in pregnancy.", "hi": "Ibuprofen — वयस्कों के लिए विकल्प; पेट के अल्सर, अस्थमा, दिल, किडनी या लिवर की बीमारी, या गर्भावस्था में नहीं।", "kind": "tablet", "adult": true, "pregnancy": "avoid", "avoid_conditions": ["asthma", "stomach_ulcer", "kidney_liver"]}
+   ]
+  },
+  "sources": ["NHS: Ibuprofen for adults", "NHS: Paracetamol for adults", "NHS: Insect bites and stings (itch relief)"]
+ },
+ "cards": {
+  "eczema_atopic": {
+   "home": [
+    {"en": "Moisturise at least twice a day, even when the skin looks better — plain, fragrance-free cream or ointment.", "hi": "दिन में कम से कम दो बार मॉइस्चराइज़र लगाएँ, त्वचा ठीक दिखे तब भी — सादी, बिना खुशबू वाली क्रीम या मलहम।"},
+    {"en": "Wash with the moisturiser or a soap-free wash instead of soap; short, lukewarm baths, then pat dry and moisturise within 3 minutes.", "hi": "साबुन की जगह मॉइस्चराइज़र या बिना साबुन वाले क्लींज़र से धोएँ; थोड़ी देर गुनगुने पानी से नहाएँ, थपथपाकर सुखाएँ और 3 मिनट के अंदर मॉइस्चराइज़र लगाएँ।"},
+    {"en": "Find and avoid triggers — harsh soaps, detergents, wool, overheating, sweat.", "hi": "कारण पहचानें और बचें — तेज़ साबुन, डिटर्जेंट, ऊनी कपड़े, ज़्यादा गर्मी, पसीना।"},
+    {"en": "Use a spoon or pump for creams (not fingers) and don't share them. Keep away from flames — creams on clothes and bedding catch fire more easily.", "hi": "क्रीम चम्मच या पंप से निकालें (उँगली से नहीं) और साझा न करें। आग से दूर रहें — क्रीम लगे कपड़े और बिस्तर जल्दी आग पकड़ते हैं।"}
+   ],
+   "food": [
+    {"en": "No special diet is needed for most people. Don't cut out foods unless a doctor tells you to — including when breastfeeding a baby with eczema.", "hi": "ज़्यादातर लोगों को कोई खास डाइट नहीं चाहिए। डॉक्टर के कहे बिना कोई खाना बंद न करें — एक्ज़िमा वाले बच्चे को स्तनपान कराते समय भी।"}
+   ],
+   "pharmacy": [
+    {"id": "emollient", "en": "Emollient cream or ointment (e.g. white soft paraffin, emulsifying ointment) — the main treatment; avoid aqueous cream, it can irritate.", "hi": "इमोलिएंट क्रीम या मलहम (जैसे white soft paraffin, emulsifying ointment) — मुख्य इलाज; aqueous cream से बचें, जलन कर सकती है।", "kind": "cream"},
+    {"id": "hydrocortisone", "en": "Hydrocortisone 1% cream for a short flare (up to 7 days) — not on the face, broken or infected skin, or on children under 10 without a doctor; ask the pharmacist first.", "hi": "थोड़े समय के उभार के लिए Hydrocortisone 1% क्रीम (7 दिन तक) — चेहरे, कटी या संक्रमित त्वचा पर नहीं, और 10 साल से छोटे बच्चों पर डॉक्टर के बिना नहीं; पहले फ़ार्मासिस्ट से पूछें।", "kind": "cream", "specific": true, "adult": true, "pregnancy": "ask", "avoid_if": ["tinea", "scabies", "acne"]}
+   ],
+   "sources": ["NHS: Atopic eczema – treatment", "AAD: Eczema self-care"]
+  },
+  "contact_dermatitis": {
+   "home": [
+    {"en": "Work out what touched the skin (new soap, cosmetics, hair dye, metal, rubber gloves, plants) and stop using it — the rash usually settles once the trigger is avoided.", "hi": "पता करें कि त्वचा पर क्या लगा था (नया साबुन, कॉस्मेटिक, हेयर डाई, धातु, रबर दस्ताने, पौधे) और उसे बंद करें — कारण से बचने पर दाने आमतौर पर ठीक हो जाते हैं।"},
+    {"en": "Rinse the skin with lukewarm water and a moisturiser as soon as possible after contact.", "hi": "संपर्क के बाद जितनी जल्दी हो सके त्वचा को गुनगुने पानी और मॉइस्चराइज़र से धोएँ।"},
+    {"en": "Use a soap substitute and moisturise often and generously; read ingredient lists before buying.", "hi": "साबुन की जगह सौम्य क्लींज़र लें और बार-बार अच्छी मात्रा में मॉइस्चराइज़र लगाएँ; खरीदने से पहले सामग्री पढ़ें।"}
+   ],
+   "food": [
+    {"en": "Food rarely causes this kind of rash; no diet change is needed unless a food you handle triggers it.", "hi": "इस तरह के दाने आमतौर पर खाने से नहीं होते; डाइट बदलने की ज़रूरत नहीं, जब तक हाथ से छूने वाला कोई खाना कारण न हो।"}
+   ],
+   "pharmacy": [
+    {"id": "emollient", "en": "Emollient cream or ointment, used often and generously.", "hi": "इमोलिएंट क्रीम या मलहम, बार-बार और भरपूर लगाएँ।", "kind": "cream"},
+    {"id": "hydrocortisone", "en": "Hydrocortisone 1% cream for a few days (up to 7) — not on the face, broken or infected skin, or on children under 10 without a doctor; ask the pharmacist first.", "hi": "कुछ दिनों के लिए Hydrocortisone 1% क्रीम (7 दिन तक) — चेहरे, कटी या संक्रमित त्वचा पर नहीं, 10 साल से छोटे बच्चों पर डॉक्टर के बिना नहीं; पहले फ़ार्मासिस्ट से पूछें।", "kind": "cream", "specific": true, "adult": true, "pregnancy": "ask", "avoid_if": ["tinea", "scabies", "acne"]}
+   ],
+   "sources": ["NHS: Contact dermatitis", "British Association of Dermatologists: Contact dermatitis"]
+  },
+  "seborrheic_dermatitis": {
+   "home": [
+    {"en": "Wash the scalp, face and beard area regularly with a gentle cleanser; rinse well.", "hi": "सिर, चेहरे और दाढ़ी वाली जगह को नियमित रूप से सौम्य क्लींज़र से धोएँ; अच्छे से पानी से साफ़ करें।"},
+    {"en": "Flares often follow stress, cold weather or tiredness — it comes and goes and is not contagious.", "hi": "तनाव, ठंडे मौसम या थकान के बाद अक्सर बढ़ता है — यह आता-जाता रहता है और छूत की बीमारी नहीं है।"}
+   ],
+   "food": [
+    {"en": "No food is known to cause it. Limiting alcohol may help some people.", "hi": "कोई खाना इसका कारण नहीं माना जाता। शराब कम करने से कुछ लोगों को मदद मिलती है।"}
+   ],
+   "pharmacy": [
+    {"id": "antifungal_shampoo", "en": "Anti-dandruff/antifungal shampoo: ketoconazole 2%, selenium sulfide or zinc pyrithione — leave on for a few minutes, as the pack says.", "hi": "एंटी-डैंड्रफ/एंटीफंगल शैम्पू: ketoconazole 2%, selenium sulfide या zinc pyrithione — पैक के अनुसार कुछ मिनट लगा रहने दें।", "kind": "shampoo", "specific": true}
+   ],
+   "sources": ["NHS: Seborrhoeic dermatitis", "AAD: Seborrheic dermatitis self-care"]
+  },
+  "tinea": {
+   "home": [
+    {"en": "Keep the area clean and fully dry — dry well between toes and in skin folds; wear loose cotton clothes and change socks daily.", "hi": "जगह को साफ़ और पूरी तरह सूखा रखें — उँगलियों के बीच और त्वचा की सिलवटों में अच्छे से सुखाएँ; ढीले सूती कपड़े पहनें और रोज़ मोज़े बदलें।"},
+    {"en": "Wash towels and bedsheets regularly; don't share towels, combs or bedsheets.", "hi": "तौलिये और चादरें नियमित धोएँ; तौलिये, कंघी या चादर साझा न करें।"},
+    {"en": "Don't scratch — it can spread to other parts of the body. Take a pet to the vet if it has patches of missing fur.", "hi": "खुजाएँ नहीं — यह शरीर के दूसरे हिस्सों में फैल सकता है। अगर पालतू जानवर के बाल कहीं से उड़े हों तो पशु-चिकित्सक को दिखाएँ।"},
+    {"en": "Don't put steroid creams on it — they can make a fungal rash spread.", "hi": "इस पर स्टेरॉयड क्रीम न लगाएँ — इससे फंगल दाने फैल सकते हैं।"}
+   ],
+   "food": [
+    {"en": "No special diet. If you have diabetes, keeping blood sugar steady helps skin infections heal.", "hi": "कोई खास डाइट नहीं। डायबिटीज़ हो तो ब्लड शुगर नियंत्रित रखने से त्वचा का संक्रमण जल्दी ठीक होता है।"}
+   ],
+   "pharmacy": [
+    {"id": "antifungal_cream", "en": "Antifungal cream from a pharmacy (clotrimazole 1%, miconazole 2% or terbinafine 1%) — use daily for the full course (up to 4 weeks), even after the rash fades.", "hi": "फ़ार्मेसी से एंटीफंगल क्रीम (clotrimazole 1%, miconazole 2% या terbinafine 1%) — पूरा कोर्स रोज़ लगाएँ (4 हफ़्ते तक), दाने मिटने के बाद भी।", "kind": "cream", "specific": true, "pregnancy": "ask"}
+   ],
+   "sources": ["NHS: Ringworm", "AAD: Ringworm self-care"]
+  },
+  "scabies": {
+   "home": [
+    {"en": "Everyone in the home needs treating on the same day, even without itching.", "hi": "घर के सभी लोगों का इलाज एक ही दिन होना चाहिए, खुजली न हो तब भी।"},
+    {"en": "On the first day of treatment wash all bedding, towels and clothes at 60 °C or hotter; seal anything that can't be washed in a bag for at least 3 days.", "hi": "इलाज के पहले दिन सारी चादरें, तौलिये और कपड़े 60 °C या ज़्यादा गर्म पानी में धोएँ; जो धुल न सके उसे कम से कम 3 दिन थैले में बंद रखें।"},
+    {"en": "Itching can last 2–4 weeks after treatment even when the mites are gone.", "hi": "इलाज के बाद 2–4 हफ़्ते तक खुजली रह सकती है, भले ही कीड़े खत्म हो गए हों।"}
+   ],
+   "food": [
+    {"en": "Scabies is not caused by food or by being unclean — it spreads by close skin contact.", "hi": "स्कैबीज़ खाने या गंदगी से नहीं होता — यह त्वचा के नज़दीकी संपर्क से फैलता है।"}
+   ],
+   "pharmacy": [
+    {"id": "permethrin", "en": "Permethrin 5% cream from a pharmacy — whole body including scalp and face (not around the eyes), repeated after 7 days. Not for children under 2; tell the pharmacist if pregnant or breastfeeding.", "hi": "फ़ार्मेसी से Permethrin 5% क्रीम — पूरे शरीर पर, सिर और चेहरे समेत (आँखों के आसपास नहीं), 7 दिन बाद दोबारा। 2 साल से छोटे बच्चों के लिए नहीं; गर्भवती या स्तनपान कराती हों तो फ़ार्मासिस्ट को बताएँ।", "kind": "cream", "specific": true, "pregnancy": "ask"}
+   ],
+   "sources": ["NHS: Scabies"]
+  },
+  "acne": {
+   "home": [
+    {"en": "Wash twice a day with a gentle cleanser and lukewarm water; don't scrub.", "hi": "दिन में दो बार सौम्य क्लींज़र और गुनगुने पानी से धोएँ; रगड़ें नहीं।"},
+    {"en": "Don't pick or squeeze spots — it can leave scars and dark marks, especially on brown skin.", "hi": "दाने न नोचें, न दबाएँ — इससे दाग और काले निशान रह सकते हैं, खासकर भूरी त्वचा पर।"},
+    {"en": "Use 'non-comedogenic' (won't block pores) make-up and sunscreen, and remove make-up before bed.", "hi": "'non-comedogenic' (रोमछिद्र बंद न करने वाले) मेकअप और सनस्क्रीन लगाएँ, और सोने से पहले मेकअप हटाएँ।"}
+   ],
+   "food": [
+    {"en": "Some people find fewer breakouts with fewer sugary, refined foods and less skimmed milk; chocolate and oily food are not proven causes.", "hi": "कुछ लोगों को मीठे, मैदे वाले खाने और स्किम्ड दूध कम करने से कम दाने होते हैं; चॉकलेट और तला खाना साबित कारण नहीं हैं।"}
+   ],
+   "pharmacy": [
+    {"id": "benzoyl_peroxide", "en": "Benzoyl peroxide gel (2.5–5%) or a salicylic acid wash — start every other day; dryness is common at first. Benzoyl peroxide can bleach towels and clothes.", "hi": "Benzoyl peroxide जेल (2.5–5%) या salicylic acid फ़ेस वॉश — शुरू में एक दिन छोड़कर लगाएँ; पहले रूखापन आम है। Benzoyl peroxide तौलिये और कपड़ों का रंग उड़ा सकता है।", "kind": "gel", "specific": true, "pregnancy": "ask"}
+   ],
+   "sources": ["NHS: Acne", "AAD: Acne – diet and skin care", "British Association of Dermatologists: Acne"]
+  },
+  "psoriasis": {
+   "home": [
+    {"en": "Moisturise every day — it softens scale and eases itching; lukewarm baths help.", "hi": "रोज़ मॉइस्चराइज़र लगाएँ — इससे पपड़ी नरम होती है और खुजली कम होती है; गुनगुने पानी से नहाना मदद करता है।"},
+    {"en": "Avoid scratching and skin injuries — new patches can appear where skin is hurt.", "hi": "खुजाने और चोट से बचें — जहाँ त्वचा को चोट लगे वहाँ नए धब्बे आ सकते हैं।"},
+    {"en": "Stress can trigger flares; regular sleep and exercise help.", "hi": "तनाव से यह बढ़ सकता है; नियमित नींद और व्यायाम मदद करते हैं।"}
+   ],
+   "food": [
+    {"en": "Keeping a healthy weight, cutting down on alcohol and not smoking are linked to fewer flares.", "hi": "स्वस्थ वज़न, कम शराब और धूम्रपान न करना कम उभार से जुड़े हैं।"}
+   ],
+   "pharmacy": [
+    {"id": "emollient", "en": "Thick emollient cream or ointment, used daily.", "hi": "गाढ़ी इमोलिएंट क्रीम या मलहम, रोज़।", "kind": "cream"},
+    {"id": "coal_tar", "en": "Coal tar shampoo or cream for scalp or body scale — ask the pharmacist.", "hi": "सिर या शरीर की पपड़ी के लिए Coal tar शैम्पू या क्रीम — फ़ार्मासिस्ट से पूछें।", "kind": "shampoo", "specific": true, "pregnancy": "ask"}
+   ],
+   "sources": ["NHS: Psoriasis – treatment", "AAD: Psoriasis self-care"]
+  },
+  "vitiligo": {
+   "home": [
+    {"en": "Protect pale patches from the sun — they burn easily: shade, covering clothes and high-SPF (30–50) sunscreen.", "hi": "हल्के धब्बों को धूप से बचाएँ — ये जल्दी जलते हैं: छाया, ढकने वाले कपड़े और ऊँचे SPF (30–50) का सनस्क्रीन।"},
+    {"en": "Skin camouflage creams can even out the colour if you want; vitiligo is not contagious.", "hi": "चाहें तो स्किन कैमोफ़्लाज क्रीम से रंग एक-सा दिख सकता है; विटिलिगो छूत की बीमारी नहीं है।"}
+   ],
+   "food": [
+    {"en": "No food is proven to cause or cure vitiligo — sayings about sour foods or milk with fish are not backed by evidence; a balanced diet is enough.", "hi": "कोई खाना विटिलिगो का कारण या इलाज साबित नहीं है — खट्टे खाने या मछली के साथ दूध वाली बातों का कोई प्रमाण नहीं; संतुलित भोजन काफ़ी है।"}
+   ],
+   "pharmacy": [
+    {"id": "sunscreen", "en": "Broad-spectrum sunscreen, SPF 30–50.", "hi": "ब्रॉड-स्पेक्ट्रम सनस्क्रीन, SPF 30–50।", "kind": "cream"}
+   ],
+   "sources": ["NHS: Vitiligo", "AAD: Vitiligo"]
+  },
+  "benign_lesion": {
+   "home": [
+    {"en": "Usually needs no treatment. Take a photo every month (Track this spot) to notice any change in size, shape or colour.", "hi": "आमतौर पर इलाज की ज़रूरत नहीं। हर महीने फ़ोटो लें (इस धब्बे को ट्रैक करें) ताकि आकार, बनावट या रंग में बदलाव दिखे।"},
+    {"en": "Don't try to cut, burn or remove it at home.", "hi": "इसे घर पर काटने, जलाने या हटाने की कोशिश न करें।"},
+    {"en": "Use sun protection — it lowers the chance of new or changing moles.", "hi": "धूप से बचाव करें — इससे नए या बदलते तिलों की संभावना कम होती है।"}
+   ],
+   "food": [],
+   "pharmacy": [
+    {"id": "sunscreen", "en": "Broad-spectrum sunscreen, SPF 30 or higher.", "hi": "ब्रॉड-स्पेक्ट्रम सनस्क्रीन, SPF 30 या ज़्यादा।", "kind": "cream"}
+   ],
+   "sources": ["NHS: Moles", "AAD: Moles"]
+  },
+  "suspicious_lesion": {
+   "home": [
+    {"en": "Please don't treat this yourself — show it to a doctor first.", "hi": "कृपया इसका खुद इलाज न करें — पहले डॉक्टर को दिखाएँ।"},
+    {"en": "Don't pick, scratch or try to remove it; cover it if it rubs on clothing.", "hi": "इसे नोचें, खुजाएँ या हटाने की कोशिश न करें; कपड़ों से रगड़ लगे तो ढक दें।"},
+    {"en": "Take a clear photo today (Track this spot) to show the doctor how it changes.", "hi": "आज एक साफ़ फ़ोटो लें (इस धब्बे को ट्रैक करें) ताकि डॉक्टर को बदलाव दिखा सकें।"}
+   ],
+   "food": [],
+   "pharmacy": [],
+   "sources": ["NHS: Skin cancer (melanoma)", "AAD: ABCDEs of melanoma"]
+  },
+  "other": {
+   "home": [
+    {"en": "Keep the skin clean and moisturised with plain, fragrance-free products; avoid anything new until it settles.", "hi": "त्वचा को सादे, बिना खुशबू वाले उत्पादों से साफ़ और नम रखें; ठीक होने तक कोई नई चीज़ न लगाएँ।"},
+    {"en": "Note what makes it better or worse and take a photo every few days — useful for a doctor.", "hi": "नोट करें कि किससे यह बेहतर या बदतर होता है और हर कुछ दिन फ़ोटो लें — डॉक्टर के लिए उपयोगी।"}
+   ],
+   "food": [],
+   "pharmacy": [],
+   "sources": ["NHS: Rashes in adults", "NHS: Skin rashes in children"]
+  }
+ }
+}

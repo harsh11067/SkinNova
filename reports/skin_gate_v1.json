@@ -1,0 +1,39 @@
+{
+ "git_sha": "9ccf21e",
+ "dataset_rev": "",
+ "model_sha": "efficientnet_b0.ra_in1k",
+ "created_at": "2026-10-07T18:08:10+00:00",
+ "rule": {
+  "val_false_reject_max": 0.01,
+  "scin_false_reject_max": 0.02
+ },
+ "threshold": 0.11,
+ "n": {
+  "tr_skin": 6000,
+  "tr_neg": 9469,
+  "va_skin": 4155,
+  "va_neg": 3925,
+  "va_unk": 208,
+  "ext": 136
+ },
+ "val": {
+  "skin_false_reject": 0.007701564380264741,
+  "scin_false_reject": 0.0180623973727422,
+  "nonskin_caught": 0.9921019108280255
+ },
+ "train": {
+  "skin_false_reject": 0.0,
+  "nonskin_caught": 0.9991551378181435
+ },
+ "reported_only": {
+  "external_brown_skin_phone_accepted": 0.9558823529411765,
+  "unknown_normal_val_flagged": 0.7548076923076923
+ },
+ "per_source_val_false_reject": {
+  "mgmitesh": 0.0023378141437755697,
+  "pacificrm": 0.010706638115631691,
+  "pad_ufes20": 0.0,
+  "scin": 0.0180623973727422,
+  "skindisnet": 0.014598540145985401
+ }
+}

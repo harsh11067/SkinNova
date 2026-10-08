@@ -64,7 +64,9 @@ def test_score_clip_correct_wrong_hallucinated():
     ext = _ext({"body_site": ("hand", "haath par"), "duration": ("1_4w", "teen hafte se"), "itch": (2, "khujli bahut zyada"),
                 "others_affected": (True, "bhai ko bhi"), "fever_or_unwell": (True, "bhai ko bhi")})
     r = score_clip(_row("C01"), c, gold_for(_row("C01"), CARDS), t, ext)
-    assert r["correct"] == 3 and r["wrong"] == ["itch"] and r["hallucinated"] == ["fever_or_unwell"] and r["cer"] == 0
+    # fever_or_unwell quotes "bhai ko bhi" (brother has it): a real quote on the wrong field. Since the topic check
+    # (decisions 2026-10-07) the validator drops it, so it is no longer a hallucinated field that reaches the user.
+    assert r["correct"] == 3 and r["wrong"] == ["itch"] and r["hallucinated"] == [] and r["cer"] == 0
 
 
 def test_evidence_not_in_transcript_is_dropped_not_counted():

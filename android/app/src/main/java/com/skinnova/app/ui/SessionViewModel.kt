@@ -57,6 +57,10 @@ sealed interface VoiceState {
     data class Error(val kind: String) : VoiceState
 }
 
+/** One Ask SkinNova exchange. [answer] null while the model is writing. */
+data class ChatTurn(val question: String, val answer: String? = null, val danger: Boolean = false, val withheld: Boolean = false,
+                    val partial: String = "")
+
 class SessionViewModel(app: Application) : AndroidViewModel(app) {
     val c = (app as SkinNovaApp).container
 
@@ -68,6 +72,7 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     private val _result = MutableStateFlow<FinalResult?>(null); val result: StateFlow<FinalResult?> = _result
     private val _cv = MutableStateFlow<List<CvScore>>(emptyList()); val cv: StateFlow<List<CvScore>> = _cv
     private val _voice = MutableStateFlow<VoiceState>(VoiceState.Idle); val voice: StateFlow<VoiceState> = _voice
+    private val _chat = MutableStateFlow<List<ChatTurn>>(emptyList()); val chat: StateFlow<List<ChatTurn>> = _chat
     var savedId: String? = null; private set
     private var job: Job? = null
     private val audio = com.skinnova.app.ml.AudioCapture()
@@ -75,7 +80,10 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     // ---------- photo ----------
     fun setPhoto(bmp: Bitmap) {
         val b = downscale(bmp, 1024)
-        _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _draft.value = Draft(); _cv.value = emptyList()
+        // profile pre-fills age band + skin tone (shown on the questions, the user can still change them)
+        val prof = c.profiles.profile.value
+        _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _cv.value = emptyList(); _chat.value = emptyList()
+        _draft.value = Draft(ageBand = prof.ageBand, skinTone = prof.skinTone)
         viewModelScope.launch(Dispatchers.Default) {
             val rgb = b.toRgb(); val q = QualityGate.check(rgb)
             // image model now (not at analysis time): its skin-photo gate warns before the questions; scores are reused
@@ -106,6 +114,9 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
         val bmp = _photo.value ?: return
         val answers = _draft.value.toAnswers()
         job?.cancel()
+        val app = getApplication<Application>()
+        com.skinnova.app.notify.Notifier.cancelReady(app)
+        com.skinnova.app.notify.AnalysisService.start(app)   // foreground priority while the model works (user may switch apps)
         job = viewModelScope.launch {
             try {
                 _state.value = AnalysisState.CheckingPhoto
@@ -121,10 +132,15 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 _result.value = res
                 if (c.settings.history.value) save(res)
                 _state.value = AnalysisState.Done(res)
+                if (!com.skinnova.app.notify.Notifier.appVisible)
+                    com.skinnova.app.notify.Notifier.ready(app, com.skinnova.app.model.Tier.parse(res.finalTier) ?: com.skinnova.app.model.Tier.MODERATE,
+                        res.mode == com.skinnova.app.model.Mode.basic)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 _state.value = AnalysisState.Idle; throw e
             } catch (e: Throwable) {
                 _state.value = AnalysisState.Failed(e.message ?: e.javaClass.simpleName)
+            } finally {
+                com.skinnova.app.notify.AnalysisService.stop(app)
             }
         }
     }
@@ -144,8 +160,32 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
 
     fun openSaved(e: AnalysisEntity) = viewModelScope.launch {
         _result.value = SnJson.decodeFromString(FinalResult.serializer(), e.resultJson)
-        _photo.value = c.images.load(e.imageRef); savedId = e.id
+        _photo.value = c.images.load(e.imageRef); savedId = e.id; _chat.value = emptyList()
         _cv.value = _result.value!!.cvTop3
+    }
+
+    // ---------- Ask SkinNova: follow-up questions about the result (on-device Gemma) ----------
+    private var chatJob: Job? = null
+    val chatBusy get() = chatJob?.isActive == true
+
+    fun ask(question: String) {
+        val q = question.trim().take(300); val r = _result.value ?: return
+        if (q.isEmpty() || chatBusy || !c.llm.available) return
+        val danger = com.skinnova.app.safety.ChatSafety.dangerSigns(q)
+        val earlier = _chat.value.mapNotNull { t -> t.answer?.takeIf { !t.withheld }?.let { t.question to it } }
+        _chat.value = _chat.value + ChatTurn(q, danger = danger)
+        fun setLast(f: (ChatTurn) -> ChatTurn) { _chat.value = _chat.value.dropLast(1) + f(_chat.value.last()) }
+        chatJob = viewModelScope.launch {
+            val ans = try {
+                val top = r.output.possibleCategories.firstOrNull()?.key ?: "other"
+                val card = c.relief.cards[top] ?: c.relief.cards["other"]
+                val p = c.prompts.chat(r, earlier, q, c.settings.lang.value, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList())
+                c.llm.generate(LlmTask.CHAT, p.system, p.user) { part -> setLast { it.copy(partial = part) } }.trim()
+            } catch (e: kotlinx.coroutines.CancellationException) { throw e } catch (e: Throwable) { "" }
+            val shown = com.skinnova.app.safety.ChatSafety.tidy(ans)
+            val why = com.skinnova.app.safety.ChatSafety.withheld(shown, c.guards)
+            setLast { it.copy(answer = if (why == null) shown else "", withheld = why != null, partial = "") }
+        }
     }
 
     // ---------- voice intake (USP-2) ----------
