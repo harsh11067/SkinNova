@@ -55,6 +55,16 @@ One-line status: `scripts/status.sh`.
 - Tests: JVM 32/32, pytest 154/154 (stale voice test updated for the topic check), on-device: C5 ✅, notification ✅.
 - Pending on the phone (needs it unlocked): `NavFlowTest` (6 screen tests), A9/S8 bench.
 
+## Done 2026-10-08 (2nd pass: bugs, auth review, model use; commits 3be5c69, a63d95e)
+- App lock review: 14 fixes (PIN checked once at its length, off the main thread; fingerprint bound to an enrolment-
+  invalidated Keystore key; current PIN to change/disable; no dialogs/keyboard/TTS/Back while locked; session cleared on
+  reset). Profile: complete without skin tone, pre-fill note on the questions, saved off the main thread.
+- Engine cache moved to cache/engine (Delete everything wiped it → 2-min loads); old caches cleaned (phone 1.0 → 4.5 GB free).
+- vivo force-stops (exit-info) → battery-exemption prompt; Early look on the analysing screen; Read in Hindi on demand;
+  Ask by voice; Hindi questions answered in Hindi; contagious facts per condition; GPU kept (measured vs CPU).
+- On-device: all suites pass (FirstRun when run alone — vivo puts the user's Settings task on top in a combined run);
+  S8 warm analysis 84 s (> 60 s budget, disclosed); Ask SkinNova 21–24 s per answer on GPU.
+
 ## In progress
 Nothing on the PC: every chain finished (`scripts/resume.sh` reports all done). Cleanup 2026-10-07 freed ~3 GB
 (regenerable XNNPack caches of v1, duplicate Kaggle downloads, finished training resume states).
