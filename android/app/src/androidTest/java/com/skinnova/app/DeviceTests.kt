@@ -111,6 +111,31 @@ class DeviceTests {
         assertTrue("S8 ${c.engineHolder.backendName} budget $budget s, warm run took $warm s", warm <= budget)
     }
 
+    /** Ask SkinNova with the real engine on the phone: answer time + the app's safety checks. Writes bench/chat.jsonl. */
+    @Test fun realChatOnDevice() = runBlocking {
+        val model = c.models.scanAndVerify()
+        assumeTrue("no verified .litertlm on the device", model != null)
+        val bmp = testCtx.assets.open("cv_fixtures/00.jpg").use { BitmapFactory.decodeStream(it) }
+        val ans = QuestionnaireAnswers("arm", "1_4w", 2, 0, "no", false, false, false, false, "18_39")
+        val r = c.pipeline().run(ans, c.cv.classify(bmp.toRgb()), false, null, "en") {}
+        val out = File(ctx.getExternalFilesDir("bench"), "chat.jsonl")
+        for ((q, lang) in listOf("Is it contagious?" to "en", "What should I avoid?" to "en", "क्या यह छूत की बीमारी है?" to "hi")) {
+            val top = r.output.possibleCategories.first().key
+            val card = c.relief.cards[top] ?: c.relief.cards["other"]
+            val p = c.prompts.chat(r, emptyList(), q, lang, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList())
+            val t0 = System.nanoTime()
+            val raw = c.llm.generate(com.skinnova.app.ml.LlmTask.CHAT, p.system, p.user)
+            val s = (System.nanoTime() - t0) / 1e9
+            val shown = com.skinnova.app.safety.ChatSafety.tidy(raw.trim())
+            val why = com.skinnova.app.safety.ChatSafety.withheld(shown, c.guards)
+            out.appendText(SnJson.encodeToString(kotlinx.serialization.json.JsonObject.serializer(), kotlinx.serialization.json.buildJsonObject {
+                put("q", kotlinx.serialization.json.JsonPrimitive(q)); put("s", kotlinx.serialization.json.JsonPrimitive(s))
+                put("backend", kotlinx.serialization.json.JsonPrimitive(c.engineHolder.backendName)); put("withheld", kotlinx.serialization.json.JsonPrimitive(why ?: ""))
+                put("answer", kotlinx.serialization.json.JsonPrimitive(shown)) }) + "\n")
+            assertTrue("chat answer took $s s", s <= 120.0)
+        }
+    }
+
     /** A9: GPU-failure path — with the CPU backend forced, a full (LLM) result is still produced. */
     @Test fun cpuFallbackProducesResult() = runBlocking {
         val model = c.models.scanAndVerify()
@@ -125,6 +150,8 @@ class DeviceTests {
             assertEquals("fallback reason: ${r.fallbackReason}", Mode.full, r.mode)
         } finally {
             c.engineHolder.forceBackend("GPU")
+            // the CPU run leaves a ~2.3 GB XNNPack weight cache the GPU path never reads: don't fill the tester's phone
+            com.skinnova.app.ml.EngineHolder.engineCacheDir(ctx).listFiles()?.filter { it.name.endsWith(".xnnpack_cache") }?.forEach { it.delete() }
         }
     }
 }

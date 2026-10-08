@@ -421,4 +421,19 @@
     <string name="ask_s_avoid">मुझे किन चीज़ों से बचना चाहिए?</string>
     <string name="ask_s_heal">ठीक होने में कितना समय लगेगा?</string>
     <string name="ask_s_doctor">डॉक्टर को कब दिखाना चाहिए?</string>
+    <string name="lock_bio_changed">इस फ़ोन के फ़िंगरप्रिंट बदल गए हैं, इसलिए फ़िंगरप्रिंट अनलॉक बंद कर दिया गया। अपना PIN डालें, फिर प्रोफ़ाइल में इसे दोबारा चालू करें।</string>
+    <string name="lock_checking">जाँच हो रही है…</string>
+    <string name="pin_current">अपना मौजूदा PIN डालें</string>
+    <string name="sec_bio_fail">इस फ़ोन पर फ़िंगरप्रिंट अनलॉक सेट नहीं हो सका।</string>
+    <string name="q_prefilled">आपकी प्रोफ़ाइल से भरा गया — अगर यह किसी और के लिए है तो बदलें।</string>
+    <string name="res_translate">हिन्दी में पढ़ें</string>
+    <string name="res_translating">आपके फ़ोन पर अनुवाद हो रहा है…</string>
+    <string name="res_translate_fail">हिन्दी संस्करण सुरक्षित रूप से नहीं बन सका — अंग्रेज़ी दिखा रहे हैं।</string>
+    <string name="ask_speak">बोलकर पूछें</string>
+    <string name="ask_listening">सुन रहे हैं… अपना सवाल बोलें।</string>
+    <string name="ask_badge">Gemma · फ़ोन पर</string>
+    <string name="bg_title">लिखते समय SkinNova को चलने दें</string>
+    <string name="bg_body">आपका फ़ोन बैकग्राउंड में ऐप रोक सकता है। SkinNova को अनुमति दें ताकि ऐप बदलने पर भी जवाब मिले।</string>
+    <string name="bg_body_maker">यह फ़ोन बैकग्राउंड में SkinNova को रोक सकता है। नीचे अनुमति दें पर टैप करें, और: सेटिंग्स → बैटरी → बैकग्राउंड पावर खपत प्रबंधन → SkinNova → अनुमति दें।</string>
+    <string name="bg_allow">अनुमति दें</string>
 </resources>

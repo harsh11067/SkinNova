@@ -57,6 +57,9 @@ sealed interface VoiceState {
     data class Error(val kind: String) : VoiceState
 }
 
+/** True while the app lock covers the screens: dialogs must not open above the lock screen. */
+val LocalAppLocked = androidx.compose.runtime.staticCompositionLocalOf { false }
+
 /** One Ask SkinNova exchange. [answer] null while the model is writing. */
 data class ChatTurn(val question: String, val answer: String? = null, val danger: Boolean = false, val withheld: Boolean = false,
                     val partial: String = "")
@@ -147,6 +150,13 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
 
     fun cancel() { job?.cancel(); _state.value = AnalysisState.Idle }
 
+    /** Forget the current photo, answers, result and chat (PIN reset / delete everything). */
+    fun clearSession() {
+        job?.cancel(); chatJob?.cancel()
+        _photo.value = null; _result.value = null; _cv.value = emptyList(); _chat.value = emptyList(); _draft.value = Draft()
+        _quality.value = null; _state.value = AnalysisState.Idle; savedId = null
+    }
+
     fun save(r: FinalResult? = _result.value) {
         val res = r ?: return; val bmp = _photo.value ?: return
         if (savedId != null) return
@@ -179,7 +189,9 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
             val ans = try {
                 val top = r.output.possibleCategories.firstOrNull()?.key ?: "other"
                 val card = c.relief.cards[top] ?: c.relief.cards["other"]
-                val p = c.prompts.chat(r, earlier, q, c.settings.lang.value, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList())
+                // answer in the question's language (a Hindi question gets a Hindi answer, whatever the app language)
+                val lang = if (q.any { it in '\u0900'..'\u097F' }) "hi" else c.settings.lang.value
+                val p = c.prompts.chat(r, earlier, q, lang, card?.home?.map { it.en } ?: emptyList(), card?.food?.map { it.en } ?: emptyList())
                 c.llm.generate(LlmTask.CHAT, p.system, p.user) { part -> setLast { it.copy(partial = part) } }.trim()
             } catch (e: kotlinx.coroutines.CancellationException) { throw e } catch (e: Throwable) { "" }
             val shown = com.skinnova.app.safety.ChatSafety.tidy(ans)
@@ -187,6 +199,30 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
             setLast { it.copy(answer = if (why == null) shown else "", withheld = why != null, partial = "") }
         }
     }
+
+    // ---------- on-demand Hindi (fine-tuned TRANSLATE task) ----------
+    private val _translating = MutableStateFlow(false); val translating: StateFlow<Boolean> = _translating
+
+    /** Translate this result into Hindi on the phone (contracts §10: guards re-run; any failure → stays English). */
+    fun translateResult(onFail: () -> Unit) {
+        val r = _result.value ?: return
+        if (_translating.value || r.localized != null || !c.llm.available) return
+        _translating.value = true
+        viewModelScope.launch {
+            val loc = runCatching { c.pipeline().translate(r.output, "hi") }.getOrNull()
+            _translating.value = false
+            if (loc == null) { onFail(); return@launch }
+            val upd = r.copy(localized = loc, lang = "hi"); _result.value = upd
+            savedId?.let { id ->   // keep the saved copy in step
+                c.db.dao().analysis(id)?.let { e -> c.db.dao().put(e.copy(resultJson = SnJson.encodeToString(FinalResult.serializer(), upd))) }
+            }
+        }
+    }
+
+    /** Ask SkinNova by voice: the phone's on-device speech recogniser (the model file has no audio encoder). */
+    suspend fun listenQuestion(onLevel: (Float) -> Unit): String? = try {
+        com.skinnova.app.ml.OnDeviceSpeech.listen(getApplication(), c.settings.lang.value, onLevel).trim().takeIf { it.count { ch -> ch.isLetter() } >= 3 }
+    } catch (e: kotlinx.coroutines.CancellationException) { throw e } catch (e: Throwable) { null }
 
     // ---------- voice intake (USP-2) ----------
     fun startRecording() {

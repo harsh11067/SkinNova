@@ -11,6 +11,11 @@ class SkinNovaApp : Application() {
     override fun onCreate() {
         super.onCreate()
         container = AppContainer(this)
+        // one-time: engine caches written to the cache root by builds before 2026-10-08 (now cache/engine) — up to 3.7 GB
+        // (GPU + CPU-fallback weight caches) that nothing reads any more
+        Thread {
+            cacheDir.listFiles()?.filter { it.isFile && (it.name.contains(".litertlm_") || it.name.endsWith(".xnnpack_cache")) }?.forEach { it.delete() }
+        }.start()
         // app lock: re-lock after the app has been out of sight for the chosen delay (security/AppLock.kt)
         androidx.lifecycle.ProcessLifecycleOwner.get().lifecycle.addObserver(object : androidx.lifecycle.DefaultLifecycleObserver {
             override fun onStop(owner: androidx.lifecycle.LifecycleOwner) = container.lock.onHidden()

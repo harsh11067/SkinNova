@@ -113,6 +113,7 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
             else -> {}
         }
         Spacer(Modifier.weight(1f))
+        KeepRunningTip()
         OutlineButton(stringResource(R.string.an_cancel), Modifier.fillMaxWidth()) { vm.cancel(); onCancel() }
     }
 }
@@ -234,6 +235,19 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
                     }
                     if (tts) SpeakButton({ loc?.explanation ?: r.output.explanation }, lang)
                 }
+                // on-demand Hindi from the fine-tuned model (only full results: Basic mode has no LLM text to translate)
+                if (r.localized == null && r.mode == Mode.full && vm.c.llm.available) {
+                    val busy by vm.translating.collectAsState()
+                    val failMsg = stringResource(R.string.res_translate_fail)
+                    val ctx2 = androidx.compose.ui.platform.LocalContext.current
+                    Box(Modifier.heightIn(min = 48.dp).clip(RoundedCornerShape(14.dp)).clickable(enabled = !busy, role = Role.Button) {
+                        vm.translateResult { android.widget.Toast.makeText(ctx2, failMsg, android.widget.Toast.LENGTH_LONG).show() }
+                    }.padding(horizontal = 4.dp), contentAlignment = Alignment.CenterStart) {
+                        Text(if (busy) stringResource(R.string.res_translating) else "अ  " + stringResource(R.string.res_translate),
+                            style = SnType.label, color = sn.accT)
+                    }
+                }
+                androidx.compose.runtime.LaunchedEffect(r.localized) { if (r.localized != null && !showHi) showHi = true }
                 Spacer(Modifier.height(8.dp))
                 Text(loc?.explanation ?: r.output.explanation, style = SnType.bodyL, color = sn.ink)
             }
@@ -272,7 +286,7 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
         }
         Spacer(Modifier.height(24.dp))
     }
-    if (askSave) AlertDialog(onDismissRequest = { askSave = false },
+    if (!com.skinnova.app.ui.LocalAppLocked.current && askSave) AlertDialog(onDismissRequest = { askSave = false },
         title = { Text(stringResource(R.string.res_save_title)) },
         text = { Text(stringResource(R.string.res_save_body)) },
         confirmButton = { TextButton({ askSave = false; vm.c.settings.setHistory(true); vm.save(); saved = true }) { Text(stringResource(R.string.res_save_ok)) } },
@@ -313,4 +327,26 @@ private fun answerChips(r: FinalResult): List<String> {
     val lv = listOf(R.string.lvl_0, R.string.lvl_1, R.string.lvl_2, R.string.lvl_3)
     return listOf(stringResource(site), stringResource(dur), stringResource(R.string.chip_itch) + ": " + stringResource(lv[a.itch]),
         stringResource(R.string.chip_pain) + ": " + stringResource(lv[a.pain]))
+}
+
+/** While the model writes: if the phone may stop SkinNova in the background, offer the "keep running" exemption. */
+@Composable
+fun KeepRunningTip() {
+    val sn = LocalSn.current
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    var exempt by remember { mutableStateOf(com.skinnova.app.notify.Background.exempt(ctx)) }
+    val lifecycle = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    androidx.compose.runtime.DisposableEffect(lifecycle) {   // re-check when the user comes back from the settings screen
+        val obs = androidx.lifecycle.LifecycleEventObserver { _, e -> if (e == androidx.lifecycle.Lifecycle.Event.ON_RESUME) exempt = com.skinnova.app.notify.Background.exempt(ctx) }
+        lifecycle.lifecycle.addObserver(obs); onDispose { lifecycle.lifecycle.removeObserver(obs) }
+    }
+    if (exempt && !com.skinnova.app.notify.Background.aggressiveMaker) return
+    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(18.dp)).background(sn.surf2).padding(12.dp)) {
+        Text(stringResource(R.string.bg_title), style = SnType.label, color = sn.ink)
+        Text(stringResource(if (com.skinnova.app.notify.Background.aggressiveMaker) R.string.bg_body_maker else R.string.bg_body), style = SnType.caption, color = sn.mut)
+        if (!exempt) Box(Modifier.heightIn(min = 48.dp).clickable(role = Role.Button) { com.skinnova.app.notify.Background.request(ctx) }, contentAlignment = Alignment.CenterStart) {
+            Text(stringResource(R.string.bg_allow) + "  →", style = SnType.label, color = sn.accT)
+        }
+    }
+    Spacer(Modifier.height(10.dp))
 }

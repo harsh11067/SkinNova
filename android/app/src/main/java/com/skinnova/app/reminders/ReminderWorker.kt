@@ -48,7 +48,11 @@ class ReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
             val pi = PendingIntent.getActivity(ctx, spotId.hashCode(), Intent(ctx, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
             val n = NotificationCompat.Builder(ctx, CHANNEL).setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(ctx.getString(R.string.tl_reminder_title, name)).setContentText(ctx.getString(R.string.tl_reminder_body))
-                .setContentIntent(pi).setAutoCancel(true).build()
+                .setContentIntent(pi).setAutoCancel(true)
+                // the spot name ("groin spot") is health data: neutral text on the lock screen
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setPublicVersion(NotificationCompat.Builder(ctx, CHANNEL).setSmallIcon(R.drawable.ic_launcher).setContentTitle(ctx.getString(R.string.app_name)).build())
+                .build()
             NotificationManagerCompat.from(ctx).notify(spotId.hashCode(), n)
         }
     }

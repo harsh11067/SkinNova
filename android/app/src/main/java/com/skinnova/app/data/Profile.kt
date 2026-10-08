@@ -29,7 +29,8 @@ data class Profile(
     val allergies: String = "",
     val conditions: List<String> = emptyList(),               // Profile.CONDITIONS keys
 ) {
-    val complete: Boolean get() = name.isNotBlank() && ageBand != null && skinTone != "unknown"
+    /** "Prefer not to say" for skin tone is a complete answer (it used to keep the "complete your profile" card forever). */
+    val complete: Boolean get() = name.isNotBlank() && ageBand != null
     val initial: String get() = name.trim().firstOrNull()?.uppercase() ?: "G"
 
     companion object {

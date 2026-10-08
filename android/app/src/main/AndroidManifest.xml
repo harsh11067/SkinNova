@@ -11,6 +11,8 @@
     <!-- AnalysisService (notify/Analysis.kt): foreground priority while the on-device model writes a result -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- "Keep SkinNova running" (notify/Background.kt): vivo/Oppo/Xiaomi power managers force-stop the 3 GB process mid-answer -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- App lock: fingerprint unlock (security/AppLock.kt) -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 

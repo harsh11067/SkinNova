@@ -8,6 +8,9 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -65,29 +68,32 @@ private fun analyzeWithFake(vm: SessionViewModel) = runBlocking {
     withTimeout(90_000) { vm.state.first { it is AnalysisState.Done || it is AnalysisState.Failed } }
 }
 
-/** A1a: first run navigation on the real activity (onboarding → setup → home → scan). */
+/** A1a: first run navigation on the real activity (onboarding → setup → home → scan). Started directly with
+ *  startActivitySync: ActivityScenario's helper activity stayed on top of MainActivity on vivo (touches could not reach it). */
 @RunWith(AndroidJUnit4::class)
 class FirstRunFlowTest {
     @get:Rule val compose = createEmptyComposeRule()
     @get:Rule val camera: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
 
-    @Before fun freshInstall() {
-        app.container.settings.apply { setOnboarded(false); setSetupSeen(false); setHistory(false); setLang("en") }
-    }
-
     @Test fun onboardingSetupHomeScan() {
-        ActivityScenario.launch(MainActivity::class.java).use {
+        app.container.settings.apply { setOnboarded(false); setSetupSeen(false); setHistory(false); setLang("en") }
+        val inst = InstrumentationRegistry.getInstrumentation()
+        val act = inst.startActivitySync(android.content.Intent(inst.targetContext, MainActivity::class.java)
+            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        try {
+            // "Get Started" appears once the model check (off the UI thread, not tracked by Compose idling) finishes
+            compose.waitUntil(120_000) { compose.onAllNodesWithText(s(R.string.load_get_started)).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText(s(R.string.load_get_started)).performClick()
-            repeat(2) { compose.onNodeWithText(s(R.string.onb_next)).performClick() }
-            compose.onNodeWithText(s(R.string.onb_understand)).performClick()
+            repeat(2) { compose.onNodeWithText(s(R.string.onb_next), substring = true).performClick() }
+            compose.onNodeWithText(s(R.string.onb_understand), substring = true).performClick()
             compose.waitForIdle()
             // with a verified model already on the phone the app skips setup (ModelManager), otherwise skip it here
-            if (compose.onAllNodesWithText(s(R.string.setup_skip)).fetchSemanticsNodes().isNotEmpty())
-                compose.onNodeWithText(s(R.string.setup_skip)).performClick()
-            compose.onNodeWithText(s(R.string.home_scan)).assertIsDisplayed().performClick()
+            if (compose.onAllNodesWithText(s(R.string.setup_skip), substring = true).fetchSemanticsNodes().isNotEmpty())
+                compose.onNodeWithText(s(R.string.setup_skip), substring = true).performClick()
+            compose.onNodeWithText(s(R.string.home_scan), substring = true).assertIsDisplayed().performClick()
             compose.onNodeWithText(s(R.string.scan_title)).assertIsDisplayed()
-        }
-        assertTrue(app.container.settings.onboarded.value)
+            assertTrue(app.container.settings.onboarded.value)
+        } finally { inst.runOnMainSync { act.finish() } }
     }
 }
 
@@ -112,7 +118,7 @@ class ResultFlowTest {
         assertTrue("rules lift the LLM's LOW", Tier.parse(r.finalTier)!! >= Tier.MODERATE)
         compose.setContent { SkinNovaTheme(false) { ResultScreen(vm, {}, {}, {}, {}) } }
         compose.onNodeWithText(s(R.string.rf_r5), substring = true).assertExists()
-        compose.onNodeWithText(s(R.string.cat_eczema_atopic), substring = true).assertExists()
+        compose.onAllNodesWithText(s(R.string.cat_eczema_atopic), substring = true).onFirst().assertExists()   // also named in the explanation
         compose.onNodeWithText(s(R.string.disclaimer)).performScrollTo().assertIsDisplayed()
     }
 
@@ -121,6 +127,7 @@ class ResultFlowTest {
         assumeTrue(app.container.cv.available)
         val c = app.container
         val vm = SessionViewModel(app)
+        requireNoPersonalData()
         deleteEverything(vm, alsoModel = false)
         assertEquals("history must be opt-in", false, c.settings.history.value)
         c.settings.setHistory(true)
@@ -147,12 +154,13 @@ class ResultFlowTest {
         }
         compose.onNodeWithText(s(R.string.disclaimer)).performScrollTo().assertIsDisplayed()   // nothing clipped away at 1.5×
         val minPx = 48 * density - 1
+        // the node's own size: boundsInRoot is clipped to the visible screen, so off-screen buttons read as 0×0
         val small = compose.onAllNodes(hasClickAction()).fetchSemanticsNodes().filter { n ->
-            n.boundsInRoot.width < minPx || n.boundsInRoot.height < minPx
+            n.size.width < minPx || n.size.height < minPx
         }.map { n ->
             val label = n.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text }
                 ?: n.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString() ?: "?"
-            "$label ${(n.boundsInRoot.width / density).toInt()}x${(n.boundsInRoot.height / density).toInt()}dp"
+            "$label ${(n.size.width / density).toInt()}x${(n.size.height / density).toInt()}dp"
         }
         assertTrue("touch targets below 48 dp: $small", small.isEmpty())
     }

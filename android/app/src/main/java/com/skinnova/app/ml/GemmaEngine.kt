@@ -84,7 +84,7 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
             // it was one 13–17 s job that froze the UI ("not responding", vivo V2059 / Helio G95, 2026-10-07).
             visionBackend = if (SEND_PHOTO_TO_LLM && supportsVision) Backend.CPU() else null,
             audioBackend = if (supportsAudio) Backend.CPU() else null,
-            maxNumTokens = 4096, cacheDir = ctx.cacheDir.path,
+            maxNumTokens = 4096, cacheDir = engineCacheDir(ctx).path,
         )).apply { initialize() }
     }
 
@@ -102,6 +102,10 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
          *  the frozen llm_val (category agreement 0.91 = 0.91, JSON valid 1.0 = 1.0) and 46 % faster — the image model
          *  carries the visual evidence, the LLM works from its scores and the answers. */
         const val SEND_PHOTO_TO_LLM = false
+
+        /** GPU/XNNPack weight caches (~2.3 GB, rebuilt in ~2 min if lost): their own folder, so "Delete everything"
+         *  (personal data) never removes them — it used to, and every next analysis started with a 2-minute load. */
+        fun engineCacheDir(ctx: Context) = java.io.File(ctx.cacheDir, "engine").apply { mkdirs() }
     }
 }
 

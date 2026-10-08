@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skinnova.app.R
+import kotlinx.coroutines.launch
 import com.skinnova.app.ui.SessionViewModel
 import com.skinnova.app.ui.components.SnCard
 import com.skinnova.app.ui.components.SpeakButton
@@ -58,9 +59,23 @@ fun AskCard(vm: SessionViewModel, tts: Boolean, lang: String) {
     var q by remember { mutableStateOf("") }
     val busy = turns.lastOrNull()?.answer == null && turns.isNotEmpty()
     fun send(text: String) { if (!busy && text.isNotBlank()) { vm.ask(text); q = "" } }
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    var listening by remember { mutableStateOf(false) }
+    fun listen() {
+        if (listening) return
+        listening = true
+        scope.launch { val heard = vm.listenQuestion { }; listening = false; if (heard != null) q = heard.take(300) }
+    }
+    val micPerm = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { if (it) listen() }
     SnCard(framed = true) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(stringResource(R.string.ask_title), style = SnType.title, color = sn.ink)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.ask_title), style = SnType.title, color = sn.ink, modifier = Modifier.weight(1f))
+                com.skinnova.app.ui.components.SmallTag(stringResource(R.string.ask_badge), sn.accT)
+            }
+            if (listening) Text(stringResource(R.string.ask_listening), style = SnType.caption, color = sn.accT)
             Text(stringResource(R.string.ask_sub), style = SnType.caption, color = sn.mut)
             turns.forEach { t ->
                 Box(Modifier.fillMaxWidth().padding(start = 40.dp), contentAlignment = Alignment.CenterEnd) {
@@ -86,11 +101,18 @@ fun AskCard(vm: SessionViewModel, tts: Boolean, lang: String) {
                 }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                BasicTextField(q, { q = it.take(300) }, Modifier.weight(1f).heightIn(min = 48.dp).clip(RoundedCornerShape(16.dp)).background(sn.surf)
-                    .border(1.dp, sn.line, RoundedCornerShape(16.dp)).padding(14.dp),
-                    textStyle = SnType.body.copy(color = sn.ink), cursorBrush = SolidColor(sn.acc),
+                BasicTextField(q, { q = it.take(300) }, Modifier.weight(1f).clip(RoundedCornerShape(16.dp)).background(sn.surf)
+                    .border(1.dp, sn.line, RoundedCornerShape(16.dp)).padding(horizontal = 14.dp),
+                    textStyle = com.skinnova.app.ui.components.fieldTextStyle.copy(color = sn.ink), cursorBrush = SolidColor(sn.acc), singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { send(q) }),
-                    decorationBox = { inner -> if (q.isEmpty()) Text(stringResource(R.string.ask_hint), style = SnType.body, color = sn.mut); inner() })
+                    decorationBox = { inner -> if (q.isEmpty()) Text(stringResource(R.string.ask_hint), style = com.skinnova.app.ui.components.fieldTextStyle, color = sn.mut); inner() })
+                Spacer(Modifier.width(8.dp))
+                val micLabel = stringResource(R.string.ask_speak)
+                Box(Modifier.size(48.dp).clip(RoundedCornerShape(16.dp)).background(if (listening) sn.acc else sn.surf2)
+                    .semantics { contentDescription = micLabel }.clickable(enabled = !busy, role = Role.Button) {
+                        if (androidx.core.content.ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.RECORD_AUDIO) ==
+                            android.content.pm.PackageManager.PERMISSION_GRANTED) listen() else micPerm.launch(android.Manifest.permission.RECORD_AUDIO)
+                    }, contentAlignment = Alignment.Center) { Text("🎙", fontSize = 16.sp) }
                 Spacer(Modifier.width(8.dp))
                 val sendLabel = stringResource(R.string.ask_send)
                 Box(Modifier.size(48.dp).clip(RoundedCornerShape(16.dp)).background(if (busy || q.isBlank()) sn.surf2 else sn.acc)

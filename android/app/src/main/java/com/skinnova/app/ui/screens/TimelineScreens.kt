@@ -119,9 +119,9 @@ fun TrackSpotScreen(vm: SessionViewModel, tvm: TimelineViewModel, onBack: () -> 
         Spacer(Modifier.height(16.dp))
         Text(stringResource(R.string.tl_name), style = SnType.label, color = sn.ink)
         Spacer(Modifier.height(6.dp))
-        BasicTextField(name, { name = it.take(40) }, Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(sn.surf).border(1.dp, sn.line, RoundedCornerShape(16.dp)).padding(14.dp),
-            textStyle = SnType.bodyL.copy(color = sn.ink), cursorBrush = SolidColor(sn.acc), singleLine = true,
-            decorationBox = { inner -> if (name.isEmpty()) Text(stringResource(R.string.tl_name_hint), style = SnType.bodyL, color = sn.mut); inner() })
+        BasicTextField(name, { name = it.take(40) }, Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(sn.surf).border(1.dp, sn.line, RoundedCornerShape(16.dp)).padding(horizontal = 14.dp),
+            textStyle = com.skinnova.app.ui.components.fieldTextStyle.copy(color = sn.ink), cursorBrush = SolidColor(sn.acc), singleLine = true,
+            decorationBox = { inner -> if (name.isEmpty()) Text(stringResource(R.string.tl_name_hint), style = com.skinnova.app.ui.components.fieldTextStyle, color = sn.mut); inner() })
         Spacer(Modifier.height(16.dp))
         Text(stringResource(R.string.tl_reminder), style = SnType.label, color = sn.ink)
         Spacer(Modifier.height(8.dp))

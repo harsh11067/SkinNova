@@ -269,7 +269,7 @@ private fun HistoryRow(vm: SessionViewModel, e: AnalysisEntity, onClick: () -> U
 
 /** 10 Profile: appearance, language, on-device model, privacy & data, about. */
 @Composable
-fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -> Unit, onEdit: () -> Unit = {}, onSetPin: () -> Unit = {}) {
+fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -> Unit, onEdit: () -> Unit = {}, onPin: (String) -> Unit = {}) {
     val sn = LocalSn.current
     val c = vm.c
     val scope = rememberCoroutineScope()
@@ -308,7 +308,7 @@ fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -
             }
         }
         Overline(stringResource(R.string.sec_title))
-        com.skinnova.app.ui.screens.SecuritySection(c.lock, onSetPin)
+        com.skinnova.app.ui.screens.SecuritySection(c.lock, onPin)
         Overline(stringResource(R.string.prof_appearance))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             Chip(stringResource(R.string.prof_dark), dark, { c.settings.setDark(true) }, Modifier.weight(1f))
@@ -369,7 +369,7 @@ fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -
             Text(stringResource(R.string.prof_about_body), style = SnType.caption, color = sn.mut)
         }
     }
-    if (confirm) AlertDialog(onDismissRequest = { confirm = false },
+    if (!com.skinnova.app.ui.LocalAppLocked.current && confirm) AlertDialog(onDismissRequest = { confirm = false },
         confirmButton = { TextButton({ confirm = false; scope.launch { deleteEverything(vm, alsoModel) } }) { Text(stringResource(R.string.delete), color = Color(0xFFE0787A)) } },
         dismissButton = { TextButton({ confirm = false }) { Text(stringResource(R.string.cancel)) } },
         text = {
@@ -389,10 +389,12 @@ suspend fun deleteEverything(vm: SessionViewModel, alsoModel: Boolean) {
         val d = c.db.dao(); d.clearMetrics(); d.clearCaptures(); d.clearSpots(); d.clearAnalyses()
         c.images.deleteAll()
         c.profiles.delete()
-        c.ctx.cacheDir.listFiles()?.forEach { it.deleteRecursively() }
+        // personal temp files only; the AI engine's weight caches (cache/engine) are not personal and cost ~2 min to rebuild
+        c.ctx.cacheDir.listFiles()?.filter { it.name != "engine" }?.forEach { it.deleteRecursively() }
         androidx.work.WorkManager.getInstance(c.ctx).cancelAllWorkByTag("spot_reminder")
         if (alsoModel) { c.engineHolder.release(); c.models.deleteModels() }
     }
+    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { vm.clearSession() }
 }
 
 @Composable

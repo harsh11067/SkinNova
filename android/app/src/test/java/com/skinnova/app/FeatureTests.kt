@@ -66,6 +66,13 @@ class AppLockTest {
         assertTrue("cold start is locked", AppLock(MapStore().also { s -> lock(s).setPin("4826") }) { t }.locked.value)
     }
 
+    @Test fun pinLengthStoredSoPrefixesAreNeverChecked() {
+        val s = MapStore(); val l = lock(s); l.setPin("190274")
+        assertEquals(6, l.pinLength)
+        assertEquals(Unlock.Ok, l.check("190274"))
+        l.disable(); assertEquals(0, l.pinLength)
+    }
+
     @Test fun weakPinsRefused() {
         listOf("123", "123456789", "12a4", "1111", "1234", "9876", "0123").forEach { assertNotNull(it, AppLock.validPin(it)) }
         listOf("4826", "190274", "1122").forEach { assertNull(it, AppLock.validPin(it)) }

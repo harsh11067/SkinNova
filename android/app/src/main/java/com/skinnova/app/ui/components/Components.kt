@@ -95,9 +95,10 @@ fun PrimaryButton(text: String, modifier: Modifier = Modifier, enabled: Boolean 
 @Composable
 fun OutlineButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val sn = LocalSn.current
-    Box(modifier.heightIn(min = 52.dp).clip(RoundedCornerShape(18.dp)).background(sn.btn)
+    // clickable before the 3 dp inner ring: the whole 52 dp button is the touch target (it was 46 dp — A10)
+    Box(modifier.heightIn(min = 52.dp).clip(RoundedCornerShape(18.dp)).clickable(role = Role.Button, onClick = onClick).background(sn.btn)
         .border(1.5.dp, sn.acc, RoundedCornerShape(18.dp)).padding(3.dp).border(1.dp, sn.accSoft, RoundedCornerShape(15.dp))
-        .clickable(role = Role.Button, onClick = onClick).padding(horizontal = 14.dp), contentAlignment = Alignment.Center) {
+        .padding(horizontal = 14.dp), contentAlignment = Alignment.Center) {
         Text(text, style = SnType.bodyL, color = sn.accT, textAlign = TextAlign.Center)
     }
 }
@@ -273,3 +274,8 @@ fun categoryPhotos(key: String): List<Int> = when (key) {
     "vitiligo" -> listOf(R.drawable.lib_vitiligo_0)
     else -> emptyList()
 }
+
+/** Single-line text-field style: one 48 sp line with the text centred, so the field's own tap target is ≥ 48 dp (A10). */
+val fieldTextStyle get() = SnType.bodyL.copy(lineHeight = 48.sp,
+    lineHeightStyle = androidx.compose.ui.text.style.LineHeightStyle(androidx.compose.ui.text.style.LineHeightStyle.Alignment.Center,
+        androidx.compose.ui.text.style.LineHeightStyle.Trim.None))

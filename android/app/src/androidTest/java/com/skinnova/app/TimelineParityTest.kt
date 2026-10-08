@@ -8,6 +8,7 @@ import com.skinnova.app.timeline.NoiseFloor
 import com.skinnova.app.timeline.Timeline
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonArray
@@ -47,8 +48,13 @@ class TimelineParityTest {
             val ms = (System.nanoTime() - t) / 1e6
             val wAlign = want["align_ok"]!!.jsonPrimitive.boolean
             val dArea = rel(got.areaRatio, num(want, "area_ratio")); val dDe = absDiff(got.contrastDelta, num(want, "contrast_delta"))
+            // What the user sees must match exactly (alignment, confidence). Sizes/contrast are compared where the outline is
+            // stable in Python: on unstable outlines (seg_ok false → never reported as a confident change) GrabCut amplifies
+            // tiny numeric differences, and the phone runs OpenCV 4.12 vs 5.0 on the PC (decisions 2026-10-08).
+            val wStable = want["seg_ok"]?.jsonPrimitive?.booleanOrNull == true
             if (got.alignOk != wAlign) fails += "$id align_ok ${got.alignOk} vs $wAlign"
-            else if (wAlign) {
+            else if (got.confidence != want["confidence"]!!.jsonPrimitive.content) fails += "$id confidence ${got.confidence} vs ${want["confidence"]}"
+            else if (wAlign && wStable) {
                 if (dArea == null || dArea > tolArea) fails += "$id area_ratio ${got.areaRatio} vs ${num(want, "area_ratio")}"
                 if (dDe == null || dDe > tolDe) fails += "$id contrast_delta ${got.contrastDelta} vs ${num(want, "contrast_delta")}"
                 if (got.coinInBoth != want["coin_in_both"]!!.jsonPrimitive.boolean) fails += "$id coin_in_both ${got.coinInBoth}"

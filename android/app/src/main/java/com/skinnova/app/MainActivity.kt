@@ -105,7 +105,7 @@ object Routes {
     const val SCAN = "scan"; const val QUESTIONS = "questions"; const val ANALYZING = "analyzing"; const val RESULT = "result"
     const val INSIGHTS = "insights/{key}"; const val LIBRARY = "library"; const val HISTORY = "history"; const val PROFILE = "profile"
     const val TRACK = "track"; const val TIMELINE = "timeline/{spotId}"; const val RECAPTURE = "recapture/{spotId}"
-    const val PROFILE_EDIT = "profile/edit"; const val SET_PIN = "security/pin"
+    const val PROFILE_EDIT = "profile/edit"; const val SET_PIN = "security/pin/{mode}"
     val TABS = setOf(HOME, HISTORY, LIBRARY, PROFILE)
 }
 
@@ -125,9 +125,15 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
     }
     val locked by c.lock.locked.collectAsState()
     val scope = androidx.compose.runtime.rememberCoroutineScope()
+    // on lock: drop keyboard focus (typing must not reach a hidden field) and stop any read-aloud of health text
+    val focus = androidx.compose.ui.platform.LocalFocusManager.current
+    val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
+    LaunchedEffect(locked) { if (locked) { focus.clearFocus(force = true); keyboard?.hide(); com.skinnova.app.i18n.Tts.stop() } }
     Box(Modifier.fillMaxSize()) {
       // Route guard: while locked no route is reachable — the lock screen covers the whole NavHost, takes every touch,
       // and the routes underneath are removed from the accessibility tree (FLAG_SECURE hides them from screenshots).
+      // LocalAppLocked: screens' dialogs (own windows, above the lock screen) are not shown while locked
+      androidx.compose.runtime.CompositionLocalProvider(com.skinnova.app.ui.LocalAppLocked provides locked) {
       Box(Modifier.fillMaxSize().then(if (locked) Modifier.clearAndSetSemantics { } else Modifier)) {
         NavHost(nav, startDestination = startRoute) {
             composable(Routes.LOADING) { LoadingScreen(c) { afterStart() } }
@@ -154,9 +160,9 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
                 HistoryScreen(vm, onOpen = { vm.openSaved(it); nav.navigate(Routes.RESULT) }, onSpot = { nav.navigate("timeline/$it") }, onScan = { nav.navigate(Routes.SCAN) })
             }
             composable(Routes.PROFILE) { ProfileScreen(vm, onReplayIntro = { c.settings.setOnboarded(false); nav.navigate(Routes.ONBOARD) { popUpTo(0) } },
-                onSetup = { nav.navigate(Routes.SETUP) }, onEdit = { nav.navigate(Routes.PROFILE_EDIT) }, onSetPin = { nav.navigate(Routes.SET_PIN) }) }
+                onSetup = { nav.navigate(Routes.SETUP) }, onEdit = { nav.navigate(Routes.PROFILE_EDIT) }, onPin = { mode -> nav.navigate("security/pin/$mode") }) }
             composable(Routes.PROFILE_EDIT) { ProfileEditScreen(vm) { nav.popBackStack() } }
-            composable(Routes.SET_PIN) { SetPinScreen(onDone = { c.lock.setPin(it); nav.popBackStack() }, onBack = { nav.popBackStack() }) }
+            composable(Routes.SET_PIN) { e -> SetPinScreen(c.lock, e.arguments?.getString("mode") ?: "new", onDone = { nav.popBackStack() }, onBack = { nav.popBackStack() }) }
             composable(Routes.TRACK) { TrackSpotScreen(vm, tvm, onBack = { nav.popBackStack() }, onCreated = { nav.navigate("timeline/$it") { popUpTo(Routes.HOME) } }) }
             composable(Routes.TIMELINE) { e -> TimelineScreen(vm, tvm, e.arguments?.getString("spotId")!!, onBack = { nav.popBackStack() },
                 onRecapture = { nav.navigate("recapture/$it") }) }
@@ -164,10 +170,13 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
         }
         if (route in Routes.TABS) BottomNav(route!!) { nav.tab(it) }
       }
+      }
         if (locked) LockScreen(c.lock, onForgot = {
             // no PIN recovery exists offline: the way back in is a reset of the personal data (the AI model stays)
             scope.launch {
                 com.skinnova.app.ui.screens.deleteEverything(vm, alsoModel = false)
+                vm.clearSession()                        // nothing of the last analysis stays in memory either
+                com.skinnova.app.security.BiometricKey.delete()
                 c.lock.disable()
                 nav.navigate(Routes.HOME) { popUpTo(0) }
             }

@@ -442,4 +442,19 @@
     <string name="ask_s_avoid">What should I avoid?</string>
     <string name="ask_s_heal">How long will it take to heal?</string>
     <string name="ask_s_doctor">When should I see a doctor?</string>
+    <string name="lock_bio_changed">Fingerprints on this phone changed, so fingerprint unlock was turned off. Enter your PIN, then turn it on again in Profile.</string>
+    <string name="lock_checking">Checking…</string>
+    <string name="pin_current">Enter your current PIN</string>
+    <string name="sec_bio_fail">Fingerprint unlock could not be set up on this phone.</string>
+    <string name="q_prefilled">Filled in from your profile — change it if this is for someone else.</string>
+    <string name="res_translate">Read in Hindi (हिन्दी)</string>
+    <string name="res_translating">Translating on your phone…</string>
+    <string name="res_translate_fail">The Hindi version couldn\'t be made safely — showing English.</string>
+    <string name="ask_speak">Ask by voice</string>
+    <string name="ask_listening">Listening… speak your question.</string>
+    <string name="ask_badge">Gemma · on-device</string>
+    <string name="bg_title">Keep SkinNova running while it writes</string>
+    <string name="bg_body">Your phone may pause apps in the background. Allow SkinNova so the answer still arrives if you switch apps.</string>
+    <string name="bg_body_maker">This phone may stop SkinNova in the background. Tap Allow below, and also: Settings → Battery → Background power consumption management → SkinNova → Allow.</string>
+    <string name="bg_allow">Allow</string>
 </resources>

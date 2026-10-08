@@ -55,17 +55,24 @@ class AppLock(private val s: LockStore, private val now: () -> Long = System::cu
     fun setPin(pin: String) {
         require(validPin(pin) == null) { "weak pin" }
         val salt = ByteArray(16).also { SecureRandom().nextBytes(it) }
-        s.put("salt" to b64(salt), "hash" to b64(hash(pin, salt, ITERATIONS)), "iter" to ITERATIONS.toLong(), "fails" to null, "until" to null)
+        s.put("salt" to b64(salt), "hash" to b64(hash(pin, salt, ITERATIONS)), "iter" to ITERATIONS.toLong(), "len" to pin.length.toLong(),
+            "fails" to null, "until" to null)
         _locked.value = false; _on.value = true
     }
 
-    fun disable() { s.put("salt" to null, "hash" to null, "iter" to null, "fails" to null, "until" to null, "bio" to null); _biometric.value = false; _locked.value = false; _on.value = false }
+    fun disable() { s.put("salt" to null, "hash" to null, "iter" to null, "len" to null, "fails" to null, "until" to null, "bio" to null); _biometric.value = false; _locked.value = false; _on.value = false }
+
+    /** Digits in the PIN: the pad checks once, when this many are typed (checking at every length ≥ 4 used to count
+     *  each shorter prefix as a wrong try — a 6-digit PIN cost 2 tries per unlock). 0 = unknown. */
+    val pinLength: Int get() = s.long("len").toInt()
 
     fun setBiometric(on: Boolean) { s.put("bio" to on); _biometric.value = on }
     fun setGrace(ms: Long) { s.put("grace" to ms); _graceMs.value = ms }
 
     fun lockedOutUntil(): Long = s.long("until").takeIf { it > now() } ?: 0L
 
+    /** PBKDF2 takes ~0.1–0.5 s on a phone: call off the main thread. */
+    @Synchronized
     fun check(pin: String): Unlock {
         lockedOutUntil().takeIf { it > 0 }?.let { return Unlock.LockedOut(it) }
         val salt = s.str("salt")?.let(::unb64) ?: return Unlock.Ok

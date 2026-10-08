@@ -41,6 +41,17 @@ private val app get() = ApplicationProvider.getApplicationContext<Application>()
 private fun s(id: Int) = app.getString(id)
 
 /**
+ * These tests wipe the app's history, spots, profile and PIN (deleteEverything). They refuse to run on a phone where the
+ * user already has any of that, so a test run can never delete someone's real data (2026-10-08 lesson).
+ */
+suspend fun requireNoPersonalData() {
+    val c = app.container
+    val personal = c.db.dao().analysisCount().first() > 0 || c.db.dao().allSpots().isNotEmpty() || c.lock.enabled ||
+        c.profiles.profile.value.name.isNotBlank()
+    assumeTrue("personal data on this phone (history/spots/profile/PIN) — not wiping it; run on a clean install", !personal)
+}
+
+/**
  * The real NavHost (App) from the result screen: every action button must reach its screen (user report 2026-10-08:
  * "Turn on history to save / Track this spot / Retake / Learn more don't work"), and the app lock must hide every route.
  */
@@ -53,6 +64,7 @@ class NavFlowTest {
 
     @Before fun setUp() = runBlocking {
         assumeTrue("CV model not bundled", app.container.cv.available)
+        requireNoPersonalData()
         realLlm = app.container.llm
         app.container.llm = FakeLlm(FAKE_ANALYSIS_NAV)
         vm = SessionViewModel(app)
@@ -94,7 +106,7 @@ class NavFlowTest {
     @Test fun trackThisSpotWorksInOneTap() = runBlocking {
         showResult(); tap(R.string.res_track)
         compose.onNodeWithText(s(R.string.tl_track_title)).assertIsDisplayed()
-        compose.onNodeWithText(s(R.string.tl_start)).performScrollTo().assertIsEnabled().performClick()   // pre-filled name
+        compose.onNodeWithText(s(R.string.tl_start), substring = true).performScrollTo().assertIsEnabled().performClick()   // pre-filled name
         withTimeout(10_000) { app.container.db.dao().spots().first { it.size == 1 } }
         Unit
     }
@@ -116,7 +128,8 @@ class NavFlowTest {
         compose.onNodeWithText(s(R.string.lock_title)).assertIsDisplayed()
         assertTrue("result must not be reachable while locked", compose.onAllNodesWithText(s(R.string.res_title)).fetchSemanticsNodes().isEmpty())
         "4826".forEach { compose.onNodeWithText("$it").performClick() }
-        compose.waitForIdle()
+        // the PIN is checked off the main thread (PBKDF2), once its 4 digits are in
+        compose.waitUntil(10_000) { compose.onAllNodesWithText(s(R.string.lock_title)).fetchSemanticsNodes().isEmpty() }
         assertTrue(compose.onAllNodesWithText(s(R.string.lock_title)).fetchSemanticsNodes().isEmpty())
         compose.onNodeWithText(s(R.string.res_title)).assertIsDisplayed()
     }
@@ -124,6 +137,8 @@ class NavFlowTest {
     @Test fun resultReadyNotification() {
         Notifier.ready(app, Tier.MODERATE, basic = false)
         val nm = app.getSystemService(NotificationManager::class.java)
+        val t0 = System.currentTimeMillis()   // NotificationManager posts asynchronously
+        while (nm.activeNotifications.none { it.id == 42 } && System.currentTimeMillis() - t0 < 5_000) Thread.sleep(100)
         assertTrue(nm.activeNotifications.any { it.id == 42 })
         Notifier.cancelReady(app)
     }

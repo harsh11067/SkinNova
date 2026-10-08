@@ -145,6 +145,15 @@ fun QuestionsScreen(vm: SessionViewModel, onBack: () -> Unit, onAnalyze: () -> U
         Text(stringResource(step.title), style = SnType.display, color = sn.ink)
         Spacer(Modifier.height(8.dp))
         Text(stringResource(step.sub), style = SnType.body, color = sn.mut)
+        // age / skin tone pre-filled from the profile: say so (a scan for a child must not keep the adult's age band)
+        val prof by vm.c.profiles.profile.collectAsState()
+        if ((step.key == "age_band" && prof.ageBand != null && draft.ageBand == prof.ageBand) ||
+            (step.key == "skin_tone" && prof.skinTone != "unknown" && draft.skinTone == prof.skinTone)) {
+            Spacer(Modifier.height(10.dp))
+            Box(Modifier.clip(RoundedCornerShape(12.dp)).background(sn.surf2).padding(horizontal = 12.dp, vertical = 8.dp)) {
+                Text("👤 " + stringResource(R.string.q_prefilled), style = SnType.caption, color = sn.accT)
+            }
+        }
         draft.evidence[step.key]?.let { ev ->
             Spacer(Modifier.height(10.dp))
             Box(Modifier.clip(RoundedCornerShape(12.dp)).background(sn.surf2).padding(horizontal = 12.dp, vertical = 8.dp)) {
