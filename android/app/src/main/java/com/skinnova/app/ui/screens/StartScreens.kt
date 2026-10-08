@@ -74,7 +74,7 @@ import kotlinx.coroutines.launch
 
 /**
  * 00 Loading — design index.html "00 Loading" (a 360×788 CSS-px frame). The scene is the design's own procedural canvas
- * rendered at 3× (px_loading_full, 1080×2364: 1:1 on a 1080-px-wide phone) and every element sits at its design
+ * drawn as a 180×394 dot grid (px_landing_grid + PixelDotArt: whole pixels per dot, 15 fps star twinkle) and every element sits at its design
  * coordinate × k, k = the art's cover scale — so text, logo and controls land on the art exactly as designed.
  * Real work underneath: verify any adb-pushed model once (sha256 is cached afterwards), then show Get Started.
  */
@@ -90,12 +90,20 @@ fun LoadingScreen(c: AppContainer, onDone: () -> Unit) {
     }
     val words = listOf(R.string.load_w_observe, R.string.load_w_analyze, R.string.load_w_understand, R.string.load_w_act)
     BoxWithConstraints(Modifier.fillMaxSize().background(Color(0xFF060A17))) {
-        val k = maxOf(maxWidth / 360.dp, maxHeight / 788.dp)        // design px → dp (art cover scale)
-        fun d(px: Float): Dp = (px * k).dp
         val density = LocalDensity.current
+        // art = 180×394 dot grid at the largest WHOLE number of screen pixels per dot that fits (crisp on every phone;
+        // 1080×2400 → 6 px dots = the full 1080 px width; rounding up instead zoomed 15 % and cut the logo off)
+        val cell = minOf(constraints.maxWidth / 180, constraints.maxHeight / 394).coerceAtLeast(1)
+        val k = cell * 180f / density.density / 360f                // design px → dp (the 360×788 design box = the art)
+        fun d(px: Float): Dp = (px * k).dp
+        val ctx = androidx.compose.ui.platform.LocalContext.current
+        val art by androidx.compose.runtime.produceState<com.skinnova.app.ui.components.DotArt?>(null, cell) {
+            value = com.skinnova.app.ui.components.buildDotArt(ctx, R.drawable.px_landing_grid, cell)
+        }
         fun t(px: Float): TextUnit = with(density) { d(px).toSp() }    // text scales with the art, like the design
         Box(Modifier.align(Alignment.Center).requiredSize(d(360f), d(788f))) {
-            PixelImage(R.drawable.px_loading_full, Modifier.fillMaxSize(), ContentScale.FillBounds)
+            art?.let { com.skinnova.app.ui.components.DotArtCanvas(it, Modifier.fillMaxSize()) }
+                ?: PixelImage(R.drawable.px_landing_grid, Modifier.fillMaxSize(), ContentScale.FillBounds)   // for the ~0.1 s it takes to build
             Box(Modifier.align(Alignment.BottomStart).fillMaxWidth().height(d(260f))
                 .background(Brush.verticalGradient(0f to Color(0x00060A17), 0.45f to Color(0xB3060A17), 1f to Color(0xF5060A17))))
             // shared logo on this screen: translate(14px,100px) scale(1.06) — gem 48 · gap 10 · title 231×47
@@ -243,7 +251,7 @@ fun SetupScreen(c: AppContainer, onDone: () -> Unit) {
         if (st is ImportState.Ready) PrimaryButton(stringResource(R.string.q_next)) { c.settings.setSetupSeen(true); onDone() }
         else {
             PrimaryButton(stringResource(R.string.setup_import), enabled = st !is ImportState.Copying && st !is ImportState.Verifying && scan < 0f) {
-                picker.launch(arrayOf("application/octet-stream", "*/*"))
+                c.lock.expectExternal(); picker.launch(arrayOf("application/octet-stream", "*/*"))
             }
             Spacer(Modifier.height(10.dp))
             OutlineButton(stringResource(R.string.setup_rescan), Modifier.fillMaxWidth()) { scope.launch { scanFolder() } }

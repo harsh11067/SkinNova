@@ -461,4 +461,6 @@
     <string name="an_early_sub">From the image model and the safety rules — the AI is writing the full explanation now. The advice level can only go up, never down.</string>
     <string name="an_early_level">Advice level so far</string>
     <string name="rl_contagious">Is it contagious?</string>
+    <string name="prof_start">Start screen</string>
+    <string name="ntf_ch_ready_quiet">Results ready (silent)</string>
 </resources>

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -93,7 +94,17 @@ fun SkinNovaTheme(dark: Boolean, content: @Composable () -> Unit) {
 /** The design's signature card: 1dp line border + inset 3dp surface + 1dp line2 ring, soft shadow. */
 fun Modifier.snCard(sn: SnColors, radius: Dp = 24.dp, framed: Boolean = true, border: Color? = null): Modifier {
     val shape = RoundedCornerShape(radius)
-    val base = this.shadow(if (framed) 10.dp else 0.dp, shape, ambientColor = Color.Black.copy(alpha = .35f), spotColor = Color.Black.copy(alpha = .35f))
-        .clip(shape).background(sn.surf).border(1.dp, border ?: if (framed) sn.line else sn.line2, shape)
-    return if (framed) base.padding(3.dp).border(1.dp, sn.line2, RoundedCornerShape(radius - 3.dp)) else base
+    // Shadows cost the Mali GPU ~2–4 ms per card per frame (gfxinfo: 8–15 ms GPU, median frame 18–20 ms) and are
+    // invisible on the dark theme: none there, a light one on the light theme.
+    val lifted = if (framed && !sn.isDark) this.shadow(4.dp, shape, ambientColor = Color.Black.copy(alpha = .18f), spotColor = Color.Black.copy(alpha = .18f)) else this
+    val base = lifted.clip(shape).background(sn.surf).border(1.dp, border ?: if (framed) sn.line else sn.line2, shape)
+    return if (framed) base.padding(3.dp).border(1.dp, sn.line2, RoundedCornerShape(radius - 3.dp)).pixelRivets(sn.acc) else base
+}
+
+/** Design touch: four 2.5 dp pixel "rivets" inside a framed card's corners (one cached draw, no layers). */
+fun Modifier.pixelRivets(color: Color): Modifier = this.drawWithCache {
+    val d = 2.5.dp.toPx(); val o = 11.dp.toPx(); val c = color.copy(alpha = .55f)
+    val pts = listOf(androidx.compose.ui.geometry.Offset(o, o), androidx.compose.ui.geometry.Offset(size.width - o - d, o),
+        androidx.compose.ui.geometry.Offset(o, size.height - o - d), androidx.compose.ui.geometry.Offset(size.width - o - d, size.height - o - d))
+    onDrawWithContent { drawContent(); pts.forEach { drawRect(c, it, androidx.compose.ui.geometry.Size(d, d)) } }
 }

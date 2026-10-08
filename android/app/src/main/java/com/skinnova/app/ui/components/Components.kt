@@ -125,7 +125,13 @@ fun SmallTag(text: String, color: Color? = null) {
 
 @Composable
 fun Overline(text: String, modifier: Modifier = Modifier) {
-    Text(text, style = SnType.overline, color = LocalSn.current.mut, modifier = modifier.padding(start = 4.dp, top = 22.dp, bottom = 10.dp))
+    val sn = LocalSn.current
+    // design touch: a 4 dp pixel marker in the accent colour before each section heading
+    Row(modifier.padding(start = 4.dp, top = 22.dp, bottom = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(4.dp).background(sn.accT.copy(alpha = .8f)))
+        Spacer(Modifier.width(8.dp))
+        Text(text, style = SnType.overline, color = sn.mut)
+    }
 }
 
 @Composable

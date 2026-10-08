@@ -160,7 +160,8 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
                 HistoryScreen(vm, onOpen = { vm.openSaved(it); nav.navigate(Routes.RESULT) }, onSpot = { nav.navigate("timeline/$it") }, onScan = { nav.navigate(Routes.SCAN) })
             }
             composable(Routes.PROFILE) { ProfileScreen(vm, onReplayIntro = { c.settings.setOnboarded(false); nav.navigate(Routes.ONBOARD) { popUpTo(0) } },
-                onSetup = { nav.navigate(Routes.SETUP) }, onEdit = { nav.navigate(Routes.PROFILE_EDIT) }, onPin = { mode -> nav.navigate("security/pin/$mode") }) }
+                onSetup = { nav.navigate(Routes.SETUP) }, onEdit = { nav.navigate(Routes.PROFILE_EDIT) }, onPin = { mode -> nav.navigate("security/pin/$mode") },
+                onStart = { nav.navigate(Routes.LOADING) { popUpTo(nav.graph.id) { inclusive = true } } }) }
             composable(Routes.PROFILE_EDIT) { ProfileEditScreen(vm) { nav.popBackStack() } }
             composable(Routes.SET_PIN) { e -> SetPinScreen(c.lock, e.arguments?.getString("mode") ?: "new", onDone = { nav.popBackStack() }, onBack = { nav.popBackStack() }) }
             composable(Routes.TRACK) { TrackSpotScreen(vm, tvm, onBack = { nav.popBackStack() }, onCreated = { nav.navigate("timeline/$it") { popUpTo(Routes.HOME) } }) }
@@ -192,7 +193,7 @@ fun BottomNav(current: String, go: (String) -> Unit) {
     val sn = LocalSn.current
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         Row(Modifier.navigationBarsPadding().padding(start = 12.dp, end = 12.dp, bottom = 12.dp).fillMaxWidth().height(66.dp)
-            .shadow(10.dp, RoundedCornerShape(24.dp)).clip(RoundedCornerShape(24.dp)).background(sn.nav).border(1.dp, sn.line, RoundedCornerShape(24.dp))) {
+            .then(if (sn.isDark) Modifier else Modifier.shadow(4.dp, RoundedCornerShape(24.dp))).clip(RoundedCornerShape(24.dp)).background(sn.nav).border(1.dp, sn.line, RoundedCornerShape(24.dp))) {
             listOf(Triple(Routes.HOME, R.string.nav_home, "⌂"), Triple(Routes.HISTORY, R.string.nav_history, "▤"),
                 Triple(Routes.LIBRARY, R.string.nav_library, "✿"), Triple(Routes.PROFILE, R.string.nav_profile, "◯")).forEach { (r, l, g) ->
                 val on = current == r

@@ -80,6 +80,8 @@ class NavFlowTest {
     }
 
     @After fun tearDown() = runBlocking {
+        // skipped (personal data on the phone) → touch nothing: no PIN change, no deletion
+        if (!::vm.isInitialized || !::realLlm.isInitialized) return@runBlocking
         app.container.llm = realLlm; app.container.lock.disable(); app.container.settings.setHistory(false)
         deleteEverything(vm, alsoModel = false)
     }
@@ -146,3 +148,28 @@ class NavFlowTest {
 
 /** A validator-valid analysis with a clear eczema lead (LOW): enough for every result-screen section to render. */
 private const val FAKE_ANALYSIS_NAV = """{"possible_categories":[{"key":"eczema_atopic","likelihood":"higher","why":"Supported by moderate itching on the arm."},{"key":"contact_dermatitis","likelihood":"possible","why":"Possible: contact with a new product can look similar."},{"key":"psoriasis","likelihood":"less_likely","why":"Less likely: psoriasis plaques are thicker with silvery scale."}],"uncertainty":{"level":"low","reasons":[]},"explanation":"Based on your answers, it has been present for one to four weeks on the arm, with moderate itching. Eczema / atopic dermatitis fits best so far.","what_would_help":["A doctor's examination in person"],"self_care_info":["Moisturise often with a plain, fragrance-free cream."],"triage":{"tier":"LOW","advice":"Watch it and use gentle care."},"disagreement_with_image_model":false}"""
+
+/**
+ * Regression (crash 2026-10-08 19:59): MainActivity must accept Activity Result launches (gallery picker, permission
+ * prompts). With fragment 1.2.5 FragmentActivity threw "Can only use lower 16 bits for requestCode" on every launch.
+ */
+@RunWith(AndroidJUnit4::class)
+class LauncherRegressionTest {
+    @get:Rule val perms: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
+
+    @Test fun mainActivityLaunchesActivityResultContracts() {
+        val inst = InstrumentationRegistry.getInstrumentation()
+        val act = inst.startActivitySync(android.content.Intent(inst.targetContext, MainActivity::class.java)
+            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) as MainActivity
+        val got = java.util.concurrent.CountDownLatch(1)
+        var granted = false
+        inst.runOnMainSync {
+            val l = act.activityResultRegistry.register("regression",
+                androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted = it; got.countDown() }
+            l.launch(Manifest.permission.CAMERA)   // already granted → answers without UI; used to crash right here
+        }
+        assertTrue("no result from the launcher", got.await(10, java.util.concurrent.TimeUnit.SECONDS))
+        assertTrue(granted)
+        inst.runOnMainSync { act.finish() }
+    }
+}

@@ -51,6 +51,7 @@ class AppLock(private val s: LockStore, private val now: () -> Long = System::cu
     private val _biometric = MutableStateFlow(s.long("bio") == 1L); val biometric: StateFlow<Boolean> = _biometric
     private val _graceMs = MutableStateFlow(s.long("grace").takeIf { it > 0 } ?: DEFAULT_GRACE); val graceMs: StateFlow<Long> = _graceMs
     private var hiddenAt = 0L
+    private var externalAt = 0L
 
     fun setPin(pin: String) {
         require(validPin(pin) == null) { "weak pin" }
@@ -91,15 +92,25 @@ class AppLock(private val s: LockStore, private val now: () -> Long = System::cu
     fun unlockWithBiometric() { if (lockedOutUntil() == 0L) { s.put("fails" to null); _locked.value = false } }
 
     fun lockNow() { if (enabled) _locked.value = true }
+    /** SkinNova itself is opening a system screen (photo picker, file import, settings, share sheet): coming back from
+     *  it within [EXTERNAL_WINDOW] is not "leaving the app" and does not lock. */
+    fun expectExternal() { externalAt = now() }
+
     fun onHidden() { hiddenAt = now() }
-    fun onVisible() { if (enabled && hiddenAt > 0 && now() - hiddenAt >= _graceMs.value) _locked.value = true; hiddenAt = 0 }
+    fun onVisible() {
+        val ownScreen = externalAt > 0 && now() - externalAt < EXTERNAL_WINDOW
+        if (enabled && hiddenAt > 0 && !ownScreen && now() - hiddenAt >= _graceMs.value) _locked.value = true
+        hiddenAt = 0; externalAt = 0
+    }
 
     companion object {
         const val ITERATIONS = 120_000
         const val FREE_TRIES = 5L
         const val BASE_LOCKOUT = 30_000L
         const val MAX_LOCKOUT = 15 * 60_000L
-        const val DEFAULT_GRACE = 60_000L
+        /** Lock as soon as the user leaves SkinNova (a 1-minute default felt like "the PIN does nothing"). */
+        const val DEFAULT_GRACE = 1_000L
+        const val EXTERNAL_WINDOW = 10 * 60_000L
 
         /** null = acceptable; otherwise a reason key: "length", "digits", "simple" (1111, 1234, 9876…). */
         fun validPin(pin: String): String? = when {

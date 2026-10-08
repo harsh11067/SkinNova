@@ -253,13 +253,13 @@ fun ScanScreen(vm: SessionViewModel, onBack: () -> Unit, onPhotoAccepted: () -> 
                 listOf(false to R.string.scan_mode_photo, true to R.string.scan_mode_gallery).forEach { (g, l) ->
                     Box(Modifier.weight(1f).fillMaxSize().clip(RoundedCornerShape(16.dp)).background(if (gallery == g) sn.surf2 else Color.Transparent)
                         .border(1.dp, if (gallery == g) sn.acc else Color.Transparent, RoundedCornerShape(16.dp))
-                        .clickable(role = Role.Tab) { gallery = g; if (g) picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+                        .clickable(role = Role.Tab) { gallery = g; if (g) vm.c.lock.expectExternal(); picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
                         contentAlignment = Alignment.Center) { Text(stringResource(l), style = SnType.bodyL, color = sn.ink) }
                 }
             }
             Spacer(Modifier.weight(1f))
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-                RoundIcon("▣", stringResource(R.string.scan_pick)) { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+                RoundIcon("▣", stringResource(R.string.scan_pick)) { vm.c.lock.expectExternal(); picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
                 Spacer(Modifier.weight(1f))
                 Box(Modifier.size(88.dp).clickable(role = Role.Button, enabled = hasCam && !gallery) {
                     capture.takePicture(ContextCompat.getMainExecutor(ctx), object : ImageCapture.OnImageCapturedCallback() {

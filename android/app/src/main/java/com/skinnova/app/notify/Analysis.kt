@@ -28,6 +28,7 @@ import com.skinnova.app.model.Tier
 object Notifier {
     private const val CH_PROGRESS = "analysis_progress"
     private const val CH_READY = "analysis_ready"
+    private const val CH_READY_QUIET = "analysis_ready_quiet"
     const val ID_PROGRESS = 41
     private const val ID_READY = 42
 
@@ -35,6 +36,7 @@ object Notifier {
         val nm = ctx.getSystemService(NotificationManager::class.java)
         nm.createNotificationChannel(NotificationChannel(CH_PROGRESS, ctx.getString(R.string.ntf_ch_progress), NotificationManager.IMPORTANCE_LOW))
         nm.createNotificationChannel(NotificationChannel(CH_READY, ctx.getString(R.string.ntf_ch_ready), NotificationManager.IMPORTANCE_HIGH))
+        nm.createNotificationChannel(NotificationChannel(CH_READY_QUIET, ctx.getString(R.string.ntf_ch_ready_quiet), NotificationManager.IMPORTANCE_LOW))
     }
 
     private fun open(ctx: Context) = PendingIntent.getActivity(ctx, 0,
@@ -53,16 +55,17 @@ object Notifier {
     private fun allowed(ctx: Context) = Build.VERSION.SDK_INT < 33 ||
         ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
 
-    /** Posted when the analysis finishes while SkinNova is not on screen. */
-    fun ready(ctx: Context, tier: Tier, basic: Boolean) {
+    /** Posted whenever an analysis finishes: with sound/pop-up when SkinNova is not on screen, silently into the shade
+     *  when it is (the user asked for it every time). Tapping it opens the result; a new analysis replaces it. */
+    fun ready(ctx: Context, tier: Tier, basic: Boolean, quiet: Boolean = appVisible) {
         if (!allowed(ctx)) return
         ensureChannels(ctx)
         val tierText = ctx.getString(when (tier) { Tier.LOW -> R.string.tier_LOW; Tier.MODERATE -> R.string.tier_MODERATE
             Tier.HIGH -> R.string.tier_HIGH; Tier.URGENT -> R.string.tier_URGENT })
-        val n = NotificationCompat.Builder(ctx, CH_READY).setSmallIcon(R.drawable.ic_launcher)
+        val n = NotificationCompat.Builder(ctx, if (quiet) CH_READY_QUIET else CH_READY).setSmallIcon(R.drawable.ic_launcher)
             .setContentTitle(ctx.getString(R.string.ntf_ready_title))
             .setContentText(ctx.getString(if (basic) R.string.ntf_ready_body_basic else R.string.ntf_ready_body, tierText))
-            .setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_STATUS)
+            .setPriority(if (quiet) NotificationCompat.PRIORITY_LOW else NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_STATUS)
             .setContentIntent(open(ctx)).setAutoCancel(true)
             .setVisibility(NotificationCompat.VISIBILITY_PRIVATE).setPublicVersion(neutral(ctx, CH_READY, R.string.ntf_ready_title)).build()
         runCatching { NotificationManagerCompat.from(ctx).notify(ID_READY, n) }

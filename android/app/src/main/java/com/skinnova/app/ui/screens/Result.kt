@@ -139,8 +139,6 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
     val lang = if (showHi) "hi" else "en"
     val topOther = r.output.possibleCategories.firstOrNull()?.key == "other"
     val uncertain = topOther || r.output.uncertainty.level == "high" || (r.cvTop3.firstOrNull()?.p ?: 0.0) < 0.5
-    val appCtx = androidx.compose.ui.platform.LocalContext.current.applicationContext
-    androidx.compose.runtime.LaunchedEffect(r.createdAt) { com.skinnova.app.notify.Notifier.cancelReady(appCtx) }   // seen → clear "ready"
     val tier = Tier.parse(r.finalTier) ?: Tier.MODERATE
     val p = r.cvTop3.associate { it.key to it.p }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(horizontal = 18.dp, vertical = 8.dp)) {

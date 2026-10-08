@@ -19,6 +19,7 @@ object Background {
     /** The phone's own "allow" dialog; falls back to the battery-optimisation list. */
     @SuppressLint("BatteryLife")
     fun request(ctx: Context) {
+        (ctx.applicationContext as? com.skinnova.app.SkinNovaApp)?.container?.lock?.expectExternal()
         val ask = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:${ctx.packageName}"))
         runCatching { ctx.startActivity(ask) }.onFailure { runCatching { ctx.startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)) } }
     }

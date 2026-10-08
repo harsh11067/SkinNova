@@ -121,7 +121,9 @@ fun QuestionsScreen(vm: SessionViewModel, onBack: () -> Unit, onAnalyze: () -> U
     fun submit() {
         val need = android.os.Build.VERSION.SDK_INT >= 33 && androidx.core.content.ContextCompat.checkSelfPermission(ctx,
             android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED
-        if (need && !vm.c.settings.notifAsked.value) { vm.c.settings.setNotifAsked(true); notifPerm.launch(android.Manifest.permission.POST_NOTIFICATIONS) }
+        // asked whenever it is missing (Android itself stops showing the prompt after two "Don't allow"s); the old
+        // ask-once flag stayed set when the prompt crashed (fragment 1.2.5), so it was never asked again
+        if (need) notifPerm.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         else onAnalyze()
     }
     val step = STEPS[i]

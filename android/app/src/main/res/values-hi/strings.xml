@@ -440,4 +440,6 @@
     <string name="an_early_sub">इमेज मॉडल और सुरक्षा नियमों से — AI अभी पूरी व्याख्या लिख रहा है। सलाह का स्तर सिर्फ़ बढ़ सकता है, कभी कम नहीं होगा।</string>
     <string name="an_early_level">अब तक सलाह का स्तर</string>
     <string name="rl_contagious">क्या यह छूत की बीमारी है?</string>
+    <string name="prof_start">शुरुआती स्क्रीन</string>
+    <string name="ntf_ch_ready_quiet">परिणाम तैयार (बिना आवाज़)</string>
 </resources>

@@ -73,6 +73,14 @@ class AppLockTest {
         l.disable(); assertEquals(0, l.pinLength)
     }
 
+    @Test fun ownPickerDoesNotLockButLeavingDoes() {
+        val l = lock(); l.setPin("4826")
+        l.expectExternal(); l.onHidden(); t += 30_000; l.onVisible()
+        assertFalse("returning from SkinNova's own photo picker", l.locked.value)
+        l.onHidden(); t += 2_000; l.onVisible()
+        assertTrue("leaving the app locks right away by default", l.locked.value)
+    }
+
     @Test fun weakPinsRefused() {
         listOf("123", "123456789", "12a4", "1111", "1234", "9876", "0123").forEach { assertNotNull(it, AppLock.validPin(it)) }
         listOf("4826", "190274", "1122").forEach { assertNull(it, AppLock.validPin(it)) }

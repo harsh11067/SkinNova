@@ -76,6 +76,14 @@ class FirstRunFlowTest {
     @get:Rule val camera: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
 
     @Test fun onboardingSetupHomeScan() {
+        val st = app.container.settings
+        val before = listOf(st.onboarded.value, st.setupSeen.value, st.history.value); val lang0 = st.lang.value
+        try { runFirstRun() } finally {   // the phone's own settings come back (a tester's history stays on)
+            st.setOnboarded(before[0]); st.setSetupSeen(before[1]); st.setHistory(before[2]); st.setLang(lang0)
+        }
+    }
+
+    private fun runFirstRun() {
         app.container.settings.apply { setOnboarded(false); setSetupSeen(false); setHistory(false); setLang("en") }
         val inst = InstrumentationRegistry.getInstrumentation()
         val act = inst.startActivitySync(android.content.Intent(inst.targetContext, MainActivity::class.java)
@@ -103,8 +111,10 @@ class ResultFlowTest {
     @get:Rule val compose = createComposeRule()
     private lateinit var realLlm: Llm
 
-    @Before fun swapLlm() { realLlm = app.container.llm; app.container.llm = FakeLlm(FAKE_ANALYSIS) }
-    @After fun restore() { app.container.llm = realLlm; app.container.settings.setHistory(false) }
+    private var history0 = false
+    @Before fun swapLlm() { realLlm = app.container.llm; app.container.llm = FakeLlm(FAKE_ANALYSIS); history0 = app.container.settings.history.value
+        app.container.settings.setHistory(false) }   // fake results must never land in a tester's real history
+    @After fun restore() { app.container.llm = realLlm; app.container.settings.setHistory(history0) }
 
     /** A1b: result shows the red-flag banner, the categories, the rule-raised tier and the disclaimer. */
     @Test fun resultRendersSafetyFirst() {

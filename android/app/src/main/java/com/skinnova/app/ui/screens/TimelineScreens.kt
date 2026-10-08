@@ -210,6 +210,7 @@ fun TimelineScreen(vm: SessionViewModel, tvm: TimelineViewModel, spotId: String,
             scope.launch {
                 val f = withContext(Dispatchers.IO) { exportPdf(vm, s, caps, metrics) }
                 val uri = FileProvider.getUriForFile(ctx, ctx.packageName + ".files", f)
+                vm.c.lock.expectExternal()
                 ctx.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("application/pdf").putExtra(Intent.EXTRA_STREAM, uri)
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION), null))
             }

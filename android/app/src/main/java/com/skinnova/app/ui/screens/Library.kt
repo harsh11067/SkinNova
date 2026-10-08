@@ -269,7 +269,8 @@ private fun HistoryRow(vm: SessionViewModel, e: AnalysisEntity, onClick: () -> U
 
 /** 10 Profile: appearance, language, on-device model, privacy & data, about. */
 @Composable
-fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -> Unit, onEdit: () -> Unit = {}, onPin: (String) -> Unit = {}) {
+fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -> Unit, onEdit: () -> Unit = {}, onPin: (String) -> Unit = {},
+                  onStart: () -> Unit = {}) {
     val sn = LocalSn.current
     val c = vm.c
     val scope = rememberCoroutineScope()
@@ -343,6 +344,9 @@ fun ProfileScreen(vm: SessionViewModel, onReplayIntro: () -> Unit, onSetup: () -
                 Text(stringResource(R.string.prof_coin_sub, coin), style = SnType.micro, color = sn.mut)
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(vertical = 8.dp)) {
                     listOf(20.0, 21.93, 23.0, 25.0, 27.0).forEach { mm -> Chip("%.1f".format(mm), coin == mm, { c.settings.setCoinMm(mm) }) }
+                }
+                Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable(role = Role.Button, onClick = onStart), verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.prof_start), style = SnType.bodyL, color = sn.ink, modifier = Modifier.weight(1f)); Text("›", color = sn.mut)
                 }
                 Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable(role = Role.Button, onClick = onReplayIntro), verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.prof_replay), style = SnType.bodyL, color = sn.ink, modifier = Modifier.weight(1f)); Text("›", color = sn.mut)

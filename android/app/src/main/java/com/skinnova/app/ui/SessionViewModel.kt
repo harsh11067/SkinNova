@@ -143,9 +143,8 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                 _result.value = res
                 if (c.settings.history.value) save(res)
                 _state.value = AnalysisState.Done(res)
-                if (!com.skinnova.app.notify.Notifier.appVisible)
-                    com.skinnova.app.notify.Notifier.ready(app, com.skinnova.app.model.Tier.parse(res.finalTier) ?: com.skinnova.app.model.Tier.MODERATE,
-                        res.mode == com.skinnova.app.model.Mode.basic)
+                com.skinnova.app.notify.Notifier.ready(app, com.skinnova.app.model.Tier.parse(res.finalTier) ?: com.skinnova.app.model.Tier.MODERATE,
+                    res.mode == com.skinnova.app.model.Mode.basic)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 _state.value = AnalysisState.Idle; throw e
             } catch (e: Throwable) {

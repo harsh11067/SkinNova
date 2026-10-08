@@ -67,6 +67,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.biometric)
+    // biometric 1.1.0 pulls fragment 1.2.5, whose FragmentActivity rejects the Activity Result API's request codes
+    // ("Can only use lower 16 bits") — every picker / permission launch crashed (gallery, 2026-10-08 19:59)
+    implementation(libs.androidx.fragment)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
