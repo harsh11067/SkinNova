@@ -102,16 +102,14 @@ flowchart LR
 
 ## Getting started
 
-### Team: run the app on a phone
-1. Install the APK (Android Studio → *Run*, or `scripts/device_tests.sh` builds and installs it).
-2. Get the model **`skinnova-e2b-v2.litertlm`** (3.9 GB, sha256 `046020…2ed`) from the private Hugging Face repo
-   **[kumarharsh11067/skinnova-gemma4-e2b-litertlm](https://huggingface.co/kumarharsh11067/skinnova-gemma4-e2b-litertlm)** (ask the owner for access):
-   ```bash
-   hf download kumarharsh11067/skinnova-gemma4-e2b-litertlm skinnova-e2b-v2.litertlm --local-dir models/litertlm/skinnova
-   ```
-3. Put it on the phone: `scripts/push_model.sh models/litertlm/skinnova/skinnova-e2b-v2.litertlm` (USB debugging), or
-   copy it into `Android/data/com.skinnova.app/files/models/` and tap **Check the app's model folder again**, or use
-   **Import model file**. The app verifies the sha256 and works fully offline from then on.
+### Run it on a phone (no computer needed)
+1. Download the APK from **[Releases](https://github.com/harsh11067/SkinNova/releases/latest)** on the phone and install it.
+2. Download the model `skinnova-e2b-v2.litertlm` (3.9 GB) from the private Hugging Face repo
+   **[kumarharsh11067/skinnova-gemma4-e2b-litertlm](https://huggingface.co/kumarharsh11067/skinnova-gemma4-e2b-litertlm)**
+   (ask the owner for access) — or Google's public stock [Gemma 4 E2B](https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm), which the app also accepts.
+3. In SkinNova tap **Import model file** and pick it. The app verifies the SHA-256 and runs fully offline from then on.
+
+**Complete guide (phone, developer setup, where every file lives): [`docs/SETUP_GUIDE.md`](docs/SETUP_GUIDE.md).**
 
 ### Developers
 ```bash
@@ -122,7 +120,7 @@ uv venv .venv-export && uv pip install --python .venv-export -r ml/requirements-
 .venv/bin/python -m pytest -q ml/tests   # 154 tests: rules, validators, prompts, timeline, intake, voice scoring
 cd android && ./gradlew :app:testOfflineDebugUnitTest :app:assembleOfflineDebug
 ```
-Setup guide: [`docs/diy.md`](docs/diy.md) · test plan: [`docs/test.md`](docs/test.md) · run log: [`PROGRESS.md`](PROGRESS.md).
+Setup guide: [`docs/SETUP_GUIDE.md`](docs/SETUP_GUIDE.md) · owner's manual: [`docs/diy.md`](docs/diy.md) · test plan: [`docs/test.md`](docs/test.md) · run log: [`PROGRESS.md`](PROGRESS.md).
 
 ## Repository
 
