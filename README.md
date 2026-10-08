@@ -31,7 +31,10 @@ No internet. No account. Nothing leaves the device.
 | 📷 | **Skin-image classifier:** **78 % top-1 / 95 % top-3** on 4,342 held-out photos across 10 categories; on outside phone photos of brown skin top-3 rose **29 % → 66 %** after adding Google's SCIN data | [`reports/cv_metrics_v2.json`](reports/cv_metrics_v2.json) |
 | 🎯 | **Every conversion verified:** PyTorch → TFLite max Δp **8.4e-5**; fine-tuned model → phone format within **2.5 points** of the original | [`reports/cv_parity.json`](reports/cv_parity.json), [`reports/parity_l6_skinnova_v2.json`](reports/parity_l6_skinnova_v2.json) |
 | 📈 | **SkinTimeline** tracks a spot over weeks: **97 %** photo alignment, **5.6 %** median size error with a coin for scale, colour change measured to **~1 ΔE** under changing light | [`reports/timeline_eval_v8.json`](reports/timeline_eval_v8.json) |
-| 🚫 | **Skin-photo gate:** a second output of the image model catches **99.2 %** of non-skin photos (objects, animals, scenes) and asks for a retake, while passing **99.2 %** of real skin photos | [`reports/skin_gate.json`](reports/skin_gate.json) |
+| 🚫 | **Skin-photo gate:** a second output of the image model catches **96.8 %** of non-skin photos — everyday objects, rooms and food (COCO) **97.3 %**, wood/fabric/paper textures **91.9 %** — and asks for a retake, while passing **99.1 %** of real skin photos | [`reports/skin_gate_v2.json`](reports/skin_gate_v2.json) |
+| 🔁 | **Surer image model on phone photos:** 4-view test-time averaging lifts top-3 on real phone photos (SCIN val) **80.6 % → 83.4 %**, adopted by a rule fixed before the test | [`reports/cv_tta.json`](reports/cv_tta.json) |
+| 💬 | **Ask SkinNova:** follow-up questions about a result, answered on the phone by the fine-tuned Gemma in English or Hindi, grounded in reviewed notes; danger signs always trigger a fixed "get care today" line; medicine names, doses and diagnoses are filtered out | [`reports/chat_probe_v2.json`](reports/chat_probe_v2.json) |
+| 🌿 | **Home care & relief:** cited home remedies, food & lifestyle notes and common pharmacy options (EN + HI), tailored to age, pregnancy, allergies and health conditions — never self-treatment when a doctor should look first | [`assets/care/relief.json`](android/app/src/main/assets/care/relief.json) |
 | 🗣️ | **Bhasha voice intake:** speak symptoms in Hindi or English; **94 %** of fields extracted correctly on held-out test transcripts, and a field is kept only if its quote is in what you said *and* about the right topic | [`reports/llm_litertlm_select_v2.json`](reports/llm_litertlm_select_v2.json) |
 
 All numbers are produced by scripts in [`ml/eval/`](ml/eval) and summarised in **[`reports/final_report.md`](reports/final_report.md)**.
@@ -44,8 +47,16 @@ All numbers are produced by scripts in [`ml/eval/`](ml/eval) and summarised in *
    the fine-tuned Gemma writes ranked possible categories with reasons, uncertainty, what would help and self-care information.
 4. **Result** — red-flag banner (if any) → triage card (LOW / MODERATE / HIGH / URGENT, icon + text) → possible categories
    with likelihood → uncertainty → explanation → next steps. Read-aloud and Hindi toggle.
-5. **Track & share** — save to an encrypted on-device history, re-photograph a spot with a ghost overlay, and export a
-   **Doctor Visit Summary PDF** generated on the phone.
+5. **Home care & relief** — home remedies, food & lifestyle notes and pharmacy options for the leading possibility,
+   checked against your profile (age, pregnancy, allergies, conditions); read aloud in English or Hindi.
+6. **Ask SkinNova** — ask follow-up questions ("Is it contagious?", "What should I avoid?") and get an on-device answer.
+7. **Track & share** — save to an encrypted on-device history, re-photograph a spot with a ghost overlay, and export a
+   **Doctor Visit Summary PDF** generated on the phone. A notification tells you when a result is ready.
+8. **Private by design** — optional profile and an app lock (PIN + fingerprint) that hides every screen; everything is
+   encrypted with Android Keystore keys and never leaves the phone.
+
+The **Skin Library** shows real example photos on different skin tones (SCIN and PAD-UFES-20, CC BY 4.0) with
+signs, care and when to see a doctor for each condition.
 
 <p align="center">
   <img src="docs/assets/panel_insights.png" alt="Insights" width="250">
@@ -70,8 +81,8 @@ flowchart LR
     TL[📈 Timeline photos] --> M[Align · segment · coin scale] --> TR
 ```
 
-- **Image model** — EfficientNet-B0 at 384 px, temperature-calibrated, exported to TFLite (16 MB, bundled), with a
-  second output that recognises whether the photo shows skin at all.
+- **Image model** — EfficientNet-B0 at 384 px, temperature-calibrated, averaged over 4 views, exported to TFLite (16 MB,
+  bundled), with a second output that recognises whether the photo shows skin at all.
 - **Language model** — Gemma 4 E2B, LoRA (r = 16) trained on Kaggle T4 with Unsloth on 3.8 k task records (analysis,
   disagreement, red flags, voice extraction, timeline narration, Hindi translation, injection resistance), merged and
   exported to a 3.9 GB `.litertlm` with litert-torch. On the phone it reasons over the image model's calibrated scores
@@ -108,7 +119,7 @@ git clone git@github.com:harsh11067/SkinNova.git && cd SkinNova
 cp .env.example .env                     # HF_TOKEN, KAGGLE_*  (never commit .env)
 uv venv .venv && uv pip install --python .venv -r ml/requirements.txt          # training · data · evaluation
 uv venv .venv-export && uv pip install --python .venv-export -r ml/requirements-export.txt   # export · LiteRT-LM eval
-.venv/bin/python -m pytest -q ml/tests   # 154 tests: rules, validators, prompts, timeline, intake
+.venv/bin/python -m pytest -q ml/tests   # 154 tests: rules, validators, prompts, timeline, intake, voice scoring
 cd android && ./gradlew :app:testOfflineDebugUnitTest :app:assembleOfflineDebug
 ```
 Setup guide: [`docs/diy.md`](docs/diy.md) · test plan: [`docs/test.md`](docs/test.md) · run log: [`PROGRESS.md`](PROGRESS.md).

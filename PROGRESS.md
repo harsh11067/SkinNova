@@ -43,6 +43,18 @@ One-line status: `scripts/status.sh`.
 - TL1 v8 (900 val pairs, same method): coin-pair area median 5.6 % (S9 PASS), p90 31 % (FAIL, disclosed; timeline rules
   only raise tiers). 6 of 7 timeline gates pass.
 
+## Done 2026-10-08 (user's 8 requests; commit a2a3687)
+- Result screen fixes (one-tap Save/Track, Learn more never blank), read-aloud on all care cards, "no clear match" card.
+- Notifications + AnalysisService (foreground while writing); `EngineHolder.releaseIfIdle` (no mid-generation release).
+- Profile (ProfileStore, AES-GCM Keystore) + AppLock (PIN/fingerprint, lock-out, re-lock delay, FLAG_SECURE, route guard).
+- Home care & relief (`assets/care/relief.json`, `care/Relief.kt`, ReliefTest) — content *draft*, needs Harsh's review.
+- Skin Library: 27 real photos (`ml/data/library_examples.py`, SCIN + PAD-UFES-20 CC BY 4.0).
+- CV TTA V4 adopted (`reports/cv_tta.json`); skin gate v2 adopted (`reports/skin_gate_v2.json`); re-export C3 ✅;
+  on-device C5 with lossless PNG fixtures 20/20, max Δp 3.4e-6 ✅ (`reports/device/bench/cv_parity_device.json`).
+- Ask SkinNova (chat prompt v2, ChatSafety, `reports/chat_probe_v2.json` dev probe 30/30 guard-clean).
+- Tests: JVM 32/32, pytest 154/154 (stale voice test updated for the topic check), on-device: C5 ✅, notification ✅.
+- Pending on the phone (needs it unlocked): `NavFlowTest` (6 screen tests), A9/S8 bench.
+
 ## In progress
 Nothing on the PC: every chain finished (`scripts/resume.sh` reports all done). Cleanup 2026-10-07 freed ~3 GB
 (regenerable XNNPack caches of v1, duplicate Kaggle downloads, finished training resume states).
