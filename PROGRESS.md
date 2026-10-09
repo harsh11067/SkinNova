@@ -71,6 +71,21 @@ One-line status: `scripts/status.sh`.
   rivets/markers. All trialled on the phone (gallery, PIN, notification, analysis). Device suite: 8 pass + 9 skipped to
   protect the tester's data; first-run passes and restores settings. GitHub Release v0.2.0 + docs/SETUP_GUIDE.md.
 
+## Done 2026-10-09 — v2.1 (quickfix_v2_1.md) → v0.3.0
+| Item | Result | Evidence |
+|---|---|---|
+| 1 Greedy decoding | adopted: phone 3/3 repeats byte-identical; PC 100/100 identical to the run 2 days earlier; phone vs PC 3/3 same categories/tier/uncertainty (text 90–100 %) | `reports/llm_litertlm_v21_2048.json`, `reports/device/bench/v21*.json*` |
+| 2 Result first | adopted: result on screen 0.9–1.1 s (device test ×3), real trial < 2.8 s; Gemma swaps in place; tier never drops | `V21Tests.kt`, `progressive.json` |
+| 3 Honest progress | adopted: pixel bar + "about N s left"; median ETA error at 50 % ≈ 19 % (≤ 25 %) | `v21.jsonl` |
+| 4 KV 4096 → 2048 | NOT adopted (rule needs lower peak PSS: 2,734 vs 2,782 MB); budget p99 1,797 passes; llm_val unchanged | `token_budget.json`, `v21.jsonl` |
+| 5 Optimising step | adopted: shown after an update/new model, then Home (15 s with an intact GPU cache, ~2 min fresh); warm-up at photo review | trial |
+| 6 Phone calibration | NOT adopted (argmax/top-1/low-bucket conditions failed; NLL/ECE improved) | `cv_calibration_phone.json` |
+| 7 Conformal short list | NOT adopted (needs 6.7 classes for 90 %, coverage 94.5 %) | `cv_calibration_phone.json` |
+| 8 "Other" as an answer | adopted: card + tips + guided retake + doctor advice after 2 in a row | screenshots |
+| 9 Capture coach + burst | adopted: green shutter + best-of-3 (simulated blur: top-1 60.9 → 65.4 %, top-3 = clean) | `capture_burst.json` |
+| 10 Symptom fusion | NOT adopted (top-1 +0.7, top-3 +2.6, NLL −0.03 on phone holdout) | `fusion.json` |
+Regression: pytest 154/154, JVM 37/37, on-device 19 OK (9 skipped to protect the tester's data), safety S2–S4 unchanged, offline APK no INTERNET.
+
 ## In progress
 Nothing on the PC: every chain finished (`scripts/resume.sh` reports all done). Cleanup 2026-10-07 freed ~3 GB
 (regenerable XNNPack caches of v1, duplicate Kaggle downloads, finished training resume states).

@@ -354,8 +354,8 @@
     <string name="res_save_title">Save this result?</string>
     <string name="res_save_body">This turns on history: results and photos are kept encrypted on this phone only — nothing is uploaded. You can turn it off or delete everything in Profile.</string>
     <string name="res_save_ok">Turn on &amp; save</string>
-    <string name="res_nomatch_title">No clear match among the conditions SkinNova knows</string>
-    <string name="res_nomatch_body">This can mean healthy skin, a condition outside SkinNova\'s 10 categories, or a photo that is hard to read. The closest known conditions are listed below.</string>
+    <string name="res_nomatch_title">This doesn\'t closely match the 9 conditions SkinNova knows</string>
+    <string name="res_nomatch_body">It can be a different skin condition, normal skin, or a photo the image model can\'t read well. The closest known conditions are below, and the advice level comes from the safety rules.</string>
     <string name="res_nomatch_why">Next closest match from the image model.</string>
     <string name="res_retake_tip">For a surer result: retake in daylight, 15–20 cm away, with the spot in the centre circle and in focus.</string>
     <string name="tl_default_name">%1$s spot</string>
@@ -434,7 +434,7 @@
     <string name="ask_sub">Questions about this result — answered on your phone by the AI model. Not a diagnosis.</string>
     <string name="ask_hint">e.g. Is it contagious?</string>
     <string name="ask_send">Send</string>
-    <string name="ask_writing">Writing an answer…</string>
+    <string name="ask_writing">Writing an answer on your phone… (about 20 s)</string>
     <string name="ask_withheld">I can\'t answer that safely here — it would need a specific medicine, a dose or a diagnosis. For medicines, see \'Home care &amp; relief\' above or ask a pharmacist.</string>
     <string name="ask_danger">You mention a danger sign. Please get medical care today — if you feel very unwell, go to emergency care.</string>
     <string name="ask_note">Answers are general information from the AI model and may be wrong. The advice level above always applies.</string>
@@ -463,4 +463,23 @@
     <string name="rl_contagious">Is it contagious?</string>
     <string name="prof_start">Start screen</string>
     <string name="ntf_ch_ready_quiet">Results ready (silent)</string>
+    <string name="res_updated">Updated after reading your answers</string>
+    <string name="res_stopped">You stopped the AI explanation. This result uses the image model, the condition notes and the safety rules.</string>
+    <string name="res_nomatch_twice">Two photos in a row didn\'t match a known condition. Please show it to a doctor — they can look at it directly.</string>
+    <string name="res_nomatch_tips">For a clearer read: daylight or bright room light, 15–20 cm away, spot in the centre, hold still until it\'s sharp.</string>
+    <string name="res_nomatch_retake">Retake with these tips</string>
+    <string name="wb_title">Writing your personalised explanation…</string>
+    <string name="wb_loading">Loading the AI model…</string>
+    <string name="wb_reading">Reading your answers…</string>
+    <string name="wb_writing">Writing…</string>
+    <string name="wb_writing_eta">Writing… about %1$d s left</string>
+    <string name="wb_checking">Checking the answer…</string>
+    <string name="wb_translating">Translating…</string>
+    <string name="wb_sub">This result is already safe to read — the AI adds its explanation here when it\'s done. You can leave the app; we\'ll notify you.</string>
+    <string name="wb_stop">Stop</string>
+    <string name="opt_title">Optimising SkinNova for your phone</string>
+    <string name="opt_sub">One time after installing or updating — about 2 minutes. Please keep the app open; afterwards each analysis starts much faster.</string>
+    <string name="opt_elapsed">Preparing the on-device AI… %1$d s</string>
+    <string name="opt_done">Ready ✓</string>
+    <string name="opt_later">Do this later</string>
 </resources>

@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -285,3 +286,22 @@ fun categoryPhotos(key: String): List<Int> = when (key) {
 val fieldTextStyle get() = SnType.bodyL.copy(lineHeight = 48.sp,
     lineHeightStyle = androidx.compose.ui.text.style.LineHeightStyle(androidx.compose.ui.text.style.LineHeightStyle.Alignment.Center,
         androidx.compose.ui.text.style.LineHeightStyle.Trim.None))
+
+/**
+ * Pixel progress bar in the landing page's language (24 square segments in a framed track). [fraction] null =
+ * indeterminate: a 3-segment highlight walks along at ~8 steps/s (one cheap redraw per step, no per-frame animation).
+ */
+@Composable
+fun PixelProgressBar(fraction: Float?, modifier: Modifier = Modifier, segments: Int = 24) {
+    val sn = LocalSn.current
+    var step by androidx.compose.runtime.remember { androidx.compose.runtime.mutableIntStateOf(0) }
+    if (fraction == null) androidx.compose.runtime.LaunchedEffect(Unit) { while (true) { kotlinx.coroutines.delay(120); step++ } }
+    val lit = fraction?.let { (it.coerceIn(0f, 1f) * segments).toInt() }
+    Row(modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(sn.surf2).border(1.dp, sn.line2, RoundedCornerShape(8.dp)).padding(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        repeat(segments) { i ->
+            val on = if (lit != null) i < lit else ((i - step % (segments + 3)) in -2..0)
+            Box(Modifier.weight(1f).height(8.dp).clip(RoundedCornerShape(1.dp)).background(if (on) sn.acc else sn.track))
+        }
+    }
+}

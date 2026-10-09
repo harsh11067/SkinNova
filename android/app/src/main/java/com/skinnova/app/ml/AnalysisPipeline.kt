@@ -34,6 +34,8 @@ sealed interface AnalysisState {
     data object Classifying : AnalysisState
     data object Rules : AnalysisState
     data object LoadingModel : AnalysisState
+    /** v2.1 item 2: a complete deterministic result (image model + rules + notes) before the LLM starts. */
+    data class Preliminary(val result: FinalResult) : AnalysisState
     data class Generating(val partialText: String) : AnalysisState
     data object Validating : AnalysisState
     data object Translating : AnalysisState
@@ -64,6 +66,14 @@ class AnalysisPipeline(
         val floor = TierResolver.classFloor(cv, labels)
         val top3 = RedFlagRules.top3(cv)
         val top1p = top3.firstOrNull()?.p
+        val basicTier = TierResolver.resolve(null, rules.tier, floor)
+        if (llm.available) {   // result first, explanation after: the screen shows this while Gemma writes
+            var b = Fallback.build(answers, top3, prompts.cards, rules.forceUncertaintyHigh, basicTier, pending = true)
+            if (rules.forceUncertaintyHigh) b = b.copy(uncertainty = b.uncertainty.copy(level = "high"))
+            emit(AnalysisState.Preliminary(FinalResult(output = b, cvTop3 = top3, ruleMessages = rules.messages, rulesFired = rules.fired,
+                finalTier = basicTier.name, mode = Mode.basic, fallbackReason = PENDING, promptVersion = prompts.version, modelSha = modelSha(),
+                lang = lang, answers = answers, qualityForced = qualityForced)))
+        }
 
         var output: AnalysisOutput? = null
         var reason: FallbackReason? = null
@@ -89,7 +99,7 @@ class AnalysisPipeline(
             }
         }
         val llmTier = output?.let { Tier.parse(it.triage.tier) }
-        val finalTier = TierResolver.resolve(llmTier, rules.tier, floor)
+        val finalTier = Tier.max(TierResolver.resolve(llmTier, rules.tier, floor), basicTier)   // never below the early result
         var out = output ?: Fallback.build(answers, top3, prompts.cards, rules.forceUncertaintyHigh, finalTier)
         if (rules.forceUncertaintyHigh && out.uncertainty.level != "high")
             out = out.copy(uncertainty = out.uncertainty.copy(level = "high"))
@@ -130,6 +140,9 @@ class AnalysisPipeline(
     }
 
     companion object {
+        /** fallbackReason of the early result while the LLM is still writing (never stored as a final result). */
+        const val PENDING = "PENDING"
+        const val STOPPED = "STOPPED"
         val LANG_NAMES = mapOf("hi" to "Hindi", "kn" to "Kannada", "ta" to "Tamil", "te" to "Telugu", "bn" to "Bengali", "mr" to "Marathi")
     }
 }
@@ -151,7 +164,7 @@ object Fallback {
 
     private fun firstSentence(s: String): String = (Regex("""^[^.!?]*[.!?]""").find(s)?.value ?: s).take(200)
 
-    fun build(a: QuestionnaireAnswers, top3: List<CvScore>, cards: JsonObject, forcedHigh: Boolean, tier: Tier): AnalysisOutput {
+    fun build(a: QuestionnaireAnswers, top3: List<CvScore>, cards: JsonObject, forcedHigh: Boolean, tier: Tier, pending: Boolean = false): AnalysisOutput {
         val cats = top3.filter { it.p >= 0.05 }.ifEmpty { top3.take(1) }.mapIndexed { i, s ->
             val card = cards[s.key] as? JsonObject
             val summary = (card?.get("summary") as? JsonPrimitive)?.content ?: ""
@@ -160,7 +173,7 @@ object Fallback {
         val top1 = top3.firstOrNull()
         val unc = uncertainty(top1?.p, forcedHigh)
         val reasons = buildList {
-            add("Basic mode: written explanation not available")
+            if (!pending) add("Basic mode: written explanation not available")
             if (top1 != null && top1.p < 0.5) add("The image model is not confident")
             if (forcedHigh) add("Photo quality was poor")
         }

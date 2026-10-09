@@ -213,6 +213,7 @@ fun ScanScreen(vm: SessionViewModel, onBack: () -> Unit, onPhotoAccepted: () -> 
     val photo by vm.photo.collectAsState()
     val quality by vm.quality.collectAsState()
     var reviewing by remember { mutableStateOf(false) }
+    var bursting by remember { mutableStateOf(false) }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) { vm.setPhotoFromUri(uri); reviewing = true }
     }
@@ -261,18 +262,18 @@ fun ScanScreen(vm: SessionViewModel, onBack: () -> Unit, onPhotoAccepted: () -> 
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp), verticalAlignment = Alignment.CenterVertically) {
                 RoundIcon("▣", stringResource(R.string.scan_pick)) { vm.c.lock.expectExternal(); picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
                 Spacer(Modifier.weight(1f))
-                Box(Modifier.size(88.dp).clickable(role = Role.Button, enabled = hasCam && !gallery) {
-                    capture.takePicture(ContextCompat.getMainExecutor(ctx), object : ImageCapture.OnImageCapturedCallback() {
-                        override fun onCaptureSuccess(image: ImageProxy) {
-                            val bmp = image.toBitmap().rotate(image.imageInfo.rotationDegrees); image.close()
-                            vm.setPhoto(bmp); reviewing = true
-                        }
-                        override fun onError(exception: ImageCaptureException) {}
-                    })
+                // capture coach (v2.1 item 9): the shutter turns green when the live frame passes light + focus + skin checks;
+                // a tap takes a short burst and keeps the sharpest frame (blur is the commonest phone-photo failure)
+                val ready = hint?.let { hintText(it).second } == true
+                Box(Modifier.size(88.dp).clickable(role = Role.Button, enabled = hasCam && !gallery && !bursting) {
+                    bursting = true
+                    captureBurst(capture, ctx, BURST) { best -> bursting = false; if (best != null) { vm.setPhoto(best); reviewing = true } }
                 }.semantics { contentDescription = "Take photo" }, contentAlignment = Alignment.Center) {
-                    SpinRing(88.dp, sn.acc, 14000)
-                    Box(Modifier.size(70.dp).clip(CircleShape).border(1.5.dp, sn.acc, CircleShape))
-                    Box(Modifier.size(58.dp).clip(CircleShape).background(Color(0xFFF5DDC2)), contentAlignment = Alignment.Center) { Text("◉", color = Color(0xFF5A3A22), fontSize = 18.sp) }
+                    SpinRing(88.dp, if (ready) sn.low else sn.acc, 14000)
+                    Box(Modifier.size(70.dp).clip(CircleShape).border(1.5.dp, if (ready) sn.low else sn.acc, CircleShape))
+                    Box(Modifier.size(58.dp).clip(CircleShape).background(if (ready) sn.low else Color(0xFFF5DDC2)), contentAlignment = Alignment.Center) {
+                        Text(if (bursting) "…" else "◉", color = Color(0xFF5A3A22), fontSize = 18.sp)
+                    }
                 }
                 Spacer(Modifier.weight(1f))
                 RoundIcon(if (torch) "ϟ" else "↯", stringResource(R.string.scan_torch)) { torch = !torch; camera?.cameraControl?.enableTorch(torch) }
@@ -370,3 +371,26 @@ fun CameraPreview(capture: ImageCapture, onFrame: (Quality) -> Unit, onCamera: (
     }, modifier = Modifier.fillMaxSize())
 }
 
+
+/** Frames per shutter tap (best-of-burst, v2.1 item 9; simulated gain: reports/capture_burst.json). */
+const val BURST = 3
+
+/** Takes [n] photos back to back and returns the sharpest (variance of Laplacian, QualityGate's own blur measure). */
+fun captureBurst(capture: ImageCapture, ctx: android.content.Context, n: Int, done: (Bitmap?) -> Unit) {
+    val shots = ArrayList<Pair<Double, Bitmap>>()
+    fun next(i: Int) {
+        if (i == n) { done(shots.maxByOrNull { it.first }?.second); return }
+        capture.takePicture(ContextCompat.getMainExecutor(ctx), object : ImageCapture.OnImageCapturedCallback() {
+            override fun onCaptureSuccess(image: ImageProxy) {
+                val bmp = image.toBitmap().rotate(image.imageInfo.rotationDegrees); image.close()
+                Thread {   // off the main thread: keep a 1024-px copy only (3 full-size frames would be ~150 MB), score sharpness
+                    val keep = SessionViewModel.downscale(bmp, 1024).also { if (it !== bmp) bmp.recycle() }
+                    val sharp = QualityGate.check(SessionViewModel.downscale(keep, 320).toRgb()).blurVar
+                    ContextCompat.getMainExecutor(ctx).execute { shots += sharp to keep; next(i + 1) }
+                }.start()
+            }
+            override fun onError(exception: ImageCaptureException) { if (shots.isEmpty() && i == n - 1) done(null) else next(i + 1) }
+        })
+    }
+    next(0)
+}

@@ -33,6 +33,8 @@ No internet. No account. Nothing leaves the device.
 | 📈 | **SkinTimeline** tracks a spot over weeks: **97 %** photo alignment, **5.6 %** median size error with a coin for scale, colour change measured to **~1 ΔE** under changing light | [`reports/timeline_eval_v8.json`](reports/timeline_eval_v8.json) |
 | 🚫 | **Skin-photo gate:** a second output of the image model catches **96.8 %** of non-skin photos — everyday objects, rooms and food (COCO) **97.3 %**, wood/fabric/paper textures **91.9 %** — and asks for a retake, while passing **99.1 %** of real skin photos | [`reports/skin_gate_v2.json`](reports/skin_gate_v2.json) |
 | 🔁 | **Surer image model on phone photos:** 4-view test-time averaging lifts top-3 on real phone photos (SCIN val) **80.6 % → 83.4 %**, adopted by a rule fixed before the test | [`reports/cv_tta.json`](reports/cv_tta.json) |
+| ⚡ | **Result in about a second:** the safety-checked result (image model + rules + condition notes) appears ~1 s after *Analyze*; the fine-tuned Gemma's personalised explanation swaps in when it is written, with a pixel progress bar and an honest time-left estimate — the advice level can only go up | [`V21Tests.kt`](android/app/src/androidTest/java/com/skinnova/app/V21Tests.kt) |
+| 📸 | **Capture coach + best-of-3:** the shutter turns green when light, focus and skin checks pass; each tap keeps the sharpest of 3 frames — under hand-shake blur top-1 **60.9 → 65.4 %**, top-3 back to clean-photo level | [`reports/capture_burst.json`](reports/capture_burst.json) |
 | 💬 | **Ask SkinNova:** follow-up questions about a result, answered on the phone by the fine-tuned Gemma in English or Hindi, grounded in reviewed notes; danger signs always trigger a fixed "get care today" line; medicine names, doses and diagnoses are filtered out | [`reports/chat_probe_v2.json`](reports/chat_probe_v2.json) |
 | 🌿 | **Home care & relief:** cited home remedies, food & lifestyle notes and common pharmacy options (EN + HI), tailored to age, pregnancy, allergies and health conditions — never self-treatment when a doctor should look first | [`assets/care/relief.json`](android/app/src/main/assets/care/relief.json) |
 | 🗣️ | **Bhasha voice intake:** speak symptoms in Hindi or English; **94 %** of fields extracted correctly on held-out test transcripts, and a field is kept only if its quote is in what you said *and* about the right topic | [`reports/llm_litertlm_select_v2.json`](reports/llm_litertlm_select_v2.json) |
@@ -43,8 +45,10 @@ All numbers are produced by scripts in [`ml/eval/`](ml/eval) and summarised in *
 
 1. **Capture** — guided photo with live quality checks (focus, light, skin coverage).
 2. **Questions** — one card at a time, or answer by **voice** in Hindi/English; every voice-filled field is shown for confirmation.
-3. **Analyze on-device** — the image model scores 10 condition categories; deterministic safety rules set a triage floor;
-   the fine-tuned Gemma writes ranked possible categories with reasons, uncertainty, what would help and self-care information.
+3. **Analyze on-device** — the image model scores 10 condition categories and deterministic safety rules set a triage
+   floor: that result is on screen in about a second. The fine-tuned Gemma (greedy decoding, as evaluated) then writes
+   ranked possible categories with reasons, uncertainty, what would help and self-care information, and replaces it in place.
+   A one-time *Optimising for your phone* step after install/update builds the GPU cache up front.
 4. **Result** — red-flag banner (if any) → triage card (LOW / MODERATE / HIGH / URGENT, icon + text) → possible categories
    with likelihood → uncertainty → explanation → next steps. Read-aloud and Hindi toggle.
 5. **Home care & relief** — home remedies, food & lifestyle notes and pharmacy options for the leading possibility,
@@ -86,7 +90,7 @@ flowchart LR
 - **Language model** — Gemma 4 E2B, LoRA (r = 16) trained on Kaggle T4 with Unsloth on 3.8 k task records (analysis,
   disagreement, red flags, voice extraction, timeline narration, Hindi translation, injection resistance), merged and
   exported to a 3.9 GB `.litertlm` with litert-torch. On the phone it reasons over the image model's calibrated scores
-  and the user's answers — identical results to sending the photo, **46 % faster** ([`docs/decisions.md`](docs/decisions.md)).
+  and the user's answers — identical results to sending the photo, **46 % faster** ([`reports/llm_litertlm_select_v2_noimage.json`](reports/llm_litertlm_select_v2_noimage.json)).
 - **Safety** — rules, tier floors and validators are plain Kotlin with Python twins and shared JSON fixtures; the model
   can raise urgency but never lower it.
 - Details: [`docs/architecture.md`](docs/architecture.md) · data contracts: [`docs/contracts.md`](docs/contracts.md).
@@ -94,11 +98,14 @@ flowchart LR
 ## Engineering practices
 
 - **Pre-registered decisions** — every model choice (CV v2, LoRA v2, the timeline segmentation) was decided by a rule
-  written down *before* seeing the result, on validation data only ([`docs/decisions.md`](docs/decisions.md)).
+  written down *before* seeing the result, on validation data only (each adoption report in [`reports/`](reports) states its rule).
 - **Frozen evaluation sets** and leakage control — perceptual-hash de-duplication before patient-grouped splits.
 - **Parity at every conversion** — PyTorch ↔ TFLite ↔ Kotlin preprocessing, HF ↔ `.litertlm`, Python ↔ Kotlin timeline.
 - **One source of truth** for prompts, condition cards and safety terms, shared by training and the app (tested).
 - **Reproducible numbers** — each report carries the git commit, dataset revision and model hash.
+- **Rules that said no are kept** — phone-photo recalibration, a conformal short list, symptom fusion and a smaller KV
+  cache were all measured and *not* adopted by their pre-set rules ([`cv_calibration_phone.json`](reports/cv_calibration_phone.json),
+  [`fusion.json`](reports/fusion.json), [`token_budget.json`](reports/token_budget.json)).
 
 ## Getting started
 
@@ -120,7 +127,7 @@ uv venv .venv-export && uv pip install --python .venv-export -r ml/requirements-
 .venv/bin/python -m pytest -q ml/tests   # 154 tests: rules, validators, prompts, timeline, intake, voice scoring
 cd android && ./gradlew :app:testOfflineDebugUnitTest :app:assembleOfflineDebug
 ```
-Setup guide: [`docs/SETUP_GUIDE.md`](docs/SETUP_GUIDE.md) · owner's manual: [`docs/diy.md`](docs/diy.md) · test plan: [`docs/test.md`](docs/test.md) · run log: [`PROGRESS.md`](PROGRESS.md).
+Setup guide: [`docs/SETUP_GUIDE.md`](docs/SETUP_GUIDE.md) · test plan: [`docs/test.md`](docs/test.md) · run log: [`PROGRESS.md`](PROGRESS.md).
 
 ## Repository
 

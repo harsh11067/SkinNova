@@ -63,6 +63,28 @@ val LocalAppLocked = androidx.compose.runtime.staticCompositionLocalOf { false }
 /** Early look while the model writes: image-model top 3 + the safety rules' advice level (final level can only go up). */
 data class EarlyLook(val top3: List<com.skinnova.app.model.CvScore>, val tier: com.skinnova.app.model.Tier, val ruleMessages: List<String>)
 
+/** v2.1 item 3: honest progress while Gemma works. [fraction] null = indeterminate; [etaSec] null = unknown yet. */
+enum class GenPhase { LOADING, READING, WRITING, CHECKING, TRANSLATING }
+data class GenProgress(val phase: GenPhase, val fraction: Float? = null, val etaSec: Int? = null)
+
+/** Expected output length of an analysis (shipped model, llm_val: median 1,027 chars, p90 1,219). */
+const val EXPECTED_CHARS = 1100
+
+/** Remaining-time estimate from the writing speed of the last ~5 s (JVM-tested). */
+class EtaEstimator(private val expected: Int = EXPECTED_CHARS, private val windowMs: Long = 5_000) {
+    private val pts = ArrayDeque<Pair<Long, Int>>()
+    fun add(tMs: Long, chars: Int) { pts.addLast(tMs to chars); while (pts.size > 2 && tMs - pts.first().first > windowMs) pts.removeFirst() }
+    fun reset() = pts.clear()
+    /** null until there is a rate to go by. */
+    fun etaSec(): Int? {
+        if (pts.size < 2) return null
+        val (t0, c0) = pts.first(); val (t1, c1) = pts.last()
+        val rate = (c1 - c0) / ((t1 - t0) / 1000.0); if (rate <= 0.0) return null
+        return ((expected - c1).coerceAtLeast(0) / rate).toInt().coerceAtLeast(1)
+    }
+    fun fraction(chars: Int) = (chars.toFloat() / expected).coerceIn(0f, 0.97f)
+}
+
 /** One Ask SkinNova exchange. [answer] null while the model is writing. */
 data class ChatTurn(val question: String, val answer: String? = null, val danger: Boolean = false, val withheld: Boolean = false,
                     val partial: String = "")
@@ -80,17 +102,33 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     private val _voice = MutableStateFlow<VoiceState>(VoiceState.Idle); val voice: StateFlow<VoiceState> = _voice
     private val _chat = MutableStateFlow<List<ChatTurn>>(emptyList()); val chat: StateFlow<List<ChatTurn>> = _chat
     private val _early = MutableStateFlow<EarlyLook?>(null); val early: StateFlow<EarlyLook?> = _early
+    /** true while the early result is on screen and Gemma is still writing the full one */
+    private val _pending = MutableStateFlow(false); val pending: StateFlow<Boolean> = _pending
+    private val _progress = MutableStateFlow<GenProgress?>(null); val progress: StateFlow<GenProgress?> = _progress
+    /** the full result's leading category differs from the early one → "Updated after reading your answers" */
+    private val _updatedTop = MutableStateFlow(false); val updatedTop: StateFlow<Boolean> = _updatedTop
+    /** consecutive results whose leading category is "other" (item 8: a 2nd one recommends a doctor) */
+    var otherStreak = 0; private set
+    private val eta = EtaEstimator()
     var savedId: String? = null; private set
     private var job: Job? = null
     private val audio = com.skinnova.app.ml.AudioCapture()
 
     // ---------- photo ----------
+    /** A new scan or an opened history item replaces a result that is still being written: finish the old one as a
+     *  Basic result (and its history row) first, so it can never land on the new screen later. */
+    private fun abandonRunning() {
+        if (job?.isActive == true) { if (_pending.value) stopWriting(); job?.cancel(); _pending.value = false; _progress.value = null }
+    }
+
     fun setPhoto(bmp: Bitmap) {
+        abandonRunning()
         val b = downscale(bmp, 1024)
         // profile pre-fills age band + skin tone (shown on the questions, the user can still change them)
         val prof = c.profiles.profile.value
         _photo.value = b; qualityForced = false; _result.value = null; savedId = null; _cv.value = emptyList(); _chat.value = emptyList(); _early.value = null
         _draft.value = Draft(ageBand = prof.ageBand, skinTone = prof.skinTone)
+        warmUp()   // v2.1 item 5: load the model while the user reviews the photo and answers (not only on the questions)
         viewModelScope.launch(Dispatchers.Default) {
             val rgb = b.toRgb(); val q = QualityGate.check(rgb)
             // image model now (not at analysis time): its skin-photo gate warns before the questions; scores are reused
@@ -139,29 +177,82 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
                     com.skinnova.app.model.Tier.max(rules.tier, com.skinnova.app.safety.TierResolver.classFloor(cv, c.labels)), rules.messages)
                 // the photo reaches the LLM only as the image model's scores (EngineHolder.SEND_PHOTO_TO_LLM)
                 val img = if (EngineHolder.SEND_PHOTO_TO_LLM) withContext(Dispatchers.IO) { writeLlmImage(rgb) }.path else null
-                val res = c.pipeline().run(answers, cv, qualityForced, img, c.settings.lang.value) { _state.value = it }
-                _result.value = res
-                if (c.settings.history.value) save(res)
+                var basic: FinalResult? = null
+                val loadStart = System.currentTimeMillis(); val expectLoad = expectedLoadMs()
+                val res0 = c.pipeline().run(answers, cv, qualityForced, img, c.settings.lang.value) { st ->
+                    when (st) {
+                        is AnalysisState.Preliminary -> {   // result first: the screen switches to it now
+                            basic = st.result; _result.value = st.result; _pending.value = true; _updatedTop.value = false
+                            if (c.settings.history.value) saveOrUpdate(st.result)   // a kill no longer loses the result
+                        }
+                        AnalysisState.LoadingModel -> _progress.value = GenProgress(GenPhase.LOADING,
+                            ((System.currentTimeMillis() - loadStart).toFloat() / expectLoad).coerceIn(0f, 0.95f), null)
+                        is AnalysisState.Generating -> {
+                            val now = System.currentTimeMillis()
+                            if (st.partialText.isEmpty()) { eta.reset(); _progress.value = GenProgress(GenPhase.READING) }
+                            else { eta.add(now, st.partialText.length)
+                                _progress.value = GenProgress(GenPhase.WRITING, eta.fraction(st.partialText.length), eta.etaSec()) }
+                        }
+                        AnalysisState.Validating -> _progress.value = GenProgress(GenPhase.CHECKING, 0.98f, null)
+                        AnalysisState.Translating -> _progress.value = GenProgress(GenPhase.TRANSLATING)
+                        else -> {}
+                    }
+                    _state.value = st
+                }
+                // the full result replaces the early one in place; its advice level can only be the same or higher
+                val res = basic?.let { b -> res0.copy(finalTier = com.skinnova.app.model.Tier.max(com.skinnova.app.model.Tier.parse(res0.finalTier),
+                    com.skinnova.app.model.Tier.parse(b.finalTier)).name) } ?: res0
+                _updatedTop.value = basic != null && res.mode == com.skinnova.app.model.Mode.full &&
+                    basic!!.output.possibleCategories.firstOrNull()?.key != res.output.possibleCategories.firstOrNull()?.key
+                otherStreak = if (res.output.possibleCategories.firstOrNull()?.key == "other") otherStreak + 1 else 0
+                _result.value = res; _pending.value = false; _progress.value = null
+                if (c.settings.history.value) saveOrUpdate(res)
                 _state.value = AnalysisState.Done(res)
                 com.skinnova.app.notify.Notifier.ready(app, com.skinnova.app.model.Tier.parse(res.finalTier) ?: com.skinnova.app.model.Tier.MODERATE,
                     res.mode == com.skinnova.app.model.Mode.basic)
             } catch (e: kotlinx.coroutines.CancellationException) {
-                _state.value = AnalysisState.Idle; throw e
+                stopWriting(); _state.value = AnalysisState.Idle; throw e
             } catch (e: Throwable) {
+                // the early result stays (as a Basic result) if Gemma failed after it was shown
+                if (_pending.value) stopWriting()
                 _state.value = AnalysisState.Failed(e.message ?: e.javaClass.simpleName)
             } finally {
+                _pending.value = false; _progress.value = null
                 com.skinnova.app.notify.AnalysisService.stop(app)
             }
         }
     }
 
+    /** Early result becomes the final (Basic) result: user pressed Stop, or the LLM failed. */
+    private fun stopWriting() {
+        val r = _result.value ?: return
+        if (r.fallbackReason == com.skinnova.app.ml.AnalysisPipeline.PENDING) {
+            val fin = r.copy(fallbackReason = com.skinnova.app.ml.AnalysisPipeline.STOPPED)
+            _result.value = fin
+            if (c.settings.history.value) saveOrUpdate(fin)
+        }
+    }
+
     fun cancel() { job?.cancel(); _state.value = AnalysisState.Idle }
+
+    /** Engine load estimate for the progress bar: ~15 s with the GPU cache, ~2 min when it must be built. */
+    private fun expectedLoadMs(): Long =
+        if (EngineHolder.engineCacheDir(getApplication()).listFiles()?.any { it.name.contains("mldrift_weight_cache") } == true) 16_000L else 120_000L
 
     /** Forget the current photo, answers, result and chat (PIN reset / delete everything). */
     fun clearSession() {
         job?.cancel(); chatJob?.cancel()
         _photo.value = null; _result.value = null; _cv.value = emptyList(); _chat.value = emptyList(); _draft.value = Draft()
         _quality.value = null; _state.value = AnalysisState.Idle; savedId = null; _early.value = null
+    }
+
+    /** First call stores (photo + result); later calls update the same history row (early → full result). */
+    private fun saveOrUpdate(res: FinalResult) {
+        val id = savedId ?: return save(res)
+        viewModelScope.launch {
+            c.db.dao().analysis(id)?.let { e -> c.db.dao().put(e.copy(resultJson = SnJson.encodeToString(FinalResult.serializer(), res),
+                topKey = res.output.possibleCategories.first().key, tier = res.finalTier, mode = res.mode.name)) }
+        }
     }
 
     fun save(r: FinalResult? = _result.value) {
@@ -176,7 +267,11 @@ class SessionViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun openSaved(e: AnalysisEntity) = viewModelScope.launch {
-        _result.value = SnJson.decodeFromString(FinalResult.serializer(), e.resultJson)
+        abandonRunning()
+        // an early result saved before the app was closed mid-writing shows as stopped, not as "still writing"
+        _result.value = SnJson.decodeFromString(FinalResult.serializer(), e.resultJson).let {
+            if (it.fallbackReason == com.skinnova.app.ml.AnalysisPipeline.PENDING) it.copy(fallbackReason = com.skinnova.app.ml.AnalysisPipeline.STOPPED) else it }
+        _pending.value = false; _updatedTop.value = false
         _photo.value = c.images.load(e.imageRef); savedId = e.id; _chat.value = emptyList()
         _cv.value = _result.value!!.cvTop3
     }

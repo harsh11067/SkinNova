@@ -25,6 +25,8 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import java.io.File
 import java.nio.ByteBuffer
@@ -109,6 +111,39 @@ class CoreTests {
         assertEquals("MODERATE", r.finalTier)              // LLM said LOW; R7 (others + itch 3) → MODERATE wins
         assertTrue("rf_r7" in r.ruleMessages)
         assertTrue(states.any { it is AnalysisState.Generating })
+    }
+
+    /** v2.1 item 2: a complete early result comes first (before any generation), and the final tier is never lower. */
+    @Test fun earlyResultFirstAndTierNeverDrops() = runTest {
+        val states = mutableListOf<AnalysisState>()
+        val r = pipeline(FakeLlm(mutableListOf(valid))).run(answers, cv, false, null, "en") { states += it }
+        val iPre = states.indexOfFirst { it is AnalysisState.Preliminary }; val iGen = states.indexOfFirst { it is AnalysisState.Generating }
+        assertTrue("Preliminary before Generating", iPre in 0 until iGen)
+        val pre = (states[iPre] as AnalysisState.Preliminary).result
+        assertEquals(Mode.basic, pre.mode); assertEquals(AnalysisPipeline.PENDING, pre.fallbackReason)
+        assertTrue(pre.output.possibleCategories.isNotEmpty() && pre.output.explanation.isNotBlank())
+        assertFalse("no 'Basic mode' reason while pending", pre.output.uncertainty.reasons.any { it.startsWith("Basic mode") })
+        assertTrue(com.skinnova.app.model.Tier.parse(r.finalTier)!! >= com.skinnova.app.model.Tier.parse(pre.finalTier)!!)
+        assertTrue(parser.parse(SnJson.encodeToString(com.skinnova.app.model.AnalysisOutput.serializer(), pre.output)).ok)
+    }
+
+    @Test fun noEarlyResultWithoutModel() = runTest {
+        val states = mutableListOf<AnalysisState>()
+        val noLlm = object : Llm { override val available = false
+            override suspend fun generate(task: LlmTask, system: String, user: String, imagePath: String?, audio: ByteArray?, onToken: (String) -> Unit) = error("no") }
+        pipeline(noLlm).run(answers, cv, false, null, "en") { states += it }
+        assertTrue(states.none { it is AnalysisState.Preliminary })
+    }
+
+    /** v2.1 item 3: time left from the last ~5 s of writing. */
+    @Test fun etaFromRecentWritingSpeed() {
+        val e = com.skinnova.app.ui.EtaEstimator(expected = 1100)
+        assertNull(e.etaSec())
+        e.add(0, 0); e.add(1_000, 20); e.add(2_000, 40)              // 20 chars/s
+        assertEquals(53, e.etaSec())                                    // (1100 − 40) / 20
+        e.add(9_000, 180); e.add(10_000, 200)                           // window keeps the last 5 s: 20 chars/s
+        assertEquals(45, e.etaSec())
+        assertEquals(0.97f, e.fraction(5000))
     }
 
     @Test fun repairThenSuccess() = runTest {

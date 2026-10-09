@@ -1,0 +1,123 @@
+{
+ "git_sha": "e54fe20",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-08T23:38:49+00:00",
+ "answers_model": {
+  "train_cases": 2686,
+  "C": 0.03,
+  "cv_neg_log_loss": NaN,
+  "features": [
+   "site_head",
+   "site_arm",
+   "site_hand",
+   "site_trunk_front",
+   "site_back",
+   "site_groin",
+   "site_leg",
+   "site_foot",
+   "site_other",
+   "site_missing",
+   "dur_lt_1w",
+   "dur_1_4w",
+   "dur_1_6m",
+   "dur_gt_6m",
+   "dur_missing",
+   "itch_yes",
+   "pain_yes",
+   "bleed_yes",
+   "grow_yes",
+   "color_yes",
+   "fever_yes",
+   "itch_missing",
+   "pain_missing",
+   "bleed_missing",
+   "grow_missing",
+   "color_missing",
+   "fever_missing",
+   "age_lt_12",
+   "age_12_17",
+   "age_18_39",
+   "age_40_59",
+   "age_60_plus",
+   "age_missing"
+  ]
+ },
+ "w": 0.5750000000000001,
+ "temperature": 0.9798760414123535,
+ "results": {
+  "holdout_image": {
+   "n": 307,
+   "top1": 0.498371335504886,
+   "top3": 0.8338762214983714,
+   "nll": 1.6989713907241821,
+   "suspicious_recall_p015": 0.0
+  },
+  "holdout_fused": {
+   "n": 307,
+   "top1": 0.504885993485342,
+   "top3": 0.8599348534201955,
+   "nll": 1.6672454088924913,
+   "suspicious_recall_p015": 0.0
+  },
+  "pad_val_image": {
+   "n": 297,
+   "top1": 0.9393939393939394,
+   "top3": 0.9966329966329966,
+   "nll": 0.27916648983955383,
+   "suspicious_recall_p015": 0.979253112033195
+  },
+  "pad_val_fused": {
+   "n": 297,
+   "top1": 0.9461279461279462,
+   "top3": 0.9966329966329966,
+   "nll": 0.18324532945323213,
+   "suspicious_recall_p015": 0.983402489626556
+  },
+  "holdout_fused_30pct_missing": {
+   "n": 307,
+   "top1": 0.48534201954397393,
+   "top3": 0.8534201954397395,
+   "nll": 1.663825546947932,
+   "suspicious_recall_p015": 0.0
+  }
+ },
+ "per_class_holdout": {
+  "eczema_atopic": {
+   "image_recall": 0.34,
+   "fused_recall": 0.34,
+   "n": 50
+  },
+  "contact_dermatitis": {
+   "image_recall": 0.0851063829787234,
+   "fused_recall": 0.10638297872340426,
+   "n": 47
+  },
+  "tinea": {
+   "image_recall": 0.15,
+   "fused_recall": 0.1,
+   "n": 20
+  },
+  "scabies": {
+   "image_recall": null,
+   "fused_recall": null,
+   "n": 0
+  },
+  "psoriasis": {
+   "image_recall": 0.14285714285714285,
+   "fused_recall": 0.14285714285714285,
+   "n": 7
+  },
+  "other": {
+   "image_recall": 0.7455621301775148,
+   "fused_recall": 0.7633136094674556,
+   "n": 169
+  }
+ },
+ "rule": {
+  "top1_plus3_or_nll_minus_0.10": false,
+  "top3_not_lower": true,
+  "suspicious_recall_ok": true
+ },
+ "adopt": false
+}

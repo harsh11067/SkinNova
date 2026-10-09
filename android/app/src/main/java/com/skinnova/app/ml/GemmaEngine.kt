@@ -84,9 +84,15 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
             // it was one 13–17 s job that froze the UI ("not responding", vivo V2059 / Helio G95, 2026-10-07).
             visionBackend = if (SEND_PHOTO_TO_LLM && supportsVision) Backend.CPU() else null,
             audioBackend = if (supportsAudio) Backend.CPU() else null,
-            maxNumTokens = 4096, cacheDir = engineCacheDir(ctx).path,
+            maxNumTokens = maxNumTokens, cacheDir = engineCacheDir(ctx).path,
         )).apply { initialize() }
     }
+
+    /** KV-cache size. 2,048 covers every prompt + output with margin (p99 1,797 incl. repair, reports/token_budget.json);
+     *  v2.1 item 4 decides it on llm_val + peak PSS. Debug/bench seam: [setMaxTokens]. */
+    var maxNumTokens = MAX_NUM_TOKENS; private set
+
+    fun setMaxTokens(n: Int) { maxNumTokens = n; release() }
 
     fun release() { engine?.close(); engine = null; enginePath = null }
 
@@ -102,6 +108,7 @@ class EngineHolder(private val ctx: Context, private val models: ModelManager) {
          *  the frozen llm_val (category agreement 0.91 = 0.91, JSON valid 1.0 = 1.0) and 46 % faster — the image model
          *  carries the visual evidence, the LLM works from its scores and the answers. */
         const val SEND_PHOTO_TO_LLM = false
+        const val MAX_NUM_TOKENS = 4096
 
         /** GPU/XNNPack weight caches (~2.3 GB, rebuilt in ~2 min if lost): their own folder, so "Delete everything"
          *  (personal data) never removes them — it used to, and every next analysis started with a 2-minute load. */
@@ -119,8 +126,11 @@ interface Llm {
                          onToken: (String) -> Unit = {}): String
 }
 
-enum class LlmTask(val temperature: Double, val maxTokens: Int) {
-    ANALYZE(0.2, 700), REPAIR(0.2, 700), TRANSCRIBE(0.0, 400), EXTRACT(0.2, 300), NARRATE(0.4, 200), TRANSLATE(0.4, 600), CHAT(0.3, 300)
+/** [greedy]: decode with top-k 1 (temperature 0) — the setting every reported number was measured with (v2.1 item 1):
+ *  same input → same text. CHAT and NARRATE keep their sampled, measured settings (chat probe: T 0.3). */
+enum class LlmTask(val temperature: Double, val maxTokens: Int, val greedy: Boolean) {
+    ANALYZE(0.2, 700, true), REPAIR(0.2, 700, true), TRANSCRIBE(0.0, 400, true), EXTRACT(0.2, 300, true), NARRATE(0.4, 200, false),
+    TRANSLATE(0.4, 600, true), CHAT(0.3, 300, false)
 }
 
 class GemmaEngine(private val holder: EngineHolder, private val models: ModelManager) : Llm {
@@ -137,7 +147,8 @@ class GemmaEngine(private val holder: EngineHolder, private val models: ModelMan
         withTimeout(timeoutMs) {
             val conv = engine.createConversation(ConversationConfig(
                 systemInstruction = Contents.of(system),
-                samplerConfig = SamplerConfig(topK = 40, topP = 0.95, temperature = task.temperature, seed = 3407),
+                samplerConfig = if (task.greedy) SamplerConfig(topK = 1, topP = 1.0, temperature = 0.0, seed = 3407)
+                    else SamplerConfig(topK = 40, topP = 0.95, temperature = task.temperature, seed = 3407),
                 maxOutputToken = task.maxTokens,
                 thinkingConfig = ThinkingConfig(enableThinking = false),
             ))

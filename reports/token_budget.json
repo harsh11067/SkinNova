@@ -1,0 +1,50 @@
+{
+ "git_sha": "e54fe20",
+ "dataset_rev": "",
+ "model_sha": "",
+ "created_at": "2026-10-08T23:30:52+00:00",
+ "tokenizer": "models/lora_v2/tokenizer.json",
+ "template_overhead": 24,
+ "max_out": {
+  "ANALYZE": 700,
+  "REPAIR": 700,
+  "CHAT": 300,
+  "TRANSLATE": 600,
+  "EXTRACT": 300
+ },
+ "budgets": {
+  "analysis": {
+   "n": 200,
+   "p50": 1522.0,
+   "p99": 1566.04,
+   "max": 1571
+  },
+  "repair": {
+   "n": 200,
+   "p50": 1797.0,
+   "p99": 1797.0,
+   "max": 1797
+  },
+  "extract": {
+   "n": 50,
+   "p50": 648.0,
+   "p99": 674.55,
+   "max": 677
+  },
+  "chat": {
+   "n": 30,
+   "p50": 1184.0,
+   "p99": 1286.84,
+   "max": 1288
+  },
+  "translate": {
+   "n": 100,
+   "p50": 945.0,
+   "p99": 1012.2300000000001,
+   "max": 1035
+  }
+ },
+ "rule": "2048 iff every p99 <= 1900",
+ "worst_p99": 1797.0,
+ "fits_2048": true
+}

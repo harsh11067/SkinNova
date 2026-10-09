@@ -37,6 +37,10 @@ class AppContainer(val ctx: Context) {
     val db by lazy { SnDb.build(ctx) }
     val images by lazy { ImageStore(ctx) }
 
+    /** What the optimising step was done for; null without a model. Changes with every app update or new model. */
+    fun optimizeKey(): String? = models.activeModel()?.let { "${com.skinnova.app.BuildConfig.VERSION_CODE}|${it.sha256.take(12)}" }
+    fun needsOptimizing(): Boolean = optimizeKey()?.let { it != settings.optimizedKey.value } ?: false
+
     fun pipeline() = AnalysisPipeline(labels, prompts, parser, guards, llm, { engineHolder.isLoaded },
         { models.activeModel()?.sha256?.take(12) ?: "" })
 }

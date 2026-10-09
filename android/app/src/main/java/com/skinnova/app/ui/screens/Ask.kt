@@ -83,7 +83,10 @@ fun AskCard(vm: SessionViewModel, tts: Boolean, lang: String) {
                 }
                 if (t.danger) Text("⚠  " + stringResource(R.string.ask_danger), style = SnType.body, color = sn.urgent)
                 when {
-                    t.answer == null -> Text(stringResource(R.string.ask_writing), style = SnType.caption, color = sn.mut)
+                    t.answer == null -> Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        com.skinnova.app.ui.components.PixelProgressBar(null)
+                        Text(stringResource(R.string.ask_writing), style = SnType.caption, color = sn.mut)
+                    }
                     t.withheld -> Text(stringResource(R.string.ask_withheld), style = SnType.body, color = sn.mut)
                     else -> Row(verticalAlignment = Alignment.Top) {
                         Text(t.answer, style = SnType.body, color = sn.ink, modifier = Modifier.weight(1f))

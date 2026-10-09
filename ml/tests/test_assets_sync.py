@@ -15,5 +15,11 @@ def test_assets_identical():
 
 
 def test_every_prompt_has_version_header():
+    """Every prompt carries a version header. The TRAINED prompts stay at v1 (the LoRA learned them); the Ask SkinNova
+    prompts (chat_*.txt) are app-only (never trained) and versioned on their own (v2: grounded in the care notes)."""
+    import re
     for p in (REPO / "ml/llm/prompts").glob("*.txt"):
-        assert p.read_text().startswith("# v1\n"), p
+        head = p.read_text().split("\n", 1)[0]
+        assert re.fullmatch(r"# v\d+", head), p
+        if not p.name.startswith("chat_"):
+            assert head == "# v1", f"{p}: trained prompt changed version"

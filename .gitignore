@@ -28,3 +28,8 @@ reports/kaggle/**/*.log
 reports/device/*.txt
 reports/device/screens/
 reports/library/
+
+# private working notes (kept locally, not published)
+docs/diy.md
+docs/decisions.md
+d2y.md

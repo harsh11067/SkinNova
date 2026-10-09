@@ -105,7 +105,7 @@ object Routes {
     const val SCAN = "scan"; const val QUESTIONS = "questions"; const val ANALYZING = "analyzing"; const val RESULT = "result"
     const val INSIGHTS = "insights/{key}"; const val LIBRARY = "library"; const val HISTORY = "history"; const val PROFILE = "profile"
     const val TRACK = "track"; const val TIMELINE = "timeline/{spotId}"; const val RECAPTURE = "recapture/{spotId}"
-    const val PROFILE_EDIT = "profile/edit"; const val SET_PIN = "security/pin/{mode}"
+    const val PROFILE_EDIT = "profile/edit"; const val SET_PIN = "security/pin/{mode}"; const val OPTIMIZE = "optimize"
     val TABS = setOf(HOME, HISTORY, LIBRARY, PROFILE)
 }
 
@@ -115,12 +115,15 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
     val c = vm.c
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
+    fun homeOrOptimize() = if (c.needsOptimizing()) Routes.OPTIMIZE else Routes.HOME
     fun afterStart() {
         val next = when {
             !c.settings.onboarded.value -> Routes.ONBOARD
             c.models.activeModelPath() == null && !c.settings.setupSeen.value -> Routes.SETUP
-            else -> Routes.HOME
+            else -> homeOrOptimize()
         }
+        // plenty of free memory: start loading the model now (v2.1 item 5); otherwise at photo review
+        if (next == Routes.HOME && availMemGb(c.ctx) >= 3.5) vm.warmUp()
         nav.navigate(next) { popUpTo(Routes.LOADING) { inclusive = true } }
     }
     val locked by c.lock.locked.collectAsState()
@@ -138,9 +141,10 @@ fun App(vm: SessionViewModel, tvm: TimelineViewModel, startRoute: String = Route
         NavHost(nav, startDestination = startRoute) {
             composable(Routes.LOADING) { LoadingScreen(c) { afterStart() } }
             composable(Routes.ONBOARD) { OnboardingScreen(c) {
-                nav.navigate(if (c.models.activeModelPath() == null && !c.settings.setupSeen.value) Routes.SETUP else Routes.HOME) { popUpTo(0) }
+                nav.navigate(if (c.models.activeModelPath() == null && !c.settings.setupSeen.value) Routes.SETUP else homeOrOptimize()) { popUpTo(0) }
             } }
-            composable(Routes.SETUP) { SetupScreen(c) { nav.navigate(Routes.HOME) { popUpTo(0) } } }
+            composable(Routes.SETUP) { SetupScreen(c) { nav.navigate(homeOrOptimize()) { popUpTo(0) } } }
+            composable(Routes.OPTIMIZE) { com.skinnova.app.ui.screens.OptimizeScreen(vm) { nav.navigate(Routes.HOME) { popUpTo(0) } } }
             composable(Routes.HOME) {
                 HomeScreen(vm, onScan = { nav.navigate(Routes.SCAN) }, onHistory = { nav.tab(Routes.HISTORY) }, onLibrary = { nav.tab(Routes.LIBRARY) },
                     onSpot = { nav.navigate("timeline/$it") }, onOpenRecent = { vm.openSaved(it); nav.navigate(Routes.RESULT) })
@@ -207,4 +211,11 @@ fun BottomNav(current: String, go: (String) -> Unit) {
             }
         }
     }
+}
+
+/** Free RAM in GB (ActivityManager.MemoryInfo.availMem). */
+fun availMemGb(ctx: Context): Double {
+    val mi = android.app.ActivityManager.MemoryInfo()
+    ctx.getSystemService(android.app.ActivityManager::class.java).getMemoryInfo(mi)
+    return mi.availMem / 1e9
 }

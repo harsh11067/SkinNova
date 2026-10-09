@@ -84,7 +84,7 @@ adb install -r -g app/build/outputs/apk/offline/release/app-offline-release.apk
 | Phone model file | HF `kumarharsh11067/skinnova-gemma4-e2b-litertlm` (private) |
 | SkinTimeline (spot tracking) | `ml/timeline/` (Python) ≡ `android/.../timeline/Timeline.kt` |
 | Every number in the README | `reports/*.json`, summary `reports/final_report.md` |
-| Decisions and why | `docs/decisions.md` · run log `PROGRESS.md` · architecture `docs/architecture.md` · contracts `docs/contracts.md` |
+| Run log, architecture, contracts | `PROGRESS.md` · `docs/architecture.md` · `docs/contracts.md` (adoption rules are stated inside each `reports/*adoption*.json`) |
 | Big local data / models (not in git) | `data/` → `~/skinnova-data/data`, `models/` → `~/skinnova-data/models` (symlinks) |
 
 ### B4. Rebuild the data or retrain (optional, heavy)

@@ -1,0 +1,45 @@
+{
+ "cases": [
+  {
+   "case": "val-0000",
+   "top_same": true,
+   "set_same": true,
+   "tier_pc": "LOW",
+   "tier_phone": "LOW",
+   "uncert": [
+    "low",
+    "low"
+   ],
+   "text_similarity": 0.895
+  },
+  {
+   "case": "val-0002",
+   "top_same": true,
+   "set_same": true,
+   "tier_pc": "MODERATE",
+   "tier_phone": "MODERATE",
+   "uncert": [
+    "low",
+    "low"
+   ],
+   "text_similarity": 1.0
+  },
+  {
+   "case": "val-0004",
+   "top_same": true,
+   "set_same": true,
+   "tier_pc": "HIGH",
+   "tier_phone": "HIGH",
+   "uncert": [
+    "low",
+    "low"
+   ],
+   "text_similarity": 0.959
+  }
+ ],
+ "identical": [
+  false,
+  true,
+  false
+ ]
+}

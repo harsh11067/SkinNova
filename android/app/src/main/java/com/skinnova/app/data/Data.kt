@@ -141,6 +141,9 @@ class Settings(ctx: Context) {
     private val _setupSeen = state(p.getBoolean("setupSeen", false)); val setupSeen: StateFlow<Boolean> = _setupSeen
     private val _coinMm = state(p.getFloat("coinMm", 20.0f).toDouble()); val coinMm: StateFlow<Double> = _coinMm
     private val _notifAsked = state(p.getBoolean("notifAsked", false)); val notifAsked: StateFlow<Boolean> = _notifAsked
+    /** "versionCode|model sha" the GPU cache was last built for (v2.1 item 5: one-time optimising step) */
+    private val _optimizedKey = state(p.getString("optimizedKey", "") ?: ""); val optimizedKey: StateFlow<String> = _optimizedKey
+    fun setOptimizedKey(v: String) { p.edit().putString("optimizedKey", v).apply(); _optimizedKey.value = v }
 
     fun setDark(v: Boolean) { p.edit().putBoolean("dark", v).apply(); _dark.value = v }
     fun setLang(v: String) { p.edit().putString("lang", v).apply(); _lang.value = v }

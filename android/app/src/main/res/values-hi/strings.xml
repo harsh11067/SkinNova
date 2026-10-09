@@ -333,8 +333,8 @@
     <string name="res_save_title">यह परिणाम सेव करें?</string>
     <string name="res_save_body">इससे इतिहास चालू होगा: परिणाम और फ़ोटो सिर्फ़ इसी फ़ोन पर एन्क्रिप्ट होकर रहेंगे — कुछ भी अपलोड नहीं होता। प्रोफ़ाइल में इसे बंद कर सकते हैं या सब कुछ मिटा सकते हैं।</string>
     <string name="res_save_ok">चालू करें और सेव करें</string>
-    <string name="res_nomatch_title">SkinNova की जानी-पहचानी स्थितियों से कोई साफ़ मेल नहीं</string>
-    <string name="res_nomatch_body">इसका मतलब स्वस्थ त्वचा, SkinNova की 10 श्रेणियों से बाहर की कोई स्थिति, या पढ़ने में मुश्किल फ़ोटो हो सकता है। सबसे नज़दीकी जानी-पहचानी स्थितियाँ नीचे हैं।</string>
+    <string name="res_nomatch_title">यह SkinNova की 9 जानी-पहचानी स्थितियों से ठीक से मेल नहीं खाता</string>
+    <string name="res_nomatch_body">यह कोई और त्वचा स्थिति, सामान्य त्वचा, या ऐसी फ़ोटो हो सकती है जिसे इमेज मॉडल ठीक से नहीं पढ़ पाया। सबसे नज़दीकी स्थितियाँ नीचे हैं, और सलाह का स्तर सुरक्षा नियमों से आता है।</string>
     <string name="res_nomatch_why">इमेज मॉडल के अनुसार अगला सबसे नज़दीकी मेल।</string>
     <string name="res_retake_tip">ज़्यादा भरोसेमंद परिणाम के लिए: दिन की रोशनी में, 15–20 सेमी दूर से, धब्बे को बीच के गोले में रखकर साफ़ फ़ोटो लें।</string>
     <string name="tl_default_name">%1$s का धब्बा</string>
@@ -413,7 +413,7 @@
     <string name="ask_sub">इस परिणाम के बारे में सवाल — आपके फ़ोन पर AI मॉडल जवाब देता है। यह निदान नहीं है।</string>
     <string name="ask_hint">जैसे: क्या यह छूत की बीमारी है?</string>
     <string name="ask_send">भेजें</string>
-    <string name="ask_writing">जवाब लिखा जा रहा है…</string>
+    <string name="ask_writing">आपके फ़ोन पर जवाब लिखा जा रहा है… (लगभग 20 सेकंड)</string>
     <string name="ask_withheld">इसका जवाब यहाँ सुरक्षित रूप से नहीं दे सकते — इसके लिए खास दवा, खुराक या निदान चाहिए। दवाओं के लिए ऊपर \'घरेलू देखभाल और राहत\' देखें या फ़ार्मासिस्ट से पूछें।</string>
     <string name="ask_danger">आपने एक ख़तरे का लक्षण बताया है। कृपया आज ही डॉक्टर को दिखाएँ — बहुत तबीयत खराब लगे तो इमरजेंसी में जाएँ।</string>
     <string name="ask_note">जवाब AI मॉडल की सामान्य जानकारी हैं और गलत हो सकते हैं। ऊपर दिया सलाह का स्तर हमेशा लागू है।</string>
@@ -442,4 +442,23 @@
     <string name="rl_contagious">क्या यह छूत की बीमारी है?</string>
     <string name="prof_start">शुरुआती स्क्रीन</string>
     <string name="ntf_ch_ready_quiet">परिणाम तैयार (बिना आवाज़)</string>
+    <string name="res_updated">आपके जवाब पढ़ने के बाद अपडेट हुआ</string>
+    <string name="res_stopped">आपने AI व्याख्या रोक दी। यह परिणाम इमेज मॉडल, स्थिति नोट्स और सुरक्षा नियमों से बना है।</string>
+    <string name="res_nomatch_twice">लगातार दो फ़ोटो किसी जानी-पहचानी स्थिति से मेल नहीं खाईं। कृपया डॉक्टर को दिखाएँ — वे सीधे देख सकते हैं।</string>
+    <string name="res_nomatch_tips">साफ़ नतीजे के लिए: दिन की रोशनी या तेज़ रोशनी, 15–20 सेमी दूर, धब्बा बीच में, स्थिर रहें जब तक फ़ोटो साफ़ न हो।</string>
+    <string name="res_nomatch_retake">इन सुझावों के साथ दोबारा फ़ोटो लें</string>
+    <string name="wb_title">आपकी व्यक्तिगत व्याख्या लिखी जा रही है…</string>
+    <string name="wb_loading">AI मॉडल लोड हो रहा है…</string>
+    <string name="wb_reading">आपके जवाब पढ़े जा रहे हैं…</string>
+    <string name="wb_writing">लिखा जा रहा है…</string>
+    <string name="wb_writing_eta">लिखा जा रहा है… लगभग %1$d सेकंड बाकी</string>
+    <string name="wb_checking">जवाब जाँचा जा रहा है…</string>
+    <string name="wb_translating">अनुवाद हो रहा है…</string>
+    <string name="wb_sub">यह परिणाम अभी पढ़ने के लिए सुरक्षित है — AI अपनी व्याख्या यहीं जोड़ देगा। आप ऐप छोड़ सकते हैं; हम सूचना देंगे।</string>
+    <string name="wb_stop">रोकें</string>
+    <string name="opt_title">आपके फ़ोन के लिए SkinNova तैयार हो रहा है</string>
+    <string name="opt_sub">इंस्टॉल या अपडेट के बाद सिर्फ़ एक बार — लगभग 2 मिनट। कृपया ऐप खुला रखें; इसके बाद हर विश्लेषण बहुत जल्दी शुरू होगा।</string>
+    <string name="opt_elapsed">फ़ोन पर AI तैयार हो रहा है… %1$d सेकंड</string>
+    <string name="opt_done">तैयार ✓</string>
+    <string name="opt_later">बाद में करें</string>
 </resources>

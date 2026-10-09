@@ -1,0 +1,2184 @@
+{
+ "git_sha": "e54fe20",
+ "dataset_rev": "",
+ "model_sha": "046020629f9dadf1",
+ "created_at": "2026-10-09T00:37:36+00:00",
+ "tag": "v21_2048",
+ "set": "llm_val",
+ "data_dir": "data/llm_eval",
+ "backend": "CPU",
+ "runtime": "litert-lm-api 0.17.1",
+ "decoding": "greedy",
+ "load_s": 1.0,
+ "gray_image": false,
+ "no_image": true,
+ "max_num_tokens": 2048,
+ "n_analysis": 100,
+ "n_extract": 25,
+ "analysis": {
+  "valid": 1.0,
+  "cat_agree": 0.91,
+  "top_agree": 0.76,
+  "tier_ok": 1.0,
+  "guard_violation": 0.0,
+  "hedge_ok": 0.86,
+  "cites_answer": 1.0
+ },
+ "extract": {
+  "field_acc": 0.9388,
+  "halluc_before_per_case": 0.04,
+  "halluc_after": 0,
+  "valid": 1.0
+ },
+ "s_per_analysis_median": 33.96,
+ "rows": [
+  {
+   "id": "val-0000",
+   "task": "T1",
+   "s": 33.68,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "eczema_atopic",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (your age group, its place on the face); typical sign: blackheads and whiteheads.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to four weeks. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Do not squeeze or pick spots.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0001",
+   "task": "T1",
+   "s": 43.24,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "other",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, present for less than a week) match; it often shows milky-white patches with clear edges.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"Worth considering; photo blurry, dark or too far away would fit.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned moderate itching and moderate pain, for less than a week. Vitiligo / pigment loss fits best so far. Loss of skin colour in patches because pigment cells stop working. The image model's top choice was other / not sure; your answers point more to vitiligo / pigment loss, which adds uncertainty. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+  },
+  {
+   "id": "val-0002",
+   "task": "T1",
+   "s": 35.82,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "eczema_atopic",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to six months. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0003",
+   "task": "T1",
+   "s": 44.59,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "other",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the hand) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"Worth considering; photo blurry, dark or too far away would fit.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0004",
+   "task": "T1",
+   "s": 39.53,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "eczema_atopic",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Supported by severe itching, its place on the arm; commonly clearer centre.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: fungal rings have a sharper active edge.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for one to four weeks. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved). Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Wash clothes and bedding in hot water.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0005",
+   "task": "T1",
+   "s": 35.82,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "scabies",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (your age group, its place on the face); typical sign: blackheads and whiteheads.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and mild pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Change pillowcases often.\",\"Do not squeeze or pick spots.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0006",
+   "task": "T1",
+   "s": 44.54,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "tinea",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the arm) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to six months. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned features the image model flags for a doctor's look, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Do not try to remove or burn it at home.\",\"Photograph it with a coin for size.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0007",
+   "task": "T1",
+   "s": 45.8,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "eczema_atopic",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the face) match; it often shows itching.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with often starts in childhood, and moderate itching fits.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to six months. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved). The image model leaned towards fungal infection (tinea/ringworm), and your answers fit, but the image model and your answers point in different directions, so treat this as uncertain. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Wash clothes and bedding in hot water.\",\"Keep the area clean and fully dry.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+  },
+  {
+   "id": "val-0008",
+   "task": "T1",
+   "s": 35.04,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "psoriasis",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the neck) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with silvery scale and sharp borders.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for more than six months. This looks most like Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0009",
+   "task": "T9",
+   "s": 35.94,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "psoriasis",
+    "acne"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Supported by severe itching, others at home are affected; commonly other people at home itching too.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it has been there for less than a week, with severe itching and no pain. This looks most like Scabies. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Wash clothes, towels and bedding in hot water.\",\"Avoid close skin contact until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0010",
+   "task": "T1",
+   "s": 39.74,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "psoriasis",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the arm) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with silvery scale and sharp borders.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep nails short and avoid known triggers.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0011",
+   "task": "T1",
+   "s": 42.0,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "psoriasis",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is spreading, bleeding or crusting) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on brown skin may look purple, grey or dark brown would fit, and moderate itching fits.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. The closest match is Spot that needs a doctor's look. A spot with features that doctors want to check in person. The image model leaned towards spot that needs a doctor's look, and your answers fit it, so trust the image model more right now. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":true}"
+  },
+  {
+   "id": "val-0012",
+   "task": "T1",
+   "s": 32.86,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "benign_lesion",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows deeper painful lumps.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and moderate pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Wash twice a day with a mild cleanser.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0013",
+   "task": "T1",
+   "s": 32.5,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "psoriasis",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, it is growing); typical sign: even colour.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0014",
+   "task": "T1",
+   "s": 33.66,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "other",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (your age group, its place on the face); typical sign: blackheads and whiteheads.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and moderate pain, for more than six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Change pillowcases often.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0015",
+   "task": "T1",
+   "s": 33.97,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "contact_dermatitis",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Supported by moderate itching, it is spreading; commonly very itchy dry patches.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0016",
+   "task": "T1",
+   "s": 36.35,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "psoriasis",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (its place on the chest) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for more than six months. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned features the image model flags for a doctor's look, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0017",
+   "task": "T1",
+   "s": 34.49,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, it is growing); typical sign: stable size.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0018",
+   "task": "T1",
+   "s": 43.86,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "contact_dermatitis",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the back) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and moderate pain, for one to four weeks. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0019",
+   "task": "T9",
+   "s": 45.97,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "scabies",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (present for one to six months, its place on the scalp); typical sign: silvery-white scale.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with sharper borders.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for one to six months. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0020",
+   "task": "T1",
+   "s": 37.56,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "acne",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, its place on the leg); typical sign: milky-white patches with clear edges.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to four weeks. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0021",
+   "task": "T1",
+   "s": 42.61,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "other",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows dark marks after spots heal, especially on brown skin.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and moderate pain, for more than six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Do not squeeze or pick spots.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0022",
+   "task": "T1",
+   "s": 41.24,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "psoriasis",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, it is spreading) match; it often shows slowly spreading outward.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis does not usually clear in the centre.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to six months. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved).\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Wash clothes and bedding in hot water.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0023",
+   "task": "T1",
+   "s": 44.57,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "eczema_atopic",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the arm) match; it often shows itching.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: fungal rings have a sharper active edge.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to six months. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved).\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Do not share towels, combs or clothes.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0024",
+   "task": "T1",
+   "s": 33.12,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "acne",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and moderate pain, for one to four weeks. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Keep the area clean and avoid new products until checked.\",\"Retake the photo in daylight, 15-20 cm away.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0025",
+   "task": "T1",
+   "s": 45.63,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "eczema_atopic",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Supported by severe itching, others at home are affected; commonly intense itching, worse at night.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for one to four weeks. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Wash clothes, towels and bedding in hot water.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0026",
+   "task": "T1",
+   "s": 39.66,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "eczema_atopic",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, others at home are affected) match; it often shows intense itching, worse at night.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to four weeks. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Wash clothes, towels and bedding in hot water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0027",
+   "task": "T1",
+   "s": 43.83,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "psoriasis",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Supported by moderate itching, it is spreading; commonly on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with silvery scale and sharp borders.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and no pain, for more than six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0028",
+   "task": "T1",
+   "s": 35.44,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "suspicious_lesion",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You said it has been there for less than a week, with mild itching and mild pain. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0029",
+   "task": "T9",
+   "s": 29.58,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "benign_lesion",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is spreading, its place on the leg) match; it often shows on brown skin may look purple, grey or dark brown.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and mild pain, for one to six months. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0030",
+   "task": "T1",
+   "s": 29.34,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "scabies",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the chest) match; it often shows dark marks after spots heal, especially on brown skin.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Change pillowcases often.\",\"Do not squeeze or pick spots.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0031",
+   "task": "T1",
+   "s": 28.87,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "psoriasis",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is changing colour) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0032",
+   "task": "T1",
+   "s": 30.8,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "psoriasis",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, present for one to six months); typical sign: even colour.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0033",
+   "task": "T1",
+   "s": 47.87,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "benign_lesion",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on brown skin may look dark brown, purple or grey rather than red would fit, and severe itching fits.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"possible\",\"why\":\"The image model also gives this some weight; it can show stable size, and its place on the hand fits.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"Worth considering; mixed or unclear features would fit.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The image model's scores are spread across several categories\",\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned severe itching and no pain, for less than a week. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. The image model's top choice was eczema / atopic dermatitis; your answers point more to benign growth (mole, seborrheic keratosis), which adds uncertainty. Because you mentioned fever or feeling unwell together with pain or spreading, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"URGENT\",\"advice\":\"Please seek medical care today. If you feel very unwell, go to emergency care.\"},\"disagreement_with_i"
+  },
+  {
+   "id": "val-0034",
+   "task": "T1",
+   "s": 35.68,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Supported by no itching, present for one to six months; commonly warty stuck-on look for seborrhoeic keratosis.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0035",
+   "task": "T1",
+   "s": 39.65,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "psoriasis",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the scalp) match; it often shows itching.\"},{\"key\":\"psoriasis\",\"likelihood\":\"possible\",\"why\":\"Worth considering; silvery-white scale would fit, and moderate itching fits.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"Worth considering; photo blurry, dark or too far away would fit.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved). Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Wash clothes and bedding in hot water.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0036",
+   "task": "T1",
+   "s": 39.08,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "tinea",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is bleeding or crusting, its place on the face) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and moderate pain, for one to six months. The closest match is Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0037",
+   "task": "T1",
+   "s": 38.58,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "suspicious_lesion",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, present for one to four weeks) match; it often shows silvery-white scale.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis does not usually clear in the centre.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanation\":\"You mentioned severe itching and mild pain, for one to four weeks. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0038",
+   "task": "T1",
+   "s": 38.22,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"The photo does not clearly show skin, so no skin category can be matched.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The photo does not clearly show an area of skin\"]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. The photo does not clearly show an area of skin, so SkinNova cannot compare it with skin conditions. Please retake the photo in daylight, 15\u201320 cm from the skin.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep the area clean and avoid new products until checked.\",\"Retake the photo in daylight, 15-20 cm away.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0039",
+   "task": "T9",
+   "s": 38.92,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "other",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows dark marks after spots heal, especially on brown skin.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and mild pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Change pillowcases often.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0040",
+   "task": "T1",
+   "s": 43.06,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "vitiligo",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (your age group, its place on the back); typical sign: dark marks after spots heal, especially on brown skin.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and moderate pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Change pillowcases often.\",\"Do not squeeze or pick spots.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0041",
+   "task": "T1",
+   "s": 37.07,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "contact_dermatitis",
+    "tinea",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"contact_dermatitis\",\"likelihood\":\"higher\",\"why\":\"Your answers (its place on the face) match; it often shows itching, burning or stinging.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for less than a week. This looks most like Contact dermatitis. A rash caused by something touching the skin, either an irritant (soap, detergent) or an allergy (nickel, fragrance, hair dye).\",\"what_would_help\":[\"Remembering any new product used before it started\",\"A doctor's examination in person if it spreads or doesn't improve in 2 weeks\"],\"self_care_info\":[\"Use plain unscented moisturiser.\",\"Stop using the suspected product.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0042",
+   "task": "T1",
+   "s": 32.48,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "scabies",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0043",
+   "task": "T1",
+   "s": 38.41,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "vitiligo",
+    "acne"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Supported by severe itching, it is spreading; commonly on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for more than six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep nails short and avoid known triggers.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0044",
+   "task": "T1",
+   "s": 40.82,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "acne"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (it is growing, present for one to six months); typical sign: even colour.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for one to six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0045",
+   "task": "T1",
+   "s": 39.97,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "suspicious_lesion",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on dark skin, can appear on palms, soles or under nails would fit, and its place on the scalp fits.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned mild itching and mild pain, for one to four weeks. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. The image model leaned towards other / not sure, but your answers fit other / not sure better, so treat this as uncertain. Because you mentioned features the image model flags for a doctor's look, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep the area clean and avoid new products until checked.\",\"Retake the photo in daylight, 15-20 cm away.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":true}"
+  },
+  {
+   "id": "val-0046",
+   "task": "T1",
+   "s": 31.31,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "benign_lesion",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Supported by it is changing colour, its place on the chest; commonly on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and mild pain, for more than six months. The closest match is Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0047",
+   "task": "T1",
+   "s": 32.4,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "other",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the face) match; it often shows dark marks after spots heal, especially on brown skin.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and moderate pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Change pillowcases often.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0048",
+   "task": "T1",
+   "s": 33.06,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "contact_dermatitis",
+    "tinea",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"contact_dermatitis\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the hand) match; it often shows rash shaped like the area of contact.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for less than a week. This looks most like Contact dermatitis. A rash caused by something touching the skin, either an irritant (soap, detergent) or an allergy (nickel, fragrance, hair dye). Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Remembering any new product used before it started\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Use plain unscented moisturiser.\",\"Stop using the suspected product.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0049",
+   "task": "T9",
+   "s": 36.62,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "vitiligo",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Your answers (your age group, its place on the leg) match; it often shows dark marks after spots heal, especially on brown skin.\"},{\"key\":\"vitiligo\",\"likelihood\":\"possible\",\"why\":\"Possible: it can look similar, with milky-white patches with clear edges, and its place on the leg fits.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\",\"Your answers fit a different category than the image model's top choice\"]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots. The image model leaned towards acne, and your answers fit it, so there is no disagreement. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Change pillowcases often.\",\"Do not squeeze or pick spots.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0050",
+   "task": "T1",
+   "s": 31.0,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "acne",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (its place on the face) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for one to six months. The closest match is Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned features the image model flags for a doctor's look, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0051",
+   "task": "T1",
+   "s": 36.77,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (present for more than six months, its place on the back); typical sign: even colour.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for more than six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0052",
+   "task": "T1",
+   "s": 32.02,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, present for more than six months); typical sign: even colour.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0053",
+   "task": "T1",
+   "s": 30.94,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "acne",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is growing, bleeding or crusting) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and mild pain, for more than six months. The closest match is Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0054",
+   "task": "T1",
+   "s": 33.81,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "contact_dermatitis",
+    "tinea",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"contact_dermatitis\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, it began after a new product or exposure) match; it often shows itching, burning or stinging.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanation\":\"You mentioned moderate itching and mild pain, for less than a week. This looks most like Contact dermatitis. A rash caused by something touching the skin, either an irritant (soap, detergent) or an allergy (nickel, fragrance, hair dye).\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Remembering any new product used before it started\",\"A doctor's examination in person\"],\"self_care_info\":[\"Stop using the suspected product.\",\"Use plain unscented moisturiser.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0055",
+   "task": "T1",
+   "s": 33.87,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "tinea",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is spreading, its place on the leg) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with silvery scale and sharp borders.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for more than six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep nails short and avoid known triggers.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0056",
+   "task": "T1",
+   "s": 34.98,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "scabies",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, its place on the face) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to six months. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0057",
+   "task": "T1",
+   "s": 36.59,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "eczema_atopic",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Supported by moderate itching, it is spreading; commonly other people at home itching too.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and moderate pain, for one to four weeks. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Wash clothes, towels and bedding in hot water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0058",
+   "task": "T1",
+   "s": 26.59,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "eczema_atopic",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Supported by severe itching, its place on the back; commonly clearer centre.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: fungal rings have a sharper active edge.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and moderate pain, for one to six months. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved).\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Wear loose cotton clothes and change daily.\",\"Keep the area clean and fully dry.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0059",
+   "task": "T9",
+   "s": 34.26,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "suspicious_lesion",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and moderate pain, for one to four weeks. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0060",
+   "task": "T1",
+   "s": 46.99,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "eczema_atopic",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, others at home are affected) match; it often shows intense itching, worse at night.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to four weeks. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Wash clothes, towels and bedding in hot water.\",\"Seal items that cannot be washed in a bag for several days.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0061",
+   "task": "T1",
+   "s": 37.95,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, present for more than six months); typical sign: even colour.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0062",
+   "task": "T1",
+   "s": 36.37,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "contact_dermatitis",
+    "other",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"contact_dermatitis\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows itching, burning or stinging.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"Worth considering; photo blurry, dark or too far away would fit.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"You mentioned severe itching and moderate pain, for less than a week. This looks most like Contact dermatitis. A rash caused by something touching the skin, either an irritant (soap, detergent) or an allergy (nickel, fragrance, hair dye). Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Remembering any new product used before it started\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Stop using the suspected product.\",\"Rinse the area with plain cool water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0063",
+   "task": "T1",
+   "s": 30.71,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "suspicious_lesion",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for one to four weeks. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0064",
+   "task": "T1",
+   "s": 30.03,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "psoriasis",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, others at home are affected) match; it often shows itching.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis does not usually clear in the centre.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely, but it can look similar.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to four weeks. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved). Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Wear loose cotton clothes and change daily.\",\"Wash clothes and bedding in hot water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0065",
+   "task": "T1",
+   "s": 27.04,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"The photo does not clearly show skin, so no skin category can be matched.\"}],\"uncertainty\":{\"level\":\"high\",\"reasons\":[\"The photo does not clearly show an area of skin\"]},\"explanation\":\"You mentioned no itching and mild pain, for one to six months. The photo does not clearly show an area of skin, so SkinNova cannot compare it with skin conditions. Please retake the photo in daylight, 15\u201320 cm from the skin. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0066",
+   "task": "T1",
+   "s": 33.96,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "other",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is spreading) match; it often shows milky-white patches with clear edges.\"},{\"key\":\"other\",\"likelihood\":\"possible\",\"why\":\"Worth considering; photo blurry, dark or too far away would fit.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: some fungal infections cause lighter, slightly scaly patches; vitiligo patches are smooth and fully white.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Vitiligo / pigment loss fits best so far. Loss of skin colour in patches because pigment cells stop working. The image model's top choice was other / not sure; your answers point more to vitiligo / pigment loss, which adds uncertainty.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":true}"
+  },
+  {
+   "id": "val-0067",
+   "task": "T1",
+   "s": 32.83,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "contact_dermatitis",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (severe itching, others at home are affected); typical sign: other people at home itching too.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for one to six months. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Wash clothes, towels and bedding in hot water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0068",
+   "task": "T1",
+   "s": 28.93,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "eczema_atopic",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (present for more than six months, its place on the arm) match; it often shows nail pits or thickening.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with sharper borders.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and mild pain, for more than six months. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0069",
+   "task": "T9",
+   "s": 32.81,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "eczema_atopic",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the leg) match; it often shows nail pits or thickening.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on brown skin may look dark brown, purple or grey rather than red would fit, and moderate itching fits.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model's scores are spread across several categories\"]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to four weeks. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0070",
+   "task": "T1",
+   "s": 30.91,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "contact_dermatitis",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, others at home are affected) match; it often shows intense itching, worse at night.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for less than a week. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Wash clothes, towels and bedding in hot water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0071",
+   "task": "T1",
+   "s": 29.7,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "acne",
+    "other",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"acne\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (your age group, its place on the face); typical sign: blackheads and whiteheads.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: sudden widespread spots with fever or new medicines need a doctor's look.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and moderate pain, for one to six months. Acne fits best so far. Blocked hair follicles with oil and inflammation causing spots. Because you mentioned pain on the face or groin, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Choose oil-free, non-comedogenic products.\",\"Wash twice a day with a mild cleanser.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0072",
+   "task": "T1",
+   "s": 33.51,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "contact_dermatitis",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Supported by moderate itching, its place on the back; commonly on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: eczema edges are usually blurry; fungal rings have a sharp scaly edge.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and moderate pain, for less than a week. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short lukewarm baths and gentle soap-free wash.\",\"Moisturise often with a plain, fragrance-free cream.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0073",
+   "task": "T1",
+   "s": 32.8,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "contact_dermatitis",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (it is spreading, its place on the hand) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for less than a week. Eczema / atopic dermatitis fits best so far. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep nails short and avoid known triggers.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0074",
+   "task": "T1",
+   "s": 29.79,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "acne",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, its place on the face) match; it often shows white hair in affected areas.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: some fungal infections cause lighter, slightly scaly patches; vitiligo patches are smooth and fully white.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0075",
+   "task": "T1",
+   "s": 31.98,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, present for more than six months); typical sign: even colour.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0076",
+   "task": "T1",
+   "s": 29.83,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "other",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is spreading) match; it often shows white hair in affected areas.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0077",
+   "task": "T1",
+   "s": 30.35,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "psoriasis",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Supported by moderate itching, its place on the back; commonly clearer centre.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis does not usually clear in the centre.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: fungal rings have a sharper active edge.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. The closest match is Fungal infection (tinea/ringworm). A fungal skin infection (ringworm; no worm involved). Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Do not share towels, combs or clothes.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0078",
+   "task": "T1",
+   "s": 30.88,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "benign_lesion",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (its place on the arm); typical sign: uneven shape or border.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and mild pain, for one to six months. The closest match is Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned features the image model flags for a doctor's look, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0079",
+   "task": "T9",
+   "s": 33.07,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "scabies",
+    "contact_dermatitis",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"scabies\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows intense itching, worse at night.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for one to four weeks. Scabies fits best so far. A very itchy rash caused by tiny mites that burrow in the skin. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Checking whether others at home itch at night\",\"A doctor's examination in person\"],\"self_care_info\":[\"Seal items that cannot be washed in a bag for several days.\",\"Wash clothes, towels and bedding in hot water.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0080",
+   "task": "T1",
+   "s": 31.02,
+   "valid": true,
+   "errors": [],
+   "cat_agree": false,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "suspicious_lesion",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to four weeks. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Keep the area clean and avoid new products until checked.\",\"Retake the photo in daylight, 15-20 cm away.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0081",
+   "task": "T1",
+   "s": 30.69,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "tinea",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for less than a week. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned that others at home are affected, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0082",
+   "task": "T1",
+   "s": 29.01,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "benign_lesion",
+    "eczema_atopic"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, its place on the hand) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. This looks most like Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned features the image model flags for a doctor's look, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0083",
+   "task": "T1",
+   "s": 31.74,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "other",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, it is spreading) match; it often shows nail pits or thickening.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"Several conditions can look similar in a photo\"]},\"explanation\":\"You mentioned moderate itching and no pain, for more than six months. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0084",
+   "task": "T1",
+   "s": 33.06,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "tinea",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is growing) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. This looks most like Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0085",
+   "task": "T1",
+   "s": 32.7,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "benign_lesion",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for more than six months. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned bleeding or crusting for more than a week, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0086",
+   "task": "T1",
+   "s": 33.48,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "contact_dermatitis",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Supported by severe itching, its place on the leg; commonly very itchy dry patches.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: contact rashes follow where something touched and improve when it is avoided.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: scabies itch is worse at night and often affects several people in one home.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and no pain, for one to four weeks. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Moisturise often with a plain, fragrance-free cream.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0087",
+   "task": "T1",
+   "s": 30.63,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "eczema_atopic",
+    "vitiligo"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (present for one to six months, its place on the leg) match; it often shows on brown skin may look purple, grey or dark brown.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis plaques are thicker with sharper borders.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for one to six months. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0088",
+   "task": "T1",
+   "s": 33.94,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "contact_dermatitis",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is growing) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. Spot that needs a doctor's look fits best so far. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Do not try to remove or burn it at home.\",\"Photograph it with a coin for size.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0089",
+   "task": "T9",
+   "s": 41.19,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "eczema_atopic",
+    "acne",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"eczema_atopic\",\"likelihood\":\"higher\",\"why\":\"Your answers (severe itching, it is spreading) match; it often shows on brown skin may look dark brown, purple or grey rather than red.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned severe itching and mild pain, for one to four weeks. The closest match is Eczema / atopic dermatitis. A long-lasting tendency to dry, itchy, inflamed skin that comes and goes in flares. Because you mentioned that this is a child under 12, please follow the advice level shown.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep nails short and avoid known triggers.\",\"Short lukewarm baths and gentle soap-free wash.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0090",
+   "task": "T1",
+   "s": 39.71,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "suspicious_lesion",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"possible\",\"why\":\"Worth considering; on dark skin, can appear on palms, soles or under nails would fit, and no itching fits.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"}],\"uncertainty\":{\"level\":\"moderate\",\"reasons\":[\"The image model and your answers point in different directions\"]},\"explanation\":\"You mentioned no itching and no pain, for one to four weeks. The closest match is Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A clearer photo in daylight, 15\u201320 cm away\",\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":true}"
+  },
+  {
+   "id": "val-0091",
+   "task": "T1",
+   "s": 33.25,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "suspicious_lesion",
+    "tinea"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (present for one to six months, its place on the back); typical sign: even colour.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned mild itching and no pain, for one to six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0092",
+   "task": "T1",
+   "s": 28.83,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "psoriasis",
+    "tinea",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"psoriasis\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, present for one to six months) match; it often shows silvery-white scale.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: psoriasis does not usually clear in the centre.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and no pain, for one to six months. Psoriasis fits best so far. A long-term immune condition that makes skin cells build up into thick, scaly patches.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Short sun exposure without burning.\",\"Moisturise thick areas daily.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0093",
+   "task": "T1",
+   "s": 33.14,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "suspicious_lesion",
+    "benign_lesion",
+    "other"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"suspicious_lesion\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, it is growing) match; it often shows on dark skin, can appear on palms, soles or under nails.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: benign spots are even and stable; change over time is the key warning sign.\"},{\"key\":\"other\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for more than six months. This looks most like Spot that needs a doctor's look. A spot with features that doctors want to check in person. Because you mentioned that the spot is changing, please follow the advice level shown.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it with a coin for size.\",\"Do not try to remove or burn it at home.\"],\"triage\":{\"tier\":\"HIGH\",\"advice\":\"Please see a doctor or dermatologist within a few days.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0094",
+   "task": "T1",
+   "s": 28.94,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "benign_lesion",
+    "contact_dermatitis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Your answers (no itching, present for one to six months) match; it often shows milky-white patches with clear edges.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0095",
+   "task": "T1",
+   "s": 30.18,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": false,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": false,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "eczema_atopic",
+    "scabies"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, its place on the face) match; it often shows itching.\"},{\"key\":\"eczema_atopic\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: fungal rings have a sharper active edge.\"},{\"key\":\"scabies\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for one to six months. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved).\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Do not share towels, combs or clothes.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0096",
+   "task": "T1",
+   "s": 29.97,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "benign_lesion",
+    "vitiligo",
+    "suspicious_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"benign_lesion\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, present for one to six months); typical sign: even colour.\"},{\"key\":\"vitiligo\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"suspicious_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: watch the ABCDE signs: asymmetry, uneven border, several colours, diameter over 6 mm, evolving.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. Common benign growth (mole, seborrheic keratosis) fits best so far. Common harmless growths such as moles and seborrhoeic keratoses.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Photograph it to compare over time.\",\"Protect skin from strong sun.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0097",
+   "task": "T1",
+   "s": 37.26,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "other",
+    "tinea",
+    "benign_lesion"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"other\",\"likelihood\":\"higher\",\"why\":\"Matches the photo pattern; typical sign: mixed or unclear features.\"},{\"key\":\"tinea\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"benign_lesion\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for more than six months. This looks most like Other / not sure. The photo does not clearly match the conditions SkinNova knows, or it may not be a skin photo.\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Retake the photo in daylight, 15-20 cm away.\",\"Keep the area clean and avoid new products until checked.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0098",
+   "task": "T1",
+   "s": 34.87,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "vitiligo",
+    "acne",
+    "psoriasis"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"vitiligo\",\"likelihood\":\"higher\",\"why\":\"Fits your answers (no itching, present for one to six months); typical sign: milky-white patches with clear edges.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"psoriasis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned no itching and no pain, for one to six months. This looks most like Vitiligo / pigment loss. Loss of skin colour in patches because pigment cells stop working.\",\"what_would_help\":[\"Noting whether it changes over the next two weeks\"],\"self_care_info\":[\"Support groups can help.\",\"Protect white patches from sunburn with clothing and shade.\"],\"triage\":{\"tier\":\"MODERATE\",\"advice\":\"Book a doctor visit within 1\u20132 weeks, sooner if it gets worse.\"},\"disagreement_with_image_model\":false}"
+  },
+  {
+   "id": "val-0099",
+   "task": "T9",
+   "s": 33.99,
+   "valid": true,
+   "errors": [],
+   "cat_agree": true,
+   "top_agree": true,
+   "tier_ok": true,
+   "guard_violation": false,
+   "hedge_ok": true,
+   "cites_answer": true,
+   "cats": [
+    "tinea",
+    "contact_dermatitis",
+    "acne"
+   ],
+   "out": "{\"possible_categories\":[{\"key\":\"tinea\",\"likelihood\":\"higher\",\"why\":\"Your answers (moderate itching, it is spreading) match; it often shows slowly spreading outward.\"},{\"key\":\"contact_dermatitis\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"},{\"key\":\"acne\",\"likelihood\":\"less_likely\",\"why\":\"Less likely: your answers fit it less well.\"}],\"uncertainty\":{\"level\":\"low\",\"reasons\":[]},\"explanation\":\"You mentioned moderate itching and mild pain, for less than a week. Fungal infection (tinea/ringworm) fits best so far. A fungal skin infection (ringworm; no worm involved).\",\"what_would_help\":[\"A doctor's examination in person\"],\"self_care_info\":[\"Keep the area clean and fully dry.\",\"Wear loose cotton clothes and change daily.\"],\"triage\":{\"tier\":\"LOW\",\"advice\":\"Watch it and use gentle care. See a doctor if it spreads, hurts, or doesn't improve in 2 weeks.\"},\"disagreement_with_image_model\":false}"
+  }
+ ],
+ "extract_rows": [
+  {
+   "id": "val-x0000",
+   "s": 27.35,
+   "valid": true,
+   "correct": 5,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":{\"value\":\"1_4w\",\"evidence\":\"2 hafte se\"},\"itch\":null,\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"paani nikalta hai\"},\"fever_or_unwell\":{\"value\":false,\"evidence\":\"baaki tabiyat theek hai\"},\"others_affected\":{\"value\":true,\"evidence\":\"bachche ko bhi hai\"},\"new_product_or_exposure\":null,\"age_band\":{\"value\":\"40_59\",\"evidence\":\"meri umar 45 saal hai\"}},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0001",
+   "s": 23.79,
+   "valid": true,
+   "correct": 6,
+   "n_gold": 6,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":{\"value\":\"chest\",\"evidence\":\"seene par\"},\"duration\":{\"value\":\"1_6m\",\"evidence\":\"5 mahine se\"},\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"unsure\",\"evidence\":\"samajh nahi aata badla ya nahi\"},\"bleeding_or_crusting\":{\"value\":false,\"evidence\":\"koi khoon nahi nikalta\"},\"fever_or_unwell\":{\"value\":false,\"evidence\":\"baaki tabiyat theek hai\"},\"others_affected\":null,\"new_product_or_exposure\":{\"value\":false,\"evidence\":\"kuch naya nahi lagaya\"},\"age_band\":null},\"unparsed_notes\":\"chhote daane (small bumps)\"}"
+  },
+  {
+   "id": "val-x0002",
+   "s": 22.69,
+   "valid": true,
+   "correct": 5,
+   "n_gold": 6,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":{\"value\":\"abdomen\",\"evidence\":\"around my navel\"},\"duration\":null,\"itch\":{\"value\":3,\"evidence\":\"the itching keeps me awake\"},\"pain\":{\"value\":0,\"evidence\":\"there is no pain\"},\"changing\":null,\"bleeding_or_crusting\":{\"value\":false,\"evidence\":\"there is no bleeding\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":false,\"evidence\":\"I did not use anything new\"},\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0003",
+   "s": 19.72,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"changing_color\",\"evidence\":\"\u0915\u093e\u0932\u093e \u0939\u094b\u0924\u093e \u091c\u093e \u0930\u0939\u093e \u0939\u0948\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":{\"value\":false,\"evidence\":\"\u0915\u093f\u0938\u0940 \u0915\u094b \u0928\u0939\u0940\u0902 \u0939\u0948\"},\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0004",
+   "s": 26.94,
+   "valid": true,
+   "correct": 3,
+   "n_gold": 5,
+   "halluc_before": 1,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":{\"value\":\"foot\",\"evidence\":\"pair ke naakhun mein\"},\"duration\":null,\"itch\":{\"value\":1,\"evidence\":\"halki si khujli hai\"},\"pain\":{\"value\":1,\"evidence\":\"chhoone par dard hota hai\"},\"changing\":null,\"bleeding_or_crusting\":null,\"fever_or_unwell\":{\"value\":false,\"evidence\":\"baaki tabiyat theek hai\"},\"others_affected\":{\"value\":false,\"evidence\":\"baaki tabiyat theek hai\"},\"new_product_or_exposure\":null,\"age_band\":{\"value\":\"18_39\",\"evidence\":\"meri umar 30 saal hai\"}},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0005",
+   "s": 21.72,
+   "valid": true,
+   "correct": 4,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":{\"value\":\"chest\",\"evidence\":\"on my upper chest\"},\"duration\":null,\"itch\":null,\"pain\":{\"value\":1,\"evidence\":\"it hurts when I touch it\"},\"changing\":{\"value\":\"changing_shape\",\"evidence\":\"the edge looks uneven now\"},\"bleeding_or_crusting\":{\"value\":false,\"evidence\":\"there is no bleeding\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"it started after I wore a new watch\"},\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0006",
+   "s": 19.13,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 3,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":{\"value\":1,\"evidence\":\"din mein bhi khujli hoti hai\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":{\"value\":false,\"evidence\":\"koi khoon nahi nikalta\"},\"fever_or_unwell\":{\"value\":true,\"evidence\":\"bukhar aa raha hai\"},\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0007",
+   "s": 15.35,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":{\"value\":1,\"evidence\":\"mild itching\"},\"pain\":null,\"changing\":{\"value\":\"changing_color\",\"evidence\":\"its colour is changing\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0008",
+   "s": 21.29,
+   "valid": true,
+   "correct": 4,
+   "n_gold": 4,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"spreading\",\"evidence\":\"it has spread to other places\"},\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"it oozes fluid\"},\"fever_or_unwell\":null,\"others_affected\":{\"value\":false,\"evidence\":\"no one else has it\"},\"new_product_or_exposure\":null,\"age_band\":{\"value\":\"18_39\",\"evidence\":\"I am 33\"}},\"unparsed_notes\":\"round patch\"}"
+  },
+  {
+   "id": "val-x0009",
+   "s": 13.31,
+   "valid": true,
+   "correct": 3,
+   "n_gold": 3,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"it oozes fluid\"},\"fever_or_unwell\":{\"value\":true,\"evidence\":\"I also have fever\"},\"others_affected\":{\"value\":false,\"evidence\":\"no one else has it\"},\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0010",
+   "s": 15.05,
+   "valid": true,
+   "correct": 4,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":{\"value\":\"back\",\"evidence\":\"on my lower back\"},\"duration\":{\"value\":\"1_4w\",\"evidence\":\"for four days\"},\"itch\":null,\"pain\":{\"value\":3,\"evidence\":\"it hurts a lot\"},\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"it oozes fluid\"},\"fever_or_unwell\":{\"value\":false,\"evidence\":\"otherwise I feel fine\"},\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0011",
+   "s": 19.47,
+   "valid": true,
+   "correct": 5,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":{\"value\":\"arm\",\"evidence\":\"haath ke upar wale hisse par\"},\"duration\":null,\"itch\":{\"value\":3,\"evidence\":\"khujli se neend nahi aati\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":{\"value\":true,\"evidence\":\"bachche ko bhi hai\"},\"new_product_or_exposure\":{\"value\":false,\"evidence\":\"kuch naya nahi lagaya\"},\"age_band\":{\"value\":\"lt_12\",\"evidence\":\"meri 6 saal ki beti ko\"}},\"unparsed_notes\":\"gol daag (round patch)\"}"
+  },
+  {
+   "id": "val-x0012",
+   "s": 11.85,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":{\"value\":0,\"evidence\":\"\u092c\u093f\u0932\u094d\u0915\u0941\u0932 \u0916\u0941\u091c\u0932\u0940 \u0928\u0939\u0940\u0902 \u0939\u0948\"},\"pain\":null,\"changing\":{\"value\":\"spreading\",\"evidence\":\"\u091c\u0917\u0939 \u092d\u0940 \u092b\u0948\u0932 \u0917\u092f\u093e \u0939\u0948\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0013",
+   "s": 18.18,
+   "valid": true,
+   "correct": 5,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":{\"value\":\"nails\",\"evidence\":\"\u092a\u0948\u0930 \u0915\u0947 \u0928\u093e\u0916\u0942\u0928 \u092e\u0947\u0902\"},\"duration\":{\"value\":\"1_6m\",\"evidence\":\"\u091a\u093e\u0930 \u092e\u0939\u0940\u0928\u0947 \u0938\u0947\"},\"itch\":{\"value\":3,\"evidence\":\"\u0930\u093e\u0924 \u0915\u094b \u092c\u0939\u0941\u0924 \u0916\u0941\u091c\u0932\u0940 \u0939\u094b\u0924\u0940 \u0939\u0948\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":{\"value\":false,\"evidence\":\"\u0915\u094b\u0908 \u0916\u0942\u0928 \u0928\u0939\u0940\u0902 \u0928\u093f\u0915\u0932\u0924\u093e\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":{\"value\":\"12_17\",\"evidence\":\"\u092e\u0948\u0902 16 \u0938\u093e\u0932 \u0915\u093e \u0939\u0942\u0901\"}},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0014",
+   "s": 14.93,
+   "valid": true,
+   "correct": 4,
+   "n_gold": 4,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":{\"value\":\"groin\",\"evidence\":\"private part ke paas\"},\"duration\":null,\"itch\":{\"value\":3,\"evidence\":\"khujli se neend nahi aati\"},\"pain\":null,\"changing\":{\"value\":\"changing_color\",\"evidence\":\"kaala hota ja raha hai\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":{\"value\":true,\"evidence\":\"bukhar aa raha hai\"},\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0015",
+   "s": 15.0,
+   "valid": true,
+   "correct": 3,
+   "n_gold": 3,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":{\"value\":\"groin\",\"evidence\":\"on my inner thigh near the groin\"},\"duration\":null,\"itch\":{\"value\":1,\"evidence\":\"mild itching\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"it oozes fluid\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0016",
+   "s": 15.22,
+   "valid": true,
+   "correct": 6,
+   "n_gold": 6,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":{\"value\":\"back\",\"evidence\":\"on my lower back\"},\"duration\":null,\"itch\":{\"value\":1,\"evidence\":\"mild itching\"},\"pain\":{\"value\":0,\"evidence\":\"there is no pain\"},\"changing\":{\"value\":\"changing_color\",\"evidence\":\"its colour is changing\"},\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"it oozes fluid\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"it started after I wore a new watch\"},\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0017",
+   "s": 18.21,
+   "valid": true,
+   "correct": 5,
+   "n_gold": 5,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":{\"value\":0,\"evidence\":\"there is no itching at all\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"it oozes fluid\"},\"fever_or_unwell\":{\"value\":false,\"evidence\":\"otherwise I feel fine\"},\"others_affected\":null,\"new_product_or_exposure\":{\"value\":false,\"evidence\":\"I did not use anything new\"},\"age_band\":{\"value\":\"12_17\",\"evidence\":\"I am sixteen years old\"}},\"unparsed_notes\":\"round patch\"}"
+  },
+  {
+   "id": "val-x0018",
+   "s": 16.86,
+   "valid": true,
+   "correct": 6,
+   "n_gold": 6,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":{\"value\":\"face\",\"evidence\":\"naak ke paas\"},\"duration\":null,\"itch\":{\"value\":0,\"evidence\":\"bilkul khujli nahi hai\"},\"pain\":{\"value\":0,\"evidence\":\"bilkul dard nahi hota\"},\"changing\":null,\"bleeding_or_crusting\":null,\"fever_or_unwell\":{\"value\":false,\"evidence\":\"baaki tabiyat theek hai\"},\"others_affected\":{\"value\":true,\"evidence\":\"bachche ko bhi hai\"},\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"nayi ghadi pehenne ke baad shuru hua\"},\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0019",
+   "s": 15.69,
+   "valid": true,
+   "correct": 3,
+   "n_gold": 3,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":{\"value\":\"1_4w\",\"evidence\":\"2 hafte se\"},\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"no\",\"evidence\":\"bilkul badla nahi hai\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":{\"value\":false,\"evidence\":\"baaki tabiyat theek hai\"},\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0020",
+   "s": 13.26,
+   "valid": true,
+   "correct": 3,
+   "n_gold": 3,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":{\"value\":3,\"evidence\":\"the itching keeps me awake\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"it started after I wore a new watch\"},\"age_band\":{\"value\":\"18_39\",\"evidence\":\"I am 33\"}},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0021",
+   "s": 11.91,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"unsure\",\"evidence\":\"samaj nahi aata badla ya nahi\"},\"bleeding_or_crusting\":{\"value\":true,\"evidence\":\"paani nikalta hai\"},\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0022",
+   "s": 15.68,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":null,\"changing\":{\"value\":\"no\",\"evidence\":\"it looks the same as before\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":{\"value\":false,\"evidence\":\"no one else has it\"},\"new_product_or_exposure\":null,\"age_band\":null},\"unparsed_notes\":\"ring-shaped\"}"
+  },
+  {
+   "id": "val-x0023",
+   "s": 12.0,
+   "valid": true,
+   "correct": 2,
+   "n_gold": 2,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"hi\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":{\"value\":0,\"evidence\":\"bilkul khujli nahi hai\"},\"pain\":null,\"changing\":null,\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":null,\"new_product_or_exposure\":{\"value\":true,\"evidence\":\"nayi ghadi pehenne ke baad shuru hua\"},\"age_band\":null},\"unparsed_notes\":\"\"}"
+  },
+  {
+   "id": "val-x0024",
+   "s": 14.47,
+   "valid": true,
+   "correct": 4,
+   "n_gold": 4,
+   "halluc_before": 0,
+   "halluc_after": 0,
+   "out": "{\"language\":\"en\",\"fields\":{\"body_site\":null,\"duration\":null,\"itch\":null,\"pain\":{\"value\":0,\"evidence\":\"there is no pain\"},\"changing\":{\"value\":\"unsure\",\"evidence\":\"I can't tell if it changed\"},\"bleeding_or_crusting\":null,\"fever_or_unwell\":null,\"others_affected\":{\"value\":false,\"evidence\":\"no one else has it\"},\"new_product_or_exposure\":null,\"age_band\":{\"value\":\"lt_12\",\"evidence\":\"my daughter is 6\"}},\"unparsed_notes\":\"ring-shaped\"}"
+  }
+ ]
+}

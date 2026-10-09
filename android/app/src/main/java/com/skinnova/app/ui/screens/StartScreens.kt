@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -270,5 +271,42 @@ fun SetupScreen(c: AppContainer, onDone: () -> Unit) {
             Spacer(Modifier.height(18.dp))
             Text(stringResource(R.string.setup_adb_hint), style = SnType.micro, color = sn.mut)
         }
+    }
+}
+
+/**
+ * One-time "Optimising SkinNova for your phone" (v2.1 item 5): after a model import or an app update, LiteRT-LM builds
+ * the GPU weight cache (~2 min on a mid-range phone). Done here, in the open, instead of inside the first analysis.
+ */
+@Composable
+fun OptimizeScreen(vm: com.skinnova.app.ui.SessionViewModel, onDone: () -> Unit) {
+    val sn = LocalSn.current
+    val c = vm.c
+    var elapsed by remember { mutableFloatStateOf(0f) }
+    var done by remember { mutableStateOf(c.engineHolder.isLoaded) }
+    LaunchedEffect(Unit) {
+        vm.warmUp()   // viewModelScope: keeps going if the user leaves this screen
+        val t0 = System.currentTimeMillis()
+        while (!c.engineHolder.isLoaded) { kotlinx.coroutines.delay(500); elapsed = (System.currentTimeMillis() - t0) / 1000f
+            if (elapsed > 600f) break }
+        done = c.engineHolder.isLoaded
+        if (done) { c.optimizeKey()?.let { c.settings.setOptimizedKey(it) }; kotlinx.coroutines.delay(700); onDone() }
+    }
+    Column(Modifier.fillMaxSize().background(sn.bgBrush).statusBarsPadding().navigationBarsPadding().padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(60.dp))
+        PixelImage(R.drawable.px_gem, Modifier.size(64.dp), ContentScale.Fit)
+        Spacer(Modifier.height(20.dp))
+        Text(stringResource(R.string.opt_title), style = SnType.headline, color = sn.ink, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(10.dp))
+        Text(stringResource(R.string.opt_sub), style = SnType.body, color = sn.mut, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(28.dp))
+        com.skinnova.app.ui.components.PixelProgressBar(if (done) 1f else (elapsed / 120f).coerceIn(0.02f, 0.95f))
+        Spacer(Modifier.height(10.dp))
+        Text(if (done) stringResource(R.string.opt_done) else stringResource(R.string.opt_elapsed, elapsed.toInt()), style = SnType.caption, color = sn.accT)
+        Spacer(Modifier.height(24.dp))
+        com.skinnova.app.ui.screens.KeepRunningTip()
+        Spacer(Modifier.weight(1f))
+        TextButton(onClick = onDone) { Text(stringResource(R.string.opt_later), style = SnType.caption, color = sn.mut) }
     }
 }

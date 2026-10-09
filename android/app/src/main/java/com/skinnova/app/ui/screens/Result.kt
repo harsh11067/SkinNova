@@ -70,7 +70,9 @@ fun AnalyzingScreen(vm: SessionViewModel, onDone: () -> Unit, onCancel: () -> Un
     val sn = LocalSn.current
     val st by vm.state.collectAsState()
     val photo by vm.photo.collectAsState()
-    androidx.compose.runtime.LaunchedEffect(st) { if (st is AnalysisState.Done) onDone() }
+    val early by vm.result.collectAsState()
+    // result first (v2.1 item 2): leave as soon as the early result exists; Gemma keeps writing in the background
+    androidx.compose.runtime.LaunchedEffect(st, early) { if (st is AnalysisState.Done || early != null) onDone() }
     val order = listOf(R.string.an_step_photo, R.string.an_step_cv, R.string.an_step_rules, R.string.an_step_llm, R.string.an_step_translate)
     val idx = when (st) {
         AnalysisState.CheckingPhoto -> 0; AnalysisState.Classifying -> 1; AnalysisState.Rules -> 2
@@ -132,7 +134,7 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
     val history by vm.c.settings.history.collectAsState()
     val tts by vm.c.settings.tts.collectAsState()
     val r: FinalResult = res ?: return
-    var showHi by remember { mutableStateOf(r.localized != null && r.lang == "hi") }
+    var showHi by remember(r.createdAt) { mutableStateOf(r.localized != null && r.lang == "hi") }   // re-read when the full result swaps in
     var saved by remember(r.createdAt) { mutableStateOf(vm.savedId != null) }
     var askSave by remember { mutableStateOf(false) }
     val loc = if (showHi) r.localized else null
@@ -143,6 +145,14 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
     val p = r.cvTop3.associate { it.key to it.p }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(horizontal = 18.dp, vertical = 8.dp)) {
         TopBar(stringResource(R.string.res_title), onHome)
+        val pending by vm.pending.collectAsState()
+        val updated by vm.updatedTop.collectAsState()
+        if (pending) { WritingBanner(vm); Spacer(Modifier.height(12.dp)) }
+        if (updated) {
+            Box(Modifier.clip(RoundedCornerShape(12.dp)).background(sn.surf2).border(1.dp, sn.acc, RoundedCornerShape(12.dp))
+                .padding(horizontal = 12.dp, vertical = 6.dp)) { Text("✦ " + stringResource(R.string.res_updated), style = SnType.caption, color = sn.accT) }
+            Spacer(Modifier.height(10.dp))
+        }
         Row(verticalAlignment = Alignment.CenterVertically) {
             photo?.let {
                 Box(Modifier.size(112.dp).clip(RoundedCornerShape(26.dp)).border(1.5.dp, sn.acc, RoundedCornerShape(26.dp)).padding(4.dp)) {
@@ -162,19 +172,23 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
         // 2 triage
         TriageCard(tier)
         Spacer(Modifier.height(12.dp))
-        if (r.mode == Mode.basic) {
+        if (r.mode == Mode.basic && r.fallbackReason != com.skinnova.app.ml.AnalysisPipeline.PENDING) {
             Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(sn.surf2).padding(14.dp)) {
-                Text(stringResource(R.string.res_basic_mode), style = SnType.caption, color = sn.mut)
+                Text(stringResource(if (r.fallbackReason == com.skinnova.app.ml.AnalysisPipeline.STOPPED) R.string.res_stopped else R.string.res_basic_mode),
+                    style = SnType.caption, color = sn.mut)
             }
             Spacer(Modifier.height(12.dp))
         }
         // 2b no clear match: "other" leads → say what that means and show the closest known conditions (never a dead end)
         if (topOther) {
-            Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(sn.surf2).padding(14.dp)) {
-                Column {
-                    Text(stringResource(R.string.res_nomatch_title), style = SnType.label, color = sn.ink)
-                    Spacer(Modifier.height(4.dp))
-                    Text(stringResource(R.string.res_nomatch_body), style = SnType.caption, color = sn.mut)
+            SnCard(framed = true) {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(stringResource(R.string.res_nomatch_title), style = SnType.title, color = sn.ink)
+                    Text(stringResource(R.string.res_nomatch_body), style = SnType.body, color = sn.mut)
+                    // a 2nd "other" in a row (e.g. after a retake): recommend a doctor — the advice level itself is unchanged
+                    if (vm.otherStreak >= 2) Text("⚠  " + stringResource(R.string.res_nomatch_twice), style = SnType.body, color = sn.urgent)
+                    Text(stringResource(R.string.res_nomatch_tips), style = SnType.caption, color = sn.accT)
+                    OutlineButton(stringResource(R.string.res_nomatch_retake), Modifier.fillMaxWidth()) { onRetake() }
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -239,7 +253,7 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
                     if (tts) SpeakButton({ loc?.explanation ?: r.output.explanation }, lang)
                 }
                 // on-demand Hindi from the fine-tuned model (only full results: Basic mode has no LLM text to translate)
-                if (r.localized == null && r.mode == Mode.full && vm.c.llm.available) {
+                if (r.localized == null && r.mode == Mode.full && vm.c.llm.available && !pending) {
                     val busy by vm.translating.collectAsState()
                     val failMsg = stringResource(R.string.res_translate_fail)
                     val ctx2 = androidx.compose.ui.platform.LocalContext.current
@@ -264,7 +278,7 @@ fun ResultScreen(vm: SessionViewModel, onHome: () -> Unit, onRetake: () -> Unit,
         ReliefCard(vm, r, tier, tts, lang)
         Spacer(Modifier.height(12.dp))
         // 6c Ask SkinNova: follow-up questions, answered on the phone by Gemma (guarded)
-        AskCard(vm, tts, lang)
+        if (!pending) AskCard(vm, tts, lang)
         Spacer(Modifier.height(12.dp))
         Disclaimer()
         Spacer(Modifier.height(16.dp))
@@ -380,5 +394,32 @@ private fun EarlyLookCard(e: com.skinnova.app.ui.EarlyLook) {
             }
         }
         Spacer(Modifier.height(10.dp))
+    }
+}
+
+/** Result screen while Gemma writes: phase, pixel progress, honest time left, and Stop (keeps the early result). */
+@Composable
+private fun WritingBanner(vm: SessionViewModel) {
+    val sn = LocalSn.current
+    val pr by vm.progress.collectAsState()
+    val p = pr
+    val phase = when (p?.phase) {
+        com.skinnova.app.ui.GenPhase.LOADING -> stringResource(R.string.wb_loading)
+        com.skinnova.app.ui.GenPhase.WRITING -> p.etaSec?.let { stringResource(R.string.wb_writing_eta, it) } ?: stringResource(R.string.wb_writing)
+        com.skinnova.app.ui.GenPhase.CHECKING -> stringResource(R.string.wb_checking)
+        com.skinnova.app.ui.GenPhase.TRANSLATING -> stringResource(R.string.wb_translating)
+        else -> stringResource(R.string.wb_reading)
+    }
+    SnCard(framed = true) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.wb_title), style = SnType.label, color = sn.ink, modifier = Modifier.weight(1f))
+                Box(Modifier.heightIn(min = 48.dp).clip(RoundedCornerShape(12.dp)).clickable(role = Role.Button) { vm.cancel() }
+                    .padding(horizontal = 10.dp), contentAlignment = Alignment.Center) { Text(stringResource(R.string.wb_stop), style = SnType.caption, color = sn.mut) }
+            }
+            com.skinnova.app.ui.components.PixelProgressBar(p?.fraction)
+            Text(phase, style = SnType.caption, color = sn.accT)
+            Text(stringResource(R.string.wb_sub), style = SnType.micro, color = sn.mut)
+        }
     }
 }

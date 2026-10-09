@@ -38,6 +38,7 @@ def main():
     ap.add_argument("--threads", type=int, default=0, help="CPU threads for LiteRT-LM (0 = runtime default)")
     ap.add_argument("--greedy", action="store_true", help="top_k=1, temperature 0 (model-vs-model comparisons); default = app sampling")
     ap.add_argument("--data-dir", default=str(LLM_DATA), help="records + images; data/llm_eval = frozen sets (LoRA v1/v2 selection)")
+    ap.add_argument("--max-tokens", type=int, default=4096, help="engine KV cache size (app: GemmaEngine maxNumTokens; v2.1 item 4)")
     a = ap.parse_args()
     data = Path(a.data_dir)
     recs = [json.loads(l) for l in open(data / f"{a.set}.jsonl")]
@@ -46,7 +47,7 @@ def main():
     t0 = time.time()
     cpu = (lambda: L.Backend.CPU(thread_count=a.threads)) if a.threads else (lambda: L.Backend.CPU())
     caps = L.Capabilities(a.model); has_vision = bool(caps.input_modalities.vision); caps.close()
-    eng = L.Engine(a.model, backend=cpu(), vision_backend=cpu() if has_vision else None, max_num_tokens=4096)
+    eng = L.Engine(a.model, backend=cpu(), vision_backend=cpu() if has_vision and not a.no_image else None, max_num_tokens=a.max_tokens)
     load_s = time.time() - t0
     gray = None
     if a.gray:
@@ -89,7 +90,7 @@ def main():
         xrows.append({"id": r["id"], "s": round(dt, 2), **score_extract(r["meta"], text), "out": text[:600]})
     rep = {**report_meta(model_sha=file_sha(Path(a.model))[:16]), "tag": a.tag, "set": a.set, "data_dir": a.data_dir, "backend": "CPU", "runtime": "litert-lm-api 0.17.1",
            "decoding": "greedy" if a.greedy else "app sampling (top_k 40, top_p 0.95, T 0.2, seed 3407)",
-           "load_s": round(load_s, 1), "gray_image": bool(a.gray), "no_image": bool(a.no_image), "n_analysis": len(rows), "n_extract": len(xrows),
+           "load_s": round(load_s, 1), "gray_image": bool(a.gray), "no_image": bool(a.no_image), "max_num_tokens": a.max_tokens, "n_analysis": len(rows), "n_extract": len(xrows),
            "analysis": summarize(rows, ANALYSIS_KEYS), "extract": summarize_extract(xrows),
            "s_per_analysis_median": sorted(r["s"] for r in rows)[len(rows) // 2] if rows else None, "rows": rows, "extract_rows": xrows}
     out = REPORTS / f"llm_litertlm_{a.tag}{'_gray' if a.gray else ''}.json"
